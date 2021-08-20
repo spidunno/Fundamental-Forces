@@ -107,7 +107,7 @@ public class SpaceHelper
 
     public static Block[] getModBlocks(Class<?>... blockClasses)
     {
-        return getModBlocks(b -> Arrays.stream(blockClasses).anyMatch(b -> b.isInstance(b)));
+        return getModBlocks(p -> Arrays.stream(blockClasses).anyMatch(b -> b.isInstance(b)));
     }
 
     @Nonnull
