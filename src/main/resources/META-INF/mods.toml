@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="All rights reserved"
+[[mods]]
+modId="space_mod"
+version="${file.jarVersion}"
+displayName="Space Mod"
+logoFile="space_mod.png"
+credits="Credits go here"
+authors="Authors go here"
+description=''' '''
+[[dependencies.space_mod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[36,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.examplemod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.5,1.17)"
+    ordering="NONE"
+    side="BOTH"
