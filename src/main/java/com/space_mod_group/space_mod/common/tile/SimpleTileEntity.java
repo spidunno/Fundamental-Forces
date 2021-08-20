@@ -20,10 +20,10 @@ public class SimpleTileEntity extends TileEntity
     public void onBreak(BlockState state, BlockPos pos) {
         invalidateCaps();
     }
-
     public ActionResultType onUse(BlockState state, BlockPos pos, PlayerEntity player, Hand hand) {
         return ActionResultType.PASS;
     }
+
     @Override
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet)
     {

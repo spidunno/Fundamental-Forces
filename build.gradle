@@ -67,11 +67,33 @@ minecraft {
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
+repositories {
+    maven {
+        name = "Curios Maven"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {
+        name = "JEI Maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        name = "CTM Maven"
+        url = "https://maven.tterrag.com/"
+    }
+}
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
+
+    compileOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.16.2:7.3.2.25")
+
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.5.1")
+
+    runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC1.16.1-1.1.1.5")
+
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
 jar {
     manifest {
         attributes([
