@@ -88,7 +88,7 @@ public class SpaceModLang extends LanguageProvider
                 name = name.replaceFirst("bricks", "brick");
             }
         }
-        if (name.contains("_fence") || name.contains("_button"))
+        if (name.contains("_fence") || name.contains("_button") || name.contains("pressure_plate"))
         {
             if (name.contains("planks"))
             {
