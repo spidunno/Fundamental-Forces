@@ -16,7 +16,7 @@ public class WorldEventActivator {
     public static void playerJoin(ServerLevel level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
             if (!capability.firstTimeJoin) {
-                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.FIRST_DROP_POD, player));
+                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.FIRST_DROP_POD, player).setLooping());
             } else {
                 addStarfallIfMissing(level, player);
             }
@@ -36,7 +36,7 @@ public class WorldEventActivator {
             }
 
             if (isMissingStarfall) {
-                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, player));
+                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, player).setLooping());
             }
         });
     }

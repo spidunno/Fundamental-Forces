@@ -21,6 +21,7 @@ public class StarfallInstance extends WorldEventInstance {
     public BlockPos targetedPos;
     public final int startingCountdown;
     public int countdown;
+    public boolean loop;
 
     public StarfallInstance(StarfallResult result, LivingEntity targetedEntity) {
         this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.startingCountdown);
@@ -36,6 +37,11 @@ public class StarfallInstance extends WorldEventInstance {
         this.targetedPos = targetedPos;
         this.startingCountdown = startingCountdown;
         this.countdown = startingCountdown;
+    }
+    public StarfallInstance setLooping()
+    {
+        this.loop = true;
+        return this;
     }
     @Override
     public void tick(ServerLevel level) {
@@ -59,7 +65,7 @@ public class StarfallInstance extends WorldEventInstance {
         if (success) {
             result.fall(level, targetedPos);
         }
-        if (isEntityValid(level))
+        if (loop && isEntityValid(level))
         {
             WorldEventManager.addInboundWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, targetedEntity));
         }
@@ -91,6 +97,7 @@ public class StarfallInstance extends WorldEventInstance {
         tag.putInt("startingCountdown", startingCountdown);
         tag.putBoolean("invalidated", invalidated);
         tag.putInt("countdown", countdown);
+        tag.putBoolean("loop", loop);
     }
 
     public static StarfallInstance deserializeNBT(CompoundTag tag) {
@@ -102,6 +109,7 @@ public class StarfallInstance extends WorldEventInstance {
         StarfallInstance instance = new StarfallInstance(result, targetedUUID,targetedPos,startingCountdown);
         instance.invalidated = tag.getBoolean("invalidated");
         instance.countdown = tag.getInt("countdown");
+        instance.loop = tag.getBoolean("loop");
         return instance;
     }
 }
