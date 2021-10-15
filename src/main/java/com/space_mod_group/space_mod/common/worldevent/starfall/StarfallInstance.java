@@ -1,12 +1,12 @@
 package com.space_mod_group.space_mod.common.worldevent.starfall;
 
+import com.space_mod_group.space_mod.common.worldevent.WorldEventActivator;
 import com.space_mod_group.space_mod.common.worldevent.WorldEventManager;
 import com.space_mod_group.space_mod.core.registry.worldevent.StarfallResults;
 import com.space_mod_group.space_mod.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -19,24 +19,29 @@ public class StarfallInstance extends WorldEventInstance {
     public final UUID targetedUUID;
     public LivingEntity targetedEntity;
     public BlockPos targetedPos;
-    public final int startingCountdown;
+    public int startingCountdown;
     public int countdown;
     public boolean loop;
 
-    public StarfallInstance(StarfallResult result, LivingEntity targetedEntity) {
-        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.startingCountdown);
+    public StarfallInstance(StarfallResult result,ServerLevel level, LivingEntity targetedEntity) {
+        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.randomizeCountdown(level.random));
     }
 
-    public StarfallInstance(StarfallResult result, BlockPos targetedPos) {
-        this(result, null, targetedPos, result.startingCountdown);
+    public StarfallInstance(StarfallResult result, ServerLevel level,BlockPos targetedPos) {
+        this(result,null, targetedPos, result.randomizeCountdown(level.random));
     }
 
-    public StarfallInstance(StarfallResult result, @Nullable UUID targetedUUID, BlockPos targetedPos, int startingCountdown) {
+    public StarfallInstance(StarfallResult result,@Nullable UUID targetedUUID, BlockPos targetedPos, int startingCountdown) {
         this.result = result;
         this.targetedUUID = targetedUUID;
         this.targetedPos = targetedPos;
         this.startingCountdown = startingCountdown;
         this.countdown = startingCountdown;
+    }
+    public StarfallInstance randomizeCountdown(ServerLevel level, int parentCountdown)
+    {
+        this.startingCountdown = result.randomizeCountdown(level.random, parentCountdown);
+        return this;
     }
     public StarfallInstance setLooping()
     {
@@ -67,7 +72,7 @@ public class StarfallInstance extends WorldEventInstance {
         }
         if (loop && isEntityValid(level))
         {
-            WorldEventManager.addInboundWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, targetedEntity));
+            WorldEventActivator.addSpaceDebris(level, targetedEntity, true);
         }
         super.end(level);
     }

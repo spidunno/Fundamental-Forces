@@ -10,6 +10,7 @@ public class CommonConfig {
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_STARFALL_DISTANCE;
 
     public static ForgeConfigSpec.DoubleValue ASTEROID_CHANCE;
+    public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_ASTEROID_COUNT;
     public static ForgeConfigSpec.DoubleValue MINIMUM_ASTEROID_COUNTDOWN_MULTIPLIER;
     public static ForgeConfigSpec.DoubleValue MAXIMUM_ASTEROID_COUNTDOWN_MULTIPLIER;
 
@@ -36,11 +37,14 @@ public class CommonConfig {
         ASTEROID_CHANCE = builder.comment("Asteroids are scheduled to fall alongside space debris. What's the chance for this to happen?")
                 .defineInRange("asteroid_fall_chance", 0.6, 0, 1.0);
 
+        MAXIMUM_ASTEROID_COUNT = builder.comment("What's the maximum possible amount of asteroids to schedule? Each time an asteroid is spawned the chance for another one is lowered.")
+                .define("maximum_asteroid_count", 2);
+
         MINIMUM_ASTEROID_COUNTDOWN_MULTIPLIER = builder.comment("Asteroids fall sometime after the space debris. How close to the space debris starfall can the asteroid starfall be?")
-                .defineInRange("minimum_asteroid_countdown_multiplier", 0.1, 0.01, 1.0);
+                .defineInRange("minimum_asteroid_countdown_multiplier", 0.1, 0.01, 1.5);
 
         MAXIMUM_ASTEROID_COUNTDOWN_MULTIPLIER = builder.comment("Asteroids fall sometime after the space debris. How close to the next space debris starfall can the asteroid starfall be?")
-                .defineInRange("maximum_asteroid_countdown_multiplier", 0.95, 0.01, 1.0);
+                .defineInRange("maximum_asteroid_countdown_multiplier", 0.95, 0.01, 1.5);
         builder.pop();
 
         builder.comment("Space Debris").push("space_debris");

@@ -11,18 +11,23 @@ import java.util.stream.Collectors;
 
 public class WorldEventManager {
 
-    public static void addInboundWorldEvent(ServerLevel level, WorldEventInstance instance) {
+    public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
+        return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
+    }
+    public static <T extends WorldEventInstance> T addInboundWorldEvent(ServerLevel level, T instance) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             capability.INBOUND_WORLD_EVENTS.add(instance);
             instance.start(level);
         });
+        return instance;
     }
 
-    public static void addWorldEvent(ServerLevel level, WorldEventInstance instance) {
+    public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             capability.ACTIVE_WORLD_EVENTS.add(instance);
             instance.start(level);
         });
+        return instance;
     }
 
     public static void worldTick(ServerLevel level) {

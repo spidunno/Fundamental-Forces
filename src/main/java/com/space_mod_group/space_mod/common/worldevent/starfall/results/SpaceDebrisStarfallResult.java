@@ -1,19 +1,29 @@
 package com.space_mod_group.space_mod.common.worldevent.starfall.results;
 
 import com.space_mod_group.space_mod.common.worldevent.starfall.StarfallResult;
+import com.space_mod_group.space_mod.core.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.level.block.Blocks;
 
-public class DropPodStarfallResult extends StarfallResult {
-    protected DropPodStarfallResult(int startingCountdown) {
+import java.util.Random;
+
+public class SpaceDebrisStarfallResult extends StarfallResult {
+    protected SpaceDebrisStarfallResult(int startingCountdown) {
         super(startingCountdown);
     }
 
-    public DropPodStarfallResult() {
-        super(StarfallResult.DEFAULT_STARTING_COUNTDOWN);
+    public SpaceDebrisStarfallResult() {
+        super(CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
+    }
+    @Override
+    public int randomizeCountdown(Random random, int parentCountdown) {
+        double min = CommonConfig.MINIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
+        double max = CommonConfig.MAXIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
+        return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
     @Override
     public void fall(ServerLevel level, BlockPos pos) {

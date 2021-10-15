@@ -3,27 +3,27 @@ package com.space_mod_group.space_mod.common.worldevent;
 import com.space_mod_group.space_mod.common.capability.PlayerDataCapability;
 import com.space_mod_group.space_mod.common.capability.WorldDataCapability;
 import com.space_mod_group.space_mod.common.worldevent.starfall.StarfallInstance;
+import com.space_mod_group.space_mod.core.config.CommonConfig;
 import com.space_mod_group.space_mod.core.registry.worldevent.StarfallResults;
 import com.space_mod_group.space_mod.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class WorldEventActivator {
     public static void playerJoin(ServerLevel level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
-            if (!capability.firstTimeJoin) {
-                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.FIRST_DROP_POD, player).setLooping());
-            } else {
-                addStarfallIfMissing(level, player);
+            if (CommonConfig.STARFALLS_ENABLED.get()) {
+                if (!capability.firstTimeJoin) {
+                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.INITIAL_SPACE_DEBRIS, level, player).setLooping());
+                } else {
+                    addSpaceDebrisIfMissing(level, player);
+                }
             }
         });
     }
 
-    public static void addStarfallIfMissing(ServerLevel level, Player player) {
+    public static void addSpaceDebrisIfMissing(ServerLevel level, Player player) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             boolean isMissingStarfall = true;
             for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
@@ -36,8 +36,26 @@ public class WorldEventActivator {
             }
 
             if (isMissingStarfall) {
-                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, player).setLooping());
+                addSpaceDebris(level, player, false);
             }
         });
+    }
+
+    public static void addSpaceDebris(ServerLevel level, LivingEntity entity, boolean inbound) {
+        StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS, level, entity).setLooping(), inbound);
+        Double chance = CommonConfig.ASTEROID_CHANCE.get();
+        int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
+        for (int i = 0; i < maxAsteroids; i++)
+        {
+            if (level.random.nextFloat() < chance)
+            {
+                WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.ASTEROID, level, entity).randomizeCountdown(level, debrisInstance.startingCountdown), inbound);
+                chance *= 0.8f;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
 }
