@@ -44,27 +44,23 @@ public class StarfallInstance extends WorldEventInstance {
         }
         countdown--;
         if (countdown <= 0) {
-            fall(level);
             end(level);
         }
     }
 
     @Override
     public void end(ServerLevel level) {
-        if (isEntityValid(level))
-        {
-            WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, targetedEntity));
-        }
-        super.end(level);
-    }
-
-    public boolean fall(ServerLevel level) {
         boolean success = canFall(level);
         if (success) {
             result.fall(level, targetedPos);
         }
-        return success;
+        if (isEntityValid(level))
+        {
+            WorldEventManager.addInboundWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, targetedEntity));
+        }
+        super.end(level);
     }
+
 
     public boolean canFall(ServerLevel level) {
         return true;

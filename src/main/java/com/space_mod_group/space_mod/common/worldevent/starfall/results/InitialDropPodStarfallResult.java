@@ -9,10 +9,4 @@ public class InitialDropPodStarfallResult extends DropPodStarfallResult {
     public InitialDropPodStarfallResult() {
         super(StarfallResult.FIRST_TIME_STARTING_COUNTDOWN);
     }
-
-    @Override
-    public void fall(ServerLevel level, BlockPos pos) {
-        level.setBlock(pos, Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
-        super.fall(level, pos);
-    }
 }

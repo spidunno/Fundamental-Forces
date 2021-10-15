@@ -19,12 +19,13 @@ import java.util.stream.Stream;
 import static com.space_mod_group.space_mod.SpaceMod.MOD_ID;
 
 public class SpaceHelper {
+
     public static void updateState(Level level, BlockPos pos) {
         updateState(level.getBlockState(pos), level, pos);
     }
 
     public static void updateState(BlockState state, Level level, BlockPos pos) {
-        level.sendBlockUpdated(pos, state, state, 2);
+        level.sendBlockUpdated(pos, state, state, 3);
     }
 
     public static ResourceLocation prefix(String path) {
