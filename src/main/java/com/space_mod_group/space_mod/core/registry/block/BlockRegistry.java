@@ -1,8 +1,7 @@
-package com.space_mod_group.space_mod.core.registry;
+package com.space_mod_group.space_mod.core.registry.block;
 
 import com.space_mod_group.space_mod.SpaceMod;
-import net.minecraft.block.Block;
-import net.minecraft.entity.EntityType;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

@@ -1,19 +1,17 @@
 package com.space_mod_group.space_mod.core.data;
 
-import com.space_mod_group.space_mod.SpaceHelper;
 import com.space_mod_group.space_mod.SpaceMod;
-import com.space_mod_group.space_mod.core.registry.BlockRegistry;
-import net.minecraft.block.*;
+import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.state.properties.AttachFace;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.AttachFace;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -23,8 +21,11 @@ import java.util.function.Function;
 
 import static com.space_mod_group.space_mod.SpaceHelper.prefix;
 import static com.space_mod_group.space_mod.SpaceHelper.takeAll;
-import static net.minecraft.state.properties.DoubleBlockHalf.LOWER;
-import static net.minecraft.state.properties.DoubleBlockHalf.UPPER;
+import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
+import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER;
+
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class SpaceModBlockStates extends net.minecraftforge.client.model.generators.BlockStateProvider
 {
@@ -46,7 +47,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
         takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(this::grassBlock);
-        takeAll(blocks, b -> b.get() instanceof StairsBlock).forEach(this::stairsBlock);
+        takeAll(blocks, b -> b.get() instanceof StairBlock).forEach(this::stairsBlock);
         takeAll(blocks, b -> b.get() instanceof RotatedPillarBlock).forEach(this::logBlock);
         takeAll(blocks, b -> b.get() instanceof WallBlock).forEach(this::wallBlock);
         takeAll(blocks, b -> b.get() instanceof FenceBlock).forEach(this::fenceBlock);
@@ -54,7 +55,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(this::doorBlock);
         takeAll(blocks, b -> b.get() instanceof TrapDoorBlock).forEach(this::trapdoorBlock);
         takeAll(blocks, b -> b.get() instanceof PressurePlateBlock).forEach(this::pressurePlateBlock);
-        takeAll(blocks, b -> b.get() instanceof AbstractButtonBlock).forEach(this::buttonBlock);
+        takeAll(blocks, b -> b.get() instanceof ButtonBlock).forEach(this::buttonBlock);
         takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(this::tallPlantBlock);
         takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(this::plantBlock);
         takeAll(blocks, b -> b.get() instanceof LanternBlock).forEach(this::lanternBlock);
@@ -168,7 +169,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 7);
-        stairsBlock((StairsBlock) blockRegistryObject.get(), prefix("block/" + baseName));
+        stairsBlock((StairBlock) blockRegistryObject.get(), prefix("block/" + baseName));
     }
 
     public void pressurePlateBlock(RegistryObject<Block> blockRegistryObject)

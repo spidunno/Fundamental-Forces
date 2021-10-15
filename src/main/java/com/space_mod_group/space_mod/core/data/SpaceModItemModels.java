@@ -1,21 +1,27 @@
 package com.space_mod_group.space_mod.core.data;
 
 import com.space_mod_group.space_mod.SpaceMod;
-import com.space_mod_group.space_mod.core.registry.ItemRegistry;
-import net.minecraft.block.*;
+import com.space_mod_group.space_mod.core.registry.item.ItemRegistry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.item.*;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.block.*;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.RegistryObject;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.space_mod_group.space_mod.SpaceHelper.prefix;
 import static com.space_mod_group.space_mod.SpaceHelper.takeAll;
+
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider
 {
@@ -39,7 +45,7 @@ public class SpaceModItemModels extends net.minecraftforge.client.model.generato
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof DoorBlock).forEach(this::generatedItem);
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof TrapDoorBlock).forEach(this::trapdoorBlockItem);
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof PressurePlateBlock).forEach(this::pressurePlateBlockItem);
-        takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof AbstractButtonBlock).forEach(this::buttonBlockItem);
+        takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof ButtonBlock).forEach(this::buttonBlockItem);
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof BushBlock && !(((BlockItem) i.get()).getBlock() instanceof DoublePlantBlock)).forEach(this::blockGeneratedItem);
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof DoublePlantBlock).forEach(this::generatedItem);
         takeAll(items, i -> i.get() instanceof BlockItem && ((BlockItem) i.get()).getBlock() instanceof LanternBlock).forEach(this::generatedItem);
@@ -47,7 +53,7 @@ public class SpaceModItemModels extends net.minecraftforge.client.model.generato
 
         takeAll(items, i -> i.get() instanceof SignItem).forEach(this::generatedItem);
         takeAll(items, i -> i.get() instanceof BlockItem).forEach(this::blockItem);
-        takeAll(items, i -> i.get() instanceof ToolItem).forEach(this::handheldItem);
+        takeAll(items, i -> i.get() instanceof DiggerItem).forEach(this::handheldItem);
         takeAll(items, i -> i.get() instanceof SwordItem).forEach(this::handheldItem);
         takeAll(items, i -> i.get() instanceof BowItem).forEach(this::handheldItem);
         items.forEach(this::generatedItem);

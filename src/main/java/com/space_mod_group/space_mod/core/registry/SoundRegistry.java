@@ -1,7 +1,7 @@
 package com.space_mod_group.space_mod.core.registry;
 
 import com.space_mod_group.space_mod.SpaceMod;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 

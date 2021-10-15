@@ -1,23 +1,26 @@
 package com.space_mod_group.space_mod.core.data;
 
 import com.space_mod_group.space_mod.SpaceHelper;
-import com.space_mod_group.space_mod.SpaceMod;
 import com.space_mod_group.space_mod.core.registry.*;
-import net.minecraft.block.Block;
-import net.minecraft.block.WallSignBlock;
-import net.minecraft.block.WallTorchBlock;
+import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
+import com.space_mod_group.space_mod.core.registry.item.EnchantmentRegistry;
+import com.space_mod_group.space_mod.core.registry.item.ItemRegistry;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.potion.Effect;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.Set;
+
 
 import static com.space_mod_group.space_mod.SpaceMod.MOD_ID;
 
@@ -44,7 +47,7 @@ public class SpaceModLang extends LanguageProvider
         SpaceHelper.takeAll(items, i -> i.get() instanceof BlockItem);
         Set<RegistryObject<SoundEvent>> sounds = new HashSet<>(SoundRegistry.SOUNDS.getEntries());
         Set<RegistryObject<Enchantment>> enchantments = new HashSet<>(EnchantmentRegistry.ENCHANTMENTS.getEntries());
-        Set<RegistryObject<Effect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
+        Set<RegistryObject<MobEffect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
         blocks.forEach(b ->
         {
             String name = b.get().getDescriptionId().replaceFirst("block." + MOD_ID + ".", "");

@@ -1,12 +1,12 @@
 package com.space_mod_group.space_mod;
 
-import com.space_mod_group.space_mod.core.registry.BlockRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.RegistryObject;
+import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.fmllegacy.RegistryObject;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -18,22 +18,22 @@ import static com.space_mod_group.space_mod.SpaceMod.MOD_ID;
 
 public class SpaceHelper
 {
-    public static void updateState(World worldIn, BlockPos pos)
+    public static void updateState(Level worldIn, BlockPos pos)
     {
         updateState(worldIn.getBlockState(pos), worldIn, pos);
     }
 
-    public static void updateState(BlockState state, World worldIn, BlockPos pos)
+    public static void updateState(BlockState state, Level worldIn, BlockPos pos)
     {
         worldIn.sendBlockUpdated(pos, state, state, 2);
     }
 
-    public static boolean areWeOnClient(World world)
+    public static boolean areWeOnClient(Level world)
     {
         return world.isClientSide;
     }
 
-    public static boolean areWeOnServer(World world)
+    public static boolean areWeOnServer(Level world)
     {
         return !areWeOnClient(world);
     }
