@@ -6,6 +6,7 @@ import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
 import com.space_mod_group.space_mod.core.registry.block.BlockEntityRegistry;
 import com.space_mod_group.space_mod.core.registry.item.EnchantmentRegistry;
 import com.space_mod_group.space_mod.core.registry.item.ItemRegistry;
+import com.space_mod_group.space_mod.common.starfall.StarfallManager;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;

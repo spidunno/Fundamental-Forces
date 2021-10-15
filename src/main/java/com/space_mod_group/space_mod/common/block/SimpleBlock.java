@@ -1,6 +1,6 @@
 package com.space_mod_group.space_mod.common.block;
 
-import com.space_mod_group.space_mod.common.tile.SimpleBlockEntity;
+import com.space_mod_group.space_mod.common.blockentity.SimpleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
