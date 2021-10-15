@@ -6,8 +6,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 
 public class StarfallResult {
-    public static final int FIRST_TIME_STARTING_COUNTDOWN = 15000;
-    public static final int DEFAULT_STARTING_COUNTDOWN = 114000;
+    public static final int FIRST_TIME_STARTING_COUNTDOWN = 150;
+    public static final int DEFAULT_STARTING_COUNTDOWN = 1200;
 
     public final int id;
     public final int startingCountdown;

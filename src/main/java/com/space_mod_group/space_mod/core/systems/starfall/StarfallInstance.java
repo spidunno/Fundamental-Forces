@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -19,12 +20,12 @@ public class StarfallInstance {
     public final int startingCountdown;
     public int countdown;
 
-    public StarfallInstance(StarfallResult result, UUID targetedUUID, int startingCountdown) {
-        this(result, targetedUUID, null, startingCountdown);
+    public StarfallInstance(StarfallResult result, LivingEntity targetedEntity) {
+        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.startingCountdown);
     }
 
-    public StarfallInstance(StarfallResult result, BlockPos targetedPos, int startingCountdown) {
-        this(result, null, targetedPos, startingCountdown);
+    public StarfallInstance(StarfallResult result, BlockPos targetedPos) {
+        this(result, null, targetedPos, result.startingCountdown);
     }
 
     public StarfallInstance(StarfallResult result, @Nullable UUID targetedUUID, BlockPos targetedPos, int startingCountdown) {
@@ -68,11 +69,11 @@ public class StarfallInstance {
         instanceTag.putIntArray("pos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
         instanceTag.putInt("startingCountdown", startingCountdown);
         instanceTag.putInt("countdown", countdown);
-        tag.put("compound_" + x, tag);
+        tag.put("starfall_" + x, instanceTag);
     }
 
     public static StarfallInstance deserializeNBT(CompoundTag nbt, int x) {
-        CompoundTag instanceTag = nbt.getCompound("compound_" + x);
+        CompoundTag instanceTag = nbt.getCompound("starfall_" + x);
         StarfallResult result = StarfallManager.STARFALL_RESULTS.get(instanceTag.getInt("resultId"));
         UUID targetedUUID = instanceTag.getUUID("targetedUUID");
         int[] positions = instanceTag.getIntArray("pos");

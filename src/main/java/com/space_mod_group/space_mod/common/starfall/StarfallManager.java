@@ -1,5 +1,6 @@
 package com.space_mod_group.space_mod.common.starfall;
 
+import com.space_mod_group.space_mod.common.capability.PlayerDataCapability;
 import com.space_mod_group.space_mod.common.starfall.results.AsteroidStarfallResult;
 import com.space_mod_group.space_mod.common.starfall.results.DropPodStarfallResult;
 import com.space_mod_group.space_mod.common.starfall.results.InitialDropPodStarfallResult;
@@ -30,7 +31,12 @@ public class StarfallManager {
     }
 
     public static void playerJoin(ServerLevel level, Player player) {
-
+        PlayerDataCapability.getCapability(player).ifPresent(capability -> {
+            if (!capability.firstTimeJoin)
+            {
+                INBOUND_STARFALLS.add(new StarfallInstance(FIRST_DROP_POD, player));
+            }
+        });
     }
 
     public static void serializeNBT(CompoundTag tag) {
@@ -43,6 +49,7 @@ public class StarfallManager {
     }
 
     public static void deserializeNBT(CompoundTag tag) {
+        INBOUND_STARFALLS = new ArrayList<>();
         int starfallCount = tag.getInt("starfallCount");
         for (int i = 0; i < starfallCount; i++)
         {
