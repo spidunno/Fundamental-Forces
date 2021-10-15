@@ -1,10 +1,8 @@
 package com.space_mod_group.space_mod.common.capability;
 
-import com.space_mod_group.space_mod.SpaceMod;
-import com.space_mod_group.space_mod.common.starfall.StarfallManager;
+import com.space_mod_group.space_mod.common.worldevent.WorldEventManager;
 import com.space_mod_group.space_mod.core.systems.capability.SimpleCapability;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -23,13 +21,13 @@ public class WorldDataCapability implements SimpleCapability {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        StarfallManager.serializeNBT(tag);
+        WorldEventManager.serializeNBT(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        StarfallManager.deserializeNBT(nbt);
+        WorldEventManager.deserializeNBT(nbt);
     }
     public static LazyOptional<WorldDataCapability> getCapability(Level level)
     {

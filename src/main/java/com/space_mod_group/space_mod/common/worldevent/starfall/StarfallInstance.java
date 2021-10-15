@@ -1,17 +1,17 @@
-package com.space_mod_group.space_mod.core.systems.starfall;
+package com.space_mod_group.space_mod.common.worldevent.starfall;
 
-import com.space_mod_group.space_mod.SpaceMod;
-import com.space_mod_group.space_mod.common.starfall.StarfallManager;
+import com.space_mod_group.space_mod.common.worldevent.WorldEventManager;
+import com.space_mod_group.space_mod.core.registry.worldevent.StarfallResults;
+import com.space_mod_group.space_mod.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class StarfallInstance {
+public class StarfallInstance extends WorldEventInstance {
     public final StarfallResult result;
     @Nullable
     public final UUID targetedUUID;
@@ -35,6 +35,7 @@ public class StarfallInstance {
         this.startingCountdown = startingCountdown;
         this.countdown = startingCountdown;
     }
+    @Override
     public void tick(ServerLevel level) {
         if (level.getGameTime() % 100L == 0) {
             if (isEntityValid(level)) {
@@ -44,7 +45,17 @@ public class StarfallInstance {
         countdown--;
         if (countdown <= 0) {
             fall(level);
+            end(level);
         }
+    }
+
+    @Override
+    public void end(ServerLevel level) {
+        if (isEntityValid(level))
+        {
+            WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.DROP_POD, targetedEntity));
+        }
+        super.end(level);
     }
 
     public boolean fall(ServerLevel level) {
@@ -68,29 +79,28 @@ public class StarfallInstance {
         return targetedEntity != null && targetedEntity.isAlive();
     }
 
-    public void serializeNBT(CompoundTag tag, int x) {
-        CompoundTag instanceTag = new CompoundTag();
-        instanceTag.putInt("resultId", result.id);
+    @Override
+    public void serializeNBT(CompoundTag tag) {
+        tag.putInt("resultId", result.id);
         if (targetedUUID != null)
         {
-            instanceTag.putUUID("targetedUUID", targetedUUID);
+            tag.putUUID("targetedUUID", targetedUUID);
         }
-        instanceTag.putIntArray("pos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
-        instanceTag.putInt("startingCountdown", startingCountdown);
-        instanceTag.putInt("countdown", countdown);
-        tag.put("starfall_" + x, instanceTag);
+        tag.putIntArray("pos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
+        tag.putInt("startingCountdown", startingCountdown);
+        tag.putBoolean("invalidated", invalidated);
+        tag.putInt("countdown", countdown);
     }
 
-    public static StarfallInstance deserializeNBT(CompoundTag nbt, int x) {
-        CompoundTag instanceTag = nbt.getCompound("starfall_" + x);
-        StarfallResult result = StarfallManager.STARFALL_RESULTS.get(instanceTag.getInt("resultId"));
-        UUID targetedUUID = instanceTag.getUUID("targetedUUID");
-        int[] positions = instanceTag.getIntArray("pos");
+    public static StarfallInstance deserializeNBT(CompoundTag tag) {
+        StarfallResult result = StarfallResults.STARFALL_RESULTS.get(tag.getInt("resultId"));
+        UUID targetedUUID = tag.getUUID("targetedUUID");
+        int[] positions = tag.getIntArray("pos");
         BlockPos targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
-        int startingCountdown = instanceTag.getInt("startingCountdown");
-        int countdown = instanceTag.getInt("countdown");
+        int startingCountdown = tag.getInt("startingCountdown");
         StarfallInstance instance = new StarfallInstance(result, targetedUUID,targetedPos,startingCountdown);
-        instance.countdown = countdown;
+        instance.invalidated = tag.getBoolean("invalidated");
+        instance.countdown = tag.getInt("countdown");
         return instance;
     }
 }

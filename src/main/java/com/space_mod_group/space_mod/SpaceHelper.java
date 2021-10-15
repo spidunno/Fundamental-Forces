@@ -1,6 +1,8 @@
 package com.space_mod_group.space_mod;
 
+import com.space_mod_group.space_mod.common.worldevent.WorldEventManager;
 import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
+import com.space_mod_group.space_mod.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.resources.ResourceLocation;
