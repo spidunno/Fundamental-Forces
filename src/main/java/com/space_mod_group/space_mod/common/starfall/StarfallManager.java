@@ -15,6 +15,9 @@ import net.minecraft.world.entity.player.Player;
 import java.util.ArrayList;
 
 public class StarfallManager {
+    public static final int FIRST_TIME_STARTING_COUNTDOWN = 150;
+    public static final int DEFAULT_STARTING_COUNTDOWN = 1200;
+    
     public static ArrayList<StarfallResult> STARFALL_RESULTS = new ArrayList<>();
 
     public static final AsteroidStarfallResult ASTEROID = new AsteroidStarfallResult();
