@@ -31,7 +31,7 @@ public class SpaceModRecipes extends RecipeProvider
     @Override
     public String getName()
     {
-        return "Malum Recipe Provider";
+        return "Space Mod Recipe Provider";
     }
 
     @Override

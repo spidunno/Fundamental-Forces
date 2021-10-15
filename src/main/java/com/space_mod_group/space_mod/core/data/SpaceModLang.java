@@ -38,13 +38,13 @@ public class SpaceModLang extends LanguageProvider
     protected void addTranslations()
     {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
+        SpaceHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
+        SpaceHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
         Set<RegistryObject<Item>> items = new HashSet<>(ItemRegistry.ITEMS.getEntries());
+        SpaceHelper.takeAll(items, i -> i.get() instanceof BlockItem);
         Set<RegistryObject<SoundEvent>> sounds = new HashSet<>(SoundRegistry.SOUNDS.getEntries());
         Set<RegistryObject<Enchantment>> enchantments = new HashSet<>(EnchantmentRegistry.ENCHANTMENTS.getEntries());
         Set<RegistryObject<Effect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
-        SpaceHelper.takeAll(items, i -> i.get() instanceof BlockItem);
-        SpaceHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
-        SpaceHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
         blocks.forEach(b ->
         {
             String name = b.get().getDescriptionId().replaceFirst("block." + MOD_ID + ".", "");

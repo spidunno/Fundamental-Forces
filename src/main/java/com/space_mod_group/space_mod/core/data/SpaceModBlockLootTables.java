@@ -68,8 +68,7 @@ public class SpaceModBlockLootTables extends LootTableProvider
         takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
         takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
 
-        takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTableWithSilkTouch(b.get(), Items.DIRT)));
-        ;
+        takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTableWithSilkTouch(b.get(), Items.DIRT)));;
         takeAll(blocks, b -> b.get() instanceof SlabBlock).forEach(b -> registerLootTable(b.get(), createSlabItemTable(b.get())));
         takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(b -> registerLootTable(b.get(), createDoorTable(b.get())));
 

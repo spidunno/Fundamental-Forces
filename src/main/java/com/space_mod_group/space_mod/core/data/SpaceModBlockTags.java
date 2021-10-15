@@ -48,7 +48,7 @@ public class SpaceModBlockTags extends BlockTagsProvider
         tag(DIRT).add(getModBlocks(b -> b instanceof GrassBlock || b instanceof FarmlandBlock));
         tag(SAPLINGS).add(getModBlocks(b -> b instanceof SaplingBlock));
 
-        tag(LOGS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_log")));
+        tag(LOGS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_log") || b.getRegistryName().getPath().endsWith("wood")));
         tag(PLANKS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks")));
         tag(WOODEN_FENCES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_fence")));
         tag(WOODEN_DOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_door")));
