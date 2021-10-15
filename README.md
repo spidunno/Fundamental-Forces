@@ -1,2 +1,2 @@
-# GenericSpaceMod
-Generic Space Mod
+# MagitechMod
+mod about magic and tech
