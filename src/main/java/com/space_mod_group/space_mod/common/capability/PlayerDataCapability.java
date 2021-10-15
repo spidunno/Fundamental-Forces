@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class PlayerDataCapability implements SimpleCapability {
 
+    //shove all player data here, use PlayerDataCapability.getCapability(player) to access data.
+
     public static Capability<PlayerDataCapability> CAPABILITY =  CapabilityManager.get(new CapabilityToken<>(){});
 
     public boolean firstTimeJoin = false;

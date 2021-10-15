@@ -59,6 +59,15 @@ public class StarfallInstance {
         return true;
     }
 
+    public boolean isEntityValid(ServerLevel level)
+    {
+        if (targetedEntity == null && targetedUUID != null)
+        {
+            targetedEntity = (LivingEntity) level.getEntity(targetedUUID);
+        }
+        return targetedEntity != null && targetedEntity.isAlive();
+    }
+
     public void serializeNBT(CompoundTag tag, int x) {
         CompoundTag instanceTag = new CompoundTag();
         instanceTag.putInt("resultId", result.id);
@@ -82,15 +91,6 @@ public class StarfallInstance {
         int countdown = instanceTag.getInt("countdown");
         StarfallInstance instance = new StarfallInstance(result, targetedUUID,targetedPos,startingCountdown);
         instance.countdown = countdown;
-
         return instance;
-    }
-    public boolean isEntityValid(ServerLevel level)
-    {
-        if (targetedEntity == null && targetedUUID != null)
-        {
-            targetedEntity = (LivingEntity) level.getEntity(targetedUUID);
-        }
-        return targetedEntity != null && targetedEntity.isAlive();
     }
 }

@@ -21,8 +21,12 @@ public class StarfallManager {
     public static final DropPodStarfallResult DROP_POD = new DropPodStarfallResult();
     public static final InitialDropPodStarfallResult FIRST_DROP_POD = new InitialDropPodStarfallResult();
 
-    public static ArrayList<StarfallInstance> INBOUND_STARFALLS = new ArrayList<>();
+    private static ArrayList<StarfallInstance> INBOUND_STARFALLS = new ArrayList<>();
 
+    public static void addStarfall(StarfallInstance instance)
+    {
+        INBOUND_STARFALLS.add(instance);
+    }
     public static void worldTick(ServerLevel level) {
         for (StarfallInstance instance : INBOUND_STARFALLS)
         {
@@ -34,7 +38,7 @@ public class StarfallManager {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
             if (!capability.firstTimeJoin)
             {
-                INBOUND_STARFALLS.add(new StarfallInstance(FIRST_DROP_POD, player));
+                addStarfall(new StarfallInstance(FIRST_DROP_POD, player));
             }
         });
     }
