@@ -5,6 +5,8 @@ import com.space_mod_group.space_mod.core.registry.worldevent.StarfallResults;
 import com.space_mod_group.space_mod.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -43,6 +45,9 @@ public class StarfallInstance extends WorldEventInstance {
             }
         }
         countdown--;
+        if (isEntityValid(level)) {
+            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
+        }
         if (countdown <= 0) {
             end(level);
         }

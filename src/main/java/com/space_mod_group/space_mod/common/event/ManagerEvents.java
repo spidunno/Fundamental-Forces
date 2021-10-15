@@ -24,8 +24,10 @@ public class ManagerEvents {
     }
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        if (event.world instanceof ServerLevel level) {
-            WorldEventManager.worldTick(level);
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            if (event.world instanceof ServerLevel level) {
+                WorldEventManager.worldTick(level);
+            }
         }
     }
 }
