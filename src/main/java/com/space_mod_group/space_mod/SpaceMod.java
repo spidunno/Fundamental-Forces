@@ -3,7 +3,7 @@ package com.space_mod_group.space_mod;
 import com.space_mod_group.space_mod.core.data.*;
 import com.space_mod_group.space_mod.core.registry.*;
 import com.space_mod_group.space_mod.core.registry.block.BlockRegistry;
-import com.space_mod_group.space_mod.core.registry.block.TileRegistry;
+import com.space_mod_group.space_mod.core.registry.block.BlockEntityRegistry;
 import com.space_mod_group.space_mod.core.registry.item.EnchantmentRegistry;
 import com.space_mod_group.space_mod.core.registry.item.ItemRegistry;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -28,7 +28,7 @@ public class SpaceMod
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);
-        TileRegistry.BLOCK_ENTITY_TYPES.register(modBus);
+        BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modBus);
         EntityRegistry.ENTITY_TYPES.register(modBus);
         PotionEffectRegistry.EFFECTS.register(modBus);
         SoundRegistry.SOUNDS.register(modBus);

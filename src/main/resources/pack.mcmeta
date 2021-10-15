@@ -1,7 +1,7 @@
 {
     "pack": {
-        "description": "space_mod resources",
-        "pack_format": 6,
+        "description": "Space mod resources",
+        "pack_format": 7,
         "_comment": "Resources for the space mod"
     }
 }
