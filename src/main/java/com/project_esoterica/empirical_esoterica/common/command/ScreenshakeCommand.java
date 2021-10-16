@@ -3,17 +3,13 @@ package com.project_esoterica.empirical_esoterica.common.command;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.project_esoterica.empirical_esoterica.core.data.SpaceModLang;
-import com.project_esoterica.empirical_esoterica.network.NetworkManager;
-import com.project_esoterica.empirical_esoterica.network.packets.ScreenshakePacket;
+import com.project_esoterica.empirical_esoterica.common.packets.ScreenshakePacket;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.GameRules;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-import static com.project_esoterica.empirical_esoterica.network.NetworkManager.INSTANCE;
+import static com.project_esoterica.empirical_esoterica.core.eventhandlers.NetworkManager.INSTANCE;
 
 public class ScreenshakeCommand {
     public ScreenshakeCommand() {

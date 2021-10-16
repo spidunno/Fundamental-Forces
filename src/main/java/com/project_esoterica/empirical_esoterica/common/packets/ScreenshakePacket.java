@@ -1,4 +1,4 @@
-package com.project_esoterica.empirical_esoterica.network.packets;
+package com.project_esoterica.empirical_esoterica.common.packets;
 
 import com.project_esoterica.empirical_esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraft.network.FriendlyByteBuf;

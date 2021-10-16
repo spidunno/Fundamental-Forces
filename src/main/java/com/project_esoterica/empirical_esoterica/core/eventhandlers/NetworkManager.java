@@ -1,7 +1,7 @@
-package com.project_esoterica.empirical_esoterica.network;
+package com.project_esoterica.empirical_esoterica.core.eventhandlers;
 
 import com.project_esoterica.empirical_esoterica.EsotericHelper;
-import com.project_esoterica.empirical_esoterica.network.packets.ScreenshakePacket;
+import com.project_esoterica.empirical_esoterica.common.packets.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
