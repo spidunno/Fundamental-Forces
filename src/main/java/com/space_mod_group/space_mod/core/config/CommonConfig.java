@@ -3,9 +3,14 @@ package com.space_mod_group.space_mod.core.config;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class CommonConfig {
 
     public static ForgeConfigSpec.ConfigValue<Boolean> STARFALLS_ENABLED;
+    public static ForgeConfigSpec.ConfigValue<List<? extends String>> STARFALL_ALLOWED_LEVELS;
     public static ForgeConfigSpec.ConfigValue<Integer> MINIMUM_STARFALL_DISTANCE;
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_STARFALL_DISTANCE;
 
@@ -26,6 +31,11 @@ public class CommonConfig {
 
         STARFALLS_ENABLED = builder.comment("Are starfalls enabled?")
                 .define("enable_starfalls", true);
+
+        STARFALL_ALLOWED_LEVELS = builder
+                .comment("Which dimensions can starfalls take place in?")
+                .defineList("starfall_permitted_dimensions", new ArrayList<>(List.of("minecraft:overworld")),
+                        s -> s instanceof String);
 
         MINIMUM_STARFALL_DISTANCE = builder.comment("What's the minimum distance away from a player in which a starfall can occur?")
                 .define("minimum_starfall_distance", 64);

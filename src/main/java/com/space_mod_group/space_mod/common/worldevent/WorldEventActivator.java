@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Player;
 public class WorldEventActivator {
     public static void playerJoin(ServerLevel level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
-            if (CommonConfig.STARFALLS_ENABLED.get()) {
+            if (areStarfallsAllowed(level)) {
                 if (!capability.firstTimeJoin) {
                     WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.INITIAL_SPACE_DEBRIS, level, player).setLooping());
                 } else {
@@ -42,7 +42,7 @@ public class WorldEventActivator {
     }
 
     public static void addSpaceDebris(ServerLevel level, LivingEntity entity, boolean inbound) {
-        if (CommonConfig.STARFALLS_ENABLED.get()) {
+        if (areStarfallsAllowed(level)) {
             StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS, level, entity).setLooping(), inbound);
             Double chance = CommonConfig.ASTEROID_CHANCE.get();
             int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
@@ -55,5 +55,9 @@ public class WorldEventActivator {
                 }
             }
         }
+    }
+    public static boolean areStarfallsAllowed(ServerLevel level)
+    {
+        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_LEVELS.get().contains(level.dimension().location().toString());
     }
 }
