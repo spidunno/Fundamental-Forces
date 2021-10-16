@@ -4,7 +4,6 @@ import com.project_esoterica.empirical_esoterica.core.systems.screenshake.Screen
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class ScreenshakePacket {
@@ -23,7 +22,7 @@ public class ScreenshakePacket {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> ScreenshakeHandler.increaseIntensity(factor));
+        context.get().enqueueWork(() -> ScreenshakeHandler.addScreenshake(factor));
         context.get().setPacketHandled(true);
     }
 }
