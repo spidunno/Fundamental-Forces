@@ -1,4 +1,6 @@
 {
-  "command.empirical_esoterica.devsetup": "Command Successful",
-  "itemGroup.empirical_esoterica": "Space Mod Group"
+  "command.empirical_esoterica.devsetup": "Command Successful you fuckhead.",
+  "command.empirical_esoterica.error.starfall.result": "No such starfall result exists.",
+  "command.empirical_esoterica.fallstar": "Starfall successfully scheduled.",
+  "itemGroup.empirical_esoterica": "Empirical Esoterica"
 }
