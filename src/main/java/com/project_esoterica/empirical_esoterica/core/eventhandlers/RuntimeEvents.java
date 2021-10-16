@@ -1,4 +1,4 @@
-package com.project_esoterica.empirical_esoterica.common.event;
+package com.project_esoterica.empirical_esoterica.core.eventhandlers;
 
 import com.project_esoterica.empirical_esoterica.EsotericHelper;
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;

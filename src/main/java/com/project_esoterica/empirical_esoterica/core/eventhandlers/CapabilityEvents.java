@@ -1,4 +1,4 @@
-package com.project_esoterica.empirical_esoterica.common.event;
+package com.project_esoterica.empirical_esoterica.core.eventhandlers;
 
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventActivator;
@@ -11,7 +11,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ManagerEvents {
+public class CapabilityEvents {
 
     @SubscribeEvent
     public static void playerJoin(EntityJoinWorldEvent event) {
