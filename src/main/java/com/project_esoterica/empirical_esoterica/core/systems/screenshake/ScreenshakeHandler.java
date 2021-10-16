@@ -1,11 +1,8 @@
 package com.project_esoterica.empirical_esoterica.core.systems.screenshake;
 
-import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallInstance;
 import com.project_esoterica.empirical_esoterica.core.config.ClientConfig;
 import net.minecraft.client.Camera;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
-import oshi.util.tuples.Pair;
 
 import java.util.Random;
 
@@ -20,7 +17,7 @@ public class ScreenshakeHandler {
     {
         if (intensity > 0)
         {
-           intensity = Mth.lerp(0.8f, intensity, 0);
+           intensity *= 0.96f;
         }
         yawOffset = randomizeOffset(random);
         pitchOffset = randomizeOffset(random);
