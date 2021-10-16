@@ -2,14 +2,16 @@ package com.project_esoterica.empirical_esoterica.common.event;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.empirical_esoterica.common.command.DevWorldSetupCommand;
 import com.project_esoterica.empirical_esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.empirical_esoterica.EsotericHelper;
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -19,13 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RuntimeEvents {
 
-    @SubscribeEvent
-    public static void registerCommands(RegisterCommandsEvent event) {
-        CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
-        dispatcher.register(Commands.literal("ee")
-                .then(DevWorldSetupCommand.register())
-        );
-    }
     @SubscribeEvent
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final WorldDataCapability capability = new WorldDataCapability();

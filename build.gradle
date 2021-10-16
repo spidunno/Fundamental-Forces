@@ -54,7 +54,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', "${project.modId}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${project.modId}", '--all', '--output', file('src/main/generated_resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 self {
@@ -64,8 +64,6 @@ minecraft {
         }
     }
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
@@ -97,12 +95,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-            "Specification-Title": "space mod",
-            "Specification-Vendor": "space mod publishers",
+            "Specification-Title": "Empirical Esoterica",
+            "Specification-Vendor": "Project Esoterica",
             "Specification-Version": "1",
             "Implementation-Title": project.name,
             "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"space mod publishers",
+            "Implementation-Vendor" :"Project Esoterica",
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

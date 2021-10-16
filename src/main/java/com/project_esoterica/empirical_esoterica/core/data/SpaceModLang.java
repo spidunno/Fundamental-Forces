@@ -6,6 +6,7 @@ import com.project_esoterica.empirical_esoterica.core.registry.SoundRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.item.ItemRegistry;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
@@ -25,22 +26,18 @@ import java.util.Set;
 
 import static com.project_esoterica.empirical_esoterica.EmpiricalEsoterica.MOD_ID;
 
-public class SpaceModLang extends LanguageProvider
-{
-    public SpaceModLang(DataGenerator gen)
-    {
+public class SpaceModLang extends LanguageProvider {
+    public SpaceModLang(DataGenerator gen) {
         super(gen, MOD_ID, "en_us");
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "Space Mod Lang Entries";
     }
 
     @Override
-    protected void addTranslations()
-    {
+    protected void addTranslations() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
         EsotericHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
         EsotericHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
@@ -80,22 +77,30 @@ public class SpaceModLang extends LanguageProvider
 
         add("itemGroup." + MOD_ID, "Space Mod Group");
 
-        add("enchantment.space_mod.enchantment_name.desc", "Enchantment Description Compat");
+        addCommandKey("devsetup", "Command Successful");
+
     }
 
-    public String specialBlockNameChanges(String name)
-    {
-        if ((!name.endsWith("_bricks")))
-        {
-            if (name.contains("bricks"))
-            {
+    public void addEnchantmentDescription(String enchantmentName, String description) {
+        add("enchantment." + MOD_ID + "." + enchantmentName + ".desc", description);
+    }
+
+    public void addCommandKey(String command, String feedback) {
+        add("command." + MOD_ID + "." + command, feedback);
+    }
+
+    public static TranslatableComponent getCommandKey(String command) {
+        return new TranslatableComponent("command." + MOD_ID + "." + command);
+    }
+
+    public String specialBlockNameChanges(String name) {
+        if ((!name.endsWith("_bricks"))) {
+            if (name.contains("bricks")) {
                 name = name.replaceFirst("bricks", "brick");
             }
         }
-        if (name.contains("_fence") || name.contains("_button") || name.contains("pressure_plate"))
-        {
-            if (name.contains("planks"))
-            {
+        if (name.contains("_fence") || name.contains("_button") || name.contains("pressure_plate")) {
+            if (name.contains("planks")) {
                 name = name.replaceFirst("_planks", "");
             }
         }
