@@ -47,9 +47,9 @@ public class FallStarCommand {
                                     return 1;
                                 })))
 
-                .then(Commands.argument("countdown", IntegerArgumentType.integer(0))
-                        .then(Commands.argument("result", new StarfallResultArgumentType())
-                                .then(Commands.argument("position", BlockPosArgument.blockPos())
+                .then(Commands.argument("result", new StarfallResultArgumentType())
+                        .then(Commands.argument("position", BlockPosArgument.blockPos())
+                                .then(Commands.argument("countdown", IntegerArgumentType.integer(0))
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
@@ -59,8 +59,10 @@ public class FallStarCommand {
                                             WorldEventManager.addWorldEvent(level, new StarfallInstance(result, pos, countdown), false);
                                             source.sendSuccess(SpaceModLang.getCommandKey("fallstar_artificial_position"), true);
                                             return 1;
-                                        }))
-                                .then(Commands.argument("target", EntityArgument.player())
+                                        })))
+                        .then(Commands.argument("target", EntityArgument.player())
+
+                                .then(Commands.argument("countdown", IntegerArgumentType.integer(0))
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
