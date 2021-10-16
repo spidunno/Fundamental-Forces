@@ -22,12 +22,20 @@ public class StarfallInstance extends WorldEventInstance {
     public int countdown;
     public boolean loop;
 
+    public StarfallInstance(StarfallResult result, LivingEntity targetedEntity, int startingCountdown) {
+        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), startingCountdown);
+    }
+
+    public StarfallInstance(StarfallResult result, BlockPos targetedPos, int startingCountdown) {
+        this(result, null, targetedPos, startingCountdown);
+    }
+
     public StarfallInstance(StarfallResult result, ServerLevel level, LivingEntity targetedEntity) {
-        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.randomizeCountdown(level.random));
+        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.randomizedCountdown(level.random));
     }
 
     public StarfallInstance(StarfallResult result, ServerLevel level, BlockPos targetedPos) {
-        this(result, null, targetedPos, result.randomizeCountdown(level.random));
+        this(result, null, targetedPos, result.randomizedCountdown(level.random));
     }
 
     public StarfallInstance(StarfallResult result, @Nullable UUID targetedUUID, BlockPos targetedPos, int startingCountdown) {
@@ -39,7 +47,7 @@ public class StarfallInstance extends WorldEventInstance {
     }
 
     public StarfallInstance randomizeCountdown(ServerLevel level, int parentCountdown) {
-        this.startingCountdown = result.randomizeCountdown(level.random, parentCountdown);
+        this.startingCountdown = result.randomizedCountdown(level.random, parentCountdown);
         return this;
     }
 

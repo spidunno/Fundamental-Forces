@@ -76,7 +76,11 @@ public class SpaceModLang extends LanguageProvider {
         add("itemGroup." + MOD_ID, "Empirical Esoterica");
 
         addCommandKey("devsetup", "Command Successful you fuckhead.");
-        addCommandKey("fallstar", "Starfall successfully scheduled.");
+
+        addCommandKey("fallstar_natural_position", "Natural starfall scheduled to fall at the given position.");
+        addCommandKey("fallstar_natural_target", "Natural starfall scheduled for the given target.");
+        addCommandKey("fallstar_artificial_position", "Artificial starfall scheduled to fall at the given position.");
+        addCommandKey("fallstar_artificial_target", "Artificial starfall scheduled for the given target.");
 
         addCommandError("error.starfall.result","No such starfall result exists.");
 

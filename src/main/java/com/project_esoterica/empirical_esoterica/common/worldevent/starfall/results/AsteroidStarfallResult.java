@@ -16,7 +16,7 @@ public class AsteroidStarfallResult extends StarfallResult {
     }
 
     @Override
-    public int randomizeCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(Random random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_ASTEROID_COUNTDOWN_MULTIPLIER.get();
         double max = CommonConfig.MAXIMUM_ASTEROID_COUNTDOWN_MULTIPLIER.get();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);

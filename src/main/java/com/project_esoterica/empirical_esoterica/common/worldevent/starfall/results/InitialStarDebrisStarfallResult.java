@@ -11,7 +11,7 @@ public class InitialStarDebrisStarfallResult extends SpaceDebrisStarfallResult {
     }
 
     @Override
-    public int randomizeCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(Random random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get() * 0.5;
         double max = CommonConfig.MAXIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get() * 1.5;
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);

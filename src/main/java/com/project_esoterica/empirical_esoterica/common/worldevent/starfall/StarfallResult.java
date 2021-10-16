@@ -20,11 +20,11 @@ public class StarfallResult {
 
     }
 
-    public int randomizeCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(Random random, int parentCountdown) {
         return parentCountdown;
     }
 
-    public int randomizeCountdown(Random random) {
-        return randomizeCountdown(random, startingCountdown);
+    public int randomizedCountdown(Random random) {
+        return randomizedCountdown(random, startingCountdown);
     }
 }
