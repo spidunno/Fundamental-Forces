@@ -14,17 +14,4 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RuntimeEvents {
 
-    @SubscribeEvent
-    public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
-        final WorldDataCapability capability = new WorldDataCapability();
-        event.addCapability(EsotericHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
-    }
-
-    @SubscribeEvent
-    public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player) {
-            final PlayerDataCapability capability = new PlayerDataCapability();
-            event.addCapability(EsotericHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
-        }
-    }
 }
