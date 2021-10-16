@@ -1,12 +1,8 @@
 package com.project_esoterica.empirical_esoterica.core.registry.misc;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 

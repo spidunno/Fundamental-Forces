@@ -12,9 +12,11 @@ public class PlayerDataCapability implements SimpleCapability {
 
     //shove all player data here, use PlayerDataCapability.getCapability(player) to access data.
 
-    public static Capability<PlayerDataCapability> CAPABILITY =  CapabilityManager.get(new CapabilityToken<>(){});
+    public static Capability<PlayerDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     public boolean firstTimeJoin = false;
+
     public PlayerDataCapability() {
     }
 
@@ -29,8 +31,8 @@ public class PlayerDataCapability implements SimpleCapability {
     public void deserializeNBT(CompoundTag nbt) {
         firstTimeJoin = nbt.getBoolean("firstTimeJoin");
     }
-    public static LazyOptional<PlayerDataCapability> getCapability(Player player)
-    {
+
+    public static LazyOptional<PlayerDataCapability> getCapability(Player player) {
         return player.getCapability(CAPABILITY);
     }
 }

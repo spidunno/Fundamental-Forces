@@ -21,10 +21,11 @@ public class AsteroidStarfallResult extends StarfallResult {
         double max = CommonConfig.MAXIMUM_ASTEROID_COUNTDOWN_MULTIPLIER.get();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
+
     @Override
     public void fall(ServerLevel level, BlockPos pos) {
         Cow cow = EntityType.COW.create(level);
-        cow.setPos(pos.getX(),pos.getY(), pos.getZ());
+        cow.setPos(pos.getX(), pos.getY(), pos.getZ());
         level.addFreshEntity(cow);
         super.fall(level, pos);
     }

@@ -1,8 +1,8 @@
 package com.project_esoterica.empirical_esoterica.common.worldevent;
 
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallInstance;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 
@@ -11,6 +11,7 @@ public class WorldEventManager {
     public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
         return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
     }
+
     public static <T extends WorldEventInstance> T addInboundWorldEvent(ServerLevel level, T instance) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             capability.INBOUND_WORLD_EVENTS.add(instance);

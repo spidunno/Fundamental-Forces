@@ -6,23 +6,21 @@ import com.project_esoterica.empirical_esoterica.core.registry.SoundRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.item.ItemRegistry;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.LanguageProvider;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
-
 import java.util.HashSet;
 import java.util.Set;
-
 
 import static com.project_esoterica.empirical_esoterica.EmpiricalEsoterica.MOD_ID;
 

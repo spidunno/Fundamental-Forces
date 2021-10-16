@@ -1,11 +1,11 @@
 package com.project_esoterica.empirical_esoterica;
 
 import com.project_esoterica.empirical_esoterica.core.registry.block.BlockRegistry;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 import javax.annotation.Nonnull;

@@ -18,16 +18,18 @@ public class SpaceDebrisStarfallResult extends StarfallResult {
     public SpaceDebrisStarfallResult() {
         super(CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
+
     @Override
     public int randomizeCountdown(Random random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
         double max = CommonConfig.MAXIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
+
     @Override
     public void fall(ServerLevel level, BlockPos pos) {
         Chicken chicken = EntityType.CHICKEN.create(level);
-        chicken.setPos(pos.getX(),pos.getY(), pos.getZ());
+        chicken.setPos(pos.getX(), pos.getY(), pos.getZ());
         level.addFreshEntity(chicken);
         super.fall(level, pos);
     }

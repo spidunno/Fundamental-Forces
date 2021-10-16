@@ -1,38 +1,29 @@
 package com.project_esoterica.empirical_esoterica.core.data;
 
 
+import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Registry;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.data.*;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.tags.Tag;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.core.Registry;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.function.Consumer;
 
-import net.minecraft.advancements.critereon.EnterBlockTrigger;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.InventoryChangeTrigger;
-import net.minecraft.advancements.critereon.ItemPredicate;
-import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.advancements.critereon.StatePropertiesPredicate;
-
-public class SpaceModRecipes extends RecipeProvider
-{
-    public SpaceModRecipes(DataGenerator generatorIn)
-    {
+public class SpaceModRecipes extends RecipeProvider {
+    public SpaceModRecipes(DataGenerator generatorIn) {
         super(generatorIn);
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "Space Mod Recipe Provider";
     }
 

@@ -11,22 +11,18 @@ import static com.project_esoterica.empirical_esoterica.EsotericHelper.getModBlo
 import static net.minecraft.tags.BlockTags.*;
 import static net.minecraftforge.common.Tags.Blocks.DIRT;
 
-public class SpaceModBlockTags extends BlockTagsProvider
-{
-    public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper)
-    {
+public class SpaceModBlockTags extends BlockTagsProvider {
+    public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
         super(generatorIn, EmpiricalEsoterica.MOD_ID, existingFileHelper);
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "Space Mod Block Tags";
     }
 
     @Override
-    protected void addTags()
-    {
+    protected void addTags() {
         tag(BlockTags.SLABS).add(getModBlocks(b -> b instanceof SlabBlock));
         tag(BlockTags.STAIRS).add(getModBlocks(b -> b instanceof StairBlock));
         tag(BlockTags.WALLS).add(getModBlocks(b -> b instanceof WallBlock));

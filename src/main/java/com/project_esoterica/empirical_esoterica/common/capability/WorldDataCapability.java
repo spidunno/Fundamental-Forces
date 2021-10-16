@@ -1,8 +1,8 @@
 package com.project_esoterica.empirical_esoterica.common.capability;
 
-import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventManager;
 import com.project_esoterica.empirical_esoterica.core.systems.capability.SimpleCapability;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
@@ -16,9 +16,11 @@ public class WorldDataCapability implements SimpleCapability {
 
     //shove all level data here, use WorldDataCapability.getCapability(level) to access data.
     //level refers to dimension, not world. Each dimension will have it's own capability. (Need to confirm this.)
-    public static Capability<WorldDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>(){});
+    public static Capability<WorldDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
     public final ArrayList<WorldEventInstance> ACTIVE_WORLD_EVENTS = new ArrayList<>();
     public final ArrayList<WorldEventInstance> INBOUND_WORLD_EVENTS = new ArrayList<>();
+
     public WorldDataCapability() {
     }
 
@@ -33,8 +35,8 @@ public class WorldDataCapability implements SimpleCapability {
     public void deserializeNBT(CompoundTag nbt) {
         WorldEventManager.deserializeNBT(this, nbt);
     }
-    public static LazyOptional<WorldDataCapability> getCapability(Level level)
-    {
+
+    public static LazyOptional<WorldDataCapability> getCapability(Level level) {
         return level.getCapability(CAPABILITY);
     }
 }

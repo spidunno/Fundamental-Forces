@@ -1,30 +1,26 @@
 package com.project_esoterica.empirical_esoterica.core.data;
 
 import com.project_esoterica.empirical_esoterica.EmpiricalEsoterica;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 
-public class SpaceModItemTags extends ItemTagsProvider
-{
-    public SpaceModItemTags(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper)
-    {
+public class SpaceModItemTags extends ItemTagsProvider {
+    public SpaceModItemTags(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
         super(dataGenerator, blockTagProvider, EmpiricalEsoterica.MOD_ID, existingFileHelper);
     }
-    
+
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "Space Mod Item Tags";
     }
 
     @Override
-    protected void addTags()
-    {
+    protected void addTags() {
         this.copy(BlockTags.WOOL, ItemTags.WOOL);
         this.copy(BlockTags.PLANKS, ItemTags.PLANKS);
         this.copy(BlockTags.STONE_BRICKS, ItemTags.STONE_BRICKS);
