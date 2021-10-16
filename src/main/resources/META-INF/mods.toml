@@ -2,20 +2,20 @@ modLoader="javafml"
 loaderVersion="[37,)"
 license="All rights reserved"
 [[mods]]
-modId="space_mod"
+modId="empirical_esoterica"
 version="${file.jarVersion}"
-displayName="Space Mod"
-logoFile="space_mod.png"
+displayName="Empirical Esoterica"
+logoFile="empirical_esoterica.png"
 credits="Credits go here"
 authors="Authors go here"
 description=''' '''
-[[dependencies.space_mod]]
+[[dependencies.empirical_esoterica]]
     modId="forge"
     mandatory=true
     versionRange="[37,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.space_mod]]
+[[dependencies.empirical_esoterica]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.17,1.18)"
