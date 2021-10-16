@@ -1,6 +1,6 @@
 package com.project_esoterica.empirical_esoterica.common.capability;
 
-import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventManager;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.empirical_esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.nbt.CompoundTag;

@@ -2,7 +2,7 @@ package com.project_esoterica.empirical_esoterica.common.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventManager;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallInstance;
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallResult;
 import com.project_esoterica.empirical_esoterica.core.data.SpaceModLang;
@@ -14,8 +14,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class FallStarCommand {

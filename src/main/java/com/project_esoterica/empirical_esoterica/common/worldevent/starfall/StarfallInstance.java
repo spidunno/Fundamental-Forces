@@ -1,6 +1,6 @@
 package com.project_esoterica.empirical_esoterica.common.worldevent.starfall;
 
-import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventActivator;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.empirical_esoterica.core.registry.worldevent.StarfallResults;
 import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;

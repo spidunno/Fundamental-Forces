@@ -1,4 +1,4 @@
-package com.project_esoterica.empirical_esoterica.common.worldevent;
+package com.project_esoterica.empirical_esoterica.core.systems.worldevent;
 
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallInstance;

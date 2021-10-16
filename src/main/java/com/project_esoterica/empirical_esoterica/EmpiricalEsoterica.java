@@ -20,13 +20,15 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Random;
+
 import static com.project_esoterica.empirical_esoterica.EmpiricalEsoterica.MOD_ID;
 
 @Mod(MOD_ID)
 public class EmpiricalEsoterica {
     public static final String MOD_ID = "empirical_esoterica";
     public static final Logger LOGGER = LogManager.getLogger();
-
+    public static final Random RANDOM = new Random();
     public EmpiricalEsoterica() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);

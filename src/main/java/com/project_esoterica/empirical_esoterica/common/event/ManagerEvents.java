@@ -1,8 +1,8 @@
 package com.project_esoterica.empirical_esoterica.common.event;
 
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
-import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventActivator;
-import com.project_esoterica.empirical_esoterica.common.worldevent.WorldEventManager;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventActivator;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;

@@ -1,11 +1,10 @@
-package com.project_esoterica.empirical_esoterica.common.worldevent;
+package com.project_esoterica.empirical_esoterica.core.systems.worldevent;
 
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.StarfallInstance;
 import com.project_esoterica.empirical_esoterica.core.config.CommonConfig;
 import com.project_esoterica.empirical_esoterica.core.registry.worldevent.StarfallResults;
-import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

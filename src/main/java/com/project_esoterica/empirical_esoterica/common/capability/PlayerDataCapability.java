@@ -1,6 +1,7 @@
 package com.project_esoterica.empirical_esoterica.common.capability;
 
 import com.project_esoterica.empirical_esoterica.core.systems.capability.SimpleCapability;
+import com.project_esoterica.empirical_esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
@@ -28,8 +29,9 @@ public class PlayerDataCapability implements SimpleCapability {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        firstTimeJoin = nbt.getBoolean("firstTimeJoin");
+    public void deserializeNBT(CompoundTag tag) {
+        firstTimeJoin = tag.getBoolean("firstTimeJoin");
+
     }
 
     public static LazyOptional<PlayerDataCapability> getCapability(Player player) {
