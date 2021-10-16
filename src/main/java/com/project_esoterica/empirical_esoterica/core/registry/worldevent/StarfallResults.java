@@ -6,9 +6,10 @@ import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.resu
 import com.project_esoterica.empirical_esoterica.common.worldevent.starfall.results.SpaceDebrisStarfallResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StarfallResults {
-    public static ArrayList<StarfallResult> STARFALL_RESULTS = new ArrayList<>();
+    public static HashMap<String, StarfallResult> STARFALL_RESULTS = new HashMap<>();
 
     public static final AsteroidStarfallResult ASTEROID = new AsteroidStarfallResult();
     public static final SpaceDebrisStarfallResult SPACE_DEBRIS = new SpaceDebrisStarfallResult();

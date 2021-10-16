@@ -11,12 +11,12 @@ import net.minecraft.world.entity.animal.Chicken;
 import java.util.Random;
 
 public class SpaceDebrisStarfallResult extends StarfallResult {
-    protected SpaceDebrisStarfallResult(int startingCountdown) {
-        super(startingCountdown);
+    protected SpaceDebrisStarfallResult(String id, int startingCountdown) {
+        super(id, startingCountdown);
     }
 
     public SpaceDebrisStarfallResult() {
-        super(CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
+        super("space_debris", CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 
     @Override

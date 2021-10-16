@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class AsteroidStarfallResult extends StarfallResult {
     public AsteroidStarfallResult() {
-        super(CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
+        super("asteroid", CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 
     @Override

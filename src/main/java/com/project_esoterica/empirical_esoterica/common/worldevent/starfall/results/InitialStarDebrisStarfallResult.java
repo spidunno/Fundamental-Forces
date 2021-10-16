@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class InitialStarDebrisStarfallResult extends SpaceDebrisStarfallResult {
     public InitialStarDebrisStarfallResult() {
-        super(CommonConfig.INITIAL_SPACE_DEBRIS_COUNTDOWN.get());
+        super("initial_space_debris", CommonConfig.INITIAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 
     @Override

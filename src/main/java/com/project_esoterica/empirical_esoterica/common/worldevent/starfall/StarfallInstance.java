@@ -90,7 +90,7 @@ public class StarfallInstance extends WorldEventInstance {
 
     @Override
     public void serializeNBT(CompoundTag tag) {
-        tag.putInt("resultId", result.id);
+        tag.putString("resultId", result.id);
         if (targetedUUID != null) {
             tag.putUUID("targetedUUID", targetedUUID);
         }
@@ -102,7 +102,7 @@ public class StarfallInstance extends WorldEventInstance {
     }
 
     public static StarfallInstance deserializeNBT(CompoundTag tag) {
-        StarfallResult result = StarfallResults.STARFALL_RESULTS.get(tag.getInt("resultId"));
+        StarfallResult result = StarfallResults.STARFALL_RESULTS.get(tag.getString("resultId"));
         UUID targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("pos");
         BlockPos targetedPos = new BlockPos(positions[0], positions[1], positions[2]);

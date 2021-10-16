@@ -40,20 +40,20 @@ public class WorldEventManager {
     }
 
     public static void serializeNBT(WorldDataCapability capability, CompoundTag tag) {
-        tag.putInt("starfallCount", capability.ACTIVE_WORLD_EVENTS.size());
+        tag.putInt("worldEventCount", capability.ACTIVE_WORLD_EVENTS.size());
         for (int i = 0; i < capability.ACTIVE_WORLD_EVENTS.size(); i++) {
             WorldEventInstance instance = capability.ACTIVE_WORLD_EVENTS.get(i);
             CompoundTag instanceTag = new CompoundTag();
             instance.serializeNBT(instanceTag);
-            tag.put("world_event_" + i, instanceTag);
+            tag.put("worldEvent_" + i, instanceTag);
         }
     }
 
     public static void deserializeNBT(WorldDataCapability capability, CompoundTag tag) {
         capability.ACTIVE_WORLD_EVENTS.clear();
-        int starfallCount = tag.getInt("starfallCount");
+        int starfallCount = tag.getInt("worldEventCount");
         for (int i = 0; i < starfallCount; i++) {
-            CompoundTag instanceTag = tag.getCompound("world_event_" + i);
+            CompoundTag instanceTag = tag.getCompound("worldEvent_" + i);
             StarfallInstance instance = StarfallInstance.deserializeNBT(instanceTag);
             capability.ACTIVE_WORLD_EVENTS.add(instance);
         }
