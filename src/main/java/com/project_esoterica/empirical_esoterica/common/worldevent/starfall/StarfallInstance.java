@@ -85,7 +85,7 @@ public class StarfallInstance extends WorldEventInstance {
         if (targetedEntity == null && targetedUUID != null) {
             targetedEntity = (LivingEntity) level.getEntity(targetedUUID);
         }
-        return targetedEntity != null && targetedEntity.isAlive();
+        return targetedEntity != null && targetedEntity.isAlive() && targetedEntity.level.equals(level);
     }
 
     @Override
