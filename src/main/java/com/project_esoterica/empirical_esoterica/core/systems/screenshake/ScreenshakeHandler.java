@@ -9,7 +9,7 @@ import java.util.Random;
 public class ScreenshakeHandler {
 
     public static float intensity;
-    public static float falloff = 0.95f;
+    public static float falloff = 0.98f;
     public static float yawOffset;
     public static float pitchOffset;
 
@@ -24,10 +24,12 @@ public class ScreenshakeHandler {
         camera.setRotation(camera.getYRot()+yawOffset, camera.getXRot()+pitchOffset);
 
     }
-    public static void addScreenshake(float factor)
+    public static void addScreenshake(float factor, float newFalloff)
     {
-        float needed = ClientConfig.MAX_SCREENSHAKE_INTENSITY.get() - intensity;
+        float max = ClientConfig.MAX_SCREENSHAKE_INTENSITY.get();
+        float needed = max - Math.min(intensity,max);
         intensity += Mth.lerp(factor, 0, needed);
+        falloff = newFalloff;
     }
     public static float randomizeOffset(Random random)
     {

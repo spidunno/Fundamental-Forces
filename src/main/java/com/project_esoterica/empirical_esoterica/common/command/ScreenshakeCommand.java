@@ -22,14 +22,15 @@ public class ScreenshakeCommand {
     public static LiteralArgumentBuilder<CommandSourceStack> register() {
         return Commands.literal("screenshake")
                 .requires(cs -> cs.hasPermission(0))
-                .then(Commands.argument("factor", FloatArgumentType.floatArg(0, 1))
+                .then(Commands.argument("factor", FloatArgumentType.floatArg(0))
+                        .then(Commands.argument("falloff", FloatArgumentType.floatArg(0, 1))
                         .executes((context) -> {
                             CommandSourceStack source = context.getSource();
                             if (source.getEntity() instanceof ServerPlayer player) {
-                                INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new ScreenshakePacket(FloatArgumentType.getFloat(context, "factor")));
+                                INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new ScreenshakePacket(FloatArgumentType.getFloat(context, "factor"),FloatArgumentType.getFloat(context, "falloff")));
                             }
                             source.sendSuccess(SpaceModLang.getCommandKey("screenshake"), true);
                             return 1;
-                        }));
+                        })));
     }
 }

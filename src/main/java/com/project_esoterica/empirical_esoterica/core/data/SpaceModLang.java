@@ -84,6 +84,7 @@ public class SpaceModLang extends LanguageProvider {
 
         addCommandError("error.starfall.result","No such starfall result exists.");
 
+        addCommandKey("screenshake", "Command Successful, enjoy your screenshake.");
     }
 
     public void addEnchantmentDescription(String enchantmentName, String description) {
