@@ -73,14 +73,21 @@ public class SpaceModLang extends LanguageProvider {
         });
 
 
-        add("itemGroup." + MOD_ID, "Space Mod Group");
+        add("itemGroup." + MOD_ID, "Empirical Esoterica");
 
-        addCommandKey("devsetup", "Command Successful");
+        addCommandKey("devsetup", "Command Successful you fuckhead.");
+        addCommandKey("fallstar", "Starfall successfully scheduled.");
+
+        addCommandError("error.starfall.result","No such starfall result exists.");
 
     }
 
     public void addEnchantmentDescription(String enchantmentName, String description) {
         add("enchantment." + MOD_ID + "." + enchantmentName + ".desc", description);
+    }
+
+    public void addCommandKey(String command) {
+        add("command." + MOD_ID + "." + command, "Command Successful!");
     }
 
     public void addCommandKey(String command, String feedback) {
@@ -89,6 +96,14 @@ public class SpaceModLang extends LanguageProvider {
 
     public static TranslatableComponent getCommandKey(String command) {
         return new TranslatableComponent("command." + MOD_ID + "." + command);
+    }
+
+    public void addCommandError(String error, String feedback) {
+        add("command." + MOD_ID + "." + error, feedback);
+    }
+
+    public static TranslatableComponent getCommandError(String error) {
+        return new TranslatableComponent("command." + MOD_ID + "." + error);
     }
 
     public String specialBlockNameChanges(String name) {
