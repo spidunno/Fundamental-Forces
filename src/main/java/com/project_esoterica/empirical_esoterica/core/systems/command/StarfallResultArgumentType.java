@@ -29,7 +29,6 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
         String read = reader.readUnquotedString();
         if (StarfallResults.STARFALL_RESULTS.containsKey(read))
         {
-            reader.setCursor(reader.getTotalLength());
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
