@@ -1,5 +1,6 @@
 package com.project_esoterica.empirical_esoterica.mixin;
 
+import com.project_esoterica.empirical_esoterica.core.config.ClientConfig;
 import com.project_esoterica.empirical_esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
@@ -16,6 +17,8 @@ public class CameraMixin {
 
     @Inject(at = @At("RETURN"), method = "setup")
     private void empiricalEsotericaSetupCamera(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        ScreenshakeHandler.tick((Camera)(Object)this, RANDOM);
+        if (ClientConfig.ENABLE_SCREENSHAKE.get()) {
+            ScreenshakeHandler.tick((Camera) (Object) this, RANDOM);
+        }
     }
 }

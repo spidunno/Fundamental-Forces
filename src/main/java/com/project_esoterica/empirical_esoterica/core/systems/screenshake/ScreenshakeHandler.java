@@ -18,12 +18,10 @@ public class ScreenshakeHandler {
 
     public static void tick(Camera camera, Random random)
     {
-        increaseIntensity(0.005f);
         if (intensity > 0)
         {
-           // intensity = Mth.lerp(0.8f, intensity, 0);
+           intensity = Mth.lerp(0.8f, intensity, 0);
         }
-
         yawOffset = randomizeOffset(random);
         pitchOffset = randomizeOffset(random);
         camera.setRotation(camera.getYRot()+yawOffset, camera.getXRot()+pitchOffset);
