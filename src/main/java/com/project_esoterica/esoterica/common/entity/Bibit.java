@@ -80,14 +80,14 @@ public class Bibit extends PathfinderMob implements IAnimatable {
         this.goalSelector.addGoal(0, new FloatGoal(this) {
             @Override
             public void start() {
-                overrideFeelings(feelingsEnum.UPSET, 600);
+                overrideFeelings(feelingsEnum.UPSET, 300);
                 super.start();
             }
         });
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D) {
             @Override
             public void start() {
-                overrideFeelings(feelingsEnum.PANICKED, 600);
+                setFeelings(feelingsEnum.PANICKED, 600);
                 super.start();
             }
 
@@ -134,7 +134,7 @@ public class Bibit extends PathfinderMob implements IAnimatable {
         overrideFeelings(feelingsEnum.valueOf(tag.getString("expression")), tag.getInt("lockExpression"));
     }
     public void setFeelings(feelingsEnum feelings, int lockExpression) {
-        if (lockExpression == 0) {
+        if (this.lockExpression == 0) {
             overrideFeelings(feelings, lockExpression);
         }
     }
