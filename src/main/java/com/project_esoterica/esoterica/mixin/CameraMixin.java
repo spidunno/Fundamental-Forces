@@ -16,7 +16,7 @@ import static com.project_esoterica.esoterica.EsotericaMod.RANDOM;
 public class CameraMixin {
 
     @Inject(at = @At("RETURN"), method = "setup")
-    private void empiricalEsotericaSetupCamera(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+    private void esotericaScreenshake(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (ClientConfig.ENABLE_SCREENSHAKE.get()) {
             ScreenshakeHandler.cameraTick((Camera) (Object) this, RANDOM);
         }
