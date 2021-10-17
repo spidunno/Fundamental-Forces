@@ -23,6 +23,6 @@ public class BibitModel extends AnimatedGeoModel<Bibit> {
     }
 
     public static ResourceLocation getOverlayTextureLocation(Bibit bibit) {
-        return EsotericaHelper.prefix("textures/entity/bibit/bibit_non_binary.png");
+        return EsotericaHelper.prefix("textures/entity/bibit/bibit_" + bibit.feelings.feelingsValue + ".png");
     }
 }
