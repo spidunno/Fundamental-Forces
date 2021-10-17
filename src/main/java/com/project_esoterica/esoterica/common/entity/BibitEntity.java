@@ -11,8 +11,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -25,7 +23,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import javax.annotation.Nullable;
 
 
-public class Bibit extends PathfinderMob implements IAnimatable {
+public class BibitEntity extends PathfinderMob implements IAnimatable {
 
     public static AttributeSupplier createAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.ARMOR, 1000F).add(Attributes.MOVEMENT_SPEED, 0.15F).build();
@@ -50,12 +48,12 @@ public class Bibit extends PathfinderMob implements IAnimatable {
         }
     }
 
-    private static final EntityDataAccessor<String> FEELINGS_DATA = SynchedEntityData.defineId(Bibit.class, EntityDataSerializers.STRING);
+    private static final EntityDataAccessor<String> FEELINGS_DATA = SynchedEntityData.defineId(BibitEntity.class, EntityDataSerializers.STRING);
     public feelingsEnum feelings = feelingsEnum.IDLE;
     private int lockExpression = 0;
     private final AnimationFactory factory = new AnimationFactory(this);
 
-    public Bibit(Level p_21684_) {
+    public BibitEntity(Level p_21684_) {
         super(EntityRegistry.BIBIT.get(), p_21684_);
         this.noCulling = true;
     }
