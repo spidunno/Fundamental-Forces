@@ -30,7 +30,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
     }
 
     public enum bibitStateEnum {
-        IDLE("idle"), PANICKED("panicked"), UPSET("upset"), OVERJOYED("overjoyed"), JEB_("jeb_"), PROUD("proud"), COOL("cool"), QUBIT("qubit"),
+        IDLE("idle"), PANICKED("panicked"), UPSET("upset"), OVERJOYED("overjoyed"), JEB_("jeb_"), PROUD("proud"), COOL("cool"), QUBIT("qubit"), SUS("sus"), MISSING("missing"),
         ;
         public String stateIdentifier;
 
@@ -103,6 +103,10 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
     @Override
     public void setCustomName(@Nullable Component p_20053_) {
         super.setCustomName(p_20053_);
+        if (!visualState.equals(actualState))
+        {
+            return;
+        }
         for (bibitStateEnum feelings : bibitStateEnum.values()) {
             if (p_20053_.getString().equals(feelings.stateIdentifier)) {
                 setVisualState(feelings);
