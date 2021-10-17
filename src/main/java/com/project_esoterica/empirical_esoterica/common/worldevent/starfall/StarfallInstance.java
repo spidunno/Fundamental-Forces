@@ -1,5 +1,6 @@
 package com.project_esoterica.empirical_esoterica.common.worldevent.starfall;
 
+import com.project_esoterica.empirical_esoterica.core.config.CommonConfig;
 import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.empirical_esoterica.core.registry.worldevent.StarfallResults;
 import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventInstance;
@@ -10,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class StarfallInstance extends WorldEventInstance {
@@ -20,7 +22,8 @@ public class StarfallInstance extends WorldEventInstance {
     public BlockPos targetedPos;
     public int startingCountdown;
     public int countdown;
-    public boolean loop;
+    protected boolean loop;
+    protected boolean determined;
 
     public StarfallInstance(StarfallResult result, LivingEntity targetedEntity, int startingCountdown) {
         this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), startingCountdown);
@@ -56,6 +59,11 @@ public class StarfallInstance extends WorldEventInstance {
         return this;
     }
 
+    public StarfallInstance setDetermined() {
+        this.determined = true;
+        return this;
+    }
+
     @Override
     public void tick(ServerLevel level) {
         if (level.getGameTime() % 100L == 0) {
@@ -74,9 +82,30 @@ public class StarfallInstance extends WorldEventInstance {
 
     @Override
     public void end(ServerLevel level) {
-        boolean success = result.canFall(level, targetedPos);
-        if (success) {
-            result.fall(level, targetedPos);
+        if (determined) {
+            while (true) {
+                int failures = 0;
+                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
+                BlockPos randomizedTarget = result.randomizedStarfallPosition(level, targetedPos);
+                boolean success = result.canFall(level, randomizedTarget);
+                if (success) {
+                    result.fall(level, randomizedTarget);
+                    break;
+                } else {
+                    failures++;
+                    if (failures >= maximumFailures) {
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            BlockPos randomizedTarget = result.randomizedStarfallPosition(level, targetedPos);
+            boolean success = result.canFall(level, randomizedTarget);
+            if (success) {
+                result.fall(level, randomizedTarget);
+            }
         }
         if (loop && isEntityValid(level)) {
             WorldEventActivator.addSpaceDebris(level, targetedEntity, true);
@@ -102,6 +131,7 @@ public class StarfallInstance extends WorldEventInstance {
         tag.putBoolean("invalidated", invalidated);
         tag.putInt("countdown", countdown);
         tag.putBoolean("loop", loop);
+        tag.putBoolean("determined", determined);
     }
 
     public static StarfallInstance deserializeNBT(CompoundTag tag) {
@@ -114,6 +144,7 @@ public class StarfallInstance extends WorldEventInstance {
         instance.invalidated = tag.getBoolean("invalidated");
         instance.countdown = tag.getInt("countdown");
         instance.loop = tag.getBoolean("loop");
+        instance.determined = tag.getBoolean("determined");
         return instance;
     }
 }

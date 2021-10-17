@@ -1,5 +1,5 @@
 {
-  "command.empirical_esoterica.checkarea.blocktag.failure": "Failure: Terrain type is filled with abnormal blocks.",
+  "command.empirical_esoterica.checkarea.blocktag.failure": "Failure: Terrain type contains abnormal blocks.",
   "command.empirical_esoterica.checkarea.blocktag.success": "Success: Terrain type is normal.",
   "command.empirical_esoterica.checkarea.heightmap.failure": "Failure: Heightmap levels show signs of player intervention.",
   "command.empirical_esoterica.checkarea.heightmap.success": "Success: Heightmap levels normal.",

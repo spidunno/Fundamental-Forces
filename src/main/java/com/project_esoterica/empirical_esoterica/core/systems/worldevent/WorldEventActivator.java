@@ -42,12 +42,12 @@ public class WorldEventActivator {
 
     public static void addSpaceDebris(ServerLevel level, LivingEntity entity, boolean inbound) {
         if (areStarfallsAllowed(level)) {
-            StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS, level, entity).setLooping(), inbound);
+            StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS, level, entity).setLooping().setDetermined(), inbound);
             Double chance = CommonConfig.ASTEROID_CHANCE.get();
             int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
-                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.ASTEROID, level, entity).randomizeCountdown(level, debrisInstance.startingCountdown), inbound);
+                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.ASTEROID, level, entity).randomizeCountdown(level, debrisInstance.startingCountdown).setDetermined(), inbound);
                     chance *= 0.8f;
                 } else {
                     break;

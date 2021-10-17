@@ -12,6 +12,7 @@ public class CommonConfig {
 
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_HEIGHTMAP_CHANGES;
     public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_SAFETY_CHECK_RANGE;
+    public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_MAXIMUM_FAILURES;
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> STARFALL_ALLOWED_LEVELS;
     public static ForgeConfigSpec.ConfigValue<Integer> MINIMUM_STARFALL_DISTANCE;
@@ -40,6 +41,9 @@ public class CommonConfig {
 
         STARFALL_SAFETY_CHECK_RANGE = builder.comment("How many blocks around the starfall impact are checked for blocks placed most likely by a player?")
                 .define("starfall_safety_range", 20);
+
+        STARFALL_MAXIMUM_FAILURES = builder.comment("A starfall can potentially fail to find a valid place to fall, how many times will it try again?")
+                .define("starfall_maximum_failures", 8);
 
         STARFALL_ALLOWED_LEVELS = builder
                 .comment("Which dimensions can starfalls take place in?")

@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Random;
 
@@ -24,9 +25,7 @@ public class AsteroidStarfallResult extends StarfallResult {
 
     @Override
     public void fall(ServerLevel level, BlockPos pos) {
-        Cow cow = EntityType.COW.create(level);
-        cow.setPos(pos.getX(), pos.getY(), pos.getZ());
-        level.addFreshEntity(cow);
+        level.setBlockAndUpdate(pos, Blocks.IRON_BLOCK.defaultBlockState());
         super.fall(level, pos);
     }
 }

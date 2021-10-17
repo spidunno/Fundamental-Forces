@@ -1,25 +1,16 @@
 package com.project_esoterica.empirical_esoterica.common.worldevent.starfall;
 
-import com.project_esoterica.empirical_esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.empirical_esoterica.core.config.CommonConfig;
-import com.project_esoterica.empirical_esoterica.core.registry.block.BlockTagRegistry;
 import com.project_esoterica.empirical_esoterica.core.registry.worldevent.StarfallResults;
+import com.project_esoterica.empirical_esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.phys.AABB;
-import org.openjdk.nashorn.internal.ir.annotations.Ignore;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.stream.Stream;
+
+import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
 public class StarfallResult {
     public final String id;
@@ -44,90 +35,21 @@ public class StarfallResult {
     }
 
     public final boolean canFall(ServerLevel level, BlockPos pos) {
-        return true;
-    }
-
-
-    public static boolean heightmapCheck(ServerLevel level, BlockPos pos, int range) {
-        for (int x = -range; x <= range; x++) {
-            for (int z = -range; z <= range; z++) {
-                LevelChunk chunk = level.getChunk(SectionPos.blockToSectionCoord(pos.getX()) + x, SectionPos.blockToSectionCoord(pos.getZ()) + z);
-                int heightmapChanges = ChunkDataCapability.getHeightmapChanges(chunk);
-                if (heightmapChanges >= CommonConfig.MAXIMUM_HEIGHTMAP_CHANGES.get()) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static ArrayList<BlockPos> nearbyBlockList(ServerLevel level, BlockPos centerPos) {
-        int size = CommonConfig.STARFALL_SAFETY_CHECK_RANGE.get();
-        ArrayList<BlockPos> result = new ArrayList<>();
-        //this is REALLY bad, preferably turn it into an iterable or stream.
-        //I used the thing below earlier but that for some reason had the very first point stored in every single member of the stream? ? ? ??
-        //return BlockPos.betweenClosedStream(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).filter(p -> !level.getBlockState(p).isAir());
-
-        for (int x = -size; x <= size;x++)
+        if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty()))
         {
-            for (int y = (int) (-size/4f); y <= size/4f; y++)
-            {
-                for (int z = -size; z <= size;z++)
-                {
-                    BlockPos pos = new BlockPos(centerPos.offset(x,y,z));
-                    if (!level.getBlockState(pos).isAir())
-                    {
-                        result.add(pos);
-                    }
-                }
-            }
+            return false;
         }
-        return result;
+        boolean heightmap = WorldEventManager.heightmapCheck(level, pos, 2);
+        boolean blocks = WorldEventManager.blockCheck(level, WorldEventManager.nearbyBlockList(level, pos));
+        return heightmap && blocks;
     }
 
-    public static boolean blockCheck(ServerLevel level, ArrayList<BlockPos> arrayList) {
-        int failed = 0;
-        int failToAbort = (int) (arrayList.size()*0.2f);
-        for (BlockPos pos : arrayList) {
-            BlockState state = level.getBlockState(pos);
-            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
-            {
-                return false;
-            }
-            if (!blockEntityCheck(level, pos))
-            {
-                return false;
-            }
-            if (!blockCheck(level, state))
-            {
-                failed++;
-                if (failed >= failToAbort)
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public static boolean blockEntityCheck(ServerLevel level, BlockPos pos) {
-        return level.getBlockEntity(pos) == null;
-    }
-
-    @SuppressWarnings("all")
-    public static boolean blockCheck(ServerLevel level, BlockState state) {
-        if (!state.getMaterial().isSolid() || state.getMaterial().isReplaceable() || !state.getMaterial().blocksMotion())
-        {
-            return true;
-        }
-        Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.SNOW, BlockTags.MUSHROOM_GROW_BLOCK};
-        for (Tag.Named<Block> tag : tags)
-        {
-            if (state.is(tag))
-            {
-                return true;
-            }
-        }
-        return false;
+    public BlockPos randomizedStarfallPosition(ServerLevel level, BlockPos centerPos) {
+        Random random = level.random;
+        int minOffset = CommonConfig.MINIMUM_STARFALL_DISTANCE.get();
+        int maxOffset = CommonConfig.MAXIMUM_STARFALL_DISTANCE.get();
+        int xOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
+        int zOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
+        return level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, centerPos.offset(xOffset, 0, zOffset));
     }
 }

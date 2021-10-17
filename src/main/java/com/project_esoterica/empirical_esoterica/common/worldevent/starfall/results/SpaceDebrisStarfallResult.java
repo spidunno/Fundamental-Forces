@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Random;
 
@@ -28,9 +29,7 @@ public class SpaceDebrisStarfallResult extends StarfallResult {
 
     @Override
     public void fall(ServerLevel level, BlockPos pos) {
-        Chicken chicken = EntityType.CHICKEN.create(level);
-        chicken.setPos(pos.getX(), pos.getY(), pos.getZ());
-        level.addFreshEntity(chicken);
+        level.setBlockAndUpdate(pos, Blocks.DIAMOND_BLOCK.defaultBlockState());
         super.fall(level, pos);
     }
 }

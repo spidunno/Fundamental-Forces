@@ -91,7 +91,7 @@ public class SpaceModLang extends LanguageProvider {
         addCommandOutput("checkarea.heightmap.failure","Failure: Heightmap levels show signs of player intervention.");
 
         addCommandOutput("checkarea.blocktag.success","Success: Terrain type is normal.");
-        addCommandOutput("checkarea.blocktag.failure","Failure: Terrain type is filled with abnormal blocks.");
+        addCommandOutput("checkarea.blocktag.failure","Failure: Terrain type contains abnormal blocks.");
 
         addCommandKey("screenshake", "Command Successful, enjoy your screenshake.");
     }
