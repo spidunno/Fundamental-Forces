@@ -1,6 +1,7 @@
 package com.project_esoterica.empirical_esoterica.core.eventhandlers;
 
 import com.project_esoterica.empirical_esoterica.EsotericHelper;
+import com.project_esoterica.empirical_esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.empirical_esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.empirical_esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.empirical_esoterica.core.systems.capability.SimpleCapabilityProvider;
@@ -10,6 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -23,6 +26,12 @@ public class CapabilityEvents {
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final WorldDataCapability capability = new WorldDataCapability();
         event.addCapability(EsotericHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
+    }
+
+    @SubscribeEvent
+    public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event) {
+        final ChunkDataCapability capability = new ChunkDataCapability();
+        event.addCapability(EsotericHelper.prefix("chunk_data"), new SimpleCapabilityProvider<>(ChunkDataCapability.CAPABILITY, () -> capability));
     }
 
     @SubscribeEvent

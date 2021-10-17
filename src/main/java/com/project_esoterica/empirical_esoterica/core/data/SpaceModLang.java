@@ -82,7 +82,19 @@ public class SpaceModLang extends LanguageProvider {
         addCommandKey("fallstar_artificial_position", "Artificial starfall scheduled to fall at the given position.");
         addCommandKey("fallstar_artificial_target", "Artificial starfall scheduled for the given target.");
 
-        addCommandError("error.starfall.result","No such starfall result exists.");
+        addCommandOutput("error.starfall.result","No such starfall result exists.");
+
+        addCommandOutput("checkarea.report.success","Success: Area viable for starfalls!");
+        addCommandOutput("checkarea.report.failure","Failure: Printing feedback report:");
+
+        addCommandOutput("checkarea.heightmap.success","Success: Heightmap levels normal.");
+        addCommandOutput("checkarea.heightmap.failure","Failure: Heightmap levels show signs of player intervention.");
+
+        addCommandOutput("checkarea.blocktag.success","Success: Terrain type is normal.");
+        addCommandOutput("checkarea.blocktag.failure","Failure: Terrain type is filled with abnormal blocks.");
+
+        addCommandOutput("checkarea.blockentity.success","Success: Area has no block entities.");
+        addCommandOutput("checkarea.blockentity.failure","Failure: Block entities present.");
 
         addCommandKey("screenshake", "Command Successful, enjoy your screenshake.");
     }
@@ -103,12 +115,12 @@ public class SpaceModLang extends LanguageProvider {
         return new TranslatableComponent("command." + MOD_ID + "." + command);
     }
 
-    public void addCommandError(String error, String feedback) {
-        add("command." + MOD_ID + "." + error, feedback);
+    public void addCommandOutput(String output, String feedback) {
+        add("command." + MOD_ID + "." + output, feedback);
     }
 
-    public static TranslatableComponent getCommandError(String error) {
-        return new TranslatableComponent("command." + MOD_ID + "." + error);
+    public static TranslatableComponent getCommandOutput(String output) {
+        return new TranslatableComponent("command." + MOD_ID + "." + output);
     }
 
     public String specialBlockNameChanges(String name) {

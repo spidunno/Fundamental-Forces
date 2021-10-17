@@ -64,9 +64,9 @@ public class StarfallInstance extends WorldEventInstance {
             }
         }
         countdown--;
-        if (isEntityValid(level)) {
-            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
-        }
+//        if (isEntityValid(level)) {
+//            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
+//        }
         if (countdown <= 0) {
             end(level);
         }
@@ -74,7 +74,7 @@ public class StarfallInstance extends WorldEventInstance {
 
     @Override
     public void end(ServerLevel level) {
-        boolean success = canFall(level);
+        boolean success = result.canFall(level, targetedPos);
         if (success) {
             result.fall(level, targetedPos);
         }
@@ -82,11 +82,6 @@ public class StarfallInstance extends WorldEventInstance {
             WorldEventActivator.addSpaceDebris(level, targetedEntity, true);
         }
         super.end(level);
-    }
-
-
-    public boolean canFall(ServerLevel level) {
-        return true;
     }
 
     public boolean isEntityValid(ServerLevel level) {

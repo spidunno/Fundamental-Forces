@@ -2,7 +2,6 @@ package com.project_esoterica.empirical_esoterica.core.systems.command;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -10,16 +9,13 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.project_esoterica.empirical_esoterica.core.data.SpaceModLang;
 import com.project_esoterica.empirical_esoterica.core.registry.worldevent.StarfallResults;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-import static com.project_esoterica.empirical_esoterica.EmpiricalEsoterica.MOD_ID;
-
 public class StarfallResultArgumentType implements ArgumentType<String> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(SpaceModLang.getCommandError("error.starfall.result"));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(SpaceModLang.getCommandOutput("error.starfall.result"));
 
     public StarfallResultArgumentType() {
     }

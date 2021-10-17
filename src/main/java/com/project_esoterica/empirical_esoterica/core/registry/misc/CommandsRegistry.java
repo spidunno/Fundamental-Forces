@@ -5,6 +5,7 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.project_esoterica.empirical_esoterica.common.command.DevWorldSetupCommand;
 import com.project_esoterica.empirical_esoterica.common.command.FallStarCommand;
 import com.project_esoterica.empirical_esoterica.common.command.ScreenshakeCommand;
+import com.project_esoterica.empirical_esoterica.common.command.StarfallAreaCheckCommand;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -22,6 +23,7 @@ public class CommandsRegistry {
                 .then(DevWorldSetupCommand.register())
                 .then(FallStarCommand.register())
                 .then(ScreenshakeCommand.register())
+                .then(StarfallAreaCheckCommand.register())
         );
         dispatcher.register(Commands.literal(MOD_ID)
                 .redirect(cmd));
