@@ -23,7 +23,7 @@ public class Bibit extends PathfinderMob implements IAnimatable {
     }
 
     public static AttributeSupplier createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 5.0D).add(Attributes.ARMOR, 1000F).add(Attributes.MOVEMENT_SPEED, 0.2F).build();
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 50.0D).add(Attributes.ARMOR, 1000F).add(Attributes.MOVEMENT_SPEED, 0.2F).build();
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
