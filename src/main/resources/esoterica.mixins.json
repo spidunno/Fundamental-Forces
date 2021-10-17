@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.project_esoterica.esoterica.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "esoterica.refmap.json",
+  "mixins": [
+  ],
+  "client":[
+    "CameraMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.4"
+}
