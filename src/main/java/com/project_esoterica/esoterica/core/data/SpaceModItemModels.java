@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.core.data;
 
-import com.project_esoterica.esoterica.EmpiricalEsoterica;
+import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
@@ -14,12 +14,12 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.project_esoterica.esoterica.EsotericHelper.prefix;
-import static com.project_esoterica.esoterica.EsotericHelper.takeAll;
+import static com.project_esoterica.esoterica.EsotericaHelper.prefix;
+import static com.project_esoterica.esoterica.EsotericaHelper.takeAll;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public SpaceModItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, EmpiricalEsoterica.MOD_ID, existingFileHelper);
+        super(generator, EsotericaMod.MOD_ID, existingFileHelper);
     }
 
     @Override

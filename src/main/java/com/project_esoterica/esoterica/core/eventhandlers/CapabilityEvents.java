@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
-import com.project_esoterica.esoterica.EsotericHelper;
+import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
@@ -24,20 +24,20 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final WorldDataCapability capability = new WorldDataCapability();
-        event.addCapability(EsotericHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(EsotericaHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
     }
 
     @SubscribeEvent
     public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event) {
         final ChunkDataCapability capability = new ChunkDataCapability();
-        event.addCapability(EsotericHelper.prefix("chunk_data"), new SimpleCapabilityProvider<>(ChunkDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(EsotericaHelper.prefix("chunk_data"), new SimpleCapabilityProvider<>(ChunkDataCapability.CAPABILITY, () -> capability));
     }
 
     @SubscribeEvent
     public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             final PlayerDataCapability capability = new PlayerDataCapability();
-            event.addCapability(EsotericHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
+            event.addCapability(EsotericaHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
         }
     }
     

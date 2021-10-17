@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.project_esoterica.esoterica.EsotericHelper;
+import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.BlockPos;
@@ -62,17 +62,17 @@ public class SpaceModBlockLootTables extends LootTableProvider {
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof WallTorchBlock);
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof LeavesBlock);
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof SaplingBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTable(b.get().asItem())));
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof WallTorchBlock);
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof LeavesBlock);
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof SaplingBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTable(b.get().asItem())));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));
 
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTableWithSilkTouch(b.get(), Items.DIRT)));
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof SlabBlock).forEach(b -> registerLootTable(b.get(), createSlabItemTable(b.get())));
-        EsotericHelper.takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(b -> registerLootTable(b.get(), createDoorTable(b.get())));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTableWithSilkTouch(b.get(), Items.DIRT)));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof SlabBlock).forEach(b -> registerLootTable(b.get(), createSlabItemTable(b.get())));
+        EsotericaHelper.takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(b -> registerLootTable(b.get(), createDoorTable(b.get())));
 
-        EsotericHelper.takeAll(blocks, b -> true).forEach(b -> registerLootTable(b.get(), createSingleItemTable(b.get().asItem())));
+        EsotericaHelper.takeAll(blocks, b -> true).forEach(b -> registerLootTable(b.get(), createSingleItemTable(b.get().asItem())));
 
         return tables;
     }

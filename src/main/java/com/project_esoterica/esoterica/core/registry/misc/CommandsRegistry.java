@@ -12,7 +12,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.project_esoterica.esoterica.EmpiricalEsoterica.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommandsRegistry {

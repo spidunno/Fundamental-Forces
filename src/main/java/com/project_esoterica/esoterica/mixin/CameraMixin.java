@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.project_esoterica.esoterica.EmpiricalEsoterica.RANDOM;
+import static com.project_esoterica.esoterica.EsotericaMod.RANDOM;
 
 @Mixin(Camera.class)
 public class CameraMixin {

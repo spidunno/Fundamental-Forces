@@ -1,0 +1,16 @@
+{
+  "command.esoterica.checkarea.blocktag.failure": "Failure: Terrain type contains abnormal blocks.",
+  "command.esoterica.checkarea.blocktag.success": "Success: Terrain type is normal.",
+  "command.esoterica.checkarea.heightmap.failure": "Failure: Heightmap levels show signs of player intervention.",
+  "command.esoterica.checkarea.heightmap.success": "Success: Heightmap levels normal.",
+  "command.esoterica.checkarea.report.failure": "Failure: Printing feedback report:",
+  "command.esoterica.checkarea.report.success": "Success: Area viable for starfalls!",
+  "command.esoterica.devsetup": "Command Successful you fuckhead.",
+  "command.esoterica.error.starfall.result": "No such starfall result exists.",
+  "command.esoterica.fallstar_artificial_position": "Artificial starfall scheduled to fall at the given position.",
+  "command.esoterica.fallstar_artificial_target": "Artificial starfall scheduled for the given target.",
+  "command.esoterica.fallstar_natural_position": "Natural starfall scheduled to fall at the given position.",
+  "command.esoterica.fallstar_natural_target": "Natural starfall scheduled for the given target.",
+  "command.esoterica.screenshake": "Command Successful, enjoy your screenshake.",
+  "itemGroup.esoterica": "Empirical Esoterica"
+}

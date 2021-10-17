@@ -1,0 +1,94 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.bibit.idle": {
+			"loop": true,
+			"animation_length": 1.75,
+			"bones": {
+				"torso": {
+					"position": {
+						"0.0": {
+							"vector": [0, 0.4, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"1.75": {
+							"vector": [0, 0.4, 0],
+							"easing": "linear"
+						}
+					}
+				},
+				"righthand": {
+					"rotation": {
+						"0.25": {
+							"vector": [0, 0, 2.5]
+						},
+						"0.75": {
+							"vector": [0, 0, 10],
+							"easing": "linear"
+						},
+						"1.25": {
+							"vector": [0, 0, 10],
+							"easing": "linear"
+						},
+						"1.75": {
+							"vector": [0, 0, 2.5],
+							"easing": "linear"
+						}
+					}
+				},
+				"lefthand": {
+					"rotation": {
+						"0.25": {
+							"vector": [0, 0, -2.5]
+						},
+						"0.75": {
+							"vector": [0, 0, -10],
+							"easing": "linear"
+						},
+						"1.25": {
+							"vector": [0, 0, -10],
+							"easing": "linear"
+						},
+						"1.75": {
+							"vector": [0, 0, -2.5],
+							"easing": "linear"
+						}
+					}
+				},
+				"rightleg": {
+					"position": {
+						"0.0": {
+							"vector": [0, -0.2, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"1.75": {
+							"vector": [0, -0.2, 0],
+							"easing": "linear"
+						}
+					}
+				},
+				"leftleg": {
+					"position": {
+						"0.0": {
+							"vector": [0, -0.2, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0],
+							"easing": "linear"
+						},
+						"1.75": {
+							"vector": [0, -0.2, 0],
+							"easing": "linear"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.core.data;
 
-import com.project_esoterica.esoterica.EmpiricalEsoterica;
+import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -8,13 +8,13 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import static com.project_esoterica.esoterica.EsotericHelper.getModBlocks;
+import static com.project_esoterica.esoterica.EsotericaHelper.getModBlocks;
 import static net.minecraft.tags.BlockTags.*;
 import static net.minecraftforge.common.Tags.Blocks.DIRT;
 
 public class SpaceModBlockTags extends BlockTagsProvider {
     public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, EmpiricalEsoterica.MOD_ID, existingFileHelper);
+        super(generatorIn, EsotericaMod.MOD_ID, existingFileHelper);
     }
 
     @Override

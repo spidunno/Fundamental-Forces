@@ -14,9 +14,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.project_esoterica.esoterica.EmpiricalEsoterica.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
-public class EsotericHelper {
+public class EsotericaHelper {
 
     public static void updateState(Level level, BlockPos pos) {
         updateState(level.getBlockState(pos), level, pos);

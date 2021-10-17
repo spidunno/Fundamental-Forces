@@ -22,14 +22,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
-import static com.project_esoterica.esoterica.EmpiricalEsoterica.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 @Mod(MOD_ID)
-public class EmpiricalEsoterica {
+public class EsotericaMod {
     public static final String MOD_ID = "esoterica";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final Random RANDOM = new Random();
-    public EmpiricalEsoterica() {
+    public EsotericaMod() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
