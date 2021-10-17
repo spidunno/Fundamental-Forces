@@ -9,7 +9,10 @@ import java.util.List;
 public class CommonConfig {
 
     public static ForgeConfigSpec.ConfigValue<Boolean> STARFALLS_ENABLED;
+
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_HEIGHTMAP_CHANGES;
+    public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_SAFETY_CHECK_RANGE;
+
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> STARFALL_ALLOWED_LEVELS;
     public static ForgeConfigSpec.ConfigValue<Integer> MINIMUM_STARFALL_DISTANCE;
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_STARFALL_DISTANCE;
@@ -32,8 +35,11 @@ public class CommonConfig {
         STARFALLS_ENABLED = builder.comment("Are starfalls enabled?")
                 .define("enable_starfalls", true);
 
-        MAXIMUM_HEIGHTMAP_CHANGES = builder.comment("If a chunk is modified enough, it and neighboring chunks are marked as invalid for starfalls. How many heightmap modifications are needed to invalidate a chunk?")
+        MAXIMUM_HEIGHTMAP_CHANGES = builder.comment("If a chunk is modified enough by a player, it and neighboring chunks are marked as invalid for starfalls. How many heightmap modifications are needed to invalidate a chunk?")
                 .define("maximum_heightmap_changes", 50);
+
+        STARFALL_SAFETY_CHECK_RANGE = builder.comment("How many blocks around the starfall impact are checked for blocks placed most likely by a player?")
+                .define("starfall_safety_range", 20);
 
         STARFALL_ALLOWED_LEVELS = builder
                 .comment("Which dimensions can starfalls take place in?")

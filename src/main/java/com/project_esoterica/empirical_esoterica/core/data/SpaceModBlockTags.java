@@ -1,6 +1,7 @@
 package com.project_esoterica.empirical_esoterica.core.data;
 
 import com.project_esoterica.empirical_esoterica.EmpiricalEsoterica;
+import com.project_esoterica.empirical_esoterica.core.registry.block.BlockTagRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
@@ -45,6 +46,8 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(WOODEN_SLABS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_slab")));
         tag(WOODEN_TRAPDOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_trapdoor")));
         tag(WOODEN_PRESSURE_PLATES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_pressure_plate")));
+
+        tag(BlockTagRegistry.STARFALL_ALLOWED).add(Blocks.DIAMOND_BLOCK);
 
     }
 }

@@ -20,11 +20,10 @@ public class StarfallAreaCheckCommand {
                     CommandSourceStack source = context.getSource();
                     if (source.getEntity() instanceof ServerPlayer player) {
                         ServerLevel level = context.getSource().getLevel();
-                        boolean heightmap = StarfallResult.heightmapCheck(level, player.blockPosition());
-                        boolean blockTag = StarfallResult.blockTagCheck(level, player.blockPosition());
-                        boolean blockEntity = StarfallResult.blockEntityCheck(level, player.blockPosition());
+                        boolean heightmap = StarfallResult.heightmapCheck(level, player.blockPosition(), 1);
+                        boolean blocks = StarfallResult.blockCheck(level, StarfallResult.nearbyBlockList(level, player.blockPosition()));
 
-                        if (heightmap && blockTag && blockEntity) {
+                        if (heightmap && blocks) {
                             source.sendSuccess(SpaceModLang.getCommandKey("checkarea.report.success"), true);
                         } else {
                             source.sendSuccess(SpaceModLang.getCommandKey("checkarea.report.failure"), true);
@@ -38,17 +37,10 @@ public class StarfallAreaCheckCommand {
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);
-                        if (blockTag) {
+                        if (blocks) {
                             source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blocktag.success"), true);
                         } else {
                             source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blocktag.failure"), true);
-                        }
-
-                        source.sendSuccess(new TextComponent("--------------------------------------------"), true);
-                        if (blockEntity) {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blockentity.success"), true);
-                        } else {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blockentity.failure"), true);
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);

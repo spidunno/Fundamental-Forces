@@ -93,9 +93,6 @@ public class SpaceModLang extends LanguageProvider {
         addCommandOutput("checkarea.blocktag.success","Success: Terrain type is normal.");
         addCommandOutput("checkarea.blocktag.failure","Failure: Terrain type is filled with abnormal blocks.");
 
-        addCommandOutput("checkarea.blockentity.success","Success: Area has no block entities.");
-        addCommandOutput("checkarea.blockentity.failure","Failure: Block entities present.");
-
         addCommandKey("screenshake", "Command Successful, enjoy your screenshake.");
     }
 
