@@ -3,6 +3,7 @@ package com.project_esoterica.esoterica.common.entity;
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,6 +22,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nullable;
+
 
 public class Bibit extends PathfinderMob implements IAnimatable {
 
@@ -29,18 +32,17 @@ public class Bibit extends PathfinderMob implements IAnimatable {
     }
 
     public enum feelingsEnum {
-        IDLE("idle"), PANICKED("panicked"), UPSET("upset"), OVERJOYED("overjoyed"),;
+        IDLE("idle"), PANICKED("panicked"), UPSET("upset"), OVERJOYED("overjoyed"), PROUD("jeb_"), QUBIT("qubit"),
+        ;
         public String feelingsValue;
 
         feelingsEnum(String feelingsValue) {
             this.feelingsValue = feelingsValue;
         }
-        public static feelingsEnum getFeelingsValue(String feelingsValue)
-        {
-            for (feelingsEnum feelings : values())
-            {
-                if (feelings.feelingsValue.equals(feelingsValue))
-                {
+
+        public static feelingsEnum getFeelingsValue(String feelingsValue) {
+            for (feelingsEnum feelings : values()) {
+                if (feelings.feelingsValue.equals(feelingsValue)) {
                     return feelings;
                 }
             }
@@ -102,11 +104,18 @@ public class Bibit extends PathfinderMob implements IAnimatable {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (level.isClientSide)
-        {
-            feelings = feelingsEnum.getFeelingsValue(getEntityData().get(FEELINGS_DATA));
+    public void onSyncedDataUpdated(EntityDataAccessor<?> p_21104_) {
+        super.onSyncedDataUpdated(p_21104_);
+        feelings = feelingsEnum.getFeelingsValue(getEntityData().get(FEELINGS_DATA));
+    }
+
+    @Override
+    public void setCustomName(@Nullable Component p_20053_) {
+        super.setCustomName(p_20053_);
+        for (feelingsEnum feelings : feelingsEnum.values()) {
+            if (p_20053_.getString().equals(feelings.feelingsValue)) {
+                overrideFeelings(feelings, -1);
+            }
         }
     }
 
@@ -133,15 +142,23 @@ public class Bibit extends PathfinderMob implements IAnimatable {
         super.deserializeNBT(tag);
         overrideFeelings(feelingsEnum.valueOf(tag.getString("expression")), tag.getInt("lockExpression"));
     }
+
     public void setFeelings(feelingsEnum feelings, int lockExpression) {
         if (this.lockExpression == 0) {
             overrideFeelings(feelings, lockExpression);
         }
     }
+
     public void overrideFeelings(feelingsEnum feelings, int lockExpression) {
+        if (this.lockExpression == -1)
+        {
+            return;
+        }
         this.feelings = feelings;
-        this.lockExpression = lockExpression;
-        this.getEntityData().set(FEELINGS_DATA, Util.make(()->feelings.feelingsValue));
+        if (feelings != feelingsEnum.IDLE) {
+            this.lockExpression = lockExpression;
+        }
+        this.getEntityData().set(FEELINGS_DATA, Util.make(() -> feelings.feelingsValue));
     }
 
     @Override
