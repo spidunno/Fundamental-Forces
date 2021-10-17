@@ -89,11 +89,16 @@ public class StarfallResult {
         int failed = 0;
         int failToAbort = (int) (arrayList.size()*0.2f);
         for (BlockPos pos : arrayList) {
+            BlockState state = level.getBlockState(pos);
+            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
+            {
+                return false;
+            }
             if (!blockEntityCheck(level, pos))
             {
                 return false;
             }
-            if (!blockCheck(level, pos))
+            if (!blockCheck(level, state))
             {
                 failed++;
                 if (failed >= failToAbort)
@@ -110,15 +115,10 @@ public class StarfallResult {
     }
 
     @SuppressWarnings("all")
-    public static boolean blockCheck(ServerLevel level, BlockPos pos) {
-        BlockState state = level.getBlockState(pos);
+    public static boolean blockCheck(ServerLevel level, BlockState state) {
         if (!state.getMaterial().isSolid() || state.getMaterial().isReplaceable() || !state.getMaterial().blocksMotion())
         {
             return true;
-        }
-        if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
-        {
-            return false;
         }
         Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.SNOW, BlockTags.MUSHROOM_GROW_BLOCK};
         for (Tag.Named<Block> tag : tags)
