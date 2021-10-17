@@ -113,6 +113,10 @@ public class WorldEventManager {
         int failToAbort = (int) (arrayList.size()*0.2f);
         for (BlockPos pos : arrayList) {
             BlockState state = level.getBlockState(pos);
+            if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
+            {
+                return false;
+            }
             if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
             {
                 return false;
