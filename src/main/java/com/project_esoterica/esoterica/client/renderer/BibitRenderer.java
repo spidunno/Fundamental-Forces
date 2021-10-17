@@ -18,20 +18,6 @@ import javax.annotation.Nullable;
 public class BibitRenderer extends GeoEntityRenderer<Bibit> {
     public BibitRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BibitModel());
-    }
-
-    @Override
-    public void render(GeoModel model, Bibit bibit, float partialTicks, RenderType type, PoseStack matrixStackIn, @Nullable MultiBufferSource renderTypeBuffer, @Nullable VertexConsumer vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
-        super.render(model, bibit, partialTicks, type, matrixStackIn, renderTypeBuffer, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue, alpha);
-
-        type = getRenderType(bibit, partialTicks, matrixStackIn, renderTypeBuffer, null, packedLightIn,
-                BibitModel.getOverlayTextureLocation(bibit));
-        if (renderTypeBuffer != null) {
-            vertexBuilder = renderTypeBuffer.getBuffer(type);
-        }
-        for (GeoBone group : model.topLevelBones) {
-            renderRecursively(group, matrixStackIn, vertexBuilder, packedLightIn, packedOverlayIn, red, green, blue,
-                    255);
-        }
+        addLayer(new BibitGlowLayer(this));
     }
 }
