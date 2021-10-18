@@ -5,7 +5,6 @@ import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -45,7 +44,7 @@ public class CapabilityEvents {
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (player.level instanceof ServerLevel level) {
-                WorldEventActivator.playerJoin(level, player);
+                WorldEventManager.playerJoin(level, player);
             }
             PlayerDataCapability.getCapability(player).ifPresent(capability -> capability.firstTimeJoin = true);
         }

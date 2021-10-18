@@ -1,15 +1,19 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
+import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallEvent;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
+import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -40,6 +44,18 @@ public class WorldEventManager {
             instance.start(level);
         });
         return instance;
+    }
+
+    public static void playerJoin(ServerLevel level, Player player) {
+        PlayerDataCapability.getCapability(player).ifPresent(capability -> {
+            if (StarfallEvent.areStarfallsAllowed(level)) {
+                if (!capability.firstTimeJoin) {
+                    addWorldEvent(level, new StarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
+                } else {
+                    StarfallEvent.addMissingStarfall(level, player);
+                }
+            }
+        });
     }
 
     public static void worldTick(ServerLevel level) {

@@ -1,14 +1,16 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
+import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
@@ -130,7 +132,7 @@ public class StarfallEvent extends WorldEventInstance {
             }
         }
         if (loop && isEntityValid(level)) {
-            WorldEventActivator.addSpaceDebris(level, targetedEntity, true);
+            addNaturalStarfall(level, targetedEntity, true);
         }
         super.end(level);
     }
@@ -169,5 +171,43 @@ public class StarfallEvent extends WorldEventInstance {
         determined = tag.getBoolean("determined");
         exactPosition = tag.getBoolean("exactPosition");
         super.deserializeNBT(tag);
+    }
+
+    public static void addMissingStarfall(ServerLevel level, Player player) {
+        WorldDataCapability.getCapability(level).ifPresent(capability -> {
+            boolean isMissingStarfall = true;
+            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+                if (instance instanceof StarfallEvent starfallEvent) {
+                    if (player.getUUID().equals(starfallEvent.targetedUUID)) {
+                        isMissingStarfall = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isMissingStarfall) {
+                addNaturalStarfall(level, player, false);
+            }
+        });
+    }
+
+    public static void addNaturalStarfall(ServerLevel level, LivingEntity entity, boolean inbound) {
+        if (areStarfallsAllowed(level)) {
+            StarfallEvent debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
+            Double chance = CommonConfig.ASTEROID_CHANCE.get();
+            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
+            for (int i = 0; i < maxAsteroids; i++) {
+                if (level.random.nextFloat() < chance) {
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
+                    chance *= 0.8f;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public static boolean areStarfallsAllowed(ServerLevel level) {
+        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_LEVELS.get().contains(level.dimension().location().toString());
     }
 }
