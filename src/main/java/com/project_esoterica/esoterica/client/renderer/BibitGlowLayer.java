@@ -21,7 +21,7 @@ public class BibitGlowLayer extends GeoLayerRenderer<BibitEntity> {
         float r = 1;
         float g = 1;
         float b = 1;
-        if (bibit.visualState.equals(BibitEntity.bibitStateEnum.JEB_)) {
+        if (bibit.visualState.equals(BibitEntity.BibitState.JEB_)) {
             int i1 = 25; //Here lies garbage copied from SheepFurLayer.
             int i = bibit.tickCount / 25 + bibit.getId();
             int j = DyeColor.values().length;
