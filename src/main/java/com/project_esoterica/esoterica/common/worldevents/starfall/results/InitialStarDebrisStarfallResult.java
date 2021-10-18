@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.common.worldevent.starfall.results;
+package com.project_esoterica.esoterica.common.worldevents.starfall.results;
 
 import com.project_esoterica.esoterica.common.entity.falling.FallingCrashpodEntity;
 import com.project_esoterica.esoterica.core.config.CommonConfig;

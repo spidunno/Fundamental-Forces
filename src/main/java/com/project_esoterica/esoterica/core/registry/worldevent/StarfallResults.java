@@ -1,9 +1,9 @@
 package com.project_esoterica.esoterica.core.registry.worldevent;
 
-import com.project_esoterica.esoterica.common.worldevent.starfall.StarfallResult;
-import com.project_esoterica.esoterica.common.worldevent.starfall.results.AsteroidStarfallResult;
-import com.project_esoterica.esoterica.common.worldevent.starfall.results.InitialStarDebrisStarfallResult;
-import com.project_esoterica.esoterica.common.worldevent.starfall.results.SpaceDebrisStarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.results.AsteroidStarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.results.InitialStarDebrisStarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.results.SpaceDebrisStarfallResult;
 
 import java.util.HashMap;
 

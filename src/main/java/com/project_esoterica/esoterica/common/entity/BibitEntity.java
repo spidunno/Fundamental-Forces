@@ -33,7 +33,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
 
     public enum BibitState {
         IDLE("idle"), PANICKED("panicked"), UPSET("upset"), OVERJOYED("overjoyed"), JEB_("jeb_"), PROUD("proud"), COOL("cool"), QUBIT("qubit"), SUS("sus"), MISSING("missing");
-        
+
         public String stateIdentifier;
 
         BibitState(String feelingsValue) {

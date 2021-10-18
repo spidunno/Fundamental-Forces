@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.common.worldevent.starfall;
+package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;

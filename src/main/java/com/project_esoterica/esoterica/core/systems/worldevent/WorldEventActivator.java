@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.esoterica.common.worldevent.starfall.StarfallInstance;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallInstance;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
 import net.minecraft.server.level.ServerLevel;

@@ -1,6 +1,6 @@
-package com.project_esoterica.esoterica.common.worldevent.starfall.results;
+package com.project_esoterica.esoterica.common.worldevents.starfall.results;
 
-import com.project_esoterica.esoterica.common.worldevent.starfall.StarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallResult;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
