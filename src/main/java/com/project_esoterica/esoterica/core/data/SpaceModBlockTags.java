@@ -2,11 +2,15 @@ package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+
+import java.util.stream.Collectors;
 
 import static com.project_esoterica.esoterica.EsotericaHelper.getModBlocks;
 import static net.minecraft.tags.BlockTags.*;
@@ -37,7 +41,6 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(PRESSURE_PLATES).add(getModBlocks(b -> b instanceof BasePressurePlateBlock));
         tag(DIRT).add(getModBlocks(b -> b instanceof GrassBlock || b instanceof FarmBlock));
         tag(SAPLINGS).add(getModBlocks(b -> b instanceof SaplingBlock));
-
         tag(LOGS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_log") || b.getRegistryName().getPath().endsWith("wood")));
         tag(PLANKS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks")));
         tag(WOODEN_FENCES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_fence")));
@@ -47,6 +50,7 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(WOODEN_TRAPDOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_trapdoor")));
         tag(WOODEN_PRESSURE_PLATES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_pressure_plate")));
 
+        tag(BlockTagRegistry.TERRACOTTA).add(Registry.BLOCK.stream().filter(b->b.getRegistryName().getPath().endsWith("_terracotta")).toArray(Block[]::new));
         tag(BlockTagRegistry.STARFALL_ALLOWED).add(Blocks.DIAMOND_BLOCK);
 
     }

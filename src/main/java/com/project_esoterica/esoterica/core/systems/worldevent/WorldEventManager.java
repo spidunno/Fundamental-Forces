@@ -10,10 +10,12 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
 
@@ -97,7 +99,7 @@ public class WorldEventManager {
                 for (int z = -size; z <= size;z++)
                 {
                     BlockPos pos = new BlockPos(centerPos.offset(x,y,z));
-                    if (!level.getBlockState(pos).isAir())
+                    if (isBlockImportant(level, pos))
                     {
                         result.add(pos);
                     }
@@ -114,7 +116,7 @@ public class WorldEventManager {
             BlockState state = level.getBlockState(pos);
             if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
             {
-                failed+=2;
+                failed+=4;
             }
             if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
             {
@@ -142,11 +144,7 @@ public class WorldEventManager {
 
     @SuppressWarnings("all")
     public static boolean blockCheck(ServerLevel level, BlockState state) {
-        if (!state.getMaterial().isSolid() || state.getMaterial().isReplaceable() || !state.getMaterial().blocksMotion())
-        {
-            return true;
-        }
-        Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.SNOW, BlockTags.MUSHROOM_GROW_BLOCK};
+        Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTagRegistry.TERRACOTTA, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.MUSHROOM_GROW_BLOCK, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.SNOW, BlockTags.SAND, Tags.Blocks.SANDSTONE};
         for (Tag.Named<Block> tag : tags)
         {
             if (state.is(tag))
@@ -155,5 +153,14 @@ public class WorldEventManager {
             }
         }
         return false;
+    }
+    public static boolean isBlockImportant(ServerLevel level, BlockPos pos)
+    {
+        BlockState state = level.getBlockState(pos);
+        if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
+        {
+            return true;
+        }
+        return state.getMaterial().isSolid() && !state.isAir() && !state.getMaterial().isReplaceable() && state.getMaterial().blocksMotion();
     }
 }
