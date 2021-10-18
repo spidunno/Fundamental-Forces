@@ -46,6 +46,8 @@ public class StarfallActor {
         int maxOffset = CommonConfig.MAXIMUM_STARFALL_DISTANCE.get();
         int xOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
         int zOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
-        return level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, centerPos.offset(xOffset, 0, zOffset));
+        BlockPos offsetPos = centerPos.offset(xOffset, 0, zOffset);
+        level.getBlockState(offsetPos); //TODO: unfuck this up
+        return level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, offsetPos);
     }
 }

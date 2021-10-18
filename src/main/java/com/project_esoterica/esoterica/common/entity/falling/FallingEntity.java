@@ -55,6 +55,7 @@ public abstract class FallingEntity extends Entity {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
+        super.deserializeNBT(nbt);
         int[] coords = nbt.getIntArray("target");
         targetBlockPos = new BlockPos(coords[0], coords[1], coords[2]);
         setDeltaMovement(position().vectorTo(new Vec3(coords[0], coords[1], coords[2])).normalize().multiply(2.0, 2.0, 2.0));

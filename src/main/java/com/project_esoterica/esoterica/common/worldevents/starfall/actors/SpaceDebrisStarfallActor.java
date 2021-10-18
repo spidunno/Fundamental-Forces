@@ -24,10 +24,4 @@ public class SpaceDebrisStarfallActor extends StarfallActor {
         double max = CommonConfig.MAXIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
-
-    @Override
-    public void fall(ServerLevel level, BlockPos pos) {
-        level.setBlockAndUpdate(pos, Blocks.DIAMOND_BLOCK.defaultBlockState());
-        super.fall(level, pos);
-    }
 }

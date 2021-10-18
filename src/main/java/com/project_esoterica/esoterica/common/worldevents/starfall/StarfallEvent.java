@@ -18,12 +18,15 @@ import java.util.UUID;
 public class StarfallEvent extends WorldEventInstance {
 
     public static final String STARFALL_ID = "starfall";
-    public static final WorldEventReader STARFALL_READER = new WorldEventReader(STARFALL_ID) {
-        @Override
-        public WorldEventInstance createInstance(CompoundTag tag) {
-            return fromNBT(tag);
-        }
-    };
+
+    static {
+        new WorldEventReader(STARFALL_ID) {
+            @Override
+            public WorldEventInstance createInstance(CompoundTag tag) {
+                return fromNBT(tag);
+            }
+        };
+    }
 
     public StarfallActor actor;
     @Nullable
@@ -109,10 +112,14 @@ public class StarfallEvent extends WorldEventInstance {
     @Override
     public void end(ServerLevel level) {
         if (determined) {
+            int failures = 0;
             while (true) {
-                int failures = 0;
                 int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
                 BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+                if (targetedPos == null) {
+                    failures++;
+                    continue;
+                }
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
                     actor.fall(level, target);
@@ -126,9 +133,11 @@ public class StarfallEvent extends WorldEventInstance {
             }
         } else {
             BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
-            boolean success = exactPosition || actor.canFall(level, target);
-            if (success) {
-                actor.fall(level, target);
+            if (target != null) {
+                boolean success = exactPosition || actor.canFall(level, target);
+                if (success) {
+                    actor.fall(level, target);
+                }
             }
         }
         if (loop && isEntityValid(level)) {
@@ -150,7 +159,7 @@ public class StarfallEvent extends WorldEventInstance {
         if (targetedUUID != null) {
             tag.putUUID("targetedUUID", targetedUUID);
         }
-        tag.putIntArray("pos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
+        tag.putIntArray("targetedPos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
         tag.putInt("startingCountdown", startingCountdown);
         tag.putInt("countdown", countdown);
         tag.putBoolean("loop", loop);
@@ -163,7 +172,7 @@ public class StarfallEvent extends WorldEventInstance {
     public void deserializeNBT(CompoundTag tag) {
         actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
         targetedUUID = tag.getUUID("targetedUUID");
-        int[] positions = tag.getIntArray("pos");
+        int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         startingCountdown = tag.getInt("startingCountdown");
         countdown = tag.getInt("countdown");
