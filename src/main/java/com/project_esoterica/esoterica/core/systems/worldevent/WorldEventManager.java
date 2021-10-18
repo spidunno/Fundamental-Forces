@@ -114,7 +114,7 @@ public class WorldEventManager {
             BlockState state = level.getBlockState(pos);
             if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
             {
-                return false;
+                failed+=2;
             }
             if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
             {
@@ -126,11 +126,11 @@ public class WorldEventManager {
             }
             if (!blockCheck(level, state))
             {
-                failed++;
-                if (failed >= failToAbort)
-                {
-                    return false;
-                }
+                failed+=1;
+            }
+            if (failed >= failToAbort)
+            {
+                return false;
             }
         }
         return true;
