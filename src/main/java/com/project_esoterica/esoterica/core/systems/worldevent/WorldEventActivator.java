@@ -14,7 +14,7 @@ public class WorldEventActivator {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
             if (areStarfallsAllowed(level)) {
                 if (!capability.firstTimeJoin) {
-                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.INITIAL_SPACE_DEBRIS, level, player).setLooping());
+                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
                 } else {
                     addSpaceDebrisIfMissing(level, player);
                 }
@@ -42,12 +42,12 @@ public class WorldEventActivator {
 
     public static void addSpaceDebris(ServerLevel level, LivingEntity entity, boolean inbound) {
         if (areStarfallsAllowed(level)) {
-            StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS, level, entity).setLooping().setDetermined(), inbound);
+            StarfallInstance debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
             Double chance = CommonConfig.ASTEROID_CHANCE.get();
             int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
-                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.ASTEROID, level, entity).randomizeCountdown(level, debrisInstance.startingCountdown).setDetermined(), inbound);
+                    WorldEventManager.addWorldEvent(level, new StarfallInstance(StarfallResults.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
                     chance *= 0.8f;
                 } else {
                     break;

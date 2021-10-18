@@ -30,7 +30,7 @@ public class FallStarCommand {
                                     StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
-                                    WorldEventManager.addWorldEvent(level, new StarfallInstance(result, level, pos), false);
+                                    WorldEventManager.addWorldEvent(level, new StarfallInstance(result).randomizedStartingCountdown(level).targetPosition(pos).determined(), false);
                                     source.sendSuccess(SpaceModLang.getCommandKey("fallstar_natural_position"), true);
                                     return 1;
                                 }))
@@ -40,7 +40,7 @@ public class FallStarCommand {
                                     StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
-                                    WorldEventManager.addWorldEvent(level, new StarfallInstance(result, level, target), false);
+                                    WorldEventManager.addWorldEvent(level, new StarfallInstance(result).randomizedStartingCountdown(level).targetEntity(target).determined(), false);
                                     source.sendSuccess(SpaceModLang.getCommandKey("fallstar_natural_target"), true);
                                     return 1;
                                 })))
@@ -54,7 +54,7 @@ public class FallStarCommand {
                                             StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
-                                            WorldEventManager.addWorldEvent(level, new StarfallInstance(result, pos, countdown), false);
+                                            WorldEventManager.addWorldEvent(level, new StarfallInstance(result).exactStartingCountdown(countdown).targetExactPosition(pos), false);
                                             source.sendSuccess(SpaceModLang.getCommandKey("fallstar_artificial_position"), true);
                                             return 1;
                                         })))
@@ -67,7 +67,7 @@ public class FallStarCommand {
                                             StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
-                                            WorldEventManager.addWorldEvent(level, new StarfallInstance(result, target, countdown), false);
+                                            WorldEventManager.addWorldEvent(level, new StarfallInstance(result).exactStartingCountdown(countdown).targetEntity(target), false);
                                             source.sendSuccess(SpaceModLang.getCommandKey("fallstar_artificial_target"), true);
                                             return 1;
                                         }))));

@@ -4,8 +4,10 @@ import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -13,51 +15,78 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class StarfallInstance extends WorldEventInstance {
-    public final StarfallResult result;
+
+    public static final String STARFALL_ID = "starfall";
+    public static final WorldEventReader STARFALL_READER = new WorldEventReader(STARFALL_ID) {
+        @Override
+        public WorldEventInstance createInstance(CompoundTag tag) {
+            return fromNBT(tag);
+        }
+    };
+
+    public StarfallResult result;
     @Nullable
-    public final UUID targetedUUID;
+    public UUID targetedUUID;
     public LivingEntity targetedEntity;
     public BlockPos targetedPos;
     public int startingCountdown;
     public int countdown;
     protected boolean loop;
     protected boolean determined;
+    protected boolean exactPosition;
 
-    public StarfallInstance(StarfallResult result, LivingEntity targetedEntity, int startingCountdown) {
-        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), startingCountdown);
+    private StarfallInstance() {
+        super(STARFALL_ID);
     }
-
-    public StarfallInstance(StarfallResult result, BlockPos targetedPos, int startingCountdown) {
-        this(result, null, targetedPos, startingCountdown);
-    }
-
-    public StarfallInstance(StarfallResult result, ServerLevel level, LivingEntity targetedEntity) {
-        this(result, targetedEntity.getUUID(), targetedEntity.getOnPos(), result.randomizedCountdown(level.random));
-    }
-
-    public StarfallInstance(StarfallResult result, ServerLevel level, BlockPos targetedPos) {
-        this(result, null, targetedPos, result.randomizedCountdown(level.random));
-    }
-
-    public StarfallInstance(StarfallResult result, @Nullable UUID targetedUUID, BlockPos targetedPos, int startingCountdown) {
+    public StarfallInstance(StarfallResult result) {
+        super(STARFALL_ID);
         this.result = result;
-        this.targetedUUID = targetedUUID;
-        this.targetedPos = targetedPos;
-        this.startingCountdown = startingCountdown;
-        this.countdown = startingCountdown;
     }
 
-    public StarfallInstance randomizeCountdown(ServerLevel level, int parentCountdown) {
-        this.startingCountdown = result.randomizedCountdown(level.random, parentCountdown);
+    public static StarfallInstance fromNBT(CompoundTag tag) {
+        StarfallInstance instance = new StarfallInstance();
+        instance.deserializeNBT(tag);
+        return instance;
+    }
+
+    public StarfallInstance targetEntity(LivingEntity target) {
+        this.targetedUUID = target.getUUID();
+        this.targetedEntity = target;
+        this.targetedPos = target.getOnPos();
         return this;
     }
 
-    public StarfallInstance setLooping() {
+    public StarfallInstance targetPosition(BlockPos targetedPos) {
+        this.targetedPos = targetedPos;
+        return this;
+    }
+
+    public StarfallInstance targetExactPosition(BlockPos targetedPos) {
+        this.targetedPos = targetedPos;
+        this.exactPosition = true;
+        return this;
+    }
+
+    public StarfallInstance randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
+        return exactStartingCountdown(result.randomizedCountdown(level.random, parentCountdown));
+    }
+
+    public StarfallInstance randomizedStartingCountdown(ServerLevel level) {
+        return exactStartingCountdown(result.randomizedCountdown(level.random));
+    }
+
+    public StarfallInstance exactStartingCountdown(int startingCountdown) {
+        this.startingCountdown = startingCountdown;
+        this.countdown = startingCountdown;
+        return this;
+    }
+
+    public StarfallInstance looping() {
         this.loop = true;
         return this;
     }
 
-    public StarfallInstance setDetermined() {
+    public StarfallInstance determined() {
         this.determined = true;
         return this;
     }
@@ -69,10 +98,11 @@ public class StarfallInstance extends WorldEventInstance {
                 targetedPos = targetedEntity.getOnPos();
             }
         }
+        if (isEntityValid(level))
+        {
+            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
+        }
         countdown--;
-//        if (isEntityValid(level)) {
-//            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
-//        }
         if (countdown <= 0) {
             end(level);
         }
@@ -84,10 +114,10 @@ public class StarfallInstance extends WorldEventInstance {
             while (true) {
                 int failures = 0;
                 int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
-                BlockPos randomizedTarget = result.randomizedStarfallPosition(level, targetedPos);
-                boolean success = result.canFall(level, randomizedTarget);
+                BlockPos target = exactPosition ? targetedPos : result.randomizedStarfallPosition(level, targetedPos);
+                boolean success = exactPosition || result.canFall(level, target);
                 if (success) {
-                    result.fall(level, randomizedTarget);
+                    result.fall(level, target);
                     break;
                 } else {
                     failures++;
@@ -96,13 +126,11 @@ public class StarfallInstance extends WorldEventInstance {
                     }
                 }
             }
-        }
-        else
-        {
-            BlockPos randomizedTarget = result.randomizedStarfallPosition(level, targetedPos);
-            boolean success = result.canFall(level, randomizedTarget);
+        } else {
+            BlockPos target = exactPosition ? targetedPos : result.randomizedStarfallPosition(level, targetedPos);
+            boolean success = exactPosition || result.canFall(level, target);
             if (success) {
-                result.fall(level, randomizedTarget);
+                result.fall(level, target);
             }
         }
         if (loop && isEntityValid(level)) {
@@ -126,23 +154,24 @@ public class StarfallInstance extends WorldEventInstance {
         }
         tag.putIntArray("pos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
         tag.putInt("startingCountdown", startingCountdown);
-        tag.putBoolean("invalidated", invalidated);
         tag.putInt("countdown", countdown);
         tag.putBoolean("loop", loop);
         tag.putBoolean("determined", determined);
+        tag.putBoolean("exactPosition", exactPosition);
+        super.serializeNBT(tag);
     }
 
-    public static StarfallInstance deserializeNBT(CompoundTag tag) {
-        StarfallResult result = StarfallResults.STARFALL_RESULTS.get(tag.getString("resultId"));
-        UUID targetedUUID = tag.getUUID("targetedUUID");
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        result = StarfallResults.STARFALL_RESULTS.get(tag.getString("resultId"));
+        targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("pos");
-        BlockPos targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
-        int startingCountdown = tag.getInt("startingCountdown");
-        StarfallInstance instance = new StarfallInstance(result, targetedUUID, targetedPos, startingCountdown);
-        instance.invalidated = tag.getBoolean("invalidated");
-        instance.countdown = tag.getInt("countdown");
-        instance.loop = tag.getBoolean("loop");
-        instance.determined = tag.getBoolean("determined");
-        return instance;
+        targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
+        startingCountdown = tag.getInt("startingCountdown");
+        countdown = tag.getInt("countdown");
+        loop = tag.getBoolean("loop");
+        determined = tag.getBoolean("determined");
+        exactPosition = tag.getBoolean("exactPosition");
+        super.deserializeNBT(tag);
     }
 }

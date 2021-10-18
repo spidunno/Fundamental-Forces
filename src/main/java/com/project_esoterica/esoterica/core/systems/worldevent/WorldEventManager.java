@@ -18,9 +18,11 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class WorldEventManager {
 
+    public static HashMap<String, WorldEventReader> READERS = new HashMap<>();
     public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
         return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
     }
@@ -67,8 +69,9 @@ public class WorldEventManager {
         int starfallCount = tag.getInt("worldEventCount");
         for (int i = 0; i < starfallCount; i++) {
             CompoundTag instanceTag = tag.getCompound("worldEvent_" + i);
-            StarfallInstance instance = StarfallInstance.deserializeNBT(instanceTag);
-            capability.ACTIVE_WORLD_EVENTS.add(instance);
+            WorldEventReader reader = READERS.get(instanceTag.getString("id"));
+            WorldEventInstance eventInstance = reader.createInstance(instanceTag);
+            capability.ACTIVE_WORLD_EVENTS.add(eventInstance);
         }
     }
 

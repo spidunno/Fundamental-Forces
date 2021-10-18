@@ -4,7 +4,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 
 public abstract class WorldEventInstance {
+    public String id;
     public boolean invalidated;
+
+    public WorldEventInstance(String id) {
+        this.id = id;
+    }
 
     public void start(ServerLevel level) {
 
@@ -15,14 +20,16 @@ public abstract class WorldEventInstance {
     }
 
     public void end(ServerLevel level) {
-        invalidate(level);
-    }
-
-    public void invalidate(ServerLevel level) {
         invalidated = true;
     }
 
     public void serializeNBT(CompoundTag tag) {
+        tag.putString("id", id);
+        tag.putBoolean("invalidated", invalidated);
+    }
+    public void deserializeNBT(CompoundTag tag) {
+        id = tag.getString("id");
+        invalidated = tag.getBoolean("invalidated");
 
     }
 }
