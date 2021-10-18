@@ -1,6 +1,6 @@
-package com.project_esoterica.esoterica.common.worldevents.starfall.results;
+package com.project_esoterica.esoterica.common.worldevents.starfall.actors;
 
-import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,12 +9,12 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.Random;
 
-public class SpaceDebrisStarfallResult extends StarfallResult {
-    protected SpaceDebrisStarfallResult(String id, int startingCountdown) {
+public class SpaceDebrisStarfallActor extends StarfallActor {
+    protected SpaceDebrisStarfallActor(String id, int startingCountdown) {
         super(id, startingCountdown);
     }
 
-    public SpaceDebrisStarfallResult() {
+    public SpaceDebrisStarfallActor() {
         super("space_debris", CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 

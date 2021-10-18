@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.core.config.CommonConfig;
-import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
+import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
@@ -23,7 +23,7 @@ public class StarfallEvent extends WorldEventInstance {
         }
     };
 
-    public StarfallResult result;
+    public StarfallActor actor;
     @Nullable
     public UUID targetedUUID;
     public LivingEntity targetedEntity;
@@ -38,9 +38,9 @@ public class StarfallEvent extends WorldEventInstance {
         super(STARFALL_ID);
     }
 
-    public StarfallEvent(StarfallResult result) {
+    public StarfallEvent(StarfallActor actor) {
         super(STARFALL_ID);
-        this.result = result;
+        this.actor = actor;
     }
 
     public static StarfallEvent fromNBT(CompoundTag tag) {
@@ -68,11 +68,11 @@ public class StarfallEvent extends WorldEventInstance {
     }
 
     public StarfallEvent randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
-        return exactStartingCountdown(result.randomizedCountdown(level.random, parentCountdown));
+        return exactStartingCountdown(actor.randomizedCountdown(level.random, parentCountdown));
     }
 
     public StarfallEvent randomizedStartingCountdown(ServerLevel level) {
-        return exactStartingCountdown(result.randomizedCountdown(level.random));
+        return exactStartingCountdown(actor.randomizedCountdown(level.random));
     }
 
     public StarfallEvent exactStartingCountdown(int startingCountdown) {
@@ -110,10 +110,10 @@ public class StarfallEvent extends WorldEventInstance {
             while (true) {
                 int failures = 0;
                 int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
-                BlockPos target = exactPosition ? targetedPos : result.randomizedStarfallPosition(level, targetedPos);
-                boolean success = exactPosition || result.canFall(level, target);
+                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+                boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
-                    result.fall(level, target);
+                    actor.fall(level, target);
                     break;
                 } else {
                     failures++;
@@ -123,10 +123,10 @@ public class StarfallEvent extends WorldEventInstance {
                 }
             }
         } else {
-            BlockPos target = exactPosition ? targetedPos : result.randomizedStarfallPosition(level, targetedPos);
-            boolean success = exactPosition || result.canFall(level, target);
+            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+            boolean success = exactPosition || actor.canFall(level, target);
             if (success) {
-                result.fall(level, target);
+                actor.fall(level, target);
             }
         }
         if (loop && isEntityValid(level)) {
@@ -144,7 +144,7 @@ public class StarfallEvent extends WorldEventInstance {
 
     @Override
     public void serializeNBT(CompoundTag tag) {
-        tag.putString("resultId", result.id);
+        tag.putString("resultId", actor.id);
         if (targetedUUID != null) {
             tag.putUUID("targetedUUID", targetedUUID);
         }
@@ -159,7 +159,7 @@ public class StarfallEvent extends WorldEventInstance {
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        result = StarfallResults.STARFALL_RESULTS.get(tag.getString("resultId"));
+        actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
         targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("pos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);

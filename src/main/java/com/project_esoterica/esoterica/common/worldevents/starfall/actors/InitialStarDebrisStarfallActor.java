@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.common.worldevents.starfall.results;
+package com.project_esoterica.esoterica.common.worldevents.starfall.actors;
 
 import com.project_esoterica.esoterica.common.entity.falling.FallingCrashpodEntity;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
@@ -9,8 +9,8 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
-public class InitialStarDebrisStarfallResult extends SpaceDebrisStarfallResult {
-    public InitialStarDebrisStarfallResult() {
+public class InitialStarDebrisStarfallActor extends SpaceDebrisStarfallActor {
+    public InitialStarDebrisStarfallActor() {
         super("initial_space_debris", CommonConfig.INITIAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 

@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
+import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -23,7 +23,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
     @Override
     public String parse(final StringReader reader) throws CommandSyntaxException {
         String read = reader.readUnquotedString();
-        if (StarfallResults.STARFALL_RESULTS.containsKey(read)) {
+        if (StarfallActors.STARFALL_RESULTS.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -44,7 +44,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
 
     @Override
     public Collection<String> getExamples() {
-        return StarfallResults.STARFALL_RESULTS.keySet();
+        return StarfallActors.STARFALL_RESULTS.keySet();
     }
 
     private static String escape(final String input) {

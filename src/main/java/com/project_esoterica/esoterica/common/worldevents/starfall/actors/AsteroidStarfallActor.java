@@ -1,6 +1,6 @@
-package com.project_esoterica.esoterica.common.worldevents.starfall.results;
+package com.project_esoterica.esoterica.common.worldevents.starfall.actors;
 
-import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Blocks;
 
 import java.util.Random;
 
-public class AsteroidStarfallResult extends StarfallResult {
-    public AsteroidStarfallResult() {
+public class AsteroidStarfallActor extends StarfallActor {
+    public AsteroidStarfallActor() {
         super("asteroid", CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
     }
 

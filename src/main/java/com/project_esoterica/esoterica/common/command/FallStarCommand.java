@@ -3,9 +3,9 @@ package com.project_esoterica.esoterica.common.command;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallEvent;
-import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallResult;
+import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
+import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.command.StarfallResultArgumentType;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.commands.CommandSourceStack;
@@ -27,7 +27,7 @@ public class FallStarCommand {
                         .then(Commands.argument("position", BlockPosArgument.blockPos())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                     WorldEventManager.addWorldEvent(level, new StarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined(), false);
@@ -37,7 +37,7 @@ public class FallStarCommand {
                         .then(Commands.argument("target", EntityArgument.player())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
                                     WorldEventManager.addWorldEvent(level, new StarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined(), false);
@@ -51,7 +51,7 @@ public class FallStarCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                             WorldEventManager.addWorldEvent(level, new StarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos), false);
@@ -64,7 +64,7 @@ public class FallStarCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallResult result = StarfallResults.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             WorldEventManager.addWorldEvent(level, new StarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target), false);
