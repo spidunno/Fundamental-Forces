@@ -98,10 +98,6 @@ public class StarfallInstance extends WorldEventInstance {
                 targetedPos = targetedEntity.getOnPos();
             }
         }
-        if (isEntityValid(level))
-        {
-            targetedEntity.sendMessage(new TextComponent("" + countdown), targetedUUID);
-        }
         countdown--;
         if (countdown <= 0) {
             end(level);
