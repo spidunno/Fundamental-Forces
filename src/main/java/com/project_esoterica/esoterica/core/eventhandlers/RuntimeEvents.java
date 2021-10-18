@@ -16,7 +16,9 @@ public class RuntimeEvents {
             ServerLevel level = player.getLevel();
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
             ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
-                chunkDataCapability.heightmapChanges++;
+                if (level.canSeeSky(player.blockPosition())) {
+                    chunkDataCapability.heightmapChanges++;
+                }
             });
         }
     }
@@ -27,7 +29,9 @@ public class RuntimeEvents {
             ServerLevel level = player.getLevel();
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
             ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
-                chunkDataCapability.heightmapChanges++;
+                if (level.canSeeSky(player.blockPosition())) {
+                    chunkDataCapability.heightmapChanges++;
+                }
             });
         }
     }
