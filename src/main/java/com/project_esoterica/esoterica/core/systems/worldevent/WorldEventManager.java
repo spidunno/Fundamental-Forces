@@ -116,7 +116,7 @@ public class WorldEventManager {
             BlockState state = level.getBlockState(pos);
             if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
             {
-                failed+=4;
+                failed+=8;
             }
             if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
             {
