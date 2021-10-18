@@ -8,6 +8,8 @@ import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
 public class BibitRenderer extends GeoEntityRenderer<BibitEntity> {
     public BibitRenderer(EntityRendererProvider.Context renderManager) {
         super(renderManager, new BibitModel());
+        this.shadowRadius = 0.5F;
+        this.shadowStrength = 0.5F;
         addLayer(new BibitGlowLayer(this));
     }
 }

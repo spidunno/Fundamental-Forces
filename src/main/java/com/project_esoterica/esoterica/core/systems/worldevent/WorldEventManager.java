@@ -106,6 +106,7 @@ public class WorldEventManager {
     public static ArrayList<BlockPos> nearbyBlockList(ServerLevel level, BlockPos centerPos) {
         int size = CommonConfig.STARFALL_SAFETY_CHECK_RANGE.get();
         ArrayList<BlockPos> result = new ArrayList<>();
+        //TODO: fix this shit.
         //this is REALLY bad, preferably turn it into an iterable or stream.
         //I used the thing below earlier but that for some reason had the very first point stored in every single member of the stream? ? ? ??
         //return BlockPos.betweenClosedStream(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).filter(p -> !level.getBlockState(p).isAir());

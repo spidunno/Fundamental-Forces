@@ -31,10 +31,14 @@ public abstract class FallingEntity extends Entity {
 
     @Override
     public void tick() {
+        if (targetBlockPos == null)
+        {
+            kill();
+            return;
+        }
         Vec3 vel = getDeltaMovement();
         move(MoverType.SELF, getDeltaMovement());
         setDeltaMovement(vel);
-
         if (level.isClientSide) {
             spawnTrail();
         } else if (blockPosition().getY() <= targetBlockPos.getY()) {

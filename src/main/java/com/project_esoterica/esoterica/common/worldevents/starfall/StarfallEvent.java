@@ -113,10 +113,13 @@ public class StarfallEvent extends WorldEventInstance {
     public void end(ServerLevel level) {
         if (determined) {
             int failures = 0;
+            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
             while (true) {
-                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
+                if (failures >= maximumFailures) {
+                    break;
+                }
                 BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
-                if (targetedPos == null) {
+                if (target == null) {
                     failures++;
                     continue;
                 }
@@ -126,9 +129,6 @@ public class StarfallEvent extends WorldEventInstance {
                     break;
                 } else {
                     failures++;
-                    if (failures >= maximumFailures) {
-                        break;
-                    }
                 }
             }
         } else {
