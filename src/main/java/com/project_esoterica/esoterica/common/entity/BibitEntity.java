@@ -48,11 +48,11 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
         }
     }
 
-    private static final EntityDataAccessor<String> ACTUAL_STATE = SynchedEntityData.defineId(BibitEntity.class, EntityDataSerializers.STRING);
-    public bibitStateEnum actualState = bibitStateEnum.IDLE;
+    private static final EntityDataAccessor<String> STATE = SynchedEntityData.defineId(BibitEntity.class, EntityDataSerializers.STRING);
+    public bibitStateEnum state = bibitStateEnum.IDLE;
     private static final EntityDataAccessor<String> VISUAL_STATE = SynchedEntityData.defineId(BibitEntity.class, EntityDataSerializers.STRING);
     public bibitStateEnum visualState = bibitStateEnum.IDLE;
-    private int stateUpdateLock = 0;
+    private int preventStateChanges = 0;
     private final AnimationFactory factory = new AnimationFactory(this);
 
     public BibitEntity(Level p_21684_) {
@@ -63,7 +63,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.getEntityData().define(ACTUAL_STATE, bibitStateEnum.IDLE.stateIdentifier);
+        this.getEntityData().define(STATE, bibitStateEnum.IDLE.stateIdentifier);
         this.getEntityData().define(VISUAL_STATE, bibitStateEnum.IDLE.stateIdentifier);
     }
 
@@ -96,29 +96,27 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> p_21104_) {
         super.onSyncedDataUpdated(p_21104_);
-        actualState = bibitStateEnum.getFeelingsValue(getEntityData().get(ACTUAL_STATE));
+        state = bibitStateEnum.getFeelingsValue(getEntityData().get(STATE));
         visualState = bibitStateEnum.getFeelingsValue(getEntityData().get(VISUAL_STATE));
     }
 
     @Override
     public void setCustomName(@Nullable Component p_20053_) {
         super.setCustomName(p_20053_);
-        if (!visualState.equals(actualState))
-        {
-            return;
-        }
-        for (bibitStateEnum feelings : bibitStateEnum.values()) {
-            if (p_20053_.getString().equals(feelings.stateIdentifier)) {
-                setVisualState(feelings);
+        for (bibitStateEnum states : bibitStateEnum.values()) {
+            if (p_20053_.getString().equals(states.stateIdentifier)) {
+                setVisualState(states);
+                return;
             }
         }
+        setVisualState(bibitStateEnum.IDLE);
     }
 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
-        if (stateUpdateLock > 0) {
-            stateUpdateLock--;
+        if (preventStateChanges > 0) {
+            preventStateChanges--;
         } else {
             setState(bibitStateEnum.IDLE, 0);
         }
@@ -127,45 +125,42 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = super.serializeNBT();
-        tag.putString("feelings", actualState.stateIdentifier);
-        tag.putInt("lockExpression", stateUpdateLock);
+        tag.putString("state", state.stateIdentifier);
+        tag.putInt("preventStateChanges", preventStateChanges);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         super.deserializeNBT(tag);
-        forceState(bibitStateEnum.valueOf(tag.getString("expression")), tag.getInt("lockExpression"));
+        forceState(bibitStateEnum.valueOf(tag.getString("state")), tag.getInt("preventStateChanges"));
     }
 
     public void setState(bibitStateEnum feelings, int lockExpression) {
-        if (this.stateUpdateLock == 0) {
+        if (this.preventStateChanges == 0) {
             forceState(feelings, lockExpression);
         }
     }
 
-    public void setVisualState(bibitStateEnum feelings) {
-        this.getEntityData().set(VISUAL_STATE, Util.make(() -> feelings.stateIdentifier));
+    public void setVisualState(bibitStateEnum state) {
+        this.visualState = state;
+        this.getEntityData().set(VISUAL_STATE, Util.make(() -> state.stateIdentifier));
     }
 
     public void forceState(bibitStateEnum state, int lockExpression) {
-        if (this.stateUpdateLock == -1) {
+        if (this.preventStateChanges == -1) {
             return;
         }
-        this.stateUpdateLock = lockExpression;
-        if (actualState.equals(visualState)) {
-            this.visualState = state;
-            this.getEntityData().set(VISUAL_STATE, Util.make(() -> state.stateIdentifier));
-        }
-        this.actualState = state;
-        this.getEntityData().set(ACTUAL_STATE, Util.make(() -> state.stateIdentifier));
+        this.preventStateChanges = lockExpression;
+        this.state = state;
+        this.getEntityData().set(STATE, Util.make(() -> state.stateIdentifier));
     }
 
     private <E extends IAnimatable> PlayState chooseAnimation(AnimationEvent<E> event) {
         if (getDeltaMovement().x() == 0 && getDeltaMovement().z() == 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bibit.idle", true));
         } else {
-            if (actualState.equals(bibitStateEnum.PANICKED)) {
+            if (state.equals(bibitStateEnum.PANICKED)) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bibit.run", true));
             } else {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.bibit.walk", true));

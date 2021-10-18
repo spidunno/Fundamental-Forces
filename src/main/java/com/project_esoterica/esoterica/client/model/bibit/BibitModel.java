@@ -23,6 +23,7 @@ public class BibitModel extends AnimatedGeoModel<BibitEntity> {
     }
 
     public static ResourceLocation getOverlayTextureLocation(BibitEntity bibit) {
-        return EsotericaHelper.prefix("textures/entity/bibit/bibit_" + bibit.visualState.stateIdentifier + ".png");
+        String identifier = bibit.visualState != BibitEntity.bibitStateEnum.IDLE ? bibit.visualState.stateIdentifier : bibit.state.stateIdentifier;
+        return EsotericaHelper.prefix("textures/entity/bibit/bibit_" + identifier + ".png");
     }
 }
