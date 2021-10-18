@@ -13,7 +13,7 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-public class StarfallInstance extends WorldEventInstance {
+public class StarfallEvent extends WorldEventInstance {
 
     public static final String STARFALL_ID = "starfall";
     public static final WorldEventReader STARFALL_READER = new WorldEventReader(STARFALL_ID) {
@@ -34,59 +34,59 @@ public class StarfallInstance extends WorldEventInstance {
     protected boolean determined;
     protected boolean exactPosition;
 
-    private StarfallInstance() {
+    private StarfallEvent() {
         super(STARFALL_ID);
     }
 
-    public StarfallInstance(StarfallResult result) {
+    public StarfallEvent(StarfallResult result) {
         super(STARFALL_ID);
         this.result = result;
     }
 
-    public static StarfallInstance fromNBT(CompoundTag tag) {
-        StarfallInstance instance = new StarfallInstance();
+    public static StarfallEvent fromNBT(CompoundTag tag) {
+        StarfallEvent instance = new StarfallEvent();
         instance.deserializeNBT(tag);
         return instance;
     }
 
-    public StarfallInstance targetEntity(LivingEntity target) {
+    public StarfallEvent targetEntity(LivingEntity target) {
         this.targetedUUID = target.getUUID();
         this.targetedEntity = target;
         this.targetedPos = target.getOnPos();
         return this;
     }
 
-    public StarfallInstance targetPosition(BlockPos targetedPos) {
+    public StarfallEvent targetPosition(BlockPos targetedPos) {
         this.targetedPos = targetedPos;
         return this;
     }
 
-    public StarfallInstance targetExactPosition(BlockPos targetedPos) {
+    public StarfallEvent targetExactPosition(BlockPos targetedPos) {
         this.targetedPos = targetedPos;
         this.exactPosition = true;
         return this;
     }
 
-    public StarfallInstance randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
+    public StarfallEvent randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
         return exactStartingCountdown(result.randomizedCountdown(level.random, parentCountdown));
     }
 
-    public StarfallInstance randomizedStartingCountdown(ServerLevel level) {
+    public StarfallEvent randomizedStartingCountdown(ServerLevel level) {
         return exactStartingCountdown(result.randomizedCountdown(level.random));
     }
 
-    public StarfallInstance exactStartingCountdown(int startingCountdown) {
+    public StarfallEvent exactStartingCountdown(int startingCountdown) {
         this.startingCountdown = startingCountdown;
         this.countdown = startingCountdown;
         return this;
     }
 
-    public StarfallInstance looping() {
+    public StarfallEvent looping() {
         this.loop = true;
         return this;
     }
 
-    public StarfallInstance determined() {
+    public StarfallEvent determined() {
         this.determined = true;
         return this;
     }
