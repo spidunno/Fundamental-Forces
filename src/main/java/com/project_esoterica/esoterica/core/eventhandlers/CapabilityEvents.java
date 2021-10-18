@@ -40,7 +40,7 @@ public class CapabilityEvents {
             event.addCapability(EsotericaHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
         }
     }
-    
+
     @SubscribeEvent
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {

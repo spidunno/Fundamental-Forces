@@ -8,8 +8,7 @@ public abstract class WorldEventReader {
         WorldEventManager.READERS.put(reference, this);
     }
 
-    public WorldEventInstance createInstance(CompoundTag tag)
-    {
+    public WorldEventInstance createInstance(CompoundTag tag) {
         return null;
     }
 }

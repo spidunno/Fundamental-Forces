@@ -13,28 +13,26 @@ public class ScreenshakeHandler {
     public static float yawOffset;
     public static float pitchOffset;
 
-    public static void cameraTick(Camera camera, Random random)
-    {
+    public static void cameraTick(Camera camera, Random random) {
         yawOffset = randomizeOffset(random);
         pitchOffset = randomizeOffset(random);
-        camera.setRotation(camera.getYRot()+yawOffset, camera.getXRot()+pitchOffset);
+        camera.setRotation(camera.getYRot() + yawOffset, camera.getXRot() + pitchOffset);
     }
-    public static void clientTick(Random random)
-    {
-        if (intensity > 0)
-        {
+
+    public static void clientTick(Random random) {
+        if (intensity > 0) {
             intensity *= falloff;
         }
     }
-    public static void addScreenshake(float factor, float newFalloff)
-    {
+
+    public static void addScreenshake(float factor, float newFalloff) {
         float max = ClientConfig.MAX_SCREENSHAKE_INTENSITY.get();
-        float needed = max - Math.min(intensity,max);
+        float needed = max - Math.min(intensity, max);
         intensity += Mth.lerp(factor, 0, needed);
         falloff = newFalloff;
     }
-    public static float randomizeOffset(Random random)
-    {
-        return Mth.nextFloat(random, -intensity*2, intensity*2);
+
+    public static float randomizeOffset(Random random) {
+        return Mth.nextFloat(random, -intensity * 2, intensity * 2);
     }
 }

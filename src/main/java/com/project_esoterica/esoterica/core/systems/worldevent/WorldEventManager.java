@@ -2,7 +2,6 @@ package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.esoterica.common.worldevent.starfall.StarfallInstance;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
 import net.minecraft.core.BlockPos;
@@ -10,7 +9,6 @@ import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,6 +21,7 @@ import java.util.HashMap;
 public class WorldEventManager {
 
     public static HashMap<String, WorldEventReader> READERS = new HashMap<>();
+
     public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
         return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
     }
@@ -95,15 +94,11 @@ public class WorldEventManager {
         //I used the thing below earlier but that for some reason had the very first point stored in every single member of the stream? ? ? ??
         //return BlockPos.betweenClosedStream(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ)).filter(p -> !level.getBlockState(p).isAir());
 
-        for (int x = -size; x <= size;x++)
-        {
-            for (int y = (int) (-size/4f); y <= size/4f; y++)
-            {
-                for (int z = -size; z <= size;z++)
-                {
-                    BlockPos pos = new BlockPos(centerPos.offset(x,y,z));
-                    if (isBlockImportant(level, pos))
-                    {
+        for (int x = -size; x <= size; x++) {
+            for (int y = (int) (-size / 4f); y <= size / 4f; y++) {
+                for (int z = -size; z <= size; z++) {
+                    BlockPos pos = new BlockPos(centerPos.offset(x, y, z));
+                    if (isBlockImportant(level, pos)) {
                         result.add(pos);
                     }
                 }
@@ -114,27 +109,22 @@ public class WorldEventManager {
 
     public static boolean blockCheck(ServerLevel level, ArrayList<BlockPos> arrayList) {
         int failed = 0;
-        int failToAbort = (int) (arrayList.size()*0.2f);
+        int failToAbort = (int) (arrayList.size() * 0.2f);
         for (BlockPos pos : arrayList) {
             BlockState state = level.getBlockState(pos);
-            if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
-            {
-                failed+=8;
+            if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
+                failed += 8;
             }
-            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE))
-            {
+            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
                 return false;
             }
-            if (!blockEntityCheck(level, pos))
-            {
+            if (!blockEntityCheck(level, pos)) {
                 return false;
             }
-            if (!blockCheck(level, state))
-            {
-                failed+=1;
+            if (!blockCheck(level, state)) {
+                failed += 1;
             }
-            if (failed >= failToAbort)
-            {
+            if (failed >= failToAbort) {
                 return false;
             }
         }
@@ -148,20 +138,17 @@ public class WorldEventManager {
     @SuppressWarnings("all")
     public static boolean blockCheck(ServerLevel level, BlockState state) {
         Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTagRegistry.TERRACOTTA, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.MUSHROOM_GROW_BLOCK, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.SNOW, BlockTags.SAND, Tags.Blocks.SANDSTONE};
-        for (Tag.Named<Block> tag : tags)
-        {
-            if (state.is(tag))
-            {
+        for (Tag.Named<Block> tag : tags) {
+            if (state.is(tag)) {
                 return true;
             }
         }
         return false;
     }
-    public static boolean isBlockImportant(ServerLevel level, BlockPos pos)
-    {
+
+    public static boolean isBlockImportant(ServerLevel level, BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        if (level.isFluidAtPosition(pos, p -> !p.isEmpty()))
-        {
+        if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
             return true;
         }
         return state.getMaterial().isSolid() && !state.isAir() && !state.getMaterial().isReplaceable() && state.getMaterial().blocksMotion();

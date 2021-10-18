@@ -5,7 +5,7 @@
   "refmap": "esoterica.refmap.json",
   "mixins": [
   ],
-  "client":[
+  "client": [
     "CameraMixin"
   ],
   "injectors": {

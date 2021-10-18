@@ -29,13 +29,12 @@ public class StarfallResult {
         return randomizedCountdown(random, startingCountdown);
     }
 
-    public void fall(ServerLevel level, BlockPos pos) {
+    public void fall(ServerLevel level, BlockPos targetPos) {
 
     }
 
     public final boolean canFall(ServerLevel level, BlockPos pos) {
-        if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty()))
-        {
+        if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty())) {
             return false;
         }
         boolean heightmap = WorldEventManager.heightmapCheck(level, pos, 2);

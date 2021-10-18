@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 import javax.annotation.Nonnull;
@@ -17,6 +18,8 @@ import java.util.stream.Stream;
 import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 public class EsotericaHelper {
+
+    public static final Random RANDOM = new Random();
 
     public static void updateState(Level level, BlockPos pos) {
         updateState(level.getBlockState(pos), level, pos);
@@ -94,5 +97,12 @@ public class EsotericaHelper {
             }
         }
         return matchingBlocks.toArray(new Block[0]);
+    }
+
+    public static Vec3 randomUnitVec3() {
+        return new Vec3(1, 1, 1)
+                .xRot(RANDOM.nextFloat() * 6.28f)
+                .yRot(RANDOM.nextFloat() * 6.28f)
+                .zRot(RANDOM.nextFloat() * 6.28f);
     }
 }

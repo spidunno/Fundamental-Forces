@@ -21,22 +21,21 @@ public class BibitGlowLayer extends GeoLayerRenderer<BibitEntity> {
         float r = 1;
         float g = 1;
         float b = 1;
-        if (bibit.visualState.equals(BibitEntity.bibitStateEnum.JEB_))
-        {
+        if (bibit.visualState.equals(BibitEntity.bibitStateEnum.JEB_)) {
             int i1 = 25; //Here lies garbage copied from SheepFurLayer.
             int i = bibit.tickCount / 25 + bibit.getId();
             int j = DyeColor.values().length;
             int k = i % j;
             int l = (i + 1) % j;
-            float f3 = ((float)(bibit.tickCount % i1) + partialTicks) / i1;
+            float f3 = ((float) (bibit.tickCount % i1) + partialTicks) / i1;
 
             float[] afloat1 = Sheep.getColorArray(DyeColor.byId(k));
             float[] afloat2 = Sheep.getColorArray(DyeColor.byId(l));
-            r = Math.min((afloat1[0] * (1.0F - f3) + afloat2[0] * f3)*1.5f,1);
-            g = Math.min((afloat1[1] * (1.0F - f3) + afloat2[1] * f3)*1.5f,1);
-            b = Math.min((afloat1[2] * (1.0F - f3) + afloat2[2] * f3)*1.5f,1);
+            r = Math.min((afloat1[0] * (1.0F - f3) + afloat2[0] * f3) * 1.5f, 1);
+            g = Math.min((afloat1[1] * (1.0F - f3) + afloat2[1] * f3) * 1.5f, 1);
+            b = Math.min((afloat1[2] * (1.0F - f3) + afloat2[2] * f3) * 1.5f, 1);
         }
-        renderCopyModel(getRenderer().getGeoModelProvider(), BibitModel.getOverlayTextureLocation(bibit),matrixStackIn,bufferIn,0xF000F0,bibit,partialTicks, r, g, b);
+        renderCopyModel(getRenderer().getGeoModelProvider(), BibitModel.getOverlayTextureLocation(bibit), matrixStackIn, bufferIn, 0xF000F0, bibit, partialTicks, r, g, b);
     }
 
     @Override

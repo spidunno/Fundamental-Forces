@@ -23,8 +23,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
     @Override
     public String parse(final StringReader reader) throws CommandSyntaxException {
         String read = reader.readUnquotedString();
-        if (StarfallResults.STARFALL_RESULTS.containsKey(read))
-        {
+        if (StarfallResults.STARFALL_RESULTS.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -37,8 +36,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
 
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
-        for (String suggestion : getExamples())
-        {
+        for (String suggestion : getExamples()) {
             builder = builder.suggest(suggestion);
         }
         return builder.buildFuture();

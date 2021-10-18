@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.data;
 
-import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.EsotericaHelper;
+import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;

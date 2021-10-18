@@ -12,15 +12,13 @@ import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class NetworkManager
-{
+public class NetworkManager {
     public static final String PROTOCOL_VERSION = "1";
     public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(EsotericaHelper.prefix("main"), () -> NetworkManager.PROTOCOL_VERSION, NetworkManager.PROTOCOL_VERSION::equals, NetworkManager.PROTOCOL_VERSION::equals);
-    
+
     @SuppressWarnings("UnusedAssignment")
     @SubscribeEvent
-    public static void registerNetworkStuff(FMLCommonSetupEvent event)
-    {
+    public static void registerNetworkStuff(FMLCommonSetupEvent event) {
         int index = 0;
         INSTANCE.registerMessage(index++, ScreenshakePacket.class, ScreenshakePacket::encode, ScreenshakePacket::decode, ScreenshakePacket::whenThisPacketIsReceived);
     }

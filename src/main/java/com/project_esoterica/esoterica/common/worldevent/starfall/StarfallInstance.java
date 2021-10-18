@@ -1,13 +1,12 @@
 package com.project_esoterica.esoterica.common.worldevent.starfall;
 
 import com.project_esoterica.esoterica.core.config.CommonConfig;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallResults;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventActivator;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -38,6 +37,7 @@ public class StarfallInstance extends WorldEventInstance {
     private StarfallInstance() {
         super(STARFALL_ID);
     }
+
     public StarfallInstance(StarfallResult result) {
         super(STARFALL_ID);
         this.result = result;

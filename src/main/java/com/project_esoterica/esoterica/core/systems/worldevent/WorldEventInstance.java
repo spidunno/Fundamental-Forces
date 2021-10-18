@@ -27,6 +27,7 @@ public abstract class WorldEventInstance {
         tag.putString("id", id);
         tag.putBoolean("invalidated", invalidated);
     }
+
     public void deserializeNBT(CompoundTag tag) {
         id = tag.getString("id");
         invalidated = tag.getBoolean("invalidated");

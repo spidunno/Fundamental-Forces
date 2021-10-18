@@ -8,6 +8,7 @@ import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 public class ContentTab extends CreativeModeTab {
     public static final ContentTab INSTANCE = new ContentTab();
+
     public ContentTab() {
         super(MOD_ID);
     }

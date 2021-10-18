@@ -25,8 +25,7 @@ public class ChunkDataCapability implements SimpleCapability {
         CompoundTag tag = new CompoundTag();
         if (heightmapChanges > 50) {
             tag.putBoolean("invalid", true);
-        }
-        else{
+        } else {
             tag.putInt("heightmapChanges", heightmapChanges);
         }
         return tag;
@@ -40,6 +39,7 @@ public class ChunkDataCapability implements SimpleCapability {
     public static LazyOptional<ChunkDataCapability> getCapability(LevelChunk chunk) {
         return chunk.getCapability(CAPABILITY);
     }
+
     public static int getHeightmapChanges(LevelChunk chunk) {
         return chunk.getCapability(CAPABILITY).orElse(new ChunkDataCapability()).heightmapChanges;
     }

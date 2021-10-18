@@ -1,8 +1,8 @@
 package com.project_esoterica.esoterica.common.capability;
 
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;

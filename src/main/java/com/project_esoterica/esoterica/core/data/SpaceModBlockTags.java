@@ -7,10 +7,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-
-import java.util.stream.Collectors;
 
 import static com.project_esoterica.esoterica.EsotericaHelper.getModBlocks;
 import static net.minecraft.tags.BlockTags.*;
@@ -50,7 +47,7 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(WOODEN_TRAPDOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_trapdoor")));
         tag(WOODEN_PRESSURE_PLATES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_pressure_plate")));
 
-        tag(BlockTagRegistry.TERRACOTTA).add(Registry.BLOCK.stream().filter(b->b.getRegistryName().getPath().endsWith("terracotta")).toArray(Block[]::new));
+        tag(BlockTagRegistry.TERRACOTTA).add(Registry.BLOCK.stream().filter(b -> b.getRegistryName().getPath().endsWith("terracotta")).toArray(Block[]::new));
         tag(BlockTagRegistry.STARFALL_ALLOWED).add(Blocks.DIAMOND_BLOCK);
 
     }
