@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.client.renderer;
+package com.project_esoterica.esoterica.client.renderer.crashpod;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.entity.falling.FallingCrashpodEntity;

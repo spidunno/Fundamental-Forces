@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.client.model.bibit;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.common.entity.BibitEntity;
+import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

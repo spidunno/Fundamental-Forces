@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.common.entity;
+package com.project_esoterica.esoterica.common.entity.robot;
 
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
 import net.minecraft.Util;

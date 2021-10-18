@@ -1,8 +1,8 @@
-package com.project_esoterica.esoterica.client.renderer;
+package com.project_esoterica.esoterica.client.renderer.bibit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.client.model.bibit.BibitModel;
-import com.project_esoterica.esoterica.common.entity.BibitEntity;
+import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
