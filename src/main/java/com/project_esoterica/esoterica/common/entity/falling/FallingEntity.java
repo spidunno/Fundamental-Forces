@@ -26,6 +26,7 @@ public abstract class FallingEntity extends Entity {
     public FallingEntity(EntityType<?> p_19870, Level p_19871_, BlockPos targetBlockPos) {
         super(p_19870, p_19871_);
         this.targetBlockPos = targetBlockPos;
+        this.noPhysics = true;
     }
 
     @Override

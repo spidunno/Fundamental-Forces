@@ -32,6 +32,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         poseStack.mulPose(Vector3f.ZN.rotationDegrees(entity.tickCount * 2f));
+        poseStack.translate(0, -0.25, 0);
         MultiBufferSource delayedBuffer = RenderManager.getDelayedRender();
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = poseStack.last();
