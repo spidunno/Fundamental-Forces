@@ -4,6 +4,7 @@ import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import com.project_esoterica.esoterica.common.entity.falling.FallingCrashpodEntity;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,7 +24,7 @@ public class EntityRegistry {
                     .build(EsotericaHelper.prefix("bibit").toString()));
 
     public static final RegistryObject<EntityType<FallingCrashpodEntity>> FALLING_CRASHPOD = ENTITY_TYPES.register("falling_crashpod",
-            () -> EntityType.Builder.<FallingCrashpodEntity>of((e, w) -> new FallingCrashpodEntity(w, null), MobCategory.MISC).build(EsotericaHelper.prefix("falling_crashpod").toString()));
+            () -> EntityType.Builder.<FallingCrashpodEntity>of((e, w) -> new FallingCrashpodEntity(w, BlockPos.ZERO), MobCategory.MISC).build(EsotericaHelper.prefix("falling_crashpod").toString()));
 
     @SubscribeEvent
     public static void assignAttributes(EntityAttributeCreationEvent event) {
