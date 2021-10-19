@@ -9,11 +9,15 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.RenderUtilities;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
@@ -34,11 +38,10 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         poseStack.mulPose(Vector3f.ZN.rotationDegrees(entity.tickCount * 2f));
 
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RENDER_TYPE);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer((RenderType) RenderUtilities.GLOWING_SPRITE.apply(STAR_LOCATION));
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
         Matrix3f normal = pose.normal();
-
         vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 0, 0, 1);
         vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 0, 1, 1);
         vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 1, 1, 0);
