@@ -7,8 +7,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import org.lwjgl.opengl.GL11;
 
 public class RenderUtilities {
     public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("lightning_transparency", () -> {
@@ -26,21 +24,21 @@ public class RenderUtilities {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
     });
-
     public static RenderType GLOWING_SPRITE = RenderType.create(
             EsotericaMod.MOD_ID + ":glowing_sprite",
             DefaultVertexFormat.POSITION_COLOR_TEX,
             VertexFormat.Mode.QUADS, 256,
             false,false,
             RenderType.CompositeState.builder()
-                    //.setShaderState(new RenderStateShard.ShaderStateShard(null))
-                    .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, false))
+//                    .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getRendertypeEntityAlphaShader))
+//                    .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, false))
                     .setLightmapState(new RenderStateShard.LightmapStateShard(false))
-                    //.diffuseLighting(new RenderStateShard.DiffuseLightingStateShard(false))
                     .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
-                    .createCompositeState(false)
-    ), GLOWING = RenderType.create(
+//                    .setTextureState(new RenderStateShard.TextureStateShard(TextureAtlas.LOCATION_BLOCKS, false, false))
+                    .setCullState(new RenderStateShard.CullStateShard(false))
+                    .createCompositeState(true)
+    );
+    /*GLOWING = RenderType.create(
             EsotericaMod.MOD_ID + ":glowing",
             DefaultVertexFormat.POSITION_COLOR,
             GL11.GL_QUADS, 256,
@@ -87,5 +85,5 @@ public class RenderUtilities {
                     .transparency(ADDITIVE_TRANSPARENCY)
                     .texture(new RenderState.TextureState(AtlasTexture.LOCATION_BLOCKS_TEXTURE, false, false))
                     .build(false)
-    );
+    );*/
 }
