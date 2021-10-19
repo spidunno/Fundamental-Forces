@@ -12,30 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderUtilities {
-    public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("lightning_transparency", () -> {
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-    }, () -> {
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-    });
 
-    public static RenderType createGlowingTextureRenderType(ResourceLocation resourceLocation) {
-        return RenderType.create(
-                EsotericaMod.MOD_ID + ":glowing_texture",
-                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
-                VertexFormat.Mode.QUADS, 256,
-                false, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(ShaderRegistry.ADDITIVE_SHADER_STATE)
-                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
-                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
-                        .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
-                        .setCullState(new RenderStateShard.CullStateShard(true))
-                        .createCompositeState(true)
-        );
-    }
     /*GLOWING = RenderType.create(
             EsotericaMod.MOD_ID + ":glowing",
             DefaultVertexFormat.POSITION_COLOR,
