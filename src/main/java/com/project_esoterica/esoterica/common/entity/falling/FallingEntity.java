@@ -74,7 +74,7 @@ public abstract class FallingEntity extends Entity {
         int particleCount = 15 + level.random.nextInt(10);
         for (int i = 0; i < particleCount; i++) {
             Vec3 particlePos = position.add(EsotericaHelper.randomUnitVec3().multiply(level.random.nextDouble(), level.random.nextDouble(), level.random.nextDouble()));
-            level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, particlePos.x, particlePos.y, particlePos.z, reverseVel.x, reverseVel.y, reverseVel.z);
+          //  level.addAlwaysVisibleParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, particlePos.x, particlePos.y, particlePos.z, reverseVel.x, reverseVel.y, reverseVel.z);
         }
     }
 
