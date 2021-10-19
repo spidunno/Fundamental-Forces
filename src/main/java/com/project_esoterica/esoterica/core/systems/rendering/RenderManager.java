@@ -26,35 +26,25 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid= EsotericaMod.MOD_ID, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.FORGE)
 public class RenderManager {
     @OnlyIn(Dist.CLIENT)
-    static MultiBufferSource.BufferSource DELAYED_RENDER = null;
+    public static MultiBufferSource.BufferSource DELAYED_RENDER = MultiBufferSource.immediate(new BufferBuilder(256));
 
-    @OnlyIn(Dist.CLIENT)
-    public static MultiBufferSource.BufferSource getDelayedRender() {
-        if (DELAYED_RENDER == null) {
-            Map<RenderType, BufferBuilder> buffers = new HashMap<>();
-            for (RenderType type : new RenderType[]{
-                    FallingStarRenderer.RENDER_TYPE}) {
-                buffers.put(type, new BufferBuilder(type.bufferSize()));
-            }
-            DELAYED_RENDER = MultiBufferSource.immediate(new BufferBuilder(256));
-        }
-        return DELAYED_RENDER;
-    }
     @SubscribeEvent
     public static void onRenderLast(RenderWorldLastEvent event) {
         if (ClientConfig.BETTER_LAYERING.get()) {
             event.getMatrixStack().pushPose();
-            getDelayedRender().endBatch();
+            DELAYED_RENDER.endBatch();
             event.getMatrixStack().popPose();
         }
     }
 
     public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("additive_transparency", () -> {
+        RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
     }, () -> {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
+        RenderSystem.depthMask(true);
     });
     public static final RenderStateShard.TransparencyStateShard NORMAL_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("normal_transparency", () -> {
         RenderSystem.enableBlend();

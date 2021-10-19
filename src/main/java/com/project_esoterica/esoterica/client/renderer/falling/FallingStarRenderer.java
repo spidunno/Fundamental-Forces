@@ -15,6 +15,8 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
+import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
+
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
     private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
@@ -29,12 +31,12 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.pushPose();
 
         poseStack.translate(0, 0.25, 0); // center on Y level
-        poseStack.scale(15.0f, 15.0f, 15.0f);
+        poseStack.scale(3.0f, 3.0f, 3.0f);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         poseStack.mulPose(Vector3f.ZN.rotationDegrees(entity.tickCount * 2f));
         poseStack.translate(0, -0.25, 0); // center rotation
-        MultiBufferSource delayedBuffer = RenderManager.getDelayedRender();
+        MultiBufferSource delayedBuffer = DELAYED_RENDER;
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
