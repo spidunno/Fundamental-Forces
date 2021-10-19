@@ -1,12 +1,15 @@
 package com.project_esoterica.esoterica.common.entity.robot;
 
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.ParticleManager;
+import com.project_esoterica.esoterica.core.registry.ParticleRegistry;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -23,6 +26,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 
 
 public class BibitEntity extends PathfinderMob implements IAnimatable {
@@ -112,6 +116,24 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
             }
         }
         setVisualState(BibitState.IDLE);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (level.isClientSide)
+        {
+            ParticleManager.create(ParticleRegistry.WISP_PARTICLE)
+                    .setAlpha(0.1f, 0f)
+                    .setLifetime(20 + level.random.nextInt(4))
+                    .setSpin(Mth.nextFloat(level.random, 0.05f, 0.1f))
+                    .setScale(0.2f + level.random.nextFloat() * 0.05f, 0)
+                    .setColor(new Color(54, 54, 227), new Color(63, 24, 89).darker())
+                    .randomOffset(0.1f)
+                    .enableNoClip()
+                    .randomVelocity(0.02f, 0.02f)
+                    .repeat(level, getX(), getY()+2, getZ(), 1);
+        }
     }
 
     @Override

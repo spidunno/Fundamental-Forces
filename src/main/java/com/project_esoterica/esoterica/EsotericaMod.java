@@ -4,6 +4,7 @@ import com.project_esoterica.esoterica.core.config.ClientConfig;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.data.*;
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
+import com.project_esoterica.esoterica.core.registry.ParticleRegistry;
 import com.project_esoterica.esoterica.core.registry.PotionEffectRegistry;
 import com.project_esoterica.esoterica.core.registry.SoundRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
@@ -38,6 +39,7 @@ public class EsotericaMod {
         EntityRegistry.ENTITY_TYPES.register(modBus);
         PotionEffectRegistry.EFFECTS.register(modBus);
         SoundRegistry.SOUNDS.register(modBus);
+        ParticleRegistry.PARTICLES.register(modBus);
         modBus.addListener(this::gatherData);
     }
 

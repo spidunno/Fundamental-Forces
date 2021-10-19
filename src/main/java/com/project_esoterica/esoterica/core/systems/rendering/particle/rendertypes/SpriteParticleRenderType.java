@@ -26,8 +26,8 @@ public class SpriteParticleRenderType implements ParticleRenderType {
 
     private static void endRenderCommon() {
         Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
-//        RenderSystem.enableAlphaTest();
-//        RenderSystem.defaultAlphaFunc();
+        RenderSystem.disableBlend();
+        RenderSystem.defaultBlendFunc();
         RenderSystem.depthMask(true);
     }
 

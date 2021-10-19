@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 
@@ -24,6 +25,7 @@ public class RenderUtilities {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
     });
+
     public static RenderType GLOWING_SPRITE = RenderType.create(
             EsotericaMod.MOD_ID + ":glowing_sprite",
             DefaultVertexFormat.POSITION_COLOR_TEX,
