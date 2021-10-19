@@ -2,8 +2,8 @@ package com.project_esoterica.esoterica.core.registry;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import com.project_esoterica.esoterica.common.entity.falling.FallingCrashpodEntity;
+import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;

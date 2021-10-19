@@ -1,7 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle.phases;
+package com.project_esoterica.esoterica.core.systems.ancientparticlecode.phases;
 
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.ParticlePhaseMalumParticle;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.ParticlePhaseMalumParticle;
 
 public class ParticlePhase
 {

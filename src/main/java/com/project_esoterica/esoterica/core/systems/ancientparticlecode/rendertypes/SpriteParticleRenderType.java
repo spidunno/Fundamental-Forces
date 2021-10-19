@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle.rendertypes;
+package com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;

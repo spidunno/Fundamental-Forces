@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.client.particle.wisp;
 
 import com.mojang.serialization.Codec;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;

@@ -1,29 +1,20 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle;
+package com.project_esoterica.esoterica.core.systems.ancientparticlecode;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
-import net.minecraft.client.particle.Particle;
+import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderUtilities {
     public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("lightning_transparency", () -> {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-    }, () -> {
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-    });
-
-    public static final RenderStateShard.TransparencyStateShard NORMAL_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("lightning_transparency", () -> {
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
     }, () -> {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
@@ -36,12 +27,12 @@ public class RenderUtilities {
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(new RenderStateShard.ShaderStateShard(GameRenderer::getPositionColorTexLightmapShader))
-                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, false))
+                        .setShaderState(ShaderRegistry.ADDITIVE_SHADER_STATE)
+                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(ADDITIVE_TRANSPARENCY)
                         .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
-                        .setCullState(new RenderStateShard.CullStateShard(false))
+                        .setCullState(new RenderStateShard.CullStateShard(true))
                         .createCompositeState(true)
         );
     }

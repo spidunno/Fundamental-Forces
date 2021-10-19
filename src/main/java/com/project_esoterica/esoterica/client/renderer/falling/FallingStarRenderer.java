@@ -7,7 +7,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.RenderUtilities;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.RenderUtilities;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -33,7 +33,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         poseStack.mulPose(Vector3f.ZN.rotationDegrees(entity.tickCount * 2f));
 
-        VertexConsumer vertexConsumer = bufferSource.getBuffer(RENDER_TYPE);
+        VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderUtilities.createGlowingTextureRenderType(STAR_LOCATION));
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
         Matrix3f normal = pose.normal();

@@ -1,7 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle;
+package com.project_esoterica.esoterica.core.systems.ancientparticlecode;
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.data.ParticleOptions;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.phases.ParticlePhase;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.phases.ParticlePhase;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -9,7 +9,6 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;
-import software.bernie.shadowed.eliotlash.mclib.utils.MathHelper;
 
 import java.awt.*;
 import java.util.ArrayList;

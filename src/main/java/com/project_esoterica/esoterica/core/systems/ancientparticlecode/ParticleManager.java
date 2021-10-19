@@ -1,7 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle;
+package com.project_esoterica.esoterica.core.systems.ancientparticlecode;
 
 import com.mojang.math.Vector3d;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;

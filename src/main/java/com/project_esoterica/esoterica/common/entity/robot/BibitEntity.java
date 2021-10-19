@@ -1,8 +1,8 @@
 package com.project_esoterica.esoterica.common.entity.robot;
 
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.ParticleManager;
 import com.project_esoterica.esoterica.core.registry.ParticleRegistry;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.ParticleManager;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

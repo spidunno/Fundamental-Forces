@@ -4,7 +4,6 @@ import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

@@ -2,10 +2,7 @@ package com.project_esoterica.esoterica.common.worldevents.starfall.actors;
 
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.level.block.Blocks;
 
 import java.util.Random;
 

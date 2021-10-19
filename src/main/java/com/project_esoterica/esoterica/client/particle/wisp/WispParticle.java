@@ -1,8 +1,8 @@
 package com.project_esoterica.esoterica.client.particle.wisp;
 
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.GenericMalumParticle;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.GenericMalumParticle;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 
 public class WispParticle extends GenericMalumParticle {
