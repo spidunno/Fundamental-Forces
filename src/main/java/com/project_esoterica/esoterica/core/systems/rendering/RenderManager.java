@@ -6,10 +6,8 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.client.renderer.falling.FallingStarRenderer;
 import com.project_esoterica.esoterica.core.config.ClientConfig;
 import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
-import com.project_esoterica.esoterica.core.systems.ancientparticlecode.RenderUtilities;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -19,9 +17,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Mod.EventBusSubscriber(modid= EsotericaMod.MOD_ID, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.FORGE)
 public class RenderManager {
@@ -61,7 +56,7 @@ public class RenderManager {
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(ShaderRegistry.ADDITIVE_SHADER_STATE)
+                        .setShaderState(ShaderRegistry.ADDITIVE_TEXTURE_SHADER_STATE)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(ADDITIVE_TRANSPARENCY)

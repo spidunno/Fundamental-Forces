@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.ancientparticlecode.data;
+package com.project_esoterica.esoterica.core.systems.rendering.particle.options;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

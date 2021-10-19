@@ -15,13 +15,13 @@ import java.io.IOException;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ShaderRegistry {
 
-    private static ShaderInstance additive;
-    public static final ShaderStateShard ADDITIVE_SHADER_STATE = new ShaderStateShard(() -> additive);
+    private static ShaderInstance additiveTexture;
+    public static final ShaderStateShard ADDITIVE_TEXTURE_SHADER_STATE = new ShaderStateShard(() -> additiveTexture);
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
         // Adds a shader to the list, the callback runs when loading is complete.
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("rendertype_additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> {
-            additive = shaderInstance;
+            additiveTexture = shaderInstance;
         });
     }
 }

@@ -1,5 +1,6 @@
 package com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -7,6 +8,7 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import org.lwjgl.opengl.GL11;
@@ -14,32 +16,23 @@ import org.lwjgl.opengl.GL11;
 public class SpriteParticleRenderType implements ParticleRenderType {
     public static final SpriteParticleRenderType INSTANCE = new SpriteParticleRenderType();
 
-    private static void beginRenderCommon(BufferBuilder bufferBuilder, TextureManager textureManager) {
-        RenderSystem.depthMask(false);
+    public void begin(BufferBuilder p_107455_, TextureManager p_107456_) {
+        RenderSystem.depthMask(true);
+        RenderSystem.setShader(GameRenderer::getParticleShader);
+        RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        RenderSystem.alphaFunc(GL11.GL_GEQUAL, 0.00390625f);
-
-        textureManager.bindForSetup(TextureAtlas.LOCATION_PARTICLES);
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        p_107455_.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
     }
 
-    private static void endRenderCommon() {
-        Minecraft.getInstance().textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).restoreLastBlurMipmap();
+    public void end(Tesselator p_107458_) {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.depthMask(true);
+        p_107458_.end();
     }
 
-    @Override
-    public void begin(BufferBuilder bufferBuilder, TextureManager textureManager) {
-        beginRenderCommon(bufferBuilder, textureManager);
-    }
-
-    @Override
-    public void end(Tesselator tesselator) {
-        tesselator.end();
-        RenderSystem.enableDepthTest();
-        endRenderCommon();
+    public String toString() {
+        return "PARTICLE_SHEET_ADDITIVE";
     }
 }

@@ -1,7 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.ancientparticlecode;
+package com.project_esoterica.esoterica.core.systems.rendering.particle;
 
 import com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes.SpriteParticleRenderType;
-import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;

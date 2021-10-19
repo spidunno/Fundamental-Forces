@@ -1,7 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.ancientparticlecode;
+package com.project_esoterica.esoterica.core.systems.rendering;
 
 import com.mojang.math.Vector3d;
-import com.project_esoterica.esoterica.core.systems.ancientparticlecode.data.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
@@ -11,8 +11,17 @@ import net.minecraftforge.fmllegacy.RegistryObject;
 import java.awt.*;
 import java.util.Random;
 
-public class ParticleManager
-{
+public class RenderUtilities {
+    public static ParticleBuilder create(ParticleType<?> type)
+    {
+        return new ParticleBuilder(type);
+    }
+
+    public static ParticleBuilder create(RegistryObject<?> type)
+    {
+        return new ParticleBuilder((ParticleType<?>) type.get());
+    }
+
     public static class ParticleBuilder
     {
         static Random random = new Random();
@@ -322,13 +331,52 @@ public class ParticleManager
         }
     }
 
-    public static ParticleBuilder create(ParticleType<?> type)
-    {
-        return new ParticleBuilder(type);
-    }
-
-    public static ParticleBuilder create(RegistryObject<?> type)
-    {
-        return new ParticleBuilder((ParticleType<?>) type.get());
-    }
+    /*GLOWING = RenderType.create(
+            EsotericaMod.MOD_ID + ":glowing",
+            DefaultVertexFormat.POSITION_COLOR,
+            GL11.GL_QUADS, 256,
+            RenderType.CompositeState.builder()
+                    .shadeModel(new RenderState.ShadeModelState(true))
+                    .writeMask(new RenderState.WriteMaskState(true, false))
+                    .lightmap(new RenderState.LightmapState(false))
+                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
+                    .transparency(ADDITIVE_TRANSPARENCY)
+                    .build(false)
+    ), DELAYED_PARTICLE = RenderType.create(
+            EsotericaMod.MOD_ID + ":delayed_particle",
+            DefaultVertexFormat.PARTICLE,
+            GL11.GL_QUADS, 256,
+            RenderType.CompositeState.builder()
+                    .shadeModel(new RenderState.ShadeModelState(true))
+                    .writeMask(new RenderState.WriteMaskState(true, false))
+                    .lightmap(new RenderState.LightmapState(false))
+                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
+                    .transparency(NORMAL_TRANSPARENCY)
+                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_PARTICLES_TEXTURE, false, false))
+                    .build(false)
+    ), GLOWING_PARTICLE = RenderType.create(
+            EsotericaMod.MOD_ID + ":glowing_particle",
+            DefaultVertexFormat.PARTICLE,
+            GL11.GL_QUADS, 256,
+            RenderType.CompositeState.builder()
+                    .shadeModel(new RenderState.ShadeModelState(true))
+                    .writeMask(new RenderState.WriteMaskState(true, false))
+                    .lightmap(new RenderState.LightmapState(false))
+                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
+                    .transparency(ADDITIVE_TRANSPARENCY)
+                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_PARTICLES_TEXTURE, false, false))
+                    .build(false)
+    ), GLOWING_BLOCK_PARTICLE = RenderType.create(
+            EsotericaMod.MOD_ID + ":glowing_particle",
+            DefaultVertexFormat.PARTICLE,
+            GL11.GL_QUADS, 256,
+            RenderType.CompositeState.builder()
+                    .shadeModel(new RenderState.ShadeModelState(true))
+                    .writeMask(new RenderState.WriteMaskState(true, false))
+                    .lightmap(new RenderState.LightmapState(false))
+                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
+                    .transparency(ADDITIVE_TRANSPARENCY)
+                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_BLOCKS_TEXTURE, false, false))
+                    .build(false)
+    );*/
 }
