@@ -24,7 +24,7 @@ public class EntityRegistry {
                     .build(EsotericaHelper.prefix("bibit").toString()));
 
     public static final RegistryObject<EntityType<FallingCrashpodEntity>> FALLING_CRASHPOD = ENTITY_TYPES.register("falling_crashpod",
-            () -> EntityType.Builder.<FallingCrashpodEntity>of((e, w) -> new FallingCrashpodEntity(w, BlockPos.ZERO), MobCategory.MISC).build(EsotericaHelper.prefix("falling_crashpod").toString()));
+            () -> EntityType.Builder.<FallingCrashpodEntity>of((e, w) -> new FallingCrashpodEntity(w, BlockPos.ZERO), MobCategory.MISC).sized(0.5f, 0.5f).build(EsotericaHelper.prefix("falling_crashpod").toString()));
 
     @SubscribeEvent
     public static void assignAttributes(EntityAttributeCreationEvent event) {

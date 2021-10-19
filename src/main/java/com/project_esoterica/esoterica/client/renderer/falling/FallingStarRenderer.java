@@ -28,11 +28,12 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
 
-        poseStack.scale(3.0f, 3.0f, 3.0f);
+        poseStack.translate(0, 0.25, 0); // center on Y level
+        poseStack.scale(15.0f, 15.0f, 15.0f);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         poseStack.mulPose(Vector3f.ZN.rotationDegrees(entity.tickCount * 2f));
-        poseStack.translate(0, -0.25, 0);
+        poseStack.translate(0, -0.25, 0); // center rotation
         MultiBufferSource delayedBuffer = RenderManager.getDelayedRender();
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = poseStack.last();
