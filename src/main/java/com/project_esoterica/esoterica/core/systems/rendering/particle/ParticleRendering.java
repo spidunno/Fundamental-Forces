@@ -17,7 +17,7 @@ public class ParticleRendering {
     public static MultiBufferSource.BufferSource getDelayedRender() {
         if (DELAYED_RENDER == null) {
             Map<RenderType, BufferBuilder> buffers = new HashMap<>();
-            for (RenderType type : new RenderType[]{RenderUtilities.GLOWING_SPRITE}) {
+            for (RenderType type : new RenderType[]{(RenderType) RenderUtilities.GLOWING_SPRITE}) {
                 buffers.put(type, new BufferBuilder(type.bufferSize()));
             }
             DELAYED_RENDER = MultiBufferSource.immediateWithBuffers(buffers, new BufferBuilder(256));
