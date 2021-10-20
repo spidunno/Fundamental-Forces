@@ -1,7 +1,9 @@
 package com.project_esoterica.esoterica.core.systems.rendering.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes.SpriteParticleRenderType;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
@@ -10,13 +12,12 @@ import net.minecraft.util.Mth;
 
 import java.awt.*;
 
-public class GenericMalumParticle extends TextureSheetParticle {
+public abstract class GenericParticle extends TextureSheetParticle {
     ParticleOptions data;
     float[] hsv1 = new float[3], hsv2 = new float[3];
 
-    public GenericMalumParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
-        super(world, x, y, z, vx, vy, vz);
-        this.setPos(x, y, z);
+    public GenericParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
+        super(world, x, y, z);
         this.data = data;
         this.xd = vx;
         this.yd = vy;
@@ -60,11 +61,4 @@ public class GenericMalumParticle extends TextureSheetParticle {
         updateTraits();
         super.tick();
     }
-
-    @Override
-    public ParticleRenderType getRenderType() {
-        return SpriteParticleRenderType.INSTANCE;
-    }
-
-
 }

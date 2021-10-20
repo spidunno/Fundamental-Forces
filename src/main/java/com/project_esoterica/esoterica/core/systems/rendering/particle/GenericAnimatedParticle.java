@@ -6,14 +6,13 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public abstract class ParticlePhaseMalumParticle extends GenericMalumParticle
+public abstract class GenericAnimatedParticle extends GenericParticle
 {
     public final SpriteSet spriteSet;
     public ArrayList<Integer> ageToFrame = new ArrayList<>();
 
-    public ParticlePhaseMalumParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
+    public GenericAnimatedParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz, SpriteSet spriteSet) {
         super(world, data, x, y, z, vx, vy, vz);
         this.spriteSet = spriteSet;
         this.setSprite(0);

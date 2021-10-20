@@ -1,18 +1,13 @@
 package com.project_esoterica.esoterica.client.particle.wisp;
 
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.core.config.ClientConfig;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.GenericMalumParticle;
+import com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes.SpriteParticleRenderType;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.GenericParticle;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.particle.ParticleRenderType;
 
-public class WispParticle extends GenericMalumParticle {
+public class WispParticle extends GenericParticle {
     public WispParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
         super(world, data, x, y, z, vx, vy, vz);
     }
@@ -22,4 +17,8 @@ public class WispParticle extends GenericMalumParticle {
         return 0xF000F0;
     }
 
+    @Override
+    public ParticleRenderType getRenderType() {
+        return SpriteParticleRenderType.INSTANCE;
+    }
 }
