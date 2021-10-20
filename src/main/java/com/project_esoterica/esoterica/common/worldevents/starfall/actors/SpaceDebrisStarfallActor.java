@@ -26,8 +26,8 @@ public class SpaceDebrisStarfallActor extends StarfallActor {
     }
 
     @Override
-    public void fall(ServerLevel level, BlockPos targetBlockPos) {
+    public void act(ServerLevel level, BlockPos targetBlockPos) {
         level.setBlock(targetBlockPos, Blocks.DIAMOND_BLOCK.defaultBlockState(), 3);
-        super.fall(level, targetBlockPos);
+        super.act(level, targetBlockPos);
     }
 }
