@@ -12,18 +12,22 @@ import java.util.function.Supplier;
 
 public class AddWorldEventToClientPacket {
     String type;
+    public boolean start;
     public CompoundTag eventData;
-    public AddWorldEventToClientPacket(String type, CompoundTag eventData) {
+
+    public AddWorldEventToClientPacket(String type, boolean start, CompoundTag eventData) {
         this.type = type;
+        this.start = start;
         this.eventData = eventData;
     }
 
     public static AddWorldEventToClientPacket decode(FriendlyByteBuf buf) {
-        return new AddWorldEventToClientPacket(buf.readUtf(), buf.readNbt());
+        return new AddWorldEventToClientPacket(buf.readUtf(), buf.readBoolean(), buf.readNbt());
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeUtf(type);
+        buf.writeBoolean(start);
         buf.writeNbt(eventData);
     }
 
@@ -31,7 +35,9 @@ public class AddWorldEventToClientPacket {
         context.get().enqueueWork(() -> {
             WorldEventReader reader = WorldEventManager.READERS.get(type);
             WorldEventInstance instance = WorldEventManager.addClientWorldEvent(Minecraft.getInstance().level, reader.createInstance(eventData));
-            instance.clientStart(Minecraft.getInstance().level);
+            if (start) {
+                instance.clientStart(Minecraft.getInstance().level);
+            }
         });
         context.get().setPacketHandled(true);
     }

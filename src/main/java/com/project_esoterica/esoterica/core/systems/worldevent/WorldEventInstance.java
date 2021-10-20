@@ -37,11 +37,11 @@ public abstract class WorldEventInstance {
     }
 
     public void addToClient() {
-        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, serializeNBT(new CompoundTag())));
+        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
     }
 
     public void addToClient(ServerPlayer player) {
-        NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, serializeNBT(new CompoundTag())));
+        NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
     }
 
     public void clientStart(ClientLevel level) {
