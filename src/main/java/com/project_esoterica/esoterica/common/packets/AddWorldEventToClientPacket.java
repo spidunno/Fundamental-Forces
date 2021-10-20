@@ -31,7 +31,7 @@ public class AddWorldEventToClientPacket {
         context.get().enqueueWork(() -> {
             WorldEventReader reader = WorldEventManager.READERS.get(type);
             WorldEventInstance instance = WorldEventManager.addClientWorldEvent(Minecraft.getInstance().level, reader.createInstance(eventData));
-            instance.clientEnd(Minecraft.getInstance().level);
+            instance.clientStart(Minecraft.getInstance().level);
         });
         context.get().setPacketHandled(true);
     }

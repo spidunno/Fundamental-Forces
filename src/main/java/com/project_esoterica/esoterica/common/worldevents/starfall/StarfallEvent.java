@@ -17,6 +17,7 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -121,8 +122,8 @@ public class StarfallEvent extends WorldEventInstance {
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
         poseStack.pushPose();
-
-        poseStack.translate(position.x, position.y, position.z); // move to position
+        LocalPlayer player = Minecraft.getInstance().player;
+        poseStack.translate(position.x-player.getX(), position.y-player.getY(), position.z-player.getZ()); // move to position
         poseStack.translate(0, 0.25, 0); // center on Y level
         poseStack.scale(3.0f, 3.0f, 3.0f);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
