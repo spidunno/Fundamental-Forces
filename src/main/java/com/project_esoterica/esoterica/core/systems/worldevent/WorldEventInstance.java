@@ -8,6 +8,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import java.util.UUID;
@@ -34,8 +36,12 @@ public abstract class WorldEventInstance {
         invalidated = true;
     }
 
-    public void addToClient(ServerLevel level) {
+    public void addToClient() {
         NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, serializeNBT(new CompoundTag())));
+    }
+
+    public void addToClient(ServerPlayer player) {
+        NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, serializeNBT(new CompoundTag())));
     }
 
     public void clientStart(ClientLevel level) {

@@ -85,7 +85,7 @@ public class StarfallEvent extends WorldEventInstance {
 
     @Override
     public void start(ServerLevel level) {
-        addToClient(level);
+        addToClient();
     }
 
     @Override

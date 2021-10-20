@@ -29,7 +29,7 @@ public class StarfallActor {
     public int randomizedCountdown(Random random) {
         return randomizedCountdown(random, startingCountdown);
     }
-    
+
     public void act(ServerLevel level, BlockPos targetPos) {
 
     }

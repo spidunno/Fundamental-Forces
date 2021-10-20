@@ -16,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.player.Player;
@@ -69,6 +70,13 @@ public class WorldEventManager {
     public static void playerJoin(Level level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
             if (level instanceof ServerLevel serverLevel) {
+                WorldDataCapability.getCapability(serverLevel).ifPresent(worldCapability -> {
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        for (WorldEventInstance instance : worldCapability.ACTIVE_WORLD_EVENTS) {
+                            instance.addToClient(serverPlayer);
+                        }
+                    }
+                });
                 if (ScheduledStarfallEvent.areStarfallsAllowed(serverLevel)) {
                     if (!capability.firstTimeJoin) {
                         addWorldEvent(serverLevel, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(serverLevel).looping().determined());
@@ -118,6 +126,7 @@ public class WorldEventManager {
             CompoundTag instanceTag = tag.getCompound("worldEvent_" + i);
             WorldEventReader reader = READERS.get(instanceTag.getString("type"));
             WorldEventInstance eventInstance = reader.createInstance(instanceTag);
+
             capability.ACTIVE_WORLD_EVENTS.add(eventInstance);
         }
     }
