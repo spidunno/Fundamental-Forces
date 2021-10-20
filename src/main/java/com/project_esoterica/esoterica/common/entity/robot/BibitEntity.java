@@ -124,7 +124,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
         if (level.isClientSide)
         {
             RenderUtilities.create(ParticleRegistry.WISP_PARTICLE)
-                    .setAlpha(0.1f, 0f)
+                    .setAlpha(0.5f, 0f)
                     .setLifetime(20 + level.random.nextInt(4))
                     .setSpin(Mth.nextFloat(level.random, 0.05f, 0.1f))
                     .setScale(0.2f + level.random.nextFloat() * 0.05f, 0)

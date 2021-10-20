@@ -19,14 +19,12 @@ public class StarfallEvent extends WorldEventInstance {
 
     public static final String STARFALL_ID = "starfall";
 
-    static {
-        new WorldEventReader(STARFALL_ID) {
-            @Override
-            public WorldEventInstance createInstance(CompoundTag tag) {
-                return fromNBT(tag);
-            }
-        };
-    }
+    public static WorldEventReader STARFALL_READER = new WorldEventReader(STARFALL_ID) {
+        @Override
+        public WorldEventInstance createInstance(CompoundTag tag) {
+            return fromNBT(tag);
+        }
+    };
 
     public StarfallActor actor;
     @Nullable

@@ -31,6 +31,5 @@ public abstract class WorldEventInstance {
     public void deserializeNBT(CompoundTag tag) {
         id = tag.getString("id");
         invalidated = tag.getBoolean("invalidated");
-
     }
 }
