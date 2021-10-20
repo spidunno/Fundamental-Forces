@@ -6,6 +6,7 @@ import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +41,7 @@ public class CapabilityEvents {
         }
     }
 
+
     @SubscribeEvent
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
@@ -53,8 +55,17 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
-            if (event.world instanceof ServerLevel level) {
-                WorldEventManager.worldTick(level);
+            if (event.world instanceof ServerLevel serverLevel) {
+                WorldEventManager.serverWorldTick(serverLevel);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void clientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            if (Minecraft.getInstance().level != null) {
+                WorldEventManager.clientWorldTick(Minecraft.getInstance().level);
             }
         }
     }

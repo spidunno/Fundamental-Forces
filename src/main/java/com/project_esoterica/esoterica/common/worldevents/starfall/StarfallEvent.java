@@ -1,25 +1,44 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
+
 public class StarfallEvent extends WorldEventInstance {
 
-    public static final String STARFALL_ID = "starfall";
+    public static final String ID = "starfall";
 
-    public static WorldEventReader STARFALL_READER = new WorldEventReader(STARFALL_ID) {
+    public static WorldEventReader READER = new WorldEventReader() {
         @Override
         public WorldEventInstance createInstance(CompoundTag tag) {
             return fromNBT(tag);
@@ -27,22 +46,18 @@ public class StarfallEvent extends WorldEventInstance {
     };
 
     public StarfallActor actor;
-    @Nullable
-    public UUID targetedUUID;
-    public LivingEntity targetedEntity;
-    public BlockPos targetedPos;
-    public int startingCountdown;
-    public int countdown;
-    protected boolean loop;
-    protected boolean determined;
-    protected boolean exactPosition;
+
+    public BlockPos targetedPos = BlockPos.ZERO;
+    public Vec3 position = Vec3.ZERO;
+    public Vec3 motion = Vec3.ZERO;
+    public float acceleration = 0.01f;
 
     private StarfallEvent() {
-        super(STARFALL_ID);
+        super(ID);
     }
 
     public StarfallEvent(StarfallActor actor) {
-        super(STARFALL_ID);
+        super(ID);
         this.actor = actor;
     }
 
@@ -52,10 +67,13 @@ public class StarfallEvent extends WorldEventInstance {
         return instance;
     }
 
-    public StarfallEvent targetEntity(LivingEntity target) {
-        this.targetedUUID = target.getUUID();
-        this.targetedEntity = target;
-        this.targetedPos = target.getOnPos();
+    public StarfallEvent startPosition(Vec3 position) {
+        this.position = position;
+        return this;
+    }
+
+    public StarfallEvent motion(Vec3 motion) {
+        this.motion = motion;
         return this;
     }
 
@@ -64,157 +82,106 @@ public class StarfallEvent extends WorldEventInstance {
         return this;
     }
 
-    public StarfallEvent targetExactPosition(BlockPos targetedPos) {
-        this.targetedPos = targetedPos;
-        this.exactPosition = true;
-        return this;
-    }
-
-    public StarfallEvent randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
-        return exactStartingCountdown(actor.randomizedCountdown(level.random, parentCountdown));
-    }
-
-    public StarfallEvent randomizedStartingCountdown(ServerLevel level) {
-        return exactStartingCountdown(actor.randomizedCountdown(level.random));
-    }
-
-    public StarfallEvent exactStartingCountdown(int startingCountdown) {
-        this.startingCountdown = startingCountdown;
-        this.countdown = startingCountdown;
-        return this;
-    }
-
-    public StarfallEvent looping() {
-        this.loop = true;
-        return this;
-    }
-
-    public StarfallEvent determined() {
-        this.determined = true;
-        return this;
+    @Override
+    public void start(ServerLevel level) {
+        addToClient(level);
     }
 
     @Override
     public void tick(ServerLevel level) {
-        if (level.getGameTime() % 100L == 0) {
-            if (isEntityValid(level)) {
-                targetedPos = targetedEntity.getOnPos();
-            }
-        }
-        countdown--;
-        if (countdown <= 0) {
+        move();
+        if (position.y() <= targetedPos.getY()) {
             end(level);
         }
     }
 
     @Override
     public void end(ServerLevel level) {
-        if (determined) {
-            int failures = 0;
-            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
-            while (true) {
-                if (failures >= maximumFailures) {
-                    break;
-                }
-                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
-                if (target == null) {
-                    failures++;
-                    continue;
-                }
-                boolean success = exactPosition || actor.canFall(level, target);
-                if (success) {
-                    actor.fall(level, target);
-                    break;
-                } else {
-                    failures++;
-                }
-            }
-        } else {
-            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
-            if (target != null) {
-                boolean success = exactPosition || actor.canFall(level, target);
-                if (success) {
-                    actor.fall(level, target);
-                }
-            }
-        }
-        if (loop && isEntityValid(level)) {
-            addNaturalStarfall(level, targetedEntity, true);
-        }
+        actor.act(level, targetedPos);
         super.end(level);
     }
 
-    public boolean isEntityValid(ServerLevel level) {
-        if (targetedEntity == null && targetedUUID != null) {
-            targetedEntity = (LivingEntity) level.getEntity(targetedUUID);
+    @Override
+    public void clientTick(ClientLevel level) {
+        move();
+        if (position.y() <= targetedPos.getY()) {
+            clientEnd(level);
         }
-        return targetedEntity != null && targetedEntity.isAlive() && targetedEntity.level.equals(level);
     }
 
     @Override
-    public void serializeNBT(CompoundTag tag) {
+    public void clientEnd(ClientLevel level) {
+        triggerGlobalScreenshake(level);
+        super.clientEnd(level);
+    }
+
+    private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
+    public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
+
+    @Override
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
+        poseStack.pushPose();
+
+        poseStack.translate(position.x, position.y, position.z); // move to position
+        poseStack.translate(0, 0.25, 0); // center on Y level
+        poseStack.scale(3.0f, 3.0f, 3.0f);
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+        poseStack.mulPose(Vector3f.ZN.rotationDegrees(partialTicks + Minecraft.getInstance().player.tickCount * 2f));
+        poseStack.translate(0, -0.25, 0); // center rotation
+        MultiBufferSource delayedBuffer = DELAYED_RENDER;
+        VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
+        Matrix3f normal = pose.normal();
+
+        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 0, 0, 1);
+        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 0, 1, 1);
+        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 1, 1, 0);
+        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 1, 0, 0);
+
+        poseStack.popPose();
+        super.render(poseStack, bufferSource, partialTicks);
+    }
+    private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
+        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
+    }
+    private void move() {
+        position = position.add(motion.multiply(acceleration, acceleration, acceleration));
+        acceleration += 0.001f;
+    }
+
+    private static final float notifyRadius = 200f; // players within this radius receive screenshake upon impact
+    private static final float screenshakeFactor = 0.9f;
+    private static final float screenshakeFalloff = 0.85f;
+
+    // TODO: make farther players experience less screenshake
+    private void triggerGlobalScreenshake(ClientLevel level) {
+        NetworkManager.INSTANCE.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ(), notifyRadius, level.dimension())), new ScreenshakePacket(screenshakeFactor, screenshakeFalloff));
+    }
+
+    @Override
+    public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putString("resultId", actor.id);
-        if (targetedUUID != null) {
-            tag.putUUID("targetedUUID", targetedUUID);
-        }
         tag.putIntArray("targetedPos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
-        tag.putInt("startingCountdown", startingCountdown);
-        tag.putInt("countdown", countdown);
-        tag.putBoolean("loop", loop);
-        tag.putBoolean("determined", determined);
-        tag.putBoolean("exactPosition", exactPosition);
-        super.serializeNBT(tag);
+        tag.putDouble("posX", position.x());
+        tag.putDouble("posY", position.y());
+        tag.putDouble("posZ", position.z());
+        tag.putDouble("motionX", motion.x());
+        tag.putDouble("motionY", motion.y());
+        tag.putDouble("motionZ", motion.z());
+        tag.putFloat("acceleration", acceleration);
+        return super.serializeNBT(tag);
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
-        targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
-        startingCountdown = tag.getInt("startingCountdown");
-        countdown = tag.getInt("countdown");
-        loop = tag.getBoolean("loop");
-        determined = tag.getBoolean("determined");
-        exactPosition = tag.getBoolean("exactPosition");
+        position = new Vec3(tag.getDouble("posX"), tag.getDouble("posY"), tag.getDouble("posZ"));
+        motion = new Vec3(tag.getDouble("motionX"), tag.getDouble("motionY"), tag.getDouble("motionZ"));
+        acceleration = tag.getFloat("acceleration");
         super.deserializeNBT(tag);
-    }
-
-    public static void addMissingStarfall(ServerLevel level, Player player) {
-        WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            boolean isMissingStarfall = true;
-            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
-                if (instance instanceof StarfallEvent starfallEvent) {
-                    if (player.getUUID().equals(starfallEvent.targetedUUID)) {
-                        isMissingStarfall = false;
-                        break;
-                    }
-                }
-            }
-
-            if (isMissingStarfall) {
-                addNaturalStarfall(level, player, false);
-            }
-        });
-    }
-
-    public static void addNaturalStarfall(ServerLevel level, LivingEntity entity, boolean inbound) {
-        if (areStarfallsAllowed(level)) {
-            StarfallEvent debrisInstance = WorldEventManager.addWorldEvent(level, new StarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
-            Double chance = CommonConfig.ASTEROID_CHANCE.get();
-            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
-            for (int i = 0; i < maxAsteroids; i++) {
-                if (level.random.nextFloat() < chance) {
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
-                    chance *= 0.8f;
-                } else {
-                    break;
-                }
-            }
-        }
-    }
-
-    public static boolean areStarfallsAllowed(ServerLevel level) {
-        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_LEVELS.get().contains(level.dimension().location().toString());
     }
 }

@@ -34,6 +34,10 @@ public class StarfallActor {
 
     }
 
+    public void act(ServerLevel level, BlockPos targetPos) {
+
+    }
+
     public final boolean canFall(ServerLevel level, BlockPos pos) {
         if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty())) {
             return false;

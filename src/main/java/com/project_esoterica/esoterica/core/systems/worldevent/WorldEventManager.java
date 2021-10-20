@@ -3,10 +3,15 @@ package com.project_esoterica.esoterica.core.systems.worldevent;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallEvent;
+import com.project_esoterica.esoterica.core.config.ClientConfig;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +19,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.Tags;
 
 import java.util.ArrayList;
@@ -25,6 +32,11 @@ import java.util.HashMap;
 public class WorldEventManager {
 
     public static HashMap<String, WorldEventReader> READERS = new HashMap<>();
+
+    static {
+        READERS.put(ScheduledStarfallEvent.ID, ScheduledStarfallEvent.READER);
+        READERS.put(StarfallEvent.ID, StarfallEvent.READER);
+    }
 
     public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
         return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
@@ -46,22 +58,42 @@ public class WorldEventManager {
         return instance;
     }
 
-    public static void playerJoin(ServerLevel level, Player player) {
+    public static <T extends WorldEventInstance> T addClientWorldEvent(ClientLevel level, T instance) {
+        WorldDataCapability.getCapability(level).ifPresent(capability -> {
+            capability.ACTIVE_WORLD_EVENTS.add(instance);
+            instance.clientStart(level);
+        });
+        return instance;
+    }
+
+    public static void playerJoin(Level level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
-            if (StarfallEvent.areStarfallsAllowed(level)) {
-                if (!capability.firstTimeJoin) {
-                    addWorldEvent(level, new StarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
-                } else {
-                    StarfallEvent.addMissingStarfall(level, player);
+            if (level instanceof ServerLevel serverLevel) {
+                if (ScheduledStarfallEvent.areStarfallsAllowed(serverLevel)) {
+                    if (!capability.firstTimeJoin) {
+                        addWorldEvent(serverLevel, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(serverLevel).looping().determined());
+                    } else {
+                        ScheduledStarfallEvent.addMissingStarfall(serverLevel, player);
+                    }
                 }
             }
         });
     }
 
-    public static void worldTick(ServerLevel level) {
+    public static void serverWorldTick(ServerLevel level) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
                 instance.tick(level);
+            }
+            capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.invalidated);
+            capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
+            capability.INBOUND_WORLD_EVENTS.clear();
+        });
+    }
+    public static void clientWorldTick(ClientLevel level) {
+        WorldDataCapability.getCapability(level).ifPresent(capability -> {
+            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+                instance.clientTick(level);
             }
             capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.invalidated);
             capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
@@ -84,7 +116,7 @@ public class WorldEventManager {
         int starfallCount = tag.getInt("worldEventCount");
         for (int i = 0; i < starfallCount; i++) {
             CompoundTag instanceTag = tag.getCompound("worldEvent_" + i);
-            WorldEventReader reader = READERS.get(instanceTag.getString("id"));
+            WorldEventReader reader = READERS.get(instanceTag.getString("type"));
             WorldEventInstance eventInstance = reader.createInstance(instanceTag);
             capability.ACTIVE_WORLD_EVENTS.add(eventInstance);
         }

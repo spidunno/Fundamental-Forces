@@ -2,16 +2,12 @@ package com.project_esoterica.esoterica.client.particle.wisp;
 
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.core.config.ClientConfig;
-import com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes.SpriteParticleRenderType;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.rendertypes.AdditiveParticleRenderType;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.GenericParticle;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.RenderType;
 
 
 public class WispParticle extends GenericParticle {
@@ -26,7 +22,7 @@ public class WispParticle extends GenericParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return SpriteParticleRenderType.INSTANCE;
+        return AdditiveParticleRenderType.INSTANCE;
     }
 
     @Override

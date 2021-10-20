@@ -6,8 +6,11 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.config.ClientConfig;
 import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -20,18 +23,19 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid= EsotericaMod.MOD_ID, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.FORGE)
 public class RenderManager {
     @OnlyIn(Dist.CLIENT)
     public static MultiBufferSource.BufferSource DELAYED_RENDER = MultiBufferSource.immediate(new BufferBuilder(256));
 
-    @SubscribeEvent
     public static void onRenderLast(RenderWorldLastEvent event) {
-        if (ClientConfig.BETTER_LAYERING.get()) {
-            event.getMatrixStack().pushPose();
-            DELAYED_RENDER.endBatch();
-            event.getMatrixStack().popPose();
-        }
+        WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
+            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+                instance.render(event.getMatrixStack(), RenderManager.DELAYED_RENDER, event.getPartialTicks());
+            }
+        });
+        event.getMatrixStack().pushPose();
+        DELAYED_RENDER.endBatch();
+        event.getMatrixStack().popPose();
     }
 
     public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("additive_transparency", () -> {
@@ -67,5 +71,4 @@ public class RenderManager {
                         .createCompositeState(true)
         );
     }
-
 }

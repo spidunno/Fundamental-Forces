@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.ancientparticlecode.rendertypes;
+package com.project_esoterica.esoterica.core.systems.rendering.particle.rendertypes;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,15 +7,12 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
-import org.lwjgl.opengl.GL11;
 
-public class SpriteParticleRenderType implements ParticleRenderType {
-    public static final SpriteParticleRenderType INSTANCE = new SpriteParticleRenderType();
+public class AdditiveParticleRenderType implements ParticleRenderType {
+    public static final AdditiveParticleRenderType INSTANCE = new AdditiveParticleRenderType();
 
     public void begin(BufferBuilder builder, TextureManager manager) {
         RenderSystem.depthMask(false);

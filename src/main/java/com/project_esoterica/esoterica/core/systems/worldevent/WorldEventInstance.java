@@ -1,14 +1,25 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
+import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
+import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
+
+import java.util.UUID;
 
 public abstract class WorldEventInstance {
-    public String id;
+    public UUID uuid;
+    public String type;
     public boolean invalidated;
 
-    public WorldEventInstance(String id) {
-        this.id = id;
+    public WorldEventInstance(String type) {
+        this.uuid = UUID.randomUUID();
+        this.type = type;
     }
 
     public void start(ServerLevel level) {
@@ -23,13 +34,35 @@ public abstract class WorldEventInstance {
         invalidated = true;
     }
 
-    public void serializeNBT(CompoundTag tag) {
-        tag.putString("id", id);
+    public void addToClient(ServerLevel level) {
+        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, serializeNBT(new CompoundTag())));
+    }
+
+    public void clientStart(ClientLevel level) {
+
+    }
+
+    public void clientTick(ClientLevel level) {
+
+    }
+
+    public void clientEnd(ClientLevel level) {
+        invalidated = true;
+    }
+
+    public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
+    }
+
+    public CompoundTag serializeNBT(CompoundTag tag) {
+        tag.putUUID("uuid", uuid);
+        tag.putString("type", type);
         tag.putBoolean("invalidated", invalidated);
+        return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
-        id = tag.getString("id");
+        uuid = tag.getUUID("uuid");
+        type = tag.getString("type");
         invalidated = tag.getBoolean("invalidated");
     }
 }

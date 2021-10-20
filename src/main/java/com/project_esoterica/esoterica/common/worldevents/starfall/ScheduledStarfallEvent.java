@@ -1,0 +1,224 @@
+package com.project_esoterica.esoterica.common.worldevents.starfall;
+
+import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
+
+public class ScheduledStarfallEvent extends WorldEventInstance {
+
+    public static final String ID = "scheduled_starfall";
+
+    public static WorldEventReader READER = new WorldEventReader() {
+        @Override
+        public WorldEventInstance createInstance(CompoundTag tag) {
+            return fromNBT(tag);
+        }
+    };
+
+    public StarfallActor actor;
+    @Nullable
+    public UUID targetedUUID;
+    public LivingEntity targetedEntity;
+    public BlockPos targetedPos;
+    public int startingCountdown;
+    public int countdown;
+    protected boolean loop;
+    protected boolean determined;
+    protected boolean exactPosition;
+
+    private ScheduledStarfallEvent() {
+        super(ID);
+    }
+
+    public ScheduledStarfallEvent(StarfallActor actor) {
+        super(ID);
+        this.actor = actor;
+    }
+
+    public static ScheduledStarfallEvent fromNBT(CompoundTag tag) {
+        ScheduledStarfallEvent instance = new ScheduledStarfallEvent();
+        instance.deserializeNBT(tag);
+        return instance;
+    }
+
+    public ScheduledStarfallEvent targetEntity(LivingEntity target) {
+        this.targetedUUID = target.getUUID();
+        this.targetedEntity = target;
+        this.targetedPos = target.getOnPos();
+        return this;
+    }
+
+    public ScheduledStarfallEvent targetPosition(BlockPos targetedPos) {
+        this.targetedPos = targetedPos;
+        return this;
+    }
+
+    public ScheduledStarfallEvent targetExactPosition(BlockPos targetedPos) {
+        this.targetedPos = targetedPos;
+        this.exactPosition = true;
+        return this;
+    }
+
+    public ScheduledStarfallEvent randomizedStartingCountdown(ServerLevel level, int parentCountdown) {
+        return exactStartingCountdown(actor.randomizedCountdown(level.random, parentCountdown));
+    }
+
+    public ScheduledStarfallEvent randomizedStartingCountdown(ServerLevel level) {
+        return exactStartingCountdown(actor.randomizedCountdown(level.random));
+    }
+
+    public ScheduledStarfallEvent exactStartingCountdown(int startingCountdown) {
+        this.startingCountdown = startingCountdown;
+        this.countdown = startingCountdown;
+        return this;
+    }
+
+    public ScheduledStarfallEvent looping() {
+        this.loop = true;
+        return this;
+    }
+
+    public ScheduledStarfallEvent determined() {
+        this.determined = true;
+        return this;
+    }
+
+    @Override
+    public void tick(ServerLevel level) {
+        if (level.getGameTime() % 100L == 0) {
+            if (isEntityValid(level)) {
+                targetedPos = targetedEntity.getOnPos();
+            }
+        }
+        countdown--;
+        if (countdown <= 0) {
+            end(level);
+        }
+    }
+
+    @Override
+    public void end(ServerLevel level) {
+        if (determined) {
+            int failures = 0;
+            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
+            while (true) {
+                if (failures >= maximumFailures) {
+                    break;
+                }
+                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+                if (target == null) {
+                    failures++;
+                    continue;
+                }
+                boolean success = exactPosition || actor.canFall(level, target);
+                if (success) {
+                    actor.fall(level, target);
+                    break;
+                } else {
+                    failures++;
+                }
+            }
+        } else {
+            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+            if (target != null) {
+                boolean success = exactPosition || actor.canFall(level, target);
+                if (success) {
+                    Vec3 targetVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ());
+                    Vec3 startPos = targetVec.add(-100 + level.random.nextInt(200), 100, -100 + level.random.nextInt(200));
+                    Vec3 motion = startPos.vectorTo(targetVec).normalize();
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(targetedPos), true);
+                }
+            }
+        }
+        if (loop && isEntityValid(level)) {
+            addNaturalStarfall(level, targetedEntity, true);
+        }
+        super.end(level);
+    }
+
+    public boolean isEntityValid(ServerLevel level) {
+        if (targetedEntity == null && targetedUUID != null) {
+            targetedEntity = (LivingEntity) level.getEntity(targetedUUID);
+        }
+        return targetedEntity != null && targetedEntity.isAlive() && targetedEntity.level.equals(level);
+    }
+
+    @Override
+    public CompoundTag serializeNBT(CompoundTag tag) {
+        tag.putString("resultId", actor.id);
+        if (targetedUUID != null) {
+            tag.putUUID("targetedUUID", targetedUUID);
+        }
+        tag.putIntArray("targetedPos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
+        tag.putInt("startingCountdown", startingCountdown);
+        tag.putInt("countdown", countdown);
+        tag.putBoolean("loop", loop);
+        tag.putBoolean("determined", determined);
+        tag.putBoolean("exactPosition", exactPosition);
+        return super.serializeNBT(tag);
+    }
+
+    @Override
+    public void deserializeNBT(CompoundTag tag) {
+        actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
+        targetedUUID = tag.getUUID("targetedUUID");
+        int[] positions = tag.getIntArray("targetedPos");
+        targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
+        startingCountdown = tag.getInt("startingCountdown");
+        countdown = tag.getInt("countdown");
+        loop = tag.getBoolean("loop");
+        determined = tag.getBoolean("determined");
+        exactPosition = tag.getBoolean("exactPosition");
+        super.deserializeNBT(tag);
+    }
+
+    public static void addMissingStarfall(ServerLevel level, Player player) {
+        WorldDataCapability.getCapability(level).ifPresent(capability -> {
+            boolean isMissingStarfall = true;
+            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+                if (instance instanceof ScheduledStarfallEvent scheduledStarfallEvent) {
+                    if (player.getUUID().equals(scheduledStarfallEvent.targetedUUID)) {
+                        isMissingStarfall = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isMissingStarfall) {
+                addNaturalStarfall(level, player, false);
+            }
+        });
+    }
+
+    public static void addNaturalStarfall(ServerLevel level, LivingEntity entity, boolean inbound) {
+        if (areStarfallsAllowed(level)) {
+            ScheduledStarfallEvent debrisInstance = WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
+            Double chance = CommonConfig.ASTEROID_CHANCE.get();
+            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
+            for (int i = 0; i < maxAsteroids; i++) {
+                if (level.random.nextFloat() < chance) {
+                    WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
+                    chance *= 0.8f;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    public static boolean areStarfallsAllowed(ServerLevel level) {
+        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_LEVELS.get().contains(level.dimension().location().toString());
+    }
+}

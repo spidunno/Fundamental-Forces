@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
+import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,5 +22,6 @@ public class NetworkManager {
     public static void registerNetworkStuff(FMLCommonSetupEvent event) {
         int index = 0;
         INSTANCE.registerMessage(index++, ScreenshakePacket.class, ScreenshakePacket::encode, ScreenshakePacket::decode, ScreenshakePacket::whenThisPacketIsReceived);
+        INSTANCE.registerMessage(index++, AddWorldEventToClientPacket.class, AddWorldEventToClientPacket::encode, AddWorldEventToClientPacket::decode, AddWorldEventToClientPacket::whenThisPacketIsReceived);
     }
 }
