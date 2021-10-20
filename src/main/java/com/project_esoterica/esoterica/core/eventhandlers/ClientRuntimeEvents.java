@@ -23,6 +23,5 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void onRenderLast(RenderWorldLastEvent event) {
         RenderManager.onRenderLast(event);
-        RenderManager.onRenderLast(event);
     }
 }
