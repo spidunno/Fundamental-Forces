@@ -58,9 +58,9 @@ public class StarfallActor {
     public Vec3 randomizedStarfallStartPosition(ServerLevel level, BlockPos targetPos, BlockPos centerPos) {
         Vec3 targetVec = new Vec3(targetPos.getX(), targetPos.getY(), targetPos.getZ());
         Vec3 centerVec = new Vec3(centerPos.getX(), centerPos.getY(), centerPos.getZ());
-        double distance = targetVec.distanceTo(centerVec)*(Mth.nextDouble(level.random, 0.75f, 2.5f));
-        Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance,1, distance);
+        double distance = targetVec.distanceTo(centerVec)*(Mth.nextDouble(level.random, 0.5f, 5f)); //0.75-2.5x towards the center position
+        Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance,1, distance); //rotated direction towards centerPos
         Vec3 spawnVec = centerVec.add(direction);
-        return EsotericaHelper.vec3FromPos(EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, EsotericaHelper.posFromVec3(spawnVec))).add(0, 200, 0);
+        return EsotericaHelper.vec3FromPos(EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, EsotericaHelper.posFromVec3(spawnVec))).add(0, 200, 0);//200 blocks above heightmap level at spawnVec
     }
 }
