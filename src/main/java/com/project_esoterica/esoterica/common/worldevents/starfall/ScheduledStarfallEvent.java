@@ -1,5 +1,6 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
+import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
@@ -9,9 +10,10 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -118,31 +120,31 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 if (failures >= maximumFailures) {
                     break;
                 }
-                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(level, targetedPos);
                 if (target == null) {
                     failures++;
                     continue;
                 }
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
-                    Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                    Vec3 startPos = targetVec.add(-100 + level.random.nextInt(200), 100, -100 + level.random.nextInt(200));
-                    Vec3 motion = startPos.vectorTo(targetVec).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(target), true);
+                    Vec3 spawnPos = actor.randomizedStarfallStartPosition(level, target, targetedPos);
+                    Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
+                    level.setBlock(EsotericaHelper.posFromVec3(spawnPos), Blocks.DIAMOND_BLOCK.defaultBlockState(), 3);
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target), true);
                     break;
                 } else {
                     failures++;
                 }
             }
         } else {
-            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallPosition(level, targetedPos);
+            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(level, targetedPos);
             if (target != null) {
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
                     Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                    Vec3 startPos = targetVec.add(-100 + level.random.nextInt(200), 100, -100 + level.random.nextInt(200));
-                    Vec3 motion = startPos.vectorTo(targetVec).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(target), true);
+                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),Mth.nextDouble(level.random, -150, 150),Mth.nextDouble(level.random, -150, 150));
+                    Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
                 }
             }
         }

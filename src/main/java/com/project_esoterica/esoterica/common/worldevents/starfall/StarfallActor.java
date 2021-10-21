@@ -1,5 +1,6 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
+import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
@@ -7,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
 import java.util.Random;
@@ -43,16 +45,22 @@ public class StarfallActor {
         return heightmap && blocks;
     }
 
-    public BlockPos randomizedStarfallPosition(ServerLevel level, BlockPos centerPos) {
+    public BlockPos randomizedStarfallTargetPosition(ServerLevel level, BlockPos centerPos) {
         Random random = level.random;
         int minOffset = CommonConfig.MINIMUM_STARFALL_DISTANCE.get();
         int maxOffset = CommonConfig.MAXIMUM_STARFALL_DISTANCE.get();
         int xOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
         int zOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
         BlockPos offsetPos = centerPos.offset(xOffset, 0, zOffset);
-        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, offsetPos,SectionPos.blockToSectionCoord(offsetPos.getX()),SectionPos.blockToSectionCoord(offsetPos.getZ()),true,false);
-        BlockPos surfacePos = level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, offsetPos);
-        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, offsetPos,SectionPos.blockToSectionCoord(offsetPos.getX()),SectionPos.blockToSectionCoord(offsetPos.getZ()),false,false);
-        return surfacePos;
+        return EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, offsetPos);
+    }
+
+    public Vec3 randomizedStarfallStartPosition(ServerLevel level, BlockPos targetPos, BlockPos centerPos) {
+        Vec3 targetVec = new Vec3(targetPos.getX(), targetPos.getY(), targetPos.getZ());
+        Vec3 centerVec = new Vec3(centerPos.getX(), centerPos.getY(), centerPos.getZ());
+        double distance = targetVec.distanceTo(centerVec)*(Mth.nextDouble(level.random, 0.75f, 2.5f));
+        Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance,1, distance);
+        Vec3 spawnVec = centerVec.add(direction);
+        return EsotericaHelper.vec3FromPos(EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, EsotericaHelper.posFromVec3(spawnVec))).add(0, 200, 0);
     }
 }

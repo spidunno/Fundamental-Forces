@@ -2,11 +2,15 @@ package com.project_esoterica.esoterica;
 
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
 import javax.annotation.Nonnull;
@@ -16,6 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
 public class EsotericaHelper {
 
@@ -104,5 +109,19 @@ public class EsotericaHelper {
                 .xRot(RANDOM.nextFloat() * 6.28f)
                 .yRot(RANDOM.nextFloat() * 6.28f)
                 .zRot(RANDOM.nextFloat() * 6.28f);
+    }
+    public static Vec3 vec3FromPos(BlockPos pos) {
+        return new Vec3(pos.getX(), pos.getY(), pos.getZ());
+    }
+    public static BlockPos posFromVec3(Vec3 vec3) {
+        return new BlockPos(vec3.x,vec3.y,vec3.z);
+    }
+
+    public static BlockPos heightmapPosAt(Heightmap.Types type, ServerLevel level, BlockPos pos)
+    {
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
+        BlockPos surfacePos = level.getHeightmapPos(type, pos);
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos,SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),false,false);
+        return surfacePos;
     }
 }
