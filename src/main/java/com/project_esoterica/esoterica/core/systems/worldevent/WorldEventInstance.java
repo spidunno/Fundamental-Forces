@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import java.util.UUID;
@@ -36,6 +37,10 @@ public abstract class WorldEventInstance {
         invalidated = true;
     }
 
+    public boolean existsOnClient()
+    {
+        return false;
+    }
     public void addToClient() {
         NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
     }
@@ -56,6 +61,9 @@ public abstract class WorldEventInstance {
         invalidated = true;
     }
 
+    public boolean canRender() {
+        return false;
+    }
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
     }
 

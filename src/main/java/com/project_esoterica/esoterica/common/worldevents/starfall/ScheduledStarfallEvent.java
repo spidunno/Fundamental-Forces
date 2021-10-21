@@ -9,6 +9,7 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
@@ -124,10 +125,10 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 }
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
-                    Vec3 targetVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ());
+                    Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
                     Vec3 startPos = targetVec.add(-100 + level.random.nextInt(200), 100, -100 + level.random.nextInt(200));
                     Vec3 motion = startPos.vectorTo(targetVec).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(targetedPos), true);
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(target), true);
                     break;
                 } else {
                     failures++;
@@ -138,10 +139,10 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
             if (target != null) {
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
-                    Vec3 targetVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ());
+                    Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
                     Vec3 startPos = targetVec.add(-100 + level.random.nextInt(200), 100, -100 + level.random.nextInt(200));
                     Vec3 motion = startPos.vectorTo(targetVec).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(targetedPos), true);
+                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(startPos).motion(motion).targetPosition(target), true);
                 }
             }
         }

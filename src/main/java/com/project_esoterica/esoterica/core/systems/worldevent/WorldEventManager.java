@@ -73,7 +73,9 @@ public class WorldEventManager {
                 WorldDataCapability.getCapability(serverLevel).ifPresent(worldCapability -> {
                     if (player instanceof ServerPlayer serverPlayer) {
                         for (WorldEventInstance instance : worldCapability.ACTIVE_WORLD_EVENTS) {
-                            instance.addToClient(serverPlayer);
+                            if (instance.existsOnClient()) {
+                                instance.addToClient(serverPlayer);
+                            }
                         }
                     }
                 });

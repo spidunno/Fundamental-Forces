@@ -6,14 +6,11 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -25,13 +22,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
 
@@ -85,7 +78,9 @@ public class StarfallEvent extends WorldEventInstance {
 
     @Override
     public void start(ServerLevel level) {
-        addToClient();
+        if (existsOnClient()) {
+            addToClient();
+        }
     }
 
     @Override
@@ -100,6 +95,11 @@ public class StarfallEvent extends WorldEventInstance {
     public void end(ServerLevel level) {
         actor.act(level, targetedPos);
         super.end(level);
+    }
+
+    @Override
+    public boolean existsOnClient() {
+        return true;
     }
 
     @Override
@@ -118,6 +118,10 @@ public class StarfallEvent extends WorldEventInstance {
 
     private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
     public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
+    @Override
+    public boolean canRender() {
+        return RenderManager.FRUSTUM.isVisible(new AABB(position.subtract(5,5,5), position.add(6,6,6)));
+    }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
