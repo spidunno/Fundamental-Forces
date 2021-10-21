@@ -129,7 +129,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 if (success) {
                     Vec3 spawnPos = actor.randomizedStarfallStartPosition(level, target, targetedPos);
                     Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
-                    level.setBlock(EsotericaHelper.posFromVec3(spawnPos), Blocks.DIAMOND_BLOCK.defaultBlockState(), 3);
                     WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target), true);
                     break;
                 } else {
