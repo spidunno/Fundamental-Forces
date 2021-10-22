@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.client.renderer.falling;
+package com.project_esoterica.esoterica.client.renderers.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

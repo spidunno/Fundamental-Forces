@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.registry;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.client.particle.wisp.WispParticleType;
+import com.project_esoterica.esoterica.client.particles.wisp.WispParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;

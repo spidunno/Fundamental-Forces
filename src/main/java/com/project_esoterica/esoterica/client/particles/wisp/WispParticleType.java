@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.client.particle.wisp;
+package com.project_esoterica.esoterica.client.particles.wisp;
 
 import com.mojang.serialization.Codec;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
