@@ -120,19 +120,25 @@ public class StarfallEvent extends WorldEventInstance {
     public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
     @Override
     public boolean canRender() {
-        return RenderManager.FRUSTUM.isVisible(new AABB(position.subtract(5,5,5), position.add(6,6,6)));
+        return true;
+//        float renderSize = 25;
+//        return RenderManager.FRUSTUM.isVisible(new AABB(position.subtract(renderSize,renderSize,renderSize), position.add(renderSize,renderSize,renderSize)));
     }
 
     @Override
     public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
         poseStack.pushPose();
         LocalPlayer player = Minecraft.getInstance().player;
+        float minScale = 9;
+        float time = (player.tickCount + partialTicks) / 4f;
+        float distanceMultiplier = Math.max(1,20-(float) Math.max(0,position.distanceTo(player.position()) / 20f));
+        double flicker = (3%Math.sin(time) - Math.cos(-time))/3f;
+        float maxScale = (float) (Math.max(minScale, minScale+distanceMultiplier)+flicker*(distanceMultiplier/2f));
         poseStack.translate(position.x-player.getX(), position.y-player.getY(), position.z-player.getZ()); // move to position
         poseStack.translate(0, 0.25, 0); // center on Y level
-        poseStack.scale(3.0f, 3.0f, 3.0f);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        poseStack.mulPose(Vector3f.ZN.rotationDegrees(partialTicks + player.tickCount * 2f));
+        poseStack.scale(maxScale, maxScale, maxScale);
         poseStack.translate(0, -0.25, 0); // center rotation
         MultiBufferSource delayedBuffer = DELAYED_RENDER;
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
@@ -152,7 +158,7 @@ public class StarfallEvent extends WorldEventInstance {
     }
     private void move() {
         position = position.add(motion.multiply(acceleration, acceleration, acceleration));
-        acceleration += 0.001f;
+        acceleration += 0.01f;
     }
 
     private static final float notifyRadius = 200f; // players within this radius receive screenshake upon impact

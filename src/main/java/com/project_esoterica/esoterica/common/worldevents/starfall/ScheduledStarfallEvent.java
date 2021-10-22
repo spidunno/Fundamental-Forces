@@ -141,7 +141,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 boolean success = exactPosition || actor.canFall(level, target);
                 if (success) {
                     Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),Mth.nextDouble(level.random, -150, 150),Mth.nextDouble(level.random, -150, 150));
+                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_LEVEL.get(),Mth.nextDouble(level.random, -150, 150));
                     Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
                     WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
                 }

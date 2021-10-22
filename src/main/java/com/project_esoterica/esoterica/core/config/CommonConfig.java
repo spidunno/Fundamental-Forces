@@ -15,6 +15,7 @@ public class CommonConfig {
     public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_MAXIMUM_FAILURES;
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> STARFALL_ALLOWED_LEVELS;
+    public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_SPAWN_LEVEL;
     public static ForgeConfigSpec.ConfigValue<Integer> MINIMUM_STARFALL_DISTANCE;
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_STARFALL_DISTANCE;
 
@@ -49,6 +50,9 @@ public class CommonConfig {
                 .comment("Which dimensions can starfalls take place in?")
                 .defineList("starfall_permitted_dimensions", new ArrayList<>(List.of("minecraft:overworld")),
                         s -> s instanceof String);
+
+        STARFALL_SPAWN_LEVEL = builder.comment("How many blocks above the surface do starfalls spawn?")
+                .define("starfall_spawn_height", 600);
 
         MINIMUM_STARFALL_DISTANCE = builder.comment("What's the minimum distance away from a player in which a starfall can occur?")
                 .define("minimum_starfall_distance", 64);

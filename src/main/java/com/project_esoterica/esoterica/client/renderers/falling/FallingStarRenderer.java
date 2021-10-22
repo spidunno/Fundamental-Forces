@@ -8,6 +8,7 @@ import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -29,12 +30,14 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-
+        float time = (entity.tickCount + partialTicks) / 4f;
+        float distanceMultiplier = 4 - (float) (entity.position().distanceTo(Minecraft.getInstance().player.position()) / 40f);
+        double scale = 3+(3%Math.sin(time) - Math.cos(-time))/4;
+        float maxScale = (float) Math.max(1, scale)*distanceMultiplier;
         poseStack.translate(0, 0.25, 0); // center on Y level
-        poseStack.scale(3.0f, 3.0f, 3.0f);
+        poseStack.scale(maxScale, maxScale, maxScale);
         poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        poseStack.mulPose(Vector3f.ZN.rotationDegrees(partialTicks + entity.tickCount * 2f));
         poseStack.translate(0, -0.25, 0); // center rotation
         MultiBufferSource delayedBuffer = DELAYED_RENDER;
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);

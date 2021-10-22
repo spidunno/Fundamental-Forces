@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.LazyOptional;
 
 public class ChunkDataCapability implements SimpleCapability {
 
-    //shove all player data here, use ChunkDataCapability.getCapability(chunk) to access data.
+    //shove all chunk data here, use ChunkDataCapability.getCapability(chunk) to access data.
 
     public static Capability<ChunkDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
