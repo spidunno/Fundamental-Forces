@@ -37,6 +37,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     public BlockPos targetedPos;
     public int startingCountdown;
     public int countdown;
+    public int timesDelayed;
     protected boolean loop;
     protected boolean determined;
     protected boolean exactPosition;
@@ -113,6 +114,12 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
 
     @Override
     public void end(ServerLevel level) {
+        if (timesDelayed != 3 && isEntityValid(level) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition()))
+        {
+            countdown = actor.randomizedCountdown(level.random, startingCountdown/10);
+            timesDelayed++;
+            return;
+        }
         if (determined) {
             int failures = 0;
             int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
@@ -169,6 +176,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         tag.putIntArray("targetedPos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
         tag.putInt("startingCountdown", startingCountdown);
         tag.putInt("countdown", countdown);
+        tag.putInt("timesDelayed", timesDelayed);
         tag.putBoolean("loop", loop);
         tag.putBoolean("determined", determined);
         tag.putBoolean("exactPosition", exactPosition);
@@ -183,6 +191,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         startingCountdown = tag.getInt("startingCountdown");
         countdown = tag.getInt("countdown");
+        timesDelayed = tag.getInt("timesDelayed");
         loop = tag.getBoolean("loop");
         determined = tag.getBoolean("determined");
         exactPosition = tag.getBoolean("exactPosition");

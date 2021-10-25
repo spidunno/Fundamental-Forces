@@ -2,12 +2,14 @@ package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
@@ -33,7 +35,8 @@ public class StarfallActor {
     }
 
     public void act(ServerLevel level, BlockPos targetPos) {
-
+        LevelChunk chunk = level.getChunkAt(targetPos);
+        ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> chunkDataCapability.heightmapChanges = CommonConfig.MAXIMUM_HEIGHTMAP_CHANGES.get());
     }
 
     public final boolean canFall(ServerLevel level, BlockPos pos) {

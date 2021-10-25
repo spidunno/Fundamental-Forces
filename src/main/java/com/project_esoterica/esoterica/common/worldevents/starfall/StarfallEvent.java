@@ -120,9 +120,8 @@ public class StarfallEvent extends WorldEventInstance {
     public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
     @Override
     public boolean canRender() {
-        return true;
-//        float renderSize = 25;
-//        return RenderManager.FRUSTUM.isVisible(new AABB(position.subtract(renderSize,renderSize,renderSize), position.add(renderSize,renderSize,renderSize)));
+        float renderSize = 25;
+        return RenderManager.FRUSTUM.isVisible(new AABB(position.subtract(renderSize,renderSize,renderSize), position.add(renderSize,renderSize,renderSize)));
     }
 
     @Override
