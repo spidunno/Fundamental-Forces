@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -50,37 +49,4 @@ public class RenderManager {
         FRUSTUM.prepare(d0, d1, d2);
     }
 
-    public static final RenderStateShard.TransparencyStateShard ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("additive_transparency", () -> {
-        RenderSystem.depthMask(false);
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-    }, () -> {
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.depthMask(true);
-    });
-    public static final RenderStateShard.TransparencyStateShard NORMAL_TRANSPARENCY = new RenderStateShard.TransparencyStateShard("normal_transparency", () -> {
-        RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-    }, () -> {
-        RenderSystem.disableBlend();
-        RenderSystem.defaultBlendFunc();
-    });
-
-    public static RenderType createGlowingTextureRenderType(ResourceLocation resourceLocation) {
-        return RenderType.create(
-                EsotericaMod.MOD_ID + ":glowing_texture",
-                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
-                VertexFormat.Mode.QUADS, 256,
-                false, false,
-                RenderType.CompositeState.builder()
-                        .setShaderState(ShaderRegistry.ADDITIVE_TEXTURE_SHADER_STATE)
-                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
-                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
-                        .setTransparencyState(ADDITIVE_TRANSPARENCY)
-                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
-                        .setCullState(new RenderStateShard.CullStateShard(true))
-                        .createCompositeState(true)
-        );
-    }
 }

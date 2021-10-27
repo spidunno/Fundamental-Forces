@@ -7,7 +7,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,7 +21,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderManag
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
     private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
-    public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
+    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);

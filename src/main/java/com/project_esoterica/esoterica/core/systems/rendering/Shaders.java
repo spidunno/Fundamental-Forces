@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.misc;
+package com.project_esoterica.esoterica.core.systems.rendering;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.project_esoterica.esoterica.EsotericaHelper;
@@ -14,20 +14,20 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ShaderRegistry {
+public class Shaders {
 
     private static ShaderInstance additiveTexture;
-    public static Supplier<ShaderInstance> getAdditiveTextureShader()
-    {
+
+    public static Supplier<ShaderInstance> getAdditiveTextureShader() {
         return () -> additiveTexture;
     }
+
     private static ShaderInstance additiveParticle;
-    public static Supplier<ShaderInstance> getAdditiveParticleShader()
-    {
+
+    public static Supplier<ShaderInstance> getAdditiveParticleShader() {
         return () -> additiveParticle;
     }
-    public static final ShaderStateShard ADDITIVE_TEXTURE_SHADER_STATE = new ShaderStateShard(getAdditiveTextureShader());
-    public static final ShaderStateShard ADDITIVE_PARTICLE_SHADER_STATE = new ShaderStateShard(getAdditiveParticleShader());
+
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("rendertype_additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture = shaderInstance);

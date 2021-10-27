@@ -2,6 +2,7 @@ package com.project_esoterica.esoterica.core.systems.screenshake;
 
 import com.project_esoterica.esoterica.core.config.ClientConfig;
 import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.util.Mth;
 
 import java.util.Random;

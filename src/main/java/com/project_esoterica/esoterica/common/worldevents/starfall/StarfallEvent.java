@@ -10,6 +10,7 @@ import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.client.Minecraft;
@@ -117,7 +118,7 @@ public class StarfallEvent extends WorldEventInstance {
     }
 
     private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
-    public static final RenderType RENDER_TYPE = RenderManager.createGlowingTextureRenderType(STAR_LOCATION);
+    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(STAR_LOCATION);
     @Override
     public boolean canRender() {
         float renderSize = 25;

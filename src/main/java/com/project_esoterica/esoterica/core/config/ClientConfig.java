@@ -14,7 +14,7 @@ public class ClientConfig {
 
         builder.comment("Screenshake settings").push("screenshake");
         ENABLE_SCREENSHAKE = builder.comment("Enable screenshake?")
-                .define("screenshake", true);
+                .define("enable_screenshake", true);
         MAX_SCREENSHAKE_INTENSITY = builder.comment("What's the maximum strength for screenshake?")
                 .define("maximum_screenshake_strength", 10f);
         builder.pop();
