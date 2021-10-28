@@ -23,7 +23,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderManag
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation STAR_LOCATION = TextureAtlas.LOCATION_BLOCKS;
+    private static final ResourceLocation STAR_LOCATION = new ResourceLocation("textures/block/stone.png");
     public static final RenderType RENDER_TYPE = RenderTypes.createTest(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
@@ -35,16 +35,12 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
         poseStack.translate(0.5d, 0.5d, 0.5d);
-        RenderManager.renderSphere(vertexConsumer, poseStack, 64, 20, 20);
+        RenderManager.renderSphere(vertexConsumer, poseStack, 8, 20, 20);
         poseStack.popPose();
     }
 
     @Override
     public ResourceLocation getTextureLocation(FallingEntity p_114482_) {
         return STAR_LOCATION;
-    }
-
-    private static void vertex(VertexConsumer p_114090_, Matrix4f p_114091_, Matrix3f p_114092_, int p_114093_, float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
-        p_114090_.vertex(p_114091_, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114093_).normal(p_114092_, 0.0F, 1.0F, 0.0F).endVertex();
     }
 }
