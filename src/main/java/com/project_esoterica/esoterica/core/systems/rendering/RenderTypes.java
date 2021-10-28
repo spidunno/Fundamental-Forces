@@ -69,4 +69,21 @@ public class RenderTypes extends RenderStateShard{
                         .createCompositeState(true)
         );
     }
+
+    public static RenderType createTest(ResourceLocation resourceLocation) {
+        return RenderType.create(
+                EsotericaMod.MOD_ID + ":test",
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+                VertexFormat.Mode.TRIANGLES, 256,
+                false, false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(StateShards.ADDITIVE_TEXTURE_SHADER_STATE)
+                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
+                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
+                        .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
+                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                        .setCullState(new RenderStateShard.CullStateShard(true))
+                        .createCompositeState(true)
+        );
+    }
 }

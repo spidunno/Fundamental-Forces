@@ -7,6 +7,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -14,14 +15,16 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+
 
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation STAR_LOCATION = new ResourceLocation(EsotericaMod.MOD_ID, "textures/star.png");
-    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(STAR_LOCATION);
+    private static final ResourceLocation STAR_LOCATION = TextureAtlas.LOCATION_BLOCKS;
+    public static final RenderType RENDER_TYPE = RenderTypes.createTest(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -30,29 +33,10 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        float time = (entity.tickCount + partialTicks) / 4f;
-        float distanceMultiplier = 4 - (float) (entity.position().distanceTo(Minecraft.getInstance().player.position()) / 40f);
-        double scale = 3+(3%Math.sin(time) - Math.cos(-time))/4;
-        float maxScale = (float) Math.max(1, scale)*distanceMultiplier;
-        poseStack.translate(0, 0.25, 0); // center on Y level
-        poseStack.scale(maxScale, maxScale, maxScale);
-        poseStack.mulPose(entityRenderDispatcher.cameraOrientation());
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        poseStack.translate(0, -0.25, 0); // center rotation
-        MultiBufferSource delayedBuffer = DELAYED_RENDER;
-        VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
-        PoseStack.Pose pose = poseStack.last();
-        Matrix4f matrix = pose.pose();
-        Matrix3f normal = pose.normal();
-
-        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 0, 0, 1);
-        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 0, 1, 1);
-        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 1, 1, 0);
-        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 1, 0, 0);
-
+        VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
+        poseStack.translate(0.5d, 0.5d, 0.5d);
+        RenderManager.renderSphere(vertexConsumer, poseStack, 64, 20, 20);
         poseStack.popPose();
-
-        super.render(entity, entityYaw, partialTicks, poseStack, bufferSource, packedLight);
     }
 
     @Override
