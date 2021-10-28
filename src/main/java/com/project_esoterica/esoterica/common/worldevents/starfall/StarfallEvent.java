@@ -131,30 +131,24 @@ public class StarfallEvent extends WorldEventInstance {
         LocalPlayer player = Minecraft.getInstance().player;
         float minScale = 9;
         float time = (player.tickCount + partialTicks) / 4f;
-        float distanceMultiplier = Math.max(1,20-(float) Math.max(0,position.distanceTo(player.position()) / 20f));
-        double flicker = (3%Math.sin(time) - Math.cos(-time))/3f;
-        float maxScale = (float) (Math.max(minScale, minScale+distanceMultiplier)+flicker*(distanceMultiplier/2f));
-        poseStack.translate(position.x-player.getX(), position.y-player.getY(), position.z-player.getZ()); // move to position
-        poseStack.translate(0, 0.25, 0); // center on Y level
+        float distanceMultiplier = Math.max(1, 20 - (float) Math.max(0, position.distanceTo(player.position()) / 20f));
+        double flicker = (3 % Math.sin(time) - Math.cos(-time)) / 3f;
+        float maxScale = (float) (Math.max(minScale, minScale + distanceMultiplier) + flicker * (distanceMultiplier / 2f));
+        poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ()); // move to position
+        poseStack.scale(maxScale, maxScale, maxScale);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        poseStack.scale(maxScale, maxScale, maxScale);
-        poseStack.translate(0, -0.25, 0); // center rotation
         MultiBufferSource delayedBuffer = DELAYED_RENDER;
         VertexConsumer vertexConsumer = delayedBuffer.getBuffer(RENDER_TYPE);
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
-        Matrix3f normal = pose.normal();
 
-        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 0, 0, 1);
-        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 0, 1, 1);
-        vertex(vertexConsumer, matrix, normal, 15728880, 1.0F, 1, 1, 0);
-        vertex(vertexConsumer, matrix, normal, 15728880, 0.0F, 1, 0, 0);
+        RenderManager.vertex(vertexConsumer, matrix, -0.5f, -0.5f, 0, 255, 255, 255, 255, 0, 1, 15728880);
+        RenderManager.vertex(vertexConsumer, matrix, 0.5f, -0.5f, 0, 255, 255, 255, 255, 1, 1, 15728880);
+        RenderManager.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, 255, 255, 255, 255, 1, 0, 15728880);
+        RenderManager.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, 255, 255, 255, 255, 0, 0, 15728880);
 
         poseStack.popPose();
-    }
-    private static void vertex(VertexConsumer vertexConsumer, Matrix4f matrix4f, Matrix3f matrix3f, int light, float p_114094_, int p_114095_, int p_114096_, int p_114097_) {
-        vertexConsumer.vertex(matrix4f, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(255, 255, 255, 255).uv((float)p_114096_, (float)p_114097_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, 1.0F, 0.0F).endVertex();
     }
     private void move() {
         position = position.add(motion.multiply(acceleration, acceleration, acceleration));

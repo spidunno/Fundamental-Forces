@@ -5,11 +5,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.fmllegacy.RegistryObject;
 
@@ -121,6 +123,12 @@ public class EsotericaHelper {
     {
         ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
         BlockPos surfacePos = level.getHeightmapPos(type, pos);
+        while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS))
+        {
+            //TODO: it'd be best to replace this while statement with a custom Heightmap.Types' type.
+            // However the Heightmap.Types enum isn't an IExtendibleEnum, we would need to make a dreaded forge PR for them to make it one
+            surfacePos = surfacePos.below();
+        }
         ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos,SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),false,false);
         return surfacePos;
     }

@@ -23,7 +23,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderManag
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation STAR_LOCATION = new ResourceLocation("textures/block/stone.png");
+    private static final ResourceLocation STAR_LOCATION = new ResourceLocation("textures/misc/vignette.png");
     public static final RenderType RENDER_TYPE = RenderTypes.createTest(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
@@ -35,7 +35,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.pushPose();
         VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
         poseStack.translate(0.5d, 0.5d, 0.5d);
-        RenderManager.renderSphere(vertexConsumer, poseStack, 8, 20, 20);
+        RenderManager.renderSphere(vertexConsumer, poseStack, 20, 20, 20);
         poseStack.popPose();
     }
 
