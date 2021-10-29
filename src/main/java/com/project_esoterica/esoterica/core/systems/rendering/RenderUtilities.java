@@ -23,13 +23,13 @@ public class RenderUtilities {
 
         stack.translate(-width, height, 0f);
         vertex(vertexConsumer, last, -width, -height, 0, 255, 255, 255, 255, 0, 1, 15728880);
-        vertex(vertexConsumer, last, width, -height, 0, 255, 255, 255, 255, 1, 1, 15728880);
-        vertex(vertexConsumer, last, width, height, 0, 255, 255, 255, 255, 1, 0, 15728880);
+        vertex(vertexConsumer, last, width, -height, 0, 255, 255, 255, 255, 0.5f, 1, 15728880);
+        vertex(vertexConsumer, last, width, height, 0, 255, 255, 255, 255, 0.5f, 0, 15728880);
 
         stack.translate(width * 2, 0f, 0f);
-        vertex(vertexConsumer, last, -width, -height, 0, 255, 255, 255, 255, 0, 1, 15728880);
-        vertex(vertexConsumer, last, width, -height, 0, 255, 255, 255, 255, 1, 1, 15728880);
-        vertex(vertexConsumer, last, -width, height, 0, 255, 255, 255, 255, 0, 0, 15728880);
+        vertex(vertexConsumer, last, -width, -height, 0, 255, 255, 255, 255, 0.5f, 1, 15728880);
+        vertex(vertexConsumer, last, width, -height, 0, 255, 255, 255, 255, 0, 1, 15728880);
+        vertex(vertexConsumer, last, -width, height, 0, 255, 255, 255, 255, 0.5f, 0, 15728880);
         stack.translate(-width, -height, 0f);
     }
 

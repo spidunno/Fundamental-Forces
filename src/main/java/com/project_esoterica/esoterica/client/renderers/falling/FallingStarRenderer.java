@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import net.minecraft.client.Minecraft;
@@ -19,7 +20,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtili
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation STAR_LOCATION = new ResourceLocation("textures/block/stone.png");
+    private static final ResourceLocation STAR_LOCATION = EsotericaHelper.prefix("textures/block/test.png");
     public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureTrianglesRenderType(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
