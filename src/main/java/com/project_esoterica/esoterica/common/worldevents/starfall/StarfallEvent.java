@@ -2,7 +2,6 @@ package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
@@ -11,6 +10,7 @@ import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.client.Minecraft;
@@ -18,7 +18,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -143,10 +142,10 @@ public class StarfallEvent extends WorldEventInstance {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix = pose.pose();
 
-        RenderManager.vertex(vertexConsumer, matrix, -0.5f, -0.5f, 0, 255, 255, 255, 255, 0, 1, 15728880);
-        RenderManager.vertex(vertexConsumer, matrix, 0.5f, -0.5f, 0, 255, 255, 255, 255, 1, 1, 15728880);
-        RenderManager.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, 255, 255, 255, 255, 1, 0, 15728880);
-        RenderManager.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, 255, 255, 255, 255, 0, 0, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, -0.5f, 0, 255, 255, 255, 255, 0, 1, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, -0.5f, 0, 255, 255, 255, 255, 1, 1, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, 255, 255, 255, 255, 1, 0, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, 255, 255, 255, 255, 0, 0, 15728880);
 
         poseStack.popPose();
     }

@@ -70,7 +70,7 @@ public class RenderTypes extends RenderStateShard{
         );
     }
 
-    public static RenderType createTest(ResourceLocation resourceLocation) {
+    public static RenderType createGlowingTextureTrianglesRenderType(ResourceLocation resourceLocation) {
         return RenderType.create(
                 EsotericaMod.MOD_ID + ":test",
                 DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
