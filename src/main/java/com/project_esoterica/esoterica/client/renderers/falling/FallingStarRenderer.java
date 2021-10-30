@@ -2,11 +2,13 @@ package com.project_esoterica.esoterica.client.renderers.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -23,7 +25,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtili
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
     private static final ResourceLocation STAR_LOCATION = EsotericaHelper.prefix("textures/block/test.png");
-    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureTrianglesRenderType(STAR_LOCATION);
+    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -37,17 +39,16 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         float cameraY = Math.abs(minecraft.gameRenderer.getMainCamera().getYRot());
         VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
 
-        poseStack.mulPose(entity.getDirection().getOpposite().getRotation());
-        //TODO: fix this demonic thing
-        float direction = (Mth.floor(cameraY / 90.0f)) & 3;
-        float rotation = direction <= 1 ? -cameraX : cameraX;
-        poseStack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, rotation, 0)));
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
 
-
-        poseStack.mulPose(Vector3f.YN.rotationDegrees(-90f));
-        renderTriangle(vertexConsumer, poseStack, 1, 10);
+        int[] color = new int[]{255, 177, 71, 255};
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        renderTriangle(vertexConsumer, poseStack, 1, 10);
+        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, -0.5f, 0, color[0], color[1], color[2], color[3], 0, 1, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, -0.5f, 0, color[0], color[1], color[2], color[3], 1, 1, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 1, 0, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 0, 0, 15728880);
 
         poseStack.popPose();
     }

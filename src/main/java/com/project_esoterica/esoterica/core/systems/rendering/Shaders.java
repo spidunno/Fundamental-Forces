@@ -28,9 +28,16 @@ public class Shaders {
         return () -> additiveParticle;
     }
 
+    private static ShaderInstance metallicNoise;
+
+    public static Supplier<ShaderInstance> getMetallicNoiseShader() {
+        return () -> metallicNoise;
+    }
+
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("rendertype_additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture = shaderInstance);
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle = shaderInstance);
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("noise/metallic_noise"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> metallicNoise = shaderInstance);
     }
 }
