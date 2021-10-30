@@ -12,7 +12,9 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 
 
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
@@ -32,14 +34,14 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.pushPose();
         Minecraft minecraft = Minecraft.getInstance();
         float cameraX = minecraft.gameRenderer.getMainCamera().getXRot();
-        float cameraY = minecraft.gameRenderer.getMainCamera().getYRot()%360;
-
+        float cameraY = Math.abs(minecraft.gameRenderer.getMainCamera().getYRot());
         VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
 
-        //TODO: redo this shit
         poseStack.mulPose(entity.getDirection().getOpposite().getRotation());
-        float rotation = (cameraY-180) < 0 ? -cameraX : cameraX;
-        poseStack.mulPose(new Quaternion(0, rotation, 0, true));
+        //TODO: fix this demonic thing
+        float direction = (Mth.floor(cameraY / 90.0f)) & 3;
+        float rotation = direction <= 1 ? -cameraX : cameraX;
+        poseStack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, rotation, 0)));
 
 
         poseStack.mulPose(Vector3f.YN.rotationDegrees(-90f));
