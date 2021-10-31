@@ -3,8 +3,11 @@
 uniform sampler2D Sampler0;
 
 uniform vec4 ColorModulator;
-uniform float GameTime;
 uniform vec2 ScreenSize;
+uniform float GameTime;
+uniform float Intensity;
+uniform float Size;
+uniform float Speed;
 
 in vec4 vertexColor;
 in vec2 texCoord0;
@@ -29,14 +32,14 @@ float noise(vec2 p){
 }
 
 float layeredNoise(vec2 uv){
-    float intensity = 2.5;
-
     float n = 0.;
-    n += 0.5*noise(uv+GameTime);
-    n += 0.25*noise(uv*intensity);
-    n += 0.125*noise(uv+GameTime);
-    n += 0.0625*noise(uv*intensity);
-    n += 0.03215*noise(uv+GameTime);
+    vec2 intenseUv = uv*Intensity;
+    vec2 timedUv = uv+(GameTime*Speed);
+    n += 0.5*noise(timedUv);
+    n += 0.25*noise(intenseUv);
+    n += 0.125*noise(timedUv);
+    n += 0.0625*noise(intenseUv);
+    n += 0.03215*noise(timedUv);
     return n;
 }
 float pattern(vec2 uv){
@@ -44,7 +47,7 @@ float pattern(vec2 uv){
 }
 void main() {
     vec2 uv = texCoord0;
-    float n = pattern(4.*uv);
+    float n = pattern(Size*uv);
     vec4 color = texture(Sampler0, uv) * vec4(sin(n) * n*(vec4(uv.xyx, 1)+vertexColor));
     fragColor = color * ColorModulator;
 }

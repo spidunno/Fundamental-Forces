@@ -1,5 +1,7 @@
 package com.project_esoterica.esoterica.client.renderers.falling;
 
+import com.mojang.blaze3d.shaders.Uniform;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
@@ -9,6 +11,7 @@ import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
+import com.project_esoterica.esoterica.core.systems.rendering.Shaders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -45,8 +48,12 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         int[] color = new int[]{255, 177, 71, 255};
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, -0.5f, 0, color[0], color[1], color[2], color[3], 0, 1, 15728880);
-        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, -0.5f, 0, color[0], color[1], color[2], color[3], 1, 1, 15728880);
+
+        Shaders.getMetallicNoiseShader().get().safeGetUniform("Intensity").set(2.5f);
+        Shaders.getMetallicNoiseShader().get().safeGetUniform("Size").set(4.0f);
+        Shaders.getMetallicNoiseShader().get().safeGetUniform("Speed").set(1000f);
+        RenderUtilities.vertex(vertexConsumer, matrix, -5f, -5f, 0, color[0], color[1], color[2], color[3], 0, 1, 15728880);
+        RenderUtilities.vertex(vertexConsumer, matrix, 5f, -0.5f, 0, color[0], color[1], color[2], color[3], 1, 1, 15728880);
         RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 1, 0, 15728880);
         RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 0, 0, 15728880);
 
