@@ -28,7 +28,7 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtili
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
     private static final ResourceLocation STAR_LOCATION = EsotericaHelper.prefix("textures/block/test.png");
-    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(STAR_LOCATION);
+    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureTrianglesRenderType(STAR_LOCATION);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -42,20 +42,24 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         float cameraY = Math.abs(minecraft.gameRenderer.getMainCamera().getYRot());
         VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
 
-        PoseStack.Pose pose = poseStack.last();
-        Matrix4f matrix = pose.pose();
-
-        int[] color = new int[]{255, 177, 71, 255};
-        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        //poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 
-        Shaders.getMetallicNoiseShader().get().safeGetUniform("Intensity").set(2.5f);
+        Shaders.getMetallicNoiseShader().get().safeGetUniform("Intensity").set(10f);
         Shaders.getMetallicNoiseShader().get().safeGetUniform("Size").set(4.0f);
         Shaders.getMetallicNoiseShader().get().safeGetUniform("Speed").set(1000f);
-        RenderUtilities.vertex(vertexConsumer, matrix, -5f, -5f, 0, color[0], color[1], color[2], color[3], 0, 1, 15728880);
-        RenderUtilities.vertex(vertexConsumer, matrix, 5f, -0.5f, 0, color[0], color[1], color[2], color[3], 1, 1, 15728880);
-        RenderUtilities.vertex(vertexConsumer, matrix, 0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 1, 0, 15728880);
-        RenderUtilities.vertex(vertexConsumer, matrix, -0.5f, 0.5f, 0, color[0], color[1], color[2], color[3], 0, 0, 15728880);
+
+        poseStack.mulPose(entity.getDirection().getOpposite().getRotation());
+        //TODO: redo this shit
+        float direction = (Mth.floor(cameraY / 90.0f)) & 3;
+        float rotation = direction <= 1 ? -cameraX : cameraX;
+        poseStack.mulPose(Quaternion.fromXYZDegrees(new Vector3f(0, rotation, 0)));
+
+        int[] colors = new int[]{ 226, 176, 255, 255};
+        poseStack.mulPose(Vector3f.YN.rotationDegrees(-90f));
+        renderTriangle(vertexConsumer, poseStack, 1, 10, colors[0], colors[1], colors[2], colors[3]);
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+        renderTriangle(vertexConsumer, poseStack, 1, 10, colors[0], colors[1], colors[2], colors[3]);
 
         poseStack.popPose();
     }

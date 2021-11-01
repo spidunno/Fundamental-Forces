@@ -8,6 +8,7 @@ uniform float GameTime;
 uniform float Intensity;
 uniform float Size;
 uniform float Speed;
+uniform float Brightness;
 
 in vec4 vertexColor;
 in vec2 texCoord0;
@@ -48,6 +49,6 @@ float pattern(vec2 uv){
 void main() {
     vec2 uv = texCoord0;
     float n = pattern(Size*uv);
-    vec4 color = texture(Sampler0, uv) * vec4(sin(n) * n*(vec4(uv.xyx, 1)+vertexColor));
-    fragColor = color * ColorModulator;
+    vec4 color = texture(Sampler0, uv) * vec4(sin(n) * n*vertexColor);
+    fragColor = color * Brightness * ColorModulator;
 }
