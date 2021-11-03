@@ -34,10 +34,20 @@ public class Shaders {
         return () -> metallicNoise;
     }
 
+    private static ShaderInstance movingTrail;
+
+    public static Supplier<ShaderInstance> getMovingTrailShader() {
+        return () -> movingTrail;
+    }
+
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
+
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("rendertype_additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture = shaderInstance);
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle = shaderInstance);
+
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("noise/metallic"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> metallicNoise = shaderInstance);
+
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/moving_trail"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> movingTrail = shaderInstance);
     }
 }

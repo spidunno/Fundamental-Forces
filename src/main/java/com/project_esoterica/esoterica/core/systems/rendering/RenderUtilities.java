@@ -19,7 +19,7 @@ import java.util.Random;
 public class RenderUtilities {
 
     public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
-        renderTriangle(vertexConsumer, stack, width, height, 255,255,255,255, 15728880);
+        renderTriangle(vertexConsumer, stack, width, height, 255,255,255,255);
     }
     public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
         renderTriangle(vertexConsumer, stack, width, height, r,g,b,a, 15728880);
@@ -29,14 +29,29 @@ public class RenderUtilities {
 
         stack.translate(-width, height, 0f);
         vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0, g,b,r,a, 0.5f, 1, light);
-        vertex(vertexConsumer, last, width, height, 0, b,r,g,a, 0.5f, 0, light);
+        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 0.5f, 1, light);
+        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, 0.5f, 0, light);
 
         stack.translate(width * 2, 0f, 0f);
         vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0.5f, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0, g,b,r,a, 0, 1, light);
-        vertex(vertexConsumer, last, -width, height, 0, b,r,g,a, 0.5f, 0, light);
+        vertex(vertexConsumer, last, width, -height, 0,r,g,b,a, 0, 1, light);
+        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, 0.5f, 0, light);
         stack.translate(-width, -height, 0f);
+    }
+
+    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
+        renderQuad(vertexConsumer, stack, width, height, 255,255,255,255);
+    }
+    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
+        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880);
+    }
+    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
+        Matrix4f last = stack.last().pose();
+
+        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
+        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
+        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, 1, 0, light);
+        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, 0, 0, light);
     }
 
     public static void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats)

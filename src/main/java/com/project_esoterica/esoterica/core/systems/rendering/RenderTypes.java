@@ -55,7 +55,41 @@ public class RenderTypes extends RenderStateShard{
 
     public static RenderType createGlowingTextureRenderType(ResourceLocation resourceLocation) {
         return RenderType.create(
-                EsotericaMod.MOD_ID + ":glowing_texture",
+                EsotericaMod.MOD_ID + ":glowing_texture_quad",
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+                VertexFormat.Mode.QUADS, 256,
+                false, false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(StateShards.ADDITIVE_TEXTURE_SHADER_STATE)
+                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
+                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
+                        .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
+                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                        .setCullState(new RenderStateShard.CullStateShard(true))
+                        .createCompositeState(true)
+        );
+    }
+
+    public static RenderType createGlowingTextureTrianglesRenderType(ResourceLocation resourceLocation) {
+        return RenderType.create(
+                EsotericaMod.MOD_ID + ":glowing_texture_triangle",
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+                VertexFormat.Mode.TRIANGLES, 256,
+                false, false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(StateShards.ADDITIVE_TEXTURE_SHADER_STATE)
+                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
+                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
+                        .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
+                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                        .setCullState(new RenderStateShard.CullStateShard(true))
+                        .createCompositeState(true)
+        );
+    }
+
+    public static RenderType createMetallicNoiseRenderType(ResourceLocation resourceLocation) {
+        return RenderType.create(
+                EsotericaMod.MOD_ID + ":metallic_noise_quad",
                 DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
@@ -70,14 +104,31 @@ public class RenderTypes extends RenderStateShard{
         );
     }
 
-    public static RenderType createGlowingTextureTrianglesRenderType(ResourceLocation resourceLocation) {
+    public static RenderType createMetallicNoiseTrianglesRenderType(ResourceLocation resourceLocation) {
         return RenderType.create(
-                EsotericaMod.MOD_ID + ":test",
+                EsotericaMod.MOD_ID + ":metallic_noise_triangle",
                 DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
                 VertexFormat.Mode.TRIANGLES, 256,
                 false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(StateShards.METALLIC_NOISE_SHADER_STATE)
+                        .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
+                        .setLightmapState(new RenderStateShard.LightmapStateShard(false))
+                        .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
+                        .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                        .setCullState(new RenderStateShard.CullStateShard(true))
+                        .createCompositeState(true)
+        );
+    }
+
+    public static RenderType createMovingTrailTextureRenderType(ResourceLocation resourceLocation) {
+        return RenderType.create(
+                EsotericaMod.MOD_ID + ":moving_trail",
+                DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
+                VertexFormat.Mode.QUADS, 256,
+                false, false,
+                RenderType.CompositeState.builder()
+                        .setShaderState(StateShards.MOVING_TRAIL_SHADER)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)

@@ -22,6 +22,8 @@ public class StateShards extends RenderStateShard {
 
     public static final ShaderStateShard METALLIC_NOISE_SHADER_STATE = new ShaderStateShard(Shaders.getMetallicNoiseShader());
 
+    public static final ShaderStateShard MOVING_TRAIL_SHADER = new ShaderStateShard(Shaders.getMovingTrailShader());
+
     public static final TransparencyStateShard ADDITIVE_TRANSPARENCY = new TransparencyStateShard("additive_transparency", () -> {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
