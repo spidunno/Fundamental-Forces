@@ -13,5 +13,6 @@
   "command.esoterica.fallstar_natural_position": "Natural starfall scheduled to fall at the given position.",
   "command.esoterica.fallstar_natural_target": "Natural starfall scheduled for the given target.",
   "command.esoterica.screenshake": "Command Successful, enjoy your screenshake.",
+  "item.esoterica.copium": "Copium",
   "itemGroup.esoterica": "Empirical Esoterica"
 }

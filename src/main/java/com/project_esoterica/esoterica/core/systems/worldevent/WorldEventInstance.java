@@ -2,15 +2,12 @@ package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
-import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
-import com.project_esoterica.esoterica.core.eventhandlers.NetworkManager;
+import com.project_esoterica.esoterica.core.eventhandlers.NetworkEvents;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import java.util.UUID;
@@ -42,11 +39,11 @@ public abstract class WorldEventInstance {
         return false;
     }
     public void addToClient() {
-        NetworkManager.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
+        NetworkEvents.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
     }
 
     public void addToClient(ServerPlayer player) {
-        NetworkManager.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
+        NetworkEvents.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
     }
 
     public void clientStart(ClientLevel level) {

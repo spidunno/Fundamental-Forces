@@ -1,7 +1,8 @@
 77f7733cd11760cc52f7930fd59e312caa4087a5 assets/esoterica/blockstates/asteroid_rock.json
-73889e304d2af044c047116a08149180e34bd7fe assets/esoterica/lang/en_us.json
+a003866ffce82fa465b866ce2ed899a2f0a4bf7d assets/esoterica/lang/en_us.json
 0bc6178e8ab2a0c96a9ae2c9ef94f1e8fd8b9ebb assets/esoterica/models/block/asteroid_rock.json
 907ed41fbf6faa850da1273253209ae0d2ff163c assets/esoterica/models/item/asteroid_rock.json
+157e94aed195eb042c8480b65d7075bed5ce7dca assets/esoterica/models/item/copium.json
 8d84343603b131a94749a0a9c88bbfc1bbbd18dd data/esoterica/loot_tables/blocks/asteroid_rock.json
 deeac129127ddfc77cec30bc77583a539a3bd836 data/esoterica/tags/blocks/starfall_avoided.json
 5608e84f53912833c847d7ba93935e4b47ab36ba data/esoterica/tags/blocks/terracotta.json
