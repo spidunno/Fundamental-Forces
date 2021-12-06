@@ -16,14 +16,6 @@ public class StateShards extends RenderStateShard {
         super(p_110161_, p_110162_, p_110163_);
     }
 
-    public static final ShaderStateShard ADDITIVE_TEXTURE_SHADER_STATE = new ShaderStateShard(Shaders.getAdditiveTextureShader());
-
-    public static final ShaderStateShard ADDITIVE_PARTICLE_SHADER_STATE = new ShaderStateShard(Shaders.getAdditiveParticleShader());
-
-    public static final ShaderStateShard METALLIC_NOISE_SHADER_STATE = new ShaderStateShard(Shaders.getMetallicNoiseShader());
-
-    public static final ShaderStateShard MOVING_TRAIL_SHADER = new ShaderStateShard(Shaders.getMovingTrailShader());
-
     public static final TransparencyStateShard ADDITIVE_TRANSPARENCY = new TransparencyStateShard("additive_transparency", () -> {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
@@ -41,6 +33,5 @@ public class StateShards extends RenderStateShard {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
     });
-
 
 }

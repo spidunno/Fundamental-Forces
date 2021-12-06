@@ -16,38 +16,42 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class Shaders {
 
-    private static ShaderInstance additiveTexture;
+    public static ExtendedShaderInstance additiveTexture = new ExtendedShaderInstance();
 
-    public static Supplier<ShaderInstance> getAdditiveTextureShader() {
-        return () -> additiveTexture;
-    }
+    public static ExtendedShaderInstance additiveParticle = new ExtendedShaderInstance();
 
-    private static ShaderInstance additiveParticle;
+    public static ExtendedShaderInstance metallicNoise = new ExtendedShaderInstance();
 
-    public static Supplier<ShaderInstance> getAdditiveParticleShader() {
-        return () -> additiveParticle;
-    }
+    public static ExtendedShaderInstance movingTrail = new ExtendedShaderInstance();
 
-    private static ShaderInstance metallicNoise;
-
-    public static Supplier<ShaderInstance> getMetallicNoiseShader() {
-        return () -> metallicNoise;
-    }
-
-    private static ShaderInstance movingTrail;
-
-    public static Supplier<ShaderInstance> getMovingTrailShader() {
-        return () -> movingTrail;
-    }
+    public static ExtendedShaderInstance bootlegTriangle = new ExtendedShaderInstance();
 
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
 
-        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("rendertype_additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture = shaderInstance);
-        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle = shaderInstance);
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture.setInstance(shaderInstance));
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle.setInstance(shaderInstance));
 
-        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("noise/metallic"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> metallicNoise = shaderInstance);
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("noise/metallic"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> metallicNoise.setInstance(shaderInstance));
 
-        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/moving_trail"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> movingTrail = shaderInstance);
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/moving_trail"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> movingTrail.setInstance(shaderInstance));
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/bootleg_triangle"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> bootlegTriangle.setInstance(shaderInstance));
+    }
+
+    public static class ExtendedShaderInstance {
+        private ShaderInstance instance;
+        public final ShaderStateShard shard;
+
+        public ExtendedShaderInstance() {
+            this.shard = new ShaderStateShard(getInstance());
+        }
+
+        public Supplier<ShaderInstance> getInstance() {
+            return () -> instance;
+        }
+        public void setInstance(ShaderInstance instance)
+        {
+            this.instance = instance;
+        }
     }
 }

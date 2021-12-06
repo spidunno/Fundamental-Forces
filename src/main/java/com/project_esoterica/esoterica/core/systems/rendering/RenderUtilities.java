@@ -3,11 +3,9 @@ package com.project_esoterica.esoterica.core.systems.rendering;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
-import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +20,8 @@ import java.util.Random;
 
 public class RenderUtilities {
 
+    private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
+
     public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
         renderTriangle(vertexConsumer, stack, width, height, 255,255,255,255);
     }
@@ -31,16 +31,9 @@ public class RenderUtilities {
     public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
         Matrix4f last = stack.last().pose();
 
-        stack.translate(-width, height, 0f);
         vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 0.5f, 1, light);
-        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, 0.5f, 0, light);
-
-        stack.translate(width * 2, 0f, 0f);
-        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0.5f, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0,r,g,b,a, 0, 1, light);
-        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, 0.5f, 0, light);
-        stack.translate(-width, -height, 0f);
+        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
+        vertex(vertexConsumer, last, 0, height, 0, r,g,b,a, 0.5f, 0, light);
     }
 
     public static void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width) {
@@ -52,6 +45,8 @@ public class RenderUtilities {
     public static void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width, int r, int g, int b, int a, int light)
     {
         Minecraft minecraft = Minecraft.getInstance();
+        Vec3 playerPos = minecraft.player.position();
+        stack.translate(-playerPos.x, -playerPos.y, -playerPos.z); // move to position
         Vec3 cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPosition();
         Vec3 delta = end.subtract(start);
         Vec3 normal = start.subtract(cameraPosition).cross(delta).normalize().multiply(width/2f,width/2f,width/2f);
@@ -61,20 +56,24 @@ public class RenderUtilities {
         vertex(vertexConsumer, last, (float)positions[1].x,(float)positions[1].y,(float)positions[1].z,r,g,b,a,0,0, light);
         vertex(vertexConsumer, last, (float)positions[2].x,(float)positions[2].y,(float)positions[2].z,r,g,b,a,1,0, light);
         vertex(vertexConsumer, last, (float)positions[3].x,(float)positions[3].y,(float)positions[3].z,r,g,b,a,1,1, light);
+        stack.translate(playerPos.x, playerPos.y, playerPos.z);
     }
-    public static void renderTriangleQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
-        renderTriangleQuad(vertexConsumer, stack, width, height, 255,255,255,255);
+    public static void renderBootlegTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
+        renderBootlegTriangle(vertexConsumer, stack, width, height, 255,255,255,255);
     }
-    public static void renderTriangleQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
-        renderTriangleQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880);
+    public static void renderBootlegTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
+        renderBootlegTriangle(vertexConsumer, stack, width, height, r, g, b, a, 15728880);
     }
-    public static void renderTriangleQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
+    public static void renderBootlegTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
         Matrix4f last = stack.last().pose();
         //TODO: make this actually work please
         vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
+        vertex(vertexConsumer, last, 0, -height, 0, r,g,b,a, 0.5f, 1, light);
+        vertex(vertexConsumer, last, 0, height, 0, r,g,b,a, 0, 0, light);
+
+        vertex(vertexConsumer, last, 0, -height, 0, r,g,b,a, 0.5f, 1, light);
         vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
-        vertex(vertexConsumer, last, width/2f, height, 0, r,g,b,a, 1, 0, light);
-        vertex(vertexConsumer, last, -width/2f, height, 0, r,g,b,a, 0, 0, light);
+        vertex(vertexConsumer, last, 0, height, 0, r,g,b,a, 1, 0, light);
     }
 
     public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {

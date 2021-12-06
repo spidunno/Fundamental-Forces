@@ -5,7 +5,7 @@
     "dstrgb": "1-srcalpha"
   },
   "vertex": "esoterica:generic",
-  "fragment": "esoterica:rendertype_additive_texture",
+  "fragment": "esoterica:vfx/bootleg_triangle",
   "attributes": [
     "Position",
     "Color",

@@ -16,7 +16,7 @@ public class AdditiveParticleRenderType implements ParticleRenderType {
 
     public void begin(BufferBuilder builder, TextureManager manager) {
         RenderSystem.depthMask(false);
-        RenderSystem.setShader(Shaders.getAdditiveParticleShader());
+        RenderSystem.setShader(Shaders.additiveParticle.getInstance());
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);

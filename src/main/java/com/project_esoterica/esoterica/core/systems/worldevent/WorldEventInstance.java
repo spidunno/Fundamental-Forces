@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
-import com.project_esoterica.esoterica.core.eventhandlers.NetworkEvents;
+import com.project_esoterica.esoterica.core.registry.misc.PacketRegistry;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
@@ -39,11 +39,11 @@ public abstract class WorldEventInstance {
         return false;
     }
     public void addToClient() {
-        NetworkEvents.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
     }
 
     public void addToClient(ServerPlayer player) {
-        NetworkEvents.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
     }
 
     public void clientStart(ClientLevel level) {

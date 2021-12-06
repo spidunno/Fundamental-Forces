@@ -6,7 +6,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
-import com.project_esoterica.esoterica.core.eventhandlers.NetworkEvents;
+import com.project_esoterica.esoterica.core.registry.misc.PacketRegistry;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
@@ -160,7 +160,7 @@ public class StarfallEvent extends WorldEventInstance {
 
     // TODO: make farther players experience less screenshake
     private void triggerGlobalScreenshake(ClientLevel level) {
-        NetworkEvents.INSTANCE.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ(), notifyRadius, level.dimension())), new ScreenshakePacket(screenshakeFactor, screenshakeFalloff));
+        PacketRegistry.INSTANCE.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ(), notifyRadius, level.dimension())), new ScreenshakePacket(screenshakeFactor, screenshakeFalloff));
     }
 
     @Override

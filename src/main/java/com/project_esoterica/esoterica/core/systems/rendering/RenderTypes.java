@@ -60,7 +60,7 @@ public class RenderTypes extends RenderStateShard{
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(StateShards.ADDITIVE_TEXTURE_SHADER_STATE)
+                        .setShaderState(Shaders.additiveTexture.shard)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
@@ -77,7 +77,7 @@ public class RenderTypes extends RenderStateShard{
                 VertexFormat.Mode.TRIANGLES, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(StateShards.ADDITIVE_TEXTURE_SHADER_STATE)
+                        .setShaderState(Shaders.additiveTexture.shard)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
@@ -94,7 +94,7 @@ public class RenderTypes extends RenderStateShard{
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(StateShards.METALLIC_NOISE_SHADER_STATE)
+                        .setShaderState(Shaders.metallicNoise.shard)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
@@ -111,7 +111,7 @@ public class RenderTypes extends RenderStateShard{
                 VertexFormat.Mode.TRIANGLES, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(StateShards.METALLIC_NOISE_SHADER_STATE)
+                        .setShaderState(Shaders.metallicNoise.shard)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)
@@ -128,7 +128,7 @@ public class RenderTypes extends RenderStateShard{
                 VertexFormat.Mode.QUADS, 256,
                 false, false,
                 RenderType.CompositeState.builder()
-                        .setShaderState(StateShards.MOVING_TRAIL_SHADER)
+                        .setShaderState(Shaders.bootlegTriangle.shard)
                         .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, true))
                         .setLightmapState(new RenderStateShard.LightmapStateShard(false))
                         .setTransparencyState(StateShards.ADDITIVE_TRANSPARENCY)

@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.eventhandlers;
+package com.project_esoterica.esoterica.core.registry.misc;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
@@ -13,9 +13,9 @@ import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class NetworkEvents {
+public class PacketRegistry {
     public static final String PROTOCOL_VERSION = "1";
-    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(EsotericaHelper.prefix("main"), () -> NetworkEvents.PROTOCOL_VERSION, NetworkEvents.PROTOCOL_VERSION::equals, NetworkEvents.PROTOCOL_VERSION::equals);
+    public static SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(EsotericaHelper.prefix("main"), () -> PacketRegistry.PROTOCOL_VERSION, PacketRegistry.PROTOCOL_VERSION::equals, PacketRegistry.PROTOCOL_VERSION::equals);
 
     @SuppressWarnings("UnusedAssignment")
     @SubscribeEvent

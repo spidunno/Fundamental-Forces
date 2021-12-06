@@ -22,8 +22,8 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtili
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation TEXTURE = EsotericaHelper.prefix("textures/vfx/uv_test.png");
-    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureRenderType(TEXTURE);
+    private static final ResourceLocation TEXTURE = EsotericaHelper.prefix("textures/vfx/energy_trail.png");
+    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureTrianglesRenderType(TEXTURE);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -32,10 +32,11 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(RENDER_TYPE);
-        Vec3 playerPos = entity.position();
-        poseStack.translate(-playerPos.x, -playerPos.y, -playerPos.z); // move to position
-        renderBeam(vertexConsumer, poseStack, entity.position(), entity.position().add(2, 0,0), 2);
+        RenderType type = RenderTypes.createMovingTrailTextureRenderType(EsotericaHelper.prefix("textures/vfx/shadow_trail.png"));
+        VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(type);
+
+        renderQuad(vertexConsumer, poseStack, 5,5,255, 255, 255, 255, 15728880);
+        //        renderBeam(vertexConsumer, poseStack, entity.position(), entity.position().add(-40, 2,-5), 2);
         poseStack.popPose();
     }
     @Override

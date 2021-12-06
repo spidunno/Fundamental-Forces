@@ -9,7 +9,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.eventhandlers.NetworkEvents.INSTANCE;
+import static com.project_esoterica.esoterica.core.registry.misc.PacketRegistry.INSTANCE;
 
 public class ScreenshakeCommand {
     public ScreenshakeCommand() {
