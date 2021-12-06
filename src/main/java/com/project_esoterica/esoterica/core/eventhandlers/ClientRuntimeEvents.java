@@ -5,6 +5,7 @@ import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -18,7 +19,12 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
-        ScreenshakeHandler.clientTick(EsotericaHelper.RANDOM);
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            if (Minecraft.getInstance().level != null) {
+                WorldEventManager.clientWorldTick(Minecraft.getInstance().level);
+                ScreenshakeHandler.clientTick(EsotericaHelper.RANDOM);
+            }
+        }
     }
     @SubscribeEvent
     public static void onRenderLast(RenderWorldLastEvent event) {

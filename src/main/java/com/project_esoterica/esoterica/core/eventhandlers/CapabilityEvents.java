@@ -60,13 +60,4 @@ public class CapabilityEvents {
             }
         }
     }
-
-    @SubscribeEvent
-    public static void clientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase.equals(TickEvent.Phase.END)) {
-            if (Minecraft.getInstance().level != null) {
-                WorldEventManager.clientWorldTick(Minecraft.getInstance().level);
-            }
-        }
-    }
 }

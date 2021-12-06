@@ -7,6 +7,7 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
@@ -34,7 +35,10 @@ public class AddWorldEventToClientPacket {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> ClientOnly.addWorldEvent(type, start, eventData));
+        context.get().enqueueWork(() -> {if (FMLEnvironment.dist == Dist.CLIENT) {
+            ClientOnly.addWorldEvent(type, start, eventData);
+        }
+        });
         context.get().setPacketHandled(true);
     }
     public static class ClientOnly
