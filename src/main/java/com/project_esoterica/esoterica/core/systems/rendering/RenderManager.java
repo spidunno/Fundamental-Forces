@@ -3,7 +3,9 @@ package com.project_esoterica.esoterica.core.systems.rendering;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventRenderers;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -21,8 +23,11 @@ public class RenderManager {
         prepareFrustum(event.getMatrixStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
         WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
             for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
-                if (instance.canRender()) {
-                    instance.render(event.getMatrixStack(), RenderManager.DELAYED_RENDER, event.getPartialTicks());
+                WorldEventRenderer<WorldEventInstance> renderer = WorldEventRenderers.RENDERERS.get(instance.type);
+                if (renderer != null) {
+                    if (renderer.canRender(instance)) {
+                        renderer.render(instance, event.getMatrixStack(), RenderManager.DELAYED_RENDER, event.getPartialTicks());
+                    }
                 }
             }
         });

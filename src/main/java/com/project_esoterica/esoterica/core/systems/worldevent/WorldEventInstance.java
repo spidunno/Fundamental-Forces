@@ -1,13 +1,11 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
 import com.project_esoterica.esoterica.core.registry.misc.PacketRegistry;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.fmllegacy.network.PacketDistributor;
 
 import java.util.UUID;
@@ -17,9 +15,9 @@ public abstract class WorldEventInstance {
     public String type;
     public boolean invalidated;
 
-    public WorldEventInstance(String type) {
+    public WorldEventInstance(WorldEventType type) {
         this.uuid = UUID.randomUUID();
-        this.type = type;
+        this.type = type.id;
     }
 
     public void start(ServerLevel level) {
@@ -46,22 +44,16 @@ public abstract class WorldEventInstance {
         PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
     }
 
-    public void clientStart(ClientLevel level) {
+    public void clientStart(Level level) {
 
     }
 
-    public void clientTick(ClientLevel level) {
+    public void clientTick(Level level) {
 
     }
 
-    public void clientEnd(ClientLevel level) {
+    public void clientEnd(Level level) {
         invalidated = true;
-    }
-
-    public boolean canRender() {
-        return false;
-    }
-    public void render(PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {

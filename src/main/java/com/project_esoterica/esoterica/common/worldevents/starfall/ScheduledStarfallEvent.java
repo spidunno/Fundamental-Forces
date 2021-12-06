@@ -1,34 +1,23 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class ScheduledStarfallEvent extends WorldEventInstance {
-
-    public static final String ID = "scheduled_starfall";
-
-    public static WorldEventReader READER = new WorldEventReader() {
-        @Override
-        public WorldEventInstance createInstance(CompoundTag tag) {
-            return fromNBT(tag);
-        }
-    };
 
     public StarfallActor actor;
     @Nullable
@@ -43,11 +32,11 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     protected boolean exactPosition;
 
     private ScheduledStarfallEvent() {
-        super(ID);
+        super(WorldEventTypes.SCHEDULED_STARFALL);
     }
 
     public ScheduledStarfallEvent(StarfallActor actor) {
-        super(ID);
+        super(WorldEventTypes.SCHEDULED_STARFALL);
         this.actor = actor;
     }
 
@@ -136,7 +125,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 if (success) {
                     Vec3 spawnPos = actor.randomizedStarfallStartPosition(level, target, targetedPos);
                     Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target), true);
+                    WorldEventManager.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target), true);
                     break;
                 } else {
                     failures++;
@@ -150,7 +139,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
                     Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_LEVEL.get(),Mth.nextDouble(level.random, -150, 150));
                     Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
-                    WorldEventManager.addWorldEvent(level, new StarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
+                    WorldEventManager.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
                 }
             }
         }

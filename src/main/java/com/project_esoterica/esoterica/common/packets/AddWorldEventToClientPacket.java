@@ -1,11 +1,13 @@
 package com.project_esoterica.esoterica.common.packets;
 
+import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventReader;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fmllegacy.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -32,13 +34,18 @@ public class AddWorldEventToClientPacket {
     }
 
     public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> {
-            WorldEventReader reader = WorldEventManager.READERS.get(type);
-            WorldEventInstance instance = WorldEventManager.addClientWorldEvent(Minecraft.getInstance().level, reader.createInstance(eventData));
+        context.get().enqueueWork(() -> ClientOnly.addWorldEvent(type, start, eventData));
+        context.get().setPacketHandled(true);
+    }
+    public static class ClientOnly
+    {
+        public static void addWorldEvent(String type, boolean start, CompoundTag eventData)
+        {
+            WorldEventType eventType = WorldEventTypes.EVENT_TYPES.get(type);
+            WorldEventInstance instance = WorldEventManager.addClientWorldEvent(Minecraft.getInstance().level, eventType.createInstance(eventData));
             if (start) {
                 instance.clientStart(Minecraft.getInstance().level);
             }
-        });
-        context.get().setPacketHandled(true);
+        }
     }
 }
