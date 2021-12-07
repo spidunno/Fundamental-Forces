@@ -2,12 +2,11 @@ package com.project_esoterica.esoterica.client.renderers.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
+import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,8 +21,12 @@ import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtili
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
-    private static final ResourceLocation TEXTURE = EsotericaHelper.prefix("textures/vfx/energy_trail.png");
-    public static final RenderType RENDER_TYPE = RenderTypes.createGlowingTextureTrianglesRenderType(TEXTURE);
+    private static final ResourceLocation STAR = EsotericaHelper.prefix("textures/vfx/star.png");
+    public static final RenderType STAR_TYPE = RenderTypes.createAdditiveQuadRenderType(STAR);
+
+    private static final ResourceLocation LIGHT_TRAIL = EsotericaHelper.prefix("textures/vfx/light_trail.png");
+    public static final RenderType LIGHT_TYPE = RenderTypes.createBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, LIGHT_TRAIL);
+
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -32,15 +35,19 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
-        RenderType type = RenderTypes.createMovingTrailTextureRenderType(EsotericaHelper.prefix("textures/vfx/shadow_trail.png"));
-        VertexConsumer vertexConsumer = DELAYED_RENDER.getBuffer(type);
-
-        renderQuad(vertexConsumer, poseStack, 5,5,255, 255, 255, 255, 15728880);
-        //        renderBeam(vertexConsumer, poseStack, entity.position(), entity.position().add(-40, 2,-5), 2);
+        float beamLength = 6f;
+        float beamWidth = 2f;
+        VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
+        float starSize = 3f;
+        renderBeam(lightTrailConsumer, poseStack, entity.position(), entity.position().add(new Vec3(beamLength, beamLength, 0)),beamWidth);
+        VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
+        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
+        renderQuad(starConsumer, poseStack, starSize, starSize);
         poseStack.popPose();
     }
     @Override
     public ResourceLocation getTextureLocation(FallingEntity p_114482_) {
-        return TEXTURE;
+        return LIGHT_TRAIL;
     }
 }

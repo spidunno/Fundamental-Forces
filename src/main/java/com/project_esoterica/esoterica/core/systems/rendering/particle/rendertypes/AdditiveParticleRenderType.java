@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.project_esoterica.esoterica.core.systems.rendering.Shaders;
+import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -16,7 +16,7 @@ public class AdditiveParticleRenderType implements ParticleRenderType {
 
     public void begin(BufferBuilder builder, TextureManager manager) {
         RenderSystem.depthMask(false);
-        RenderSystem.setShader(Shaders.additiveParticle.getInstance());
+        RenderSystem.setShader(ShaderRegistry.additiveParticle.getInstance());
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);

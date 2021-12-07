@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.rendering;
+package com.project_esoterica.esoterica.core.registry.misc;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.project_esoterica.esoterica.EsotericaHelper;
@@ -14,28 +14,24 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Shaders {
+public class ShaderRegistry {
 
     public static ExtendedShaderInstance additiveTexture = new ExtendedShaderInstance();
-
     public static ExtendedShaderInstance additiveParticle = new ExtendedShaderInstance();
-
     public static ExtendedShaderInstance metallicNoise = new ExtendedShaderInstance();
-
     public static ExtendedShaderInstance movingTrail = new ExtendedShaderInstance();
-
     public static ExtendedShaderInstance bootlegTriangle = new ExtendedShaderInstance();
+    public static ExtendedShaderInstance movingBootlegTriangle = new ExtendedShaderInstance();
 
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
 
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture.setInstance(shaderInstance));
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle.setInstance(shaderInstance));
-
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("noise/metallic"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> metallicNoise.setInstance(shaderInstance));
-
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/moving_trail"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> movingTrail.setInstance(shaderInstance));
         event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/bootleg_triangle"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> bootlegTriangle.setInstance(shaderInstance));
+        event.registerShader(new ShaderInstance(event.getResourceManager(), EsotericaHelper.prefix("vfx/moving_bootleg_triangle"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> movingBootlegTriangle.setInstance(shaderInstance));
     }
 
     public static class ExtendedShaderInstance {
