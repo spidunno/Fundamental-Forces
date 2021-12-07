@@ -11,6 +11,7 @@ import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
+import com.project_esoterica.esoterica.core.registry.misc.CommandsRegistry;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -32,6 +33,7 @@ public class EsotericaMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+        CommandsRegistry.registerCommandArgumentTypesSerializers();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);
