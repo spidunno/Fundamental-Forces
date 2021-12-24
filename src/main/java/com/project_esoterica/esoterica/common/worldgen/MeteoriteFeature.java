@@ -36,12 +36,11 @@ public class MeteoriteFeature extends SimpleFeature {
                 stats.add(h);
             }
         }
-        int yLevel = (int) stats.mean();
-        yLevel -= meteorSize/2;
-        if (stats.populationVariance() > 3) {
-            yLevel -= 3;
-        }
-        BlockPos meteorCenter = new BlockPos(pos.getX(), yLevel, pos.getZ());
+        int yLevel = (int) stats.mean() - meteorSize;
+//        if (stats.populationVariance() > 3) {
+//            yLevel -= 3;
+//        }
+        BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
         ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
             if (pos.getY() >= level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, b).getY()) {
