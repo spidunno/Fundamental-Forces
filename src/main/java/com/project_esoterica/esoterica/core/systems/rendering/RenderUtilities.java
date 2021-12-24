@@ -13,7 +13,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.awt.*;
 import java.util.Random;
@@ -63,12 +63,18 @@ public class RenderUtilities {
         renderQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880);
     }
     public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
+        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, light, 0, 0, 1, 1);
+    }
+    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, float u0, float v0, float u1, float v1) {
+        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880, u0, v0, u1, v1);
+    }
+    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light, float u0, float v0, float u1, float v1) {
         Matrix4f last = stack.last().pose();
 
-        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
-        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, 1, 0, light);
-        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, 0, 0, light);
+        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, u0, v1, light);
+        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, u1, v1, light);
+        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, u1, v0, light);
+        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, u0, v0, light);
     }
 
     public static void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats)

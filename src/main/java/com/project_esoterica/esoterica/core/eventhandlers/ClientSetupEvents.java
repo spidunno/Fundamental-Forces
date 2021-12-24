@@ -6,7 +6,7 @@ import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventRender
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

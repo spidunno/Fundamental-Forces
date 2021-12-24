@@ -1,7 +1,8 @@
-package com.project_esoterica.esoterica.common.blockentity;
+package com.project_esoterica.esoterica.core.systems.blockentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,23 +24,31 @@ public class SimpleBlockEntity extends BlockEntity {
         return InteractionResult.PASS;
     }
 
+
     @Override
     public CompoundTag getUpdateTag() {
-        return save(new CompoundTag());
+        return this.saveWithoutMetadata();
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        super.handleUpdateTag(tag);
+        load(tag);
     }
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return new ClientboundBlockEntityDataPacket(worldPosition, 0, getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this); // (this.worldPosition, 3, this.getUpdateTag());
     }
 
     @Override
-    public CompoundTag save(CompoundTag compound) {
-        return super.save(compound);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        super.onDataPacket(net, pkt);
+        handleUpdateTag(getUpdatePacket().getTag());
     }
 
-    @Override
-    public void load(CompoundTag p_155245_) {
-        super.load(p_155245_);
+    public void tick()
+    {
+
     }
 }

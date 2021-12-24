@@ -24,6 +24,8 @@ public class AdditiveParticleRenderType implements ParticleRenderType {
     }
 
     public void end(Tesselator p_107458_) {
+        RenderSystem.disableBlend();
+        RenderSystem.depthMask(true);
         p_107458_.end();
     }
 

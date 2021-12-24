@@ -12,28 +12,28 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 
 public class RenderManager {
     @OnlyIn(Dist.CLIENT)
     public static MultiBufferSource.BufferSource DELAYED_RENDER = MultiBufferSource.immediate(new BufferBuilder(256));
     public static Frustum FRUSTUM;
 
-    public static void onRenderLast(RenderWorldLastEvent event) {
-        prepareFrustum(event.getMatrixStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
+    public static void onRenderLast(RenderLevelLastEvent event) {
+        prepareFrustum(event.getPoseStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
         WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
             for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
                 WorldEventRenderer<WorldEventInstance> renderer = WorldEventRenderers.RENDERERS.get(instance.type);
                 if (renderer != null) {
                     if (renderer.canRender(instance)) {
-                        renderer.render(instance, event.getMatrixStack(), RenderManager.DELAYED_RENDER, event.getPartialTicks());
+                        renderer.render(instance, event.getPoseStack(), RenderManager.DELAYED_RENDER, event.getPartialTick());
                     }
                 }
             }
         });
-        event.getMatrixStack().pushPose();
+        event.getPoseStack().pushPose();
         DELAYED_RENDER.endBatch();
-        event.getMatrixStack().popPose();
+        event.getPoseStack().popPose();
     }
 
     public static void prepareFrustum(PoseStack p_172962_, Vec3 p_172963_, Matrix4f p_172964_) {

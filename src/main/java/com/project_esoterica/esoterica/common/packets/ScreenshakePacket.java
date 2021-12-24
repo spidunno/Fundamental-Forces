@@ -2,7 +2,8 @@ package com.project_esoterica.esoterica.common.packets;
 
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
@@ -24,8 +25,12 @@ public class ScreenshakePacket {
         buf.writeFloat(falloff);
     }
 
-    public void whenThisPacketIsReceived(Supplier<NetworkEvent.Context> context) {
+    public void execute(Supplier<NetworkEvent.Context> context) {
         context.get().enqueueWork(() -> ScreenshakeHandler.addScreenshake(factor, falloff));
         context.get().setPacketHandled(true);
+    }
+
+    public static void register(SimpleChannel instance, int index) {
+        instance.registerMessage(index, ScreenshakePacket.class, ScreenshakePacket::encode, ScreenshakePacket::decode, ScreenshakePacket::execute);
     }
 }

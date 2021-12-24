@@ -1,12 +1,13 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
-import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
+import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
 import com.project_esoterica.esoterica.core.registry.misc.PacketRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import java.util.UUID;
 
@@ -37,11 +38,11 @@ public abstract class WorldEventInstance {
         return false;
     }
     public void addToClient() {
-        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new AddWorldEventToClientPacket(type, true, serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncWorldEventPacket(type, true, serializeNBT(new CompoundTag())));
     }
 
     public void addToClient(ServerPlayer player) {
-        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new AddWorldEventToClientPacket(type, false, serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new SyncWorldEventPacket(type, false, serializeNBT(new CompoundTag())));
     }
 
     public void clientStart(Level level) {

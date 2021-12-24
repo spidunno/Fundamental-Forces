@@ -1,11 +1,10 @@
 package com.project_esoterica.esoterica.common.entity.falling;
 
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fmllegacy.network.NetworkHooks;
+import net.minecraftforge.network.NetworkHooks;
 
 public class FallingCrashpodEntity extends FallingEntity {
     public FallingCrashpodEntity(Level p_37249_) {

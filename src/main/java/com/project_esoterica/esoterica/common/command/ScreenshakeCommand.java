@@ -7,7 +7,7 @@ import com.project_esoterica.esoterica.core.data.SpaceModLang;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fmllegacy.network.PacketDistributor;
+import net.minecraftforge.network.PacketDistributor;
 
 import static com.project_esoterica.esoterica.core.registry.misc.PacketRegistry.INSTANCE;
 

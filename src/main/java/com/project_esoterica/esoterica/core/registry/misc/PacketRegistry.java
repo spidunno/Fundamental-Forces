@@ -1,13 +1,13 @@
 package com.project_esoterica.esoterica.core.registry.misc;
 
 import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.common.packets.AddWorldEventToClientPacket;
+import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fmllegacy.network.NetworkRegistry;
-import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
@@ -21,7 +21,7 @@ public class PacketRegistry {
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
         int index = 0;
-        INSTANCE.registerMessage(index++, ScreenshakePacket.class, ScreenshakePacket::encode, ScreenshakePacket::decode, ScreenshakePacket::whenThisPacketIsReceived);
-        INSTANCE.registerMessage(index++, AddWorldEventToClientPacket.class, AddWorldEventToClientPacket::encode, AddWorldEventToClientPacket::decode, AddWorldEventToClientPacket::whenThisPacketIsReceived);
+        ScreenshakePacket.register(INSTANCE, index++);
+        SyncWorldEventPacket.register(INSTANCE, index++);
     }
 }

@@ -30,7 +30,7 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -146,10 +146,6 @@ public class SpaceModBlockLootTables extends LootTableProvider {
 
     protected static LootTable.Builder createNameableBlockEntityTable(Block p_218481_0_) {
         return LootTable.lootTable().withPool(applyExplosionCondition(p_218481_0_, LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(p_218481_0_).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)))));
-    }
-
-    protected static LootTable.Builder createShulkerBoxDrop(Block p_218544_0_) {
-        return LootTable.lootTable().withPool(applyExplosionCondition(p_218544_0_, LootPool.lootPool().setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(p_218544_0_).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Lock", "BlockEntityTag.Lock").copy("LootTable", "BlockEntityTag.LootTable").copy("LootTableSeed", "BlockEntityTag.LootTableSeed")).apply(SetContainerContents.setContents().withEntry(DynamicLoot.dynamicEntry(ShulkerBoxBlock.CONTENTS))))));
     }
 
     protected static LootTable.Builder createBannerDrop(Block p_218559_0_) {

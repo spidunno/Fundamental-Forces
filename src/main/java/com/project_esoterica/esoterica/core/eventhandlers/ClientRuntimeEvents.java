@@ -9,7 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,7 +27,7 @@ public class ClientRuntimeEvents {
         }
     }
     @SubscribeEvent
-    public static void onRenderLast(RenderWorldLastEvent event) {
+    public static void onRenderLast(RenderLevelLastEvent event) {
         RenderManager.onRenderLast(event);
     }
 }
