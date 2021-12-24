@@ -4,12 +4,15 @@ import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
@@ -55,7 +58,7 @@ public class StarfallActor {
         int xOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
         int zOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
         BlockPos offsetPos = centerPos.offset(xOffset, 0, zOffset);
-        return EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, offsetPos);
+        return heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, offsetPos);
     }
 
     public Vec3 randomizedStarfallStartPosition(ServerLevel level, BlockPos targetPos, BlockPos centerPos) {
@@ -64,6 +67,19 @@ public class StarfallActor {
         double distance = targetVec.distanceTo(centerVec)*(Mth.nextDouble(level.random, 0.5f, 5f)); //0.75-2.5x towards the center position
         Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance,1, distance); //rotated direction towards centerPos
         Vec3 spawnVec = centerVec.add(direction);
-        return EsotericaHelper.vec3FromPos(EsotericaHelper.heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, EsotericaHelper.posFromVec3(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_LEVEL.get(), 0);//200 blocks above heightmap level at spawnVec
+        return DataHelper.fromBlockPos(heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, new BlockPos(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_LEVEL.get(), 0);//200 blocks above heightmap level at spawnVec
+    }
+    public static BlockPos heightmapPosAt(Heightmap.Types type, ServerLevel level, BlockPos pos)
+    {
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
+        BlockPos surfacePos = level.getHeightmapPos(type, pos);
+        while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS))
+        {
+            //TODO: it'd be best to replace this while statement with a custom Heightmap.Types' type.
+            // However the Heightmap.Types enum isn't an IExtendibleEnum, we would need to make a dreaded forge PR for them to make it one
+            surfacePos = surfacePos.below();
+        }
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos,SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),false,false);
+        return surfacePos;
     }
 }

@@ -14,8 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.project_esoterica.esoterica.EsotericaHelper.prefix;
-import static com.project_esoterica.esoterica.EsotericaHelper.takeAll;
+import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
+import static com.project_esoterica.esoterica.core.helper.DataHelper.takeAll;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public SpaceModItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -58,26 +58,6 @@ public class SpaceModItemModels extends net.minecraftforge.client.model.generato
         withExistingParent(name, HANDHELD).texture("layer0", prefix("item/" + name));
     }
 
-    private void spiritSplinterItem(RegistryObject<Item> i) {
-        String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("spirit/spirit_splinter_base"));
-    }
-
-    private void etherBrazierItem(RegistryObject<Item> i) {
-        String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("item/colored_ether_brazier_overlay")).texture("layer1", prefix("item/colored_ether_brazier"));
-    }
-
-    private void etherTorchItem(RegistryObject<Item> i) {
-        String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("item/colored_ether_torch_overlay")).texture("layer1", prefix("item/colored_ether_torch"));
-    }
-
-    private void etherItem(RegistryObject<Item> i) {
-        String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("item/colored_ether"));
-    }
-
     private void generatedItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
         withExistingParent(name, GENERATED).texture("layer0", prefix("item/" + name));
@@ -86,10 +66,6 @@ public class SpaceModItemModels extends net.minecraftforge.client.model.generato
     private void blockGeneratedItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
         withExistingParent(name, GENERATED).texture("layer0", prefix("block/" + name));
-    }
-
-    private void spiritPipeItem(RegistryObject<Item> i) {
-        getBuilder("spirit_pipe").parent(new ModelFile.UncheckedModelFile(prefix("block/" + "spirit_pipe_core")));
     }
 
     private void blockItem(RegistryObject<Item> i) {

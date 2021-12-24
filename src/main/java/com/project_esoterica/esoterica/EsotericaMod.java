@@ -12,7 +12,7 @@ import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
 import com.project_esoterica.esoterica.core.registry.misc.CommandsRegistry;
-import com.project_esoterica.esoterica.core.systems.worldgen.FeatureRegistry;
+import com.project_esoterica.esoterica.core.registry.worldgen.FeatureRegistry;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;

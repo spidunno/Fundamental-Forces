@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.core.data;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
+import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.registry.PotionEffectRegistry;
 import com.project_esoterica.esoterica.core.registry.SoundRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
@@ -37,38 +37,38 @@ public class SpaceModLang extends LanguageProvider {
     @Override
     protected void addTranslations() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
-        EsotericaHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
-        EsotericaHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
+        DataHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
+        DataHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
         Set<RegistryObject<Item>> items = new HashSet<>(ItemRegistry.ITEMS.getEntries());
-        EsotericaHelper.takeAll(items, i -> i.get() instanceof BlockItem);
+        DataHelper.takeAll(items, i -> i.get() instanceof BlockItem);
         Set<RegistryObject<SoundEvent>> sounds = new HashSet<>(SoundRegistry.SOUNDS.getEntries());
         Set<RegistryObject<Enchantment>> enchantments = new HashSet<>(EnchantmentRegistry.ENCHANTMENTS.getEntries());
         Set<RegistryObject<MobEffect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
         blocks.forEach(b ->
         {
             String name = b.get().getDescriptionId().replaceFirst("block." + MOD_ID + ".", "");
-            name = EsotericaHelper.toTitleCase(specialBlockNameChanges(name), "_");
+            name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
             add(b.get().getDescriptionId(), name);
         });
 
         items.forEach(i ->
         {
             String name = i.get().getDescriptionId().replaceFirst("item." + MOD_ID + ".", "");
-            name = EsotericaHelper.toTitleCase(specialBlockNameChanges(name), "_");
+            name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
             add(i.get().getDescriptionId(), name);
         });
 
         sounds.forEach(s -> {
-            String name = EsotericaHelper.toTitleCase(s.getId().getPath(), "_");
+            String name = DataHelper.toTitleCase(s.getId().getPath(), "_");
             add(MOD_ID + ".subtitle." + s.getId().getPath(), name);
         });
         enchantments.forEach(e -> {
-            String name = EsotericaHelper.toTitleCase(e.getId().getPath(), "_");
+            String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
             add(e.get().getDescriptionId(), name);
         });
 
         effects.forEach(e -> {
-            String name = EsotericaHelper.toTitleCase(e.getId().getPath(), "_");
+            String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
             add("effect." + MOD_ID + "." + e.get().getRegistryName().getPath(), name);
         });
 

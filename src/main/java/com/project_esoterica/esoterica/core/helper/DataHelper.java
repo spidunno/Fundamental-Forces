@@ -35,12 +35,14 @@ public class DataHelper {
         return new ResourceLocation(MOD_ID, path);
     }
 
-    public static <T> ArrayList<T> toArrayList(T... items) {
-        return new ArrayList<>(Arrays.asList(items));
-    }
-
-    public static <T> ArrayList<T> toArrayList(Stream<T> items) {
-        return items.collect(Collectors.toCollection(ArrayList::new));
+    public static <T> ArrayList<T> reverseOrder(Collection<T> items) {
+        ArrayList<T> reversed = new ArrayList<>();
+        ArrayList<T> original = new ArrayList<>(items);
+        for (int i = 0; i < items.size(); i++)
+        {
+            reversed.add(original.get(i));
+        }
+        return reversed;
     }
 
     public static String toTitleCase(String givenString, String regex) {

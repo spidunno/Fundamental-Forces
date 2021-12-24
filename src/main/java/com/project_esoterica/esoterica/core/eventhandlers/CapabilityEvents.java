@@ -4,6 +4,7 @@ import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.client.Minecraft;
@@ -24,20 +25,20 @@ public class CapabilityEvents {
     @SubscribeEvent
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final WorldDataCapability capability = new WorldDataCapability();
-        event.addCapability(EsotericaHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(DataHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
     }
 
     @SubscribeEvent
     public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event) {
         final ChunkDataCapability capability = new ChunkDataCapability();
-        event.addCapability(EsotericaHelper.prefix("chunk_data"), new SimpleCapabilityProvider<>(ChunkDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(DataHelper.prefix("chunk_data"), new SimpleCapabilityProvider<>(ChunkDataCapability.CAPABILITY, () -> capability));
     }
 
     @SubscribeEvent
     public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             final PlayerDataCapability capability = new PlayerDataCapability();
-            event.addCapability(EsotericaHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
+            event.addCapability(DataHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
         }
     }
 

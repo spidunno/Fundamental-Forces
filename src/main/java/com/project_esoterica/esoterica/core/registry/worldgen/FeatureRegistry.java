@@ -1,7 +1,8 @@
-package com.project_esoterica.esoterica.core.systems.worldgen;
+package com.project_esoterica.esoterica.core.registry.worldgen;
 
 import com.project_esoterica.esoterica.common.worldgen.MeteoriteFeature;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
+import com.project_esoterica.esoterica.core.systems.worldgen.SimpleFeature;
 import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;

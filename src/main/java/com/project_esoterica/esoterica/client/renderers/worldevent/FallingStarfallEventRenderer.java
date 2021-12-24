@@ -20,16 +20,17 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities.renderBeam;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities.renderQuad;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
-    private static final ResourceLocation LIGHT_TRAIL = EsotericaHelper.prefix("textures/vfx/light_trail.png");
+    private static final ResourceLocation LIGHT_TRAIL = prefix("textures/vfx/light_trail.png");
     public static final RenderType LIGHT_TYPE = RenderTypes.createBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, LIGHT_TRAIL);
 
-    private static final ResourceLocation STAR = EsotericaHelper.prefix("textures/vfx/star.png");
+    private static final ResourceLocation STAR = prefix("textures/vfx/star.png");
     public static final RenderType STAR_TYPE = RenderTypes.createAdditiveQuadRenderType(STAR);
 
     public FallingStarfallEventRenderer() {

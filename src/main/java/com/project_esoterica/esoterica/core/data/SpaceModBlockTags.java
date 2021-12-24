@@ -1,7 +1,9 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
+import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -9,7 +11,12 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.*;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import static com.project_esoterica.esoterica.EsotericaHelper.getModBlocks;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Predicate;
+
 import static net.minecraft.tags.BlockTags.*;
 import static net.minecraftforge.common.Tags.Blocks.DIRT;
 
@@ -34,10 +41,10 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(DOORS).add(getModBlocks(b -> b instanceof DoorBlock));
         tag(TRAPDOORS).add(getModBlocks(b -> b instanceof TrapDoorBlock));
         tag(BUTTONS).add(getModBlocks(b -> b instanceof ButtonBlock));
-        tag(WOODEN_BUTTONS).add(getModBlocks(b -> b instanceof WoodButtonBlock));
-        tag(PRESSURE_PLATES).add(getModBlocks(b -> b instanceof BasePressurePlateBlock));
+        tag(PRESSURE_PLATES).add(getModBlocks(b -> b instanceof PressurePlateBlock));
         tag(DIRT).add(getModBlocks(b -> b instanceof GrassBlock || b instanceof FarmBlock));
         tag(SAPLINGS).add(getModBlocks(b -> b instanceof SaplingBlock));
+
         tag(LOGS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_log") || b.getRegistryName().getPath().endsWith("wood")));
         tag(PLANKS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks")));
         tag(WOODEN_FENCES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_fence")));
@@ -47,8 +54,40 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(WOODEN_TRAPDOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_trapdoor")));
         tag(WOODEN_PRESSURE_PLATES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_pressure_plate")));
 
+        for (Block block : getModBlocks(b -> b.properties instanceof SimpleBlockProperties)) {
+            SimpleBlockProperties properties = (SimpleBlockProperties) block.properties;
+            if (properties.needsPickaxe) {
+                tag(MINEABLE_WITH_PICKAXE).add(block);
+            }
+            if (properties.needsShovel) {
+                tag(MINEABLE_WITH_SHOVEL).add(block);
+            }
+            if (properties.needsAxe) {
+                tag(MINEABLE_WITH_AXE).add(block);
+            }
+            if (properties.needsHoe) {
+                tag(MINEABLE_WITH_HOE).add(block);
+            }
+            if (properties.needsStone) {
+                tag(NEEDS_STONE_TOOL).add(block);
+            }
+            if (properties.needsIron) {
+                tag(NEEDS_IRON_TOOL).add(block);
+            }
+            if (properties.needsDiamond) {
+                tag(NEEDS_DIAMOND_TOOL).add(block);
+            }
+        }
         tag(BlockTagRegistry.TERRACOTTA).add(Registry.BLOCK.stream().filter(b -> b.getRegistryName().getPath().endsWith("terracotta")).toArray(Block[]::new));
         tag(BlockTagRegistry.STARFALL_ALLOWED).add(Blocks.DIAMOND_BLOCK);
+    }
 
+    @Nonnull
+    private Block[] getModBlocks(Predicate<Block> predicate)
+    {
+        List<Block> ret = new ArrayList<>(Collections.emptyList());
+        BlockRegistry.BLOCKS.getEntries().stream()
+                .filter(b -> predicate.test(b.get())).forEach(b -> ret.add(b.get()));
+        return ret.toArray(new Block[0]);
     }
 }
