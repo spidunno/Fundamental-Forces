@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.registry.misc;
 
-import com.project_esoterica.esoterica.client.renderers.bibit.BibitRenderer;
-import com.project_esoterica.esoterica.client.renderers.falling.FallingStarRenderer;
+import com.project_esoterica.esoterica.client.renderers.entity.bibit.BibitRenderer;
+import com.project_esoterica.esoterica.client.renderers.entity.falling.FallingStarRenderer;
 import com.project_esoterica.esoterica.core.registry.EntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;

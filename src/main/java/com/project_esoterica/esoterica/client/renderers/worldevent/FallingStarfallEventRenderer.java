@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.common.worldevents.starfall;
+package com.project_esoterica.esoterica.client.renderers.worldevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -6,6 +6,7 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.worldevents.starfall.FallingStarfallEvent;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;

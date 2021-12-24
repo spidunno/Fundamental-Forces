@@ -1,5 +1,6 @@
 package com.project_esoterica.esoterica.core.helper;
 
+import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -103,7 +104,36 @@ public class BlockHelper {
         }
         return positions;
     }
-
+    public static ArrayList<BlockPos> getSphereOfBlocks(BlockPos pos, float range, Predicate<BlockPos> predicate)
+    {
+        ArrayList<BlockPos> positions = getSphereOfBlocks(pos, range, range);
+        positions.removeIf(b -> !predicate.test(b));
+        return positions;
+    }
+    public static ArrayList<BlockPos> getSphereOfBlocks(BlockPos pos, float width, float height, Predicate<BlockPos> predicate)
+    {
+        ArrayList<BlockPos> positions = getSphereOfBlocks(pos, width, height);
+        positions.removeIf(b -> !predicate.test(b));
+        return positions;
+    }
+    public static ArrayList<BlockPos> getSphereOfBlocks(BlockPos pos, float range)
+    {
+        return getSphereOfBlocks(pos, range, range);
+    }
+    public static ArrayList<BlockPos> getSphereOfBlocks(BlockPos pos, float width, float height)
+    {
+        ArrayList<BlockPos> positions = new ArrayList<>();
+        for (int x = (int) -width; x <= width; x++) {
+            for (int y = (int) -height; y <= height; y++) {
+                for (int z = (int) -width; z <= width; z++) {
+                    if (x * x + y * y + z * z < width * width) {
+                        positions.add(pos.offset(x, y, z));
+                    }
+                }
+            }
+        }
+        return positions;
+    }
     public static void updateState(Level level, BlockPos pos) {
         updateState(level.getBlockState(pos), level, pos);
     }

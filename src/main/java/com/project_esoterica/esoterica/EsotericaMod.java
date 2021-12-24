@@ -12,6 +12,7 @@ import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
 import com.project_esoterica.esoterica.core.registry.misc.CommandsRegistry;
+import com.project_esoterica.esoterica.core.systems.worldgen.FeatureRegistry;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -42,6 +43,7 @@ public class EsotericaMod {
         PotionEffectRegistry.EFFECTS.register(modBus);
         SoundRegistry.SOUNDS.register(modBus);
         ParticleRegistry.PARTICLES.register(modBus);
+        FeatureRegistry.FEATURE_TYPES.register(modBus);
         modBus.addListener(this::gatherData);
     }
 

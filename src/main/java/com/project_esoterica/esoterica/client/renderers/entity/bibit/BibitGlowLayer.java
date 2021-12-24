@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.client.renderers.bibit;
+package com.project_esoterica.esoterica.client.renderers.entity.bibit;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.client.model.bibit.BibitModel;

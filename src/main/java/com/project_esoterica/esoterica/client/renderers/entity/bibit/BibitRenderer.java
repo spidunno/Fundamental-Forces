@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.client.renderers.bibit;
+package com.project_esoterica.esoterica.client.renderers.entity.bibit;
 
 import com.project_esoterica.esoterica.client.model.bibit.BibitModel;
 import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
