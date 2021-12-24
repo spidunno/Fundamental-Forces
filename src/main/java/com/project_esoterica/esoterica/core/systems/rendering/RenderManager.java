@@ -8,17 +8,25 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstanc
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
+import java.util.HashMap;
+
+@OnlyIn(Dist.CLIENT)
 public class RenderManager {
-    @OnlyIn(Dist.CLIENT)
-    public static MultiBufferSource.BufferSource DELAYED_RENDER = MultiBufferSource.immediate(new BufferBuilder(256));
+    public static HashMap<RenderType, BufferBuilder> BUFFERS = new HashMap<>();
+    public static MultiBufferSource.BufferSource DELAYED_RENDER = null;
     public static Frustum FRUSTUM;
 
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        DELAYED_RENDER = MultiBufferSource.immediateWithBuffers(BUFFERS, new BufferBuilder(256));
+    }
     public static void onRenderLast(RenderLevelLastEvent event) {
         prepareFrustum(event.getPoseStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
         WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
@@ -32,7 +40,10 @@ public class RenderManager {
             }
         });
         event.getPoseStack().pushPose();
-        DELAYED_RENDER.endBatch();
+        for (RenderType type : BUFFERS.keySet())
+        {
+            DELAYED_RENDER.endBatch(type);
+        }
         event.getPoseStack().popPose();
     }
 

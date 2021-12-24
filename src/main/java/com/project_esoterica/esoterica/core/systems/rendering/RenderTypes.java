@@ -1,8 +1,7 @@
 package com.project_esoterica.esoterica.core.systems.rendering;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
 import net.minecraft.client.renderer.RenderStateShard;
@@ -33,7 +32,7 @@ public class RenderTypes extends RenderStateShard{
     }
 
     public static RenderType createGenericRenderType(String name, VertexFormat format, VertexFormat.Mode mode, ShaderStateShard shader, TransparencyStateShard transparency, ResourceLocation texture) {
-        return RenderType.create(
+        RenderType type =  RenderType.create(
                 EsotericaMod.MOD_ID + ":" + name, format, mode, 256, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(shader)
@@ -42,7 +41,8 @@ public class RenderTypes extends RenderStateShard{
                         .setTransparencyState(transparency)
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
                         .setCullState(new RenderStateShard.CullStateShard(true))
-                        .createCompositeState(true)
-        );
+                        .createCompositeState(true));
+        RenderManager.BUFFERS.put(type, new BufferBuilder(type.bufferSize()));
+        return type;
     }
 }

@@ -37,13 +37,11 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         poseStack.pushPose();
         float beamLength = 6f;
         float beamWidth = 2f;
-        VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         float starSize = 3f;
-        renderBeam(lightTrailConsumer, poseStack, entity.position(), entity.position().add(new Vec3(beamLength, beamLength, 0)),beamWidth);
-        VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
+        renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength, beamLength, 0)),beamWidth);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        renderQuad(starConsumer, poseStack, starSize, starSize);
+        renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, starSize, starSize);
         poseStack.popPose();
     }
     @Override
