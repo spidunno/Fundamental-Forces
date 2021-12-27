@@ -43,13 +43,13 @@ public class MeteoriteFeature extends SimpleFeature {
         BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
         ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
-            if (pos.getY() >= level.getHeightmapPos(MOTION_BLOCKING_NO_LEAVES, b).getY()) {
+            if (level.getBlockState(b.above()).isAir()) {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
             }
         });
-        craterSphere = DataHelper.reverseOrder(BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.75f, b -> !level.getBlockState(b).isAir()));
+        craterSphere = DataHelper.reverseOrder(ArrayList::new, BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.75f, b -> !level.getBlockState(b).isAir()));
         craterSphere.forEach(b -> {
-            level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
+                level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
 
         });
 
