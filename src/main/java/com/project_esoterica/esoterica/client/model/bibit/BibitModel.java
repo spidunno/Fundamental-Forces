@@ -1,6 +1,5 @@
 package com.project_esoterica.esoterica.client.model.bibit;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.entity.robot.BibitEntity;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.resources.ResourceLocation;

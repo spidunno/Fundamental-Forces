@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -37,9 +39,6 @@ public class MeteoriteFeature extends SimpleFeature {
             }
         }
         int yLevel = (int) stats.mean() - meteorSize;
-//        if (stats.populationVariance() > 3) {
-//            yLevel -= 3;
-//        }
         BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
         ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
@@ -53,10 +52,31 @@ public class MeteoriteFeature extends SimpleFeature {
 
         });
 
+        carveTrajectoryHole(level, generator, pos, random, new Vec3(1f, 0, 0.25f), 7, 8);
+
         ArrayList<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
         meteoriteSphere.forEach(b -> {
             level.setBlock(b, BlockRegistry.ASTEROID_ROCK.get().defaultBlockState(), 3);
         });
+        return true;
+    }
+    public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, Vec3 direction, float craterSize, float iterations)
+    {
+        //TODO: change direction to be a simple angle.
+        //TODO: make the crater carver here center on heightmap level at that position.
+        for (int i = 1; i < iterations; i++)
+        {
+            float offset = craterSize*i;
+            Vec3 offsetDirection = direction.normalize().multiply(offset, offset, offset);
+            BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y, offsetDirection.z);
+            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
+            craterSphere.forEach(b -> {
+                if (level.getBlockState(b.above()).isAir()) {
+                    level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
+                }
+            });
+            craterSize-=craterSize/iterations;
+        }
         return true;
     }
 }

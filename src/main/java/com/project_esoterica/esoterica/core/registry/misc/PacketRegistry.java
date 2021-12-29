@@ -1,6 +1,5 @@
 package com.project_esoterica.esoterica.core.registry.misc;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
 import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

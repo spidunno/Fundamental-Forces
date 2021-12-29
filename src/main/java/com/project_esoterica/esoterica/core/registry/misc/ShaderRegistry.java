@@ -1,7 +1,6 @@
 package com.project_esoterica.esoterica.core.registry.misc;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.client.renderer.RenderStateShard.ShaderStateShard;

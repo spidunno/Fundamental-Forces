@@ -2,7 +2,6 @@ package com.project_esoterica.esoterica.client.renderers.entity.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;

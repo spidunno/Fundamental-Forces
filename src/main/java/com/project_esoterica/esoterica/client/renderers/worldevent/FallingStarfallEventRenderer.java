@@ -2,14 +2,10 @@ package com.project_esoterica.esoterica.client.renderers.worldevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
-import com.project_esoterica.esoterica.EsotericaHelper;
-import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.worldevents.starfall.FallingStarfallEvent;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
@@ -18,7 +14,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;

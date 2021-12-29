@@ -1,13 +1,11 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
-import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

@@ -1,6 +1,5 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
-import com.project_esoterica.esoterica.EsotericaHelper;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.core.config.CommonConfig;
