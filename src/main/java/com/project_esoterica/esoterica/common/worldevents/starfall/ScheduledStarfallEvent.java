@@ -109,6 +109,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
             timesDelayed++;
             return;
         }
+        boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.get();
         if (determined) {
             int failures = 0;
             int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
@@ -121,7 +122,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     failures++;
                     continue;
                 }
-                boolean success = exactPosition || actor.canFall(level, target);
+                boolean success = disregardOSHARegulations || exactPosition || actor.canFall(level, target);
                 if (success) {
                     Vec3 spawnPos = actor.randomizedStarfallStartPosition(level, target, targetedPos);
                     Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
@@ -134,7 +135,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         } else {
             BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(level, targetedPos);
             if (target != null) {
-                boolean success = exactPosition || actor.canFall(level, target);
+                boolean success = disregardOSHARegulations || exactPosition || actor.canFall(level, target);
                 if (success) {
                     Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
                     Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_LEVEL.get(),Mth.nextDouble(level.random, -150, 150));

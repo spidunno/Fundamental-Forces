@@ -124,8 +124,8 @@ public class WorldEventManager {
         for (int x = -range; x <= range; x++) {
             for (int z = -range; z <= range; z++) {
                 LevelChunk chunk = level.getChunk(SectionPos.blockToSectionCoord(pos.getX()) + x, SectionPos.blockToSectionCoord(pos.getZ()) + z);
-                int heightmapChanges = ChunkDataCapability.getHeightmapChanges(chunk);
-                if (heightmapChanges >= CommonConfig.MAXIMUM_HEIGHTMAP_CHANGES.get()) {
+                int chunkChanges = ChunkDataCapability.getChunkChanges(chunk);
+                if (chunkChanges >= CommonConfig.MAXIMUM_CHUNK_CHANGES.get()) {
                     return false;
                 }
             }

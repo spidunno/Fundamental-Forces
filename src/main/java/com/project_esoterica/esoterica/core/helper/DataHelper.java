@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
 
 public class DataHelper {
+
     public static Vec3 fromBlockPos(BlockPos pos) {
         return new Vec3(pos.getX(), pos.getY(), pos.getZ());
     }

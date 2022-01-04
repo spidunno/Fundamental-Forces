@@ -17,7 +17,7 @@ public class RuntimeEvents {
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
             ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
                 if (level.canSeeSky(player.blockPosition())) {
-                    chunkDataCapability.heightmapChanges++;
+                    chunkDataCapability.chunkChanges++;
                 }
             });
         }
@@ -30,7 +30,7 @@ public class RuntimeEvents {
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
             ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
                 if (level.canSeeSky(player.blockPosition())) {
-                    chunkDataCapability.heightmapChanges++;
+                    chunkDataCapability.chunkChanges++;
                 }
             });
         }

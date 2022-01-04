@@ -10,7 +10,9 @@ public class CommonConfig {
 
     public static ForgeConfigSpec.ConfigValue<Boolean> STARFALLS_ENABLED;
 
-    public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_HEIGHTMAP_CHANGES;
+    public static ForgeConfigSpec.ConfigValue<Boolean> UNSAFE_STARFALLS;
+
+    public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_CHUNK_CHANGES;
     public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_SAFETY_CHECK_RANGE;
     public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_MAXIMUM_FAILURES;
 
@@ -37,8 +39,11 @@ public class CommonConfig {
         STARFALLS_ENABLED = builder.comment("Are starfalls enabled?")
                 .define("enable_starfalls", true);
 
-        MAXIMUM_HEIGHTMAP_CHANGES = builder.comment("If a chunk is modified enough by a player, it and neighboring chunks are marked as invalid for starfalls. How many heightmap modifications are needed to invalidate a chunk?")
-                .define("maximum_heightmap_changes", 50);
+        UNSAFE_STARFALLS = builder.comment("If enabled, starfalls will fall wherever they please, disregarding any OSHA regulations.")
+                .define("unsafe_starfalls", false);
+
+        MAXIMUM_CHUNK_CHANGES = builder.comment("If a chunk is modified enough by a player, it and neighboring chunks are marked as invalid for starfalls. How many chunk changes are needed to invalidate a chunk?")
+                .define("maximum_chunk_changes", 50);
 
         STARFALL_SAFETY_CHECK_RANGE = builder.comment("How many blocks around the starfall impact are checked for blocks placed most likely by a player?")
                 .define("starfall_safety_range", 20);

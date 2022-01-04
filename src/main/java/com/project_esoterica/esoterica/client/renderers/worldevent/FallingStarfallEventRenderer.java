@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
@@ -45,9 +46,9 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamWidth = 4f;
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         float starSize = 5f;
-        instance.position.add(instance.motion.multiply(partialTicks,partialTicks,partialTicks));
-        poseStack.translate(instance.position.x - player.getX(), instance.position.y - player.getY(), instance.position.z - player.getZ()); // move to position
-        renderBeam(lightTrailConsumer, poseStack, instance.position, instance.position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
+        Vec3 position = instance.position.add(instance.motion.multiply(partialTicks,partialTicks,partialTicks));
+        poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ());
+        renderBeam(lightTrailConsumer, poseStack, instance.position, position.subtract(instance.motion.multiply(beamLength+partialTicks, beamLength+partialTicks, beamLength+partialTicks)), beamWidth);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));

@@ -38,7 +38,7 @@ public class StarfallActor {
 
     public void act(ServerLevel level, BlockPos targetPos) {
         LevelChunk chunk = level.getChunkAt(targetPos);
-        ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> chunkDataCapability.heightmapChanges = CommonConfig.MAXIMUM_HEIGHTMAP_CHANGES.get());
+        ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> chunkDataCapability.chunkChanges = CommonConfig.MAXIMUM_CHUNK_CHANGES.get());
     }
 
     public final boolean canFall(ServerLevel level, BlockPos pos) {

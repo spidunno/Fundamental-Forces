@@ -6,6 +6,7 @@ import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.systems.worldgen.SimpleFeature;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -40,34 +41,32 @@ public class MeteoriteFeature extends SimpleFeature {
         }
         int yLevel = (int) stats.mean() - meteorSize;
         BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
-        ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
+        ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize * 0.6f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
             if (level.getBlockState(b.above()).isAir()) {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
             }
         });
-        craterSphere = DataHelper.reverseOrder(ArrayList::new, BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.75f, b -> !level.getBlockState(b).isAir()));
+        craterSphere = DataHelper.reverseOrder(ArrayList::new, BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.8f, b -> !level.getBlockState(b).isAir()));
         craterSphere.forEach(b -> {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
-
         });
 
-        carveTrajectoryHole(level, generator, pos, random, new Vec3(1f, 0, 0.25f), 7, 8);
+        carveTrajectoryHole(level, generator, pos, random, Mth.nextFloat(random, 0, 6.28f), 5, 12);
 
-        ArrayList<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
-        meteoriteSphere.forEach(b -> {
-            level.setBlock(b, BlockRegistry.ASTEROID_ROCK.get().defaultBlockState(), 3);
-        });
+//        ArrayList<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
+//        meteoriteSphere.forEach(b -> {
+//            level.setBlock(b, BlockRegistry.ASTEROID_ROCK.get().defaultBlockState(), 3);
+//        });
         return true;
     }
-    public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, Vec3 direction, float craterSize, float iterations)
+    public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, float rotation, float craterSize, float iterations)
     {
-        //TODO: change direction to be a simple angle.
-        //TODO: make the crater carver here center on heightmap level at that position.
+        float decrease = craterSize/iterations;
         for (int i = 1; i < iterations; i++)
         {
             float offset = craterSize*i;
-            Vec3 offsetDirection = direction.normalize().multiply(offset, offset, offset);
+            Vec3 offsetDirection = new Vec3(offset, 0, 0).yRot(rotation);
             BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y, offsetDirection.z);
             ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
             craterSphere.forEach(b -> {
@@ -75,7 +74,7 @@ public class MeteoriteFeature extends SimpleFeature {
                     level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
                 }
             });
-            craterSize-=craterSize/iterations;
+            craterSize-=decrease;
         }
         return true;
     }
