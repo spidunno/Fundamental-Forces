@@ -17,6 +17,10 @@ public class ClientRuntimeEvents {
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
             if (Minecraft.getInstance().level != null) {
+                if (Minecraft.getInstance().isPaused())
+                {
+                    return;
+                }
                 WorldEventManager.clientWorldTick(Minecraft.getInstance().level);
                 ScreenshakeHandler.clientTick(EsotericaMod.RANDOM);
             }

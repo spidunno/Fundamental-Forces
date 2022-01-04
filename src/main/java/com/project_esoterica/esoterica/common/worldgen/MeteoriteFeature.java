@@ -41,7 +41,7 @@ public class MeteoriteFeature extends SimpleFeature {
         }
         int yLevel = (int) stats.mean() - meteorSize;
         BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
-        ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos, craterSize, craterSize * 0.6f, b -> !level.getBlockState(b).isAir());
+        ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos.below(), craterSize, craterSize * 1.1f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
             if (level.getBlockState(b.above()).isAir()) {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
@@ -68,13 +68,13 @@ public class MeteoriteFeature extends SimpleFeature {
             float offset = craterSize*i;
             Vec3 offsetDirection = new Vec3(offset, 0, 0).yRot(rotation);
             BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y, offsetDirection.z);
-            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize / 2f, b -> !level.getBlockState(b).isAir());
+            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize * 0.85f, b -> !level.getBlockState(b).isAir());
             craterSphere.forEach(b -> {
                 if (level.getBlockState(b.above()).isAir()) {
                     level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
                 }
             });
-            craterSize-=decrease;
+            craterSize-=craterSize/iterations;
         }
         return true;
     }
