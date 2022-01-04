@@ -21,6 +21,7 @@ import java.util.HashMap;
 @OnlyIn(Dist.CLIENT)
 public class RenderManager {
     public static HashMap<RenderType, BufferBuilder> BUFFERS = new HashMap<>();
+    public static HashMap<RenderType, RenderTypeShaderHandler> HANDLERS = new HashMap<>();
     public static MultiBufferSource.BufferSource DELAYED_RENDER = null;
     public static Frustum FRUSTUM;
 
@@ -42,17 +43,22 @@ public class RenderManager {
         event.getPoseStack().pushPose();
         for (RenderType type : BUFFERS.keySet())
         {
+            if (HANDLERS.containsKey(type))
+            {
+                RenderTypeShaderHandler handler = HANDLERS.get(type);
+                handler.updateShaderData();
+            }
             DELAYED_RENDER.endBatch(type);
         }
         event.getPoseStack().popPose();
     }
 
-    public static void prepareFrustum(PoseStack p_172962_, Vec3 p_172963_, Matrix4f p_172964_) {
-        Matrix4f matrix4f = p_172962_.last().pose();
-        double d0 = p_172963_.x();
-        double d1 = p_172963_.y();
-        double d2 = p_172963_.z();
-        FRUSTUM = new Frustum(matrix4f, p_172964_);
+    public static void prepareFrustum(PoseStack poseStack, Vec3 position, Matrix4f stack) {
+        Matrix4f matrix4f = poseStack.last().pose();
+        double d0 = position.x();
+        double d1 = position.y();
+        double d2 = position.z();
+        FRUSTUM = new Frustum(matrix4f, stack);
         FRUSTUM.prepare(d0, d1, d2);
     }
 

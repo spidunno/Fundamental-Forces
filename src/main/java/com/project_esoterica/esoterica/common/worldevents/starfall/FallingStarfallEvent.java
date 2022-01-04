@@ -4,20 +4,23 @@ import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 public class FallingStarfallEvent extends WorldEventInstance {
+    public static final float ACCELERATION = 0.01f;
 
     public StarfallActor actor;
-
     public BlockPos targetedPos = BlockPos.ZERO;
     public Vec3 position = Vec3.ZERO;
     public Vec3 motion = Vec3.ZERO;
-    public float acceleration = 0.01f;
+    public float speed;
 
     private FallingStarfallEvent() {
         super(WorldEventTypes.FALLING_STARFALL);
@@ -91,8 +94,8 @@ public class FallingStarfallEvent extends WorldEventInstance {
     }
 
     private void move() {
-        position = position.add(motion.multiply(acceleration, acceleration, acceleration));
-        acceleration += 0.01f;
+        position = position.add(motion.multiply(speed, speed, speed));
+        speed += ACCELERATION;
     }
 
     @Override
@@ -105,7 +108,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         tag.putDouble("motionX", motion.x());
         tag.putDouble("motionY", motion.y());
         tag.putDouble("motionZ", motion.z());
-        tag.putFloat("acceleration", acceleration);
+        tag.putFloat("speed", speed);
         return super.serializeNBT(tag);
     }
 
@@ -116,7 +119,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         position = new Vec3(tag.getDouble("posX"), tag.getDouble("posY"), tag.getDouble("posZ"));
         motion = new Vec3(tag.getDouble("motionX"), tag.getDouble("motionY"), tag.getDouble("motionZ"));
-        acceleration = tag.getFloat("acceleration");
+        speed = tag.getFloat("speed");
         super.deserializeNBT(tag);
     }
 }

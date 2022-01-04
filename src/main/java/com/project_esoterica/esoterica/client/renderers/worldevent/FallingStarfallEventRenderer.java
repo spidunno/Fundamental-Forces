@@ -46,9 +46,10 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamWidth = 4f;
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         float starSize = 5f;
-        Vec3 position = instance.position.add(instance.motion.multiply(partialTicks,partialTicks,partialTicks));
+        Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed*partialTicks,instance.speed*partialTicks,instance.speed*partialTicks));
+        Vec3 position = instance.position.add(motion);
         poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ());
-        renderBeam(lightTrailConsumer, poseStack, instance.position, position.subtract(instance.motion.multiply(beamLength+partialTicks, beamLength+partialTicks, beamLength+partialTicks)), beamWidth);
+        renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));

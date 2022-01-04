@@ -45,4 +45,9 @@ public class RenderTypes extends RenderStateShard{
         RenderManager.BUFFERS.put(type, new BufferBuilder(type.bufferSize()));
         return type;
     }
+    public static RenderType withShaderHandler(RenderType type, RenderTypeShaderHandler handler)
+    {
+        RenderManager.HANDLERS.put(type, handler);
+        return type;
+    }
 }
