@@ -17,18 +17,15 @@ public class ScreenshakeHandler {
     public static float pitchOffset;
 
     public static void cameraTick(Camera camera, Random random) {
-        yawOffset = randomizeOffset(random);
-        pitchOffset = randomizeOffset(random);
-        camera.setRotation(camera.getYRot() + yawOffset, camera.getXRot() + pitchOffset);
+        if (intensity >= 0.1) {
+            yawOffset = randomizeOffset(random);
+            pitchOffset = randomizeOffset(random);
+            camera.setRotation(camera.getYRot() + yawOffset, camera.getXRot() + pitchOffset);
+        }
     }
 
     public static void clientTick(Camera camera, Random random) {
-        float newIntensity = (float) INSTANCES.stream().mapToDouble(i -> i.tick(camera, random)).sum();
-        for (ScreenshakeInstance instance : INSTANCES)
-        {
-            newIntensity+=instance.tick(camera, random);
-        }
-        intensity = newIntensity;
+        intensity = (float) INSTANCES.stream().mapToDouble(i1 -> i1.tick(camera, random)).sum();
         INSTANCES.removeIf(i -> i.intensity <= 0.01f);
     }
 
