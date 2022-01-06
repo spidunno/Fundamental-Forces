@@ -2,7 +2,9 @@ package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
+import com.project_esoterica.esoterica.core.systems.screenshake.PositionedScreenshakeInstance;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
+import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -89,7 +91,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     // TODO: make farther players experience less screenshake
     @Override
     public void clientEnd(Level level) {
-        ScreenshakeHandler.addScreenshake(0.85f, 0.9f);
+        ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 0.85f, 0.04f, 40, 0.01f, 0.04f));
         super.clientEnd(level);
     }
 

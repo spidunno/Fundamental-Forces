@@ -67,7 +67,7 @@ public class MeteoriteFeature extends SimpleFeature {
         {
             float offset = craterSize*i;
             Vec3 offsetDirection = new Vec3(offset, 0, 0).yRot(rotation);
-            BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y, offsetDirection.z);
+            BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y+i/iterations*3f, offsetDirection.z);
             ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize * 0.85f, b -> !level.getBlockState(b).isAir());
             craterSphere.forEach(b -> {
                 if (level.getBlockState(b.above()).isAir()) {

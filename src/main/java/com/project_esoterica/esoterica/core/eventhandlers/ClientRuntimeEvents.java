@@ -4,25 +4,29 @@ import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
-            if (Minecraft.getInstance().level != null) {
-                if (Minecraft.getInstance().isPaused())
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft.level != null) {
+                if (minecraft.isPaused())
                 {
                     return;
                 }
-                WorldEventManager.clientWorldTick(Minecraft.getInstance().level);
-                ScreenshakeHandler.clientTick(EsotericaMod.RANDOM);
+                Camera camera = minecraft.gameRenderer.getMainCamera();
+                WorldEventManager.clientWorldTick(minecraft.level);
+                ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
             }
         }
     }

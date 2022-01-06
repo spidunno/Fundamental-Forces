@@ -1,7 +1,8 @@
 package com.project_esoterica.esoterica.core.registry.misc;
 
 import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
-import com.project_esoterica.esoterica.common.packets.ScreenshakePacket;
+import com.project_esoterica.esoterica.common.packets.screenshake.PositionedScreenshakePacket;
+import com.project_esoterica.esoterica.common.packets.screenshake.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -22,6 +23,7 @@ public class PacketRegistry {
     public static void registerPackets(FMLCommonSetupEvent event) {
         int index = 0;
         ScreenshakePacket.register(INSTANCE, index++);
+        PositionedScreenshakePacket.register(INSTANCE, index++);
         SyncWorldEventPacket.register(INSTANCE, index++);
     }
 }
