@@ -18,11 +18,11 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
         float intensity = super.updateIntensity(camera, falloff);
         Vector3f lookDirection = camera.getLookVector();
         Vec3 directionToScreenshake = camera.getPosition().subtract(position).normalize();
-        float angle = new Vector3f(directionToScreenshake).dot(lookDirection);
-        if (angle < 0)
+        float angle = lookDirection.dot(new Vector3f(directionToScreenshake));
+        if (angle > 0)
         {
             return 0;
         }
-        return intensity * angle;
+        return intensity * -angle;
     }
 }
