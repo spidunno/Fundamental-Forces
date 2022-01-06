@@ -91,7 +91,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     // TODO: make farther players experience less screenshake
     @Override
     public void clientEnd(Level level) {
-        ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 0.85f, 0.04f, 40, 0.01f, 0.04f));
+        ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
         super.clientEnd(level);
     }
 

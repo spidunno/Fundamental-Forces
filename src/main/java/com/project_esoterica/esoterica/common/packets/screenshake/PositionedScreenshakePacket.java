@@ -12,14 +12,18 @@ import java.util.function.Supplier;
 
 public class PositionedScreenshakePacket {
     Vec3 position;
+    public float falloffDistance;
+    public float maxDistance;
     float intensity;
     float falloffTransformSpeed;
     int timeBeforeFastFalloff;
     float slowFalloff;
     float fastFalloff;
 
-    public PositionedScreenshakePacket(Vec3 position, float intensity, float falloffTransformSpeed, int timeBeforeFastFalloff, float slowFalloff, float fastFalloff) {
+    public PositionedScreenshakePacket(Vec3 position, float falloffDistance, float maxDistance, float intensity, float falloffTransformSpeed, int timeBeforeFastFalloff, float slowFalloff, float fastFalloff) {
         this.position = position;
+        this.falloffDistance = falloffDistance;
+        this.maxDistance = maxDistance;
         this.intensity = intensity;
         this.falloffTransformSpeed = falloffTransformSpeed;
         this.timeBeforeFastFalloff = timeBeforeFastFalloff;
@@ -28,11 +32,13 @@ public class PositionedScreenshakePacket {
     }
 
     public static PositionedScreenshakePacket decode(FriendlyByteBuf buf) {
-        return new PositionedScreenshakePacket(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readFloat(), buf.readFloat());
+        return new PositionedScreenshakePacket(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readInt(), buf.readFloat(), buf.readFloat());
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeDouble(position.x); buf.writeDouble(position.y); buf.writeDouble(position.z);
+        buf.writeFloat(falloffDistance);
+        buf.writeFloat(maxDistance);
         buf.writeFloat(intensity);
         buf.writeFloat(falloffTransformSpeed);
         buf.writeInt(timeBeforeFastFalloff);
@@ -41,7 +47,7 @@ public class PositionedScreenshakePacket {
     }
 
     public void execute(Supplier<NetworkEvent.Context> context) {
-        context.get().enqueueWork(() -> ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, intensity, falloffTransformSpeed, timeBeforeFastFalloff, slowFalloff, fastFalloff)));
+        context.get().enqueueWork(() -> ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position,falloffDistance,maxDistance, intensity, falloffTransformSpeed, timeBeforeFastFalloff, slowFalloff, fastFalloff)));
         context.get().setPacketHandled(true);
     }
 
