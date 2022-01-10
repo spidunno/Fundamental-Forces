@@ -1,8 +1,10 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.block.MeteorFlameBlock;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
@@ -22,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import static com.project_esoterica.esoterica.core.helper.DataHelper.takeAll;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER;
 
@@ -40,21 +43,23 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     protected void registerStatesAndModels() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
-        DataHelper.takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(this::grassBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof StairBlock).forEach(this::stairsBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof RotatedPillarBlock).forEach(this::logBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof WallBlock).forEach(this::wallBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof FenceBlock).forEach(this::fenceBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof FenceGateBlock).forEach(this::fenceGateBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(this::doorBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof TrapDoorBlock).forEach(this::trapdoorBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof PressurePlateBlock).forEach(this::pressurePlateBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof ButtonBlock).forEach(this::buttonBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(this::tallPlantBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(this::plantBlock);
-        DataHelper.takeAll(blocks, b -> b.get() instanceof LanternBlock).forEach(this::lanternBlock);
+        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).ignoreBlockStateDatagen);
 
-        Collection<RegistryObject<Block>> slabs = DataHelper.takeAll(blocks, b -> b.get() instanceof SlabBlock);
+        takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(this::grassBlock);
+        takeAll(blocks, b -> b.get() instanceof StairBlock).forEach(this::stairsBlock);
+        takeAll(blocks, b -> b.get() instanceof RotatedPillarBlock).forEach(this::logBlock);
+        takeAll(blocks, b -> b.get() instanceof WallBlock).forEach(this::wallBlock);
+        takeAll(blocks, b -> b.get() instanceof FenceBlock).forEach(this::fenceBlock);
+        takeAll(blocks, b -> b.get() instanceof FenceGateBlock).forEach(this::fenceGateBlock);
+        takeAll(blocks, b -> b.get() instanceof DoorBlock).forEach(this::doorBlock);
+        takeAll(blocks, b -> b.get() instanceof TrapDoorBlock).forEach(this::trapdoorBlock);
+        takeAll(blocks, b -> b.get() instanceof PressurePlateBlock).forEach(this::pressurePlateBlock);
+        takeAll(blocks, b -> b.get() instanceof ButtonBlock).forEach(this::buttonBlock);
+        takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(this::tallPlantBlock);
+        takeAll(blocks, b -> b.get() instanceof BushBlock).forEach(this::plantBlock);
+        takeAll(blocks, b -> b.get() instanceof LanternBlock).forEach(this::lanternBlock);
+
+        Collection<RegistryObject<Block>> slabs = takeAll(blocks, b -> b.get() instanceof SlabBlock);
         blocks.forEach(this::basicBlock);
         slabs.forEach(this::slabBlock);
 
@@ -216,9 +221,6 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         logBlock((RotatedPillarBlock) blockRegistryObject.get());
     }
 
-    public void sapFilledBlock(RegistryObject<Block> blockRegistryObject) {
-        axisBlock((RotatedPillarBlock) blockRegistryObject.get(), DataHelper.prefix("block/sap_filled_runewood_log"), DataHelper.prefix("block/stripped_runewood_log_top"));
-    }
 
     public void woodBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();

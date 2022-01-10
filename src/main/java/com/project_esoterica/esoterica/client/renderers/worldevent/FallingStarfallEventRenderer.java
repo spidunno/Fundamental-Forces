@@ -6,6 +6,7 @@ import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.common.worldevents.starfall.FallingStarfallEvent;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
@@ -18,8 +19,6 @@ import net.minecraft.world.phys.Vec3;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
-import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities.renderBeam;
-import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities.renderQuad;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
@@ -46,14 +45,15 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamWidth = 4f;
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         float starSize = 5f;
+        RenderUtilities.VertexBuilder builder = RenderUtilities.create();
         Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed*partialTicks,instance.speed*partialTicks,instance.speed*partialTicks));
         Vec3 position = instance.position.add(motion);
         poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ());
-        renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
+        builder.renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        renderQuad(starConsumer, poseStack, starSize, starSize);
+        builder.renderQuad(starConsumer, poseStack, starSize, starSize);
         poseStack.popPose();
     }
 }

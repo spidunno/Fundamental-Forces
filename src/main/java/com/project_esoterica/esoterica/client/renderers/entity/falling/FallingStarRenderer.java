@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.registry.misc.ShaderRegistry;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -51,12 +52,13 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
+        VertexBuilder builder = RenderUtilities.create();
         float beamLength = 6f;
         float beamWidth = 5f;
         float starSize = 3f;
-        renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength, beamLength, 0)),beamWidth, 255, 226, 139, 255);
-        renderBeam(DELAYED_RENDER.getBuffer(DARKNESS_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength+1, beamLength+1, 0)),beamWidth+1, 169, 83, 255, 255);
-        renderBeam(DELAYED_RENDER.getBuffer(FIRE_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength+2, beamLength+2, 0)),beamWidth+2, 54, 153, 217, 255);
+        builder.setColor(255, 226, 139, 255).renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength, beamLength, 0)),beamWidth);
+        builder.setColor(169, 83, 255, 255).renderBeam(DELAYED_RENDER.getBuffer(DARKNESS_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength+1, beamLength+1, 0)),beamWidth+1);
+        builder.setColor(54, 153, 217, 255).renderBeam(DELAYED_RENDER.getBuffer(FIRE_TYPE), poseStack, entity.position(), entity.position().add(new Vec3(beamLength+2, beamLength+2, 0)),beamWidth+2);
 //        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 //        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 //        renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, starSize, starSize);

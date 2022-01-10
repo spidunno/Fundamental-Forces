@@ -1,5 +1,6 @@
 {
   "block.esoterica.asteroid_rock": "Asteroid Rock",
+  "block.esoterica.meteor_fire": "Meteor Fire",
   "command.esoterica.checkarea.blocktag.failure": "Failure: Terrain type contains abnormal blocks.",
   "command.esoterica.checkarea.blocktag.success": "Success: Terrain type is normal.",
   "command.esoterica.checkarea.heightmap.failure": "Failure: Heightmap levels show signs of player intervention.",

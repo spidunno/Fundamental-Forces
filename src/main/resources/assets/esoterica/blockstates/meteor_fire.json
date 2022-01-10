@@ -1,0 +1,90 @@
+{
+  "multipart": [
+    {
+      "apply": [
+        {
+          "model": "esoterica:block/fire/fire_floor0"
+        },
+        {
+          "model": "esoterica:block/fire/fire_floor1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "esoterica:block/fire/fire_side0"
+        },
+        {
+          "model": "esoterica:block/fire/fire_side1"
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt0"
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt1"
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "esoterica:block/fire/fire_side0",
+          "y": 90
+        },
+        {
+          "model": "esoterica:block/fire/fire_side1",
+          "y": 90
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt0",
+          "y": 90
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt1",
+          "y": 90
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "esoterica:block/fire/fire_side0",
+          "y": 180
+        },
+        {
+          "model": "esoterica:block/fire/fire_side1",
+          "y": 180
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt0",
+          "y": 180
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt1",
+          "y": 180
+        }
+      ]
+    },
+    {
+      "apply": [
+        {
+          "model": "esoterica:block/fire/fire_side0",
+          "y": 270
+        },
+        {
+          "model": "esoterica:block/fire/fire_side1",
+          "y": 270
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt0",
+          "y": 270
+        },
+        {
+          "model": "esoterica:block/fire/fire_side_alt1",
+          "y": 270
+        }
+      ]
+    }
+  ]
+}

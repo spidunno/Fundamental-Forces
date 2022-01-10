@@ -19,104 +19,118 @@ import java.awt.*;
 import java.util.Random;
 
 public class RenderUtilities {
+    public static final int FULL_BRIGHT = 15728880;
 
-    public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
-        renderTriangle(vertexConsumer, stack, width, height, 255,255,255,255);
-    }
-    public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
-        renderTriangle(vertexConsumer, stack, width, height, r,g,b,a, 15728880);
-    }
-    public static void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
-        Matrix4f last = stack.last().pose();
-
-        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
-        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
-        vertex(vertexConsumer, last, 0, height, 0, r,g,b,a, 0.5f, 0, light);
-    }
-
-    public static void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width) {
-        renderBeam(vertexConsumer, stack, start, end, width, 255,255,255,255);
-    }
-    public static void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width, int r, int g, int b, int a) {
-        renderBeam(vertexConsumer, stack, start, end, width, r,g,b,a, 15728880);
-    }
-    public static void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width, int r, int g, int b, int a, int light)
+    public static VertexBuilder create()
     {
-        Minecraft minecraft = Minecraft.getInstance();
-        stack.translate(-start.x, -start.y, -start.z); // move to position
-        Vec3 cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPosition();
-        Vec3 delta = end.subtract(start);
-        Vec3 normal = start.subtract(cameraPosition).cross(delta).normalize().multiply(width/2f,width/2f,width/2f);
-        Matrix4f last = stack.last().pose();
-        Vec3[] positions = new Vec3[]{start.subtract(normal), start.add(normal), end.add(normal), end.subtract(normal)};
-        vertex(vertexConsumer, last, (float)positions[0].x,(float)positions[0].y,(float)positions[0].z,r,g,b,a,0,1, light);
-        vertex(vertexConsumer, last, (float)positions[1].x,(float)positions[1].y,(float)positions[1].z,r,g,b,a,1,1, light);
-        vertex(vertexConsumer, last, (float)positions[2].x,(float)positions[2].y,(float)positions[2].z,r,g,b,a,1,0, light);
-        vertex(vertexConsumer, last, (float)positions[3].x,(float)positions[3].y,(float)positions[3].z,r,g,b,a,0,0, light);
-        stack.translate(start.x, start.y, start.z);
+        return new VertexBuilder();
     }
 
-    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
-        renderQuad(vertexConsumer, stack, width, height, 255,255,255,255);
-    }
-    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a) {
-        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880);
-    }
-    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light) {
-        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, light, 0, 0, 1, 1);
-    }
-    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, float u0, float v0, float u1, float v1) {
-        renderQuad(vertexConsumer, stack, width, height, r, g, b, a, 15728880, u0, v0, u1, v1);
-    }
-    public static void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height, int r, int g, int b, int a, int light, float u0, float v0, float u1, float v1) {
-        Matrix4f last = stack.last().pose();
-
-        vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, u0, v1, light);
-        vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, u1, v1, light);
-        vertex(vertexConsumer, last, width, height, 0, r,g,b,a, u1, v0, light);
-        vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, u0, v0, light);
-    }
-
-    public static void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats)
+    public static class VertexBuilder
     {
-        renderSphere(vertexConsumer, stack, radius, longs, lats,255,255,255,255,15728880);
-    }
+        int r=255, g=255, b=255, a=255;
+        int light=FULL_BRIGHT;
+        float u0=0, v0=0, u1=1, v1=1;
 
-    public static void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats, int r, int g, int b, int a) {
-        renderSphere(vertexConsumer, stack, radius, longs, lats, r, g, b, a,15728880);
-    }
-    public static void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats, int r, int g, int b, int a, int light) {
-        Matrix4f last = stack.last().pose();
-        float startU = 0;
-        float startV = 0;
-        float endU = Mth.PI * 2;
-        float endV = Mth.PI;
-        float stepU = (endU - startU) / longs;
-        float stepV = (endV - startV) / lats;
-        for (int i = 0; i < longs; ++i) {
-            // U-points
-            for (int j = 0; j < lats; ++j) {
-                // V-points
-                float u = i * stepU + startU;
-                float v = j * stepV + startV;
-                float un = (i + 1 == longs) ? endU : (i + 1) * stepU + startU;
-                float vn = (j + 1 == lats) ? endV : (j + 1) * stepV + startV;
-                Vector3f p0 = parametricSphere(u, v, radius);
-                Vector3f p1 = parametricSphere(u, vn, radius);
-                Vector3f p2 = parametricSphere(un, v, radius);
-                Vector3f p3 = parametricSphere(un, vn, radius);
 
-                float textureU = u/endU*radius;
-                float textureV = v/endV*radius;
-                float textureUN = un/endU*radius;
-                float textureVN = vn/endV*radius;
-                vertex(vertexConsumer,last, p0.x(), p0.y(), p0.z(), r,g,b,a,textureU,textureV,light);
-                vertex(vertexConsumer,last, p2.x(), p2.y(), p2.z(), r,g,b,a,textureUN,textureV,light);
-                vertex(vertexConsumer,last, p1.x(), p1.y(), p1.z(), r,g,b,a,textureU,textureVN,light);
+        public VertexBuilder setColor(Color color)
+        {
+            this.r = color.getRed();
+            this.g = color.getGreen();
+            this.b = color.getBlue();
+            return this;
+        }
+        public VertexBuilder setColor(int r, int g, int b, int a)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            this.a = a;
+            return this;
+        }
+        public VertexBuilder setColor(int r, int g, int b)
+        {
+            this.r = r;
+            this.g = g;
+            this.b = b;
+            return this;
+        }
+        public VertexBuilder setLight(int light)
+        {
+            this.light = light;
+            return this;
+        }
+        public VertexBuilder setUV(float u0, float v0, float u1, float v1)
+        {
+            this.u0 = u0;
+            this.v0 = v0;
+            this.u1 = u1;
+            this.v1 = v1;
+            return this;
+        }
+        public void renderTriangle(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
+            Matrix4f last = stack.last().pose();
 
-                vertex(vertexConsumer,last, p3.x(), p3.y(), p3.z(), r,g,b,a,textureUN,textureVN,light);
-                vertex(vertexConsumer,last, p1.x(), p1.y(), p1.z(), r,g,b,a,textureU,textureVN,light);
-                vertex(vertexConsumer,last, p2.x(), p2.y(), p2.z(), r,g,b,a,textureUN,textureV,light);
+            vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, 0, 1, light);
+            vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, 1, 1, light);
+            vertex(vertexConsumer, last, 0, height, 0, r,g,b,a, 0.5f, 0, light);
+        }
+        public void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width)
+        {
+            Minecraft minecraft = Minecraft.getInstance();
+            stack.translate(-start.x, -start.y, -start.z); // move to position
+            Vec3 cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPosition();
+            Vec3 delta = end.subtract(start);
+            Vec3 normal = start.subtract(cameraPosition).cross(delta).normalize().multiply(width/2f,width/2f,width/2f);
+            Matrix4f last = stack.last().pose();
+            Vec3[] positions = new Vec3[]{start.subtract(normal), start.add(normal), end.add(normal), end.subtract(normal)};
+            vertex(vertexConsumer, last, (float)positions[0].x,(float)positions[0].y,(float)positions[0].z,r,g,b,a,u0,v1, light);
+            vertex(vertexConsumer, last, (float)positions[1].x,(float)positions[1].y,(float)positions[1].z,r,g,b,a,u1,v1, light);
+            vertex(vertexConsumer, last, (float)positions[2].x,(float)positions[2].y,(float)positions[2].z,r,g,b,a,u1,v0, light);
+            vertex(vertexConsumer, last, (float)positions[3].x,(float)positions[3].y,(float)positions[3].z,r,g,b,a,u0,v0, light);
+            stack.translate(start.x, start.y, start.z);
+        }
+        public void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
+            Matrix4f last = stack.last().pose();
+
+            vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, u0, v1, light);
+            vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, u1, v1, light);
+            vertex(vertexConsumer, last, width, height, 0, r,g,b,a, u1, v0, light);
+            vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, u0, v0, light);
+        }
+        public void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats) {
+            Matrix4f last = stack.last().pose();
+            float startU = 0;
+            float startV = 0;
+            float endU = Mth.PI * 2;
+            float endV = Mth.PI;
+            float stepU = (endU - startU) / longs;
+            float stepV = (endV - startV) / lats;
+            for (int i = 0; i < longs; ++i) {
+                // U-points
+                for (int j = 0; j < lats; ++j) {
+                    // V-points
+                    float u = i * stepU + startU;
+                    float v = j * stepV + startV;
+                    float un = (i + 1 == longs) ? endU : (i + 1) * stepU + startU;
+                    float vn = (j + 1 == lats) ? endV : (j + 1) * stepV + startV;
+                    Vector3f p0 = parametricSphere(u, v, radius);
+                    Vector3f p1 = parametricSphere(u, vn, radius);
+                    Vector3f p2 = parametricSphere(un, v, radius);
+                    Vector3f p3 = parametricSphere(un, vn, radius);
+
+                    float textureU = u/endU*radius;
+                    float textureV = v/endV*radius;
+                    float textureUN = un/endU*radius;
+                    float textureVN = vn/endV*radius;
+                    vertex(vertexConsumer,last, p0.x(), p0.y(), p0.z(), r,g,b,a,textureU,textureV,light);
+                    vertex(vertexConsumer,last, p2.x(), p2.y(), p2.z(), r,g,b,a,textureUN,textureV,light);
+                    vertex(vertexConsumer,last, p1.x(), p1.y(), p1.z(), r,g,b,a,textureU,textureVN,light);
+
+                    vertex(vertexConsumer,last, p3.x(), p3.y(), p3.z(), r,g,b,a,textureUN,textureVN,light);
+                    vertex(vertexConsumer,last, p1.x(), p1.y(), p1.z(), r,g,b,a,textureU,textureVN,light);
+                    vertex(vertexConsumer,last, p2.x(), p2.y(), p2.z(), r,g,b,a,textureUN,textureV,light);
+                }
             }
         }
     }
