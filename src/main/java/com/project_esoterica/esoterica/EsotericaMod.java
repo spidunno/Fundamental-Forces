@@ -1,12 +1,9 @@
 package com.project_esoterica.esoterica;
 
-import com.project_esoterica.esoterica.core.config.ClientConfig;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.ClientConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.data.*;
-import com.project_esoterica.esoterica.core.registry.EntityRegistry;
-import com.project_esoterica.esoterica.core.registry.ParticleRegistry;
-import com.project_esoterica.esoterica.core.registry.PotionEffectRegistry;
-import com.project_esoterica.esoterica.core.registry.SoundRegistry;
+import com.project_esoterica.esoterica.core.registry.*;
 import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
@@ -25,11 +22,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
-import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 
-@Mod(MOD_ID)
+@Mod(MODID)
 public class EsotericaMod {
-    public static final String MOD_ID = "esoterica";
+    public static final String MODID = "esoterica";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final Random RANDOM = new Random();
 
@@ -47,6 +44,7 @@ public class EsotericaMod {
         SoundRegistry.SOUNDS.register(modBus);
         ParticleRegistry.PARTICLES.register(modBus);
         FeatureRegistry.FEATURE_TYPES.register(modBus);
+        RecipeTypeRegistry.RECIPE_TYPES.register(modBus);
         modBus.addListener(this::gatherData);
     }
 

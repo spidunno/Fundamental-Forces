@@ -22,7 +22,7 @@ import static net.minecraftforge.common.Tags.Blocks.DIRT;
 
 public class SpaceModBlockTags extends BlockTagsProvider {
     public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, EsotericaMod.MOD_ID, existingFileHelper);
+        super(generatorIn, EsotericaMod.MODID, existingFileHelper);
     }
 
     @Override

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "side": "esoterica:block/charred_rock",
+    "bottom": "esoterica:block/charred_rock",
+    "top": "esoterica:block/charred_rock"
+  }
+}

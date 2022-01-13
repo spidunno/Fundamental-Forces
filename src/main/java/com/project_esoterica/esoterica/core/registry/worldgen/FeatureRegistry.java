@@ -8,7 +8,6 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.PlacementModifier;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -18,12 +17,12 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 
-@Mod.EventBusSubscriber(modid= MOD_ID, bus= Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid= MODID, bus= Mod.EventBusSubscriber.Bus.MOD)
 public class FeatureRegistry {
 
-    public static final DeferredRegister<Feature<?>> FEATURE_TYPES = DeferredRegister.create(ForgeRegistries.FEATURES, MOD_ID);
+    public static final DeferredRegister<Feature<?>> FEATURE_TYPES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
 
     public static final RegistryObject<SimpleFeature> METEORITE = FEATURE_TYPES.register("meteorite", MeteoriteFeature::new);
 

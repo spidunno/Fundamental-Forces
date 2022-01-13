@@ -24,8 +24,11 @@ public class SimpleBlockProperties extends BlockBehaviour.Properties {
     public boolean ignoreLootDatagen;
     public boolean ignoreBlockStateDatagen;
 
-    public SimpleBlockProperties(Material p_60905_, MaterialColor p_60906_) {
-        super(p_60905_, (p_60952_) -> p_60906_);
+    public SimpleBlockProperties(Material material, MaterialColor color) {
+        super(material, (m) -> color);
+    }
+    public SimpleBlockProperties(Material material) {
+        super(material, (m)->material.getColor());
     }
     public SimpleBlockProperties ignoreLootDatagen()
     {

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=top": {
+      "model": "esoterica:block/charred_rock_slab_top"
+    },
+    "type=bottom": {
+      "model": "esoterica:block/charred_rock_slab"
+    },
+    "type=double": {
+      "model": "esoterica:block/charred_rock"
+    }
+  }
+}

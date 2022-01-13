@@ -1,7 +1,6 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.common.block.MeteorFlameBlock;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
@@ -30,7 +29,7 @@ import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.U
 
 public class SpaceModBlockStates extends net.minecraftforge.client.model.generators.BlockStateProvider {
     public SpaceModBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, EsotericaMod.MOD_ID, exFileHelper);
+        super(gen, EsotericaMod.MODID, exFileHelper);
     }
 
     @Nonnull

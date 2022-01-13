@@ -1,4 +1,7 @@
 {
   "replace": false,
-  "values": []
+  "values": [
+    "esoterica:charred_rock_slab",
+    "esoterica:polished_charred_rock_slab"
+  ]
 }

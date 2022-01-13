@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall.actors;
 
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -15,13 +15,13 @@ public class SpaceDebrisStarfallActor extends StarfallActor {
     }
 
     public SpaceDebrisStarfallActor() {
-        super("space_debris", CommonConfig.NATURAL_SPACE_DEBRIS_COUNTDOWN.get());
+        super("space_debris", CommonConfig.NATURAL_DEBRIS_COUNTDOWN.get());
     }
 
     @Override
     public int randomizedCountdown(Random random, int parentCountdown) {
-        double min = CommonConfig.MINIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
-        double max = CommonConfig.MAXIMUM_SPACE_DEBRIS_COUNTDOWN_MULTIPLIER.get();
+        double min = CommonConfig.MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.get();
+        double max = CommonConfig.MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.get();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
 

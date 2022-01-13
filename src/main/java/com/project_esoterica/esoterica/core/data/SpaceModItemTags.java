@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SpaceModItemTags extends ItemTagsProvider {
     public SpaceModItemTags(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, blockTagProvider, EsotericaMod.MOD_ID, existingFileHelper);
+        super(dataGenerator, blockTagProvider, EsotericaMod.MODID, existingFileHelper);
     }
 
     @Override

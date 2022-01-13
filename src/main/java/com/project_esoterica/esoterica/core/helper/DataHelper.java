@@ -12,9 +12,8 @@ import java.util.*;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 
 public class DataHelper {
 
@@ -34,7 +33,7 @@ public class DataHelper {
     }
 
     public static ResourceLocation prefix(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return new ResourceLocation(MODID, path);
     }
 
     public static <T, K extends Collection<T>> K reverseOrder(Supplier<K> reversed, Collection<T> items) {

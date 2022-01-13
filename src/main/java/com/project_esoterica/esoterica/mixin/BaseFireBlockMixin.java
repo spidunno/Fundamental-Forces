@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BaseFireBlockMixin {
 
     @Inject(at = @At("RETURN"), method = "getState", cancellable = true)
-    private static void esotericaBaseFireBlockMixin(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir)
+    private static void esotericaMeteorFlameMixin(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir)
     {
         BlockState state = pReader.getBlockState(pPos.below());
         if (state.getBlock() instanceof FlammableMeteoriteBlock block)

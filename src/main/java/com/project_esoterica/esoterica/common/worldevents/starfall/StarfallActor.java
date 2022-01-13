@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.core.BlockPos;
@@ -66,11 +66,11 @@ public class StarfallActor {
         double distance = targetVec.distanceTo(centerVec)*(Mth.nextDouble(level.random, 0.5f, 5f)); //0.75-2.5x towards the center position
         Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance,1, distance); //rotated direction towards centerPos
         Vec3 spawnVec = centerVec.add(direction);
-        return DataHelper.fromBlockPos(heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, new BlockPos(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_LEVEL.get(), 0);//200 blocks above heightmap level at spawnVec
+        return DataHelper.fromBlockPos(heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, new BlockPos(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_HEIGHT.get(), 0);//200 blocks above heightmap level at spawnVec
     }
     public static BlockPos heightmapPosAt(Heightmap.Types type, ServerLevel level, BlockPos pos)
     {
-        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MODID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
         BlockPos surfacePos = level.getHeightmapPos(type, pos);
         while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS))
         {
@@ -78,7 +78,7 @@ public class StarfallActor {
             // However the Heightmap.Types enum isn't an IExtendibleEnum, we would need to make a dreaded forge PR for them to make it one
             surfacePos = surfacePos.below();
         }
-        ForgeChunkManager.forceChunk(level, EsotericaMod.MOD_ID, pos,SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),false,false);
+        ForgeChunkManager.forceChunk(level, EsotericaMod.MODID, pos,SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),false,false);
         return surfacePos;
     }
 }

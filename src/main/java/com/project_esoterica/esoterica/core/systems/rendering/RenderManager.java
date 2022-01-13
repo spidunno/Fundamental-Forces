@@ -1,8 +1,10 @@
 package com.project_esoterica.esoterica.core.systems.rendering;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
+import com.project_esoterica.esoterica.config.ClientConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventRenderers;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
@@ -23,6 +25,7 @@ public class RenderManager {
     public static HashMap<RenderType, BufferBuilder> BUFFERS = new HashMap<>();
     public static HashMap<RenderType, RenderTypeShaderHandler> HANDLERS = new HashMap<>();
     public static MultiBufferSource.BufferSource DELAYED_RENDER = null;
+    public static Matrix4f PARTICLE_MATRIX = null;
     public static Frustum FRUSTUM;
 
     public static void onClientSetup(FMLClientSetupEvent event) {
@@ -40,6 +43,16 @@ public class RenderManager {
                 }
             }
         });
+        if (ClientConfig.DELAYED_PARTICLE_RENDERING.get()) {
+            RenderSystem.getModelViewStack().pushPose();
+            RenderSystem.getModelViewStack().setIdentity();
+            if (PARTICLE_MATRIX != null) RenderSystem.getModelViewStack().mulPoseMatrix(PARTICLE_MATRIX);
+            RenderSystem.applyModelViewMatrix();
+            DELAYED_RENDER.endBatch(RenderTypes.ADDITIVE_PARTICLE);
+            DELAYED_RENDER.endBatch(RenderTypes.ADDITIVE_BLOCK_PARTICLE);
+            RenderSystem.getModelViewStack().popPose();
+            RenderSystem.applyModelViewMatrix();
+        }
         event.getPoseStack().pushPose();
         for (RenderType type : BUFFERS.keySet())
         {

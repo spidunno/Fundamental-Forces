@@ -18,7 +18,7 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
@@ -32,7 +32,7 @@ public class CommandsRegistry {
                 .then(ScreenshakeCommand.register())
                 .then(StarfallAreaCheckCommand.register())
         );
-        dispatcher.register(Commands.literal(MOD_ID)
+        dispatcher.register(Commands.literal(MODID)
                 .redirect(cmd));
     }
 

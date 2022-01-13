@@ -4,7 +4,7 @@ import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.block.BlockTagRegistry;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
@@ -134,7 +134,7 @@ public class WorldEventManager {
     }
 
     public static ArrayList<BlockPos> nearbyBlockList(ServerLevel level, BlockPos centerPos) {
-        int size = CommonConfig.STARFALL_SAFETY_CHECK_RANGE.get();
+        int size = CommonConfig.STARFALL_SAFETY_RANGE.get();
         ArrayList<BlockPos> result = new ArrayList<>();
         //TODO: fix this shit.
         //this is REALLY bad, preferably turn it into an iterable or stream.

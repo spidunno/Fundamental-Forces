@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
@@ -112,7 +112,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.get();
         if (determined) {
             int failures = 0;
-            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_FAILURES.get();
+            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.get();
             while (true) {
                 if (failures >= maximumFailures) {
                     break;
@@ -138,7 +138,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 boolean success = disregardOSHARegulations || exactPosition || actor.canFall(level, target);
                 if (success) {
                     Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_LEVEL.get(),Mth.nextDouble(level.random, -150, 150));
+                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_HEIGHT.get(),Mth.nextDouble(level.random, -150, 150));
                     Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
                     WorldEventManager.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
                 }
@@ -210,7 +210,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         if (areStarfallsAllowed(level)) {
             ScheduledStarfallEvent debrisInstance = WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
             Double chance = CommonConfig.ASTEROID_CHANCE.get();
-            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_COUNT.get();
+            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.get();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
                     WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
@@ -223,6 +223,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     }
 
     public static boolean areStarfallsAllowed(ServerLevel level) {
-        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_LEVELS.get().contains(level.dimension().location().toString());
+        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_DIMENSIONS.get().contains(level.dimension().location().toString());
     }
 }

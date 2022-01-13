@@ -19,7 +19,7 @@ import static com.project_esoterica.esoterica.core.helper.DataHelper.takeAll;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public SpaceModItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, EsotericaMod.MOD_ID, existingFileHelper);
+        super(generator, EsotericaMod.MODID, existingFileHelper);
     }
 
     @Override

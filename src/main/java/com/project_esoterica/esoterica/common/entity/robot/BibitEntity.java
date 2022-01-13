@@ -128,7 +128,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
                     .setLifetime(20 + level.random.nextInt(4))
                     .setSpin(Mth.nextFloat(level.random, 0.05f, 0.1f))
                     .setScale(0.2f + level.random.nextFloat() * 0.05f, 0)
-                    .setColor(new Color(54, 54, 227), new Color(63, 24, 89).darker())
+                    .setColor(new Color(54, 54, 227), new Color(233, 197, 255).darker())
                     .randomOffset(0.1f)
                     .enableNoClip()
                     .randomVelocity(0.02f, 0.02f)

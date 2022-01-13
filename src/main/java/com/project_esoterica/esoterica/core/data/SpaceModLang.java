@@ -22,11 +22,11 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.project_esoterica.esoterica.EsotericaMod.MOD_ID;
+import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 
 public class SpaceModLang extends LanguageProvider {
     public SpaceModLang(DataGenerator gen) {
-        super(gen, MOD_ID, "en_us");
+        super(gen, MODID, "en_us");
     }
 
     @Override
@@ -46,21 +46,21 @@ public class SpaceModLang extends LanguageProvider {
         Set<RegistryObject<MobEffect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
         blocks.forEach(b ->
         {
-            String name = b.get().getDescriptionId().replaceFirst("block." + MOD_ID + ".", "");
+            String name = b.get().getDescriptionId().replaceFirst("block." + MODID + ".", "");
             name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
             add(b.get().getDescriptionId(), name);
         });
 
         items.forEach(i ->
         {
-            String name = i.get().getDescriptionId().replaceFirst("item." + MOD_ID + ".", "");
+            String name = i.get().getDescriptionId().replaceFirst("item." + MODID + ".", "");
             name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
             add(i.get().getDescriptionId(), name);
         });
 
         sounds.forEach(s -> {
             String name = DataHelper.toTitleCase(s.getId().getPath(), "_");
-            add(MOD_ID + ".subtitle." + s.getId().getPath(), name);
+            add(MODID + ".subtitle." + s.getId().getPath(), name);
         });
         enchantments.forEach(e -> {
             String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
@@ -69,11 +69,11 @@ public class SpaceModLang extends LanguageProvider {
 
         effects.forEach(e -> {
             String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
-            add("effect." + MOD_ID + "." + e.get().getRegistryName().getPath(), name);
+            add("effect." + MODID + "." + e.get().getRegistryName().getPath(), name);
         });
 
 
-        add("itemGroup." + MOD_ID, "Empirical Esoterica");
+        add("itemGroup." + MODID, "Empirical Esoterica");
 
         addCommandKey("devsetup", "Command Successful you fuckhead.");
 
@@ -97,27 +97,27 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public void addEnchantmentDescription(String enchantmentName, String description) {
-        add("enchantment." + MOD_ID + "." + enchantmentName + ".desc", description);
+        add("enchantment." + MODID + "." + enchantmentName + ".desc", description);
     }
 
     public void addCommandKey(String command) {
-        add("command." + MOD_ID + "." + command, "Command Successful!");
+        add("command." + MODID + "." + command, "Command Successful!");
     }
 
     public void addCommandKey(String command, String feedback) {
-        add("command." + MOD_ID + "." + command, feedback);
+        add("command." + MODID + "." + command, feedback);
     }
 
     public static TranslatableComponent getCommandKey(String command) {
-        return new TranslatableComponent("command." + MOD_ID + "." + command);
+        return new TranslatableComponent("command." + MODID + "." + command);
     }
 
     public void addCommandOutput(String output, String feedback) {
-        add("command." + MOD_ID + "." + output, feedback);
+        add("command." + MODID + "." + output, feedback);
     }
 
     public static TranslatableComponent getCommandOutput(String output) {
-        return new TranslatableComponent("command." + MOD_ID + "." + output);
+        return new TranslatableComponent("command." + MODID + "." + output);
     }
 
     public String specialBlockNameChanges(String name) {

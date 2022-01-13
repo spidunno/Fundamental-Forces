@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "esoterica:charred_rock",
+    "esoterica:polished_charred_rock",
+    "esoterica:charred_rock_slab",
+    "esoterica:polished_charred_rock_slab",
+    "esoterica:charred_rock_stairs",
+    "esoterica:polished_charred_rock_stairs"
+  ]
+}

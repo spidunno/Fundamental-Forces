@@ -4,6 +4,7 @@ import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntit
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -64,8 +65,7 @@ public class SimpleBlock <T extends BlockEntity> extends Block implements Entity
     public void onBlockBroken(BlockState state, BlockGetter level, BlockPos pos) {
         if (hasTileEntity(state)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof SimpleBlockEntity) {
-                SimpleBlockEntity simpleTileEntity = (SimpleBlockEntity) blockEntity;
+            if (blockEntity instanceof SimpleBlockEntity simpleTileEntity) {
                 simpleTileEntity.onBreak();
             }
         }
@@ -75,11 +75,21 @@ public class SimpleBlock <T extends BlockEntity> extends Block implements Entity
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
         if (hasTileEntity(state)) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if (blockEntity instanceof SimpleBlockEntity) {
-                SimpleBlockEntity simpleTileEntity = (SimpleBlockEntity) blockEntity;
+            if (blockEntity instanceof SimpleBlockEntity simpleTileEntity) {
                 return simpleTileEntity.onUse(player, hand);
             }
         }
         return super.use(state, level, pos, player, hand, ray);
+    }
+
+    @Override
+    public void entityInside(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity) {
+        if (hasTileEntity(pState)) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof SimpleBlockEntity simpleTileEntity) {
+                simpleTileEntity.onEntityInside(pState, pLevel, pPos, pEntity);
+            }
+        }
+        super.entityInside(pState, pLevel, pPos, pEntity);
     }
 }

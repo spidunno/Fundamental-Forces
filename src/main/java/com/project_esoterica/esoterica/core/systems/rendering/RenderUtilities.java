@@ -29,6 +29,7 @@ public class RenderUtilities {
     public static class VertexBuilder
     {
         int r=255, g=255, b=255, a=255;
+        float xOffset=0, yOffset=0, zOffset=0;
         int light=FULL_BRIGHT;
         float u0=0, v0=0, u1=1, v1=1;
 
@@ -55,6 +56,13 @@ public class RenderUtilities {
             this.b = b;
             return this;
         }
+        public VertexBuilder setOffset(float xOffset, float yOffset, float zOffset)
+        {
+            this.xOffset = xOffset;
+            this.yOffset = yOffset;
+            this.zOffset = zOffset;
+            return this;
+        }
         public VertexBuilder setLight(int light)
         {
             this.light = light;
@@ -78,7 +86,9 @@ public class RenderUtilities {
         public void renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width)
         {
             Minecraft minecraft = Minecraft.getInstance();
-            stack.translate(-start.x, -start.y, -start.z); // move to position
+            start.add(xOffset, yOffset, zOffset);
+            end.add(xOffset, yOffset, zOffset);
+            stack.translate(-start.x, -start.y, -start.z);
             Vec3 cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPosition();
             Vec3 delta = end.subtract(start);
             Vec3 normal = start.subtract(cameraPosition).cross(delta).normalize().multiply(width/2f,width/2f,width/2f);
@@ -92,11 +102,13 @@ public class RenderUtilities {
         }
         public void renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
             Matrix4f last = stack.last().pose();
-
-            vertex(vertexConsumer, last, -width, -height, 0, r,g,b,a, u0, v1, light);
-            vertex(vertexConsumer, last, width, -height, 0, r,g,b,a, u1, v1, light);
-            vertex(vertexConsumer, last, width, height, 0, r,g,b,a, u1, v0, light);
-            vertex(vertexConsumer, last, -width, height, 0, r,g,b,a, u0, v0, light);
+            stack.translate(xOffset, yOffset, zOffset);
+            Vec3[] positions = new Vec3[]{new Vec3(-width, -height, 0), new Vec3(width, -height, 0), new Vec3(width, height, 0), new Vec3(-width, height, 0)};
+            vertex(vertexConsumer, last, (float)positions[0].x,(float)positions[0].y,(float)positions[0].z, r,g,b,a, u0, v1, light);
+            vertex(vertexConsumer, last, (float)positions[1].x,(float)positions[1].y,(float)positions[1].z, r,g,b,a, u1, v1, light);
+            vertex(vertexConsumer, last, (float)positions[2].x,(float)positions[2].y,(float)positions[2].z, r,g,b,a, u1, v0, light);
+            vertex(vertexConsumer, last, (float)positions[3].x,(float)positions[3].y,(float)positions[3].z, r,g,b,a, u0, v0, light);
+            stack.translate(-xOffset, -yOffset, -zOffset);
         }
         public void renderSphere(VertexConsumer vertexConsumer, PoseStack stack, float radius, int longs, int lats) {
             Matrix4f last = stack.last().pose();
@@ -481,53 +493,4 @@ public class RenderUtilities {
             return this;
         }
     }
-
-    /*GLOWING = RenderType.create(
-            EsotericaMod.MOD_ID + ":glowing",
-            DefaultVertexFormat.POSITION_COLOR,
-            GL11.GL_QUADS, 256,
-            RenderType.CompositeState.builder()
-                    .shadeModel(new RenderState.ShadeModelState(true))
-                    .writeMask(new RenderState.WriteMaskState(true, false))
-                    .lightmap(new RenderState.LightmapState(false))
-                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
-                    .transparency(ADDITIVE_TRANSPARENCY)
-                    .build(false)
-    ), DELAYED_PARTICLE = RenderType.create(
-            EsotericaMod.MOD_ID + ":delayed_particle",
-            DefaultVertexFormat.PARTICLE,
-            GL11.GL_QUADS, 256,
-            RenderType.CompositeState.builder()
-                    .shadeModel(new RenderState.ShadeModelState(true))
-                    .writeMask(new RenderState.WriteMaskState(true, false))
-                    .lightmap(new RenderState.LightmapState(false))
-                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
-                    .transparency(NORMAL_TRANSPARENCY)
-                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_PARTICLES_TEXTURE, false, false))
-                    .build(false)
-    ), GLOWING_PARTICLE = RenderType.create(
-            EsotericaMod.MOD_ID + ":glowing_particle",
-            DefaultVertexFormat.PARTICLE,
-            GL11.GL_QUADS, 256,
-            RenderType.CompositeState.builder()
-                    .shadeModel(new RenderState.ShadeModelState(true))
-                    .writeMask(new RenderState.WriteMaskState(true, false))
-                    .lightmap(new RenderState.LightmapState(false))
-                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
-                    .transparency(ADDITIVE_TRANSPARENCY)
-                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_PARTICLES_TEXTURE, false, false))
-                    .build(false)
-    ), GLOWING_BLOCK_PARTICLE = RenderType.create(
-            EsotericaMod.MOD_ID + ":glowing_particle",
-            DefaultVertexFormat.PARTICLE,
-            GL11.GL_QUADS, 256,
-            RenderType.CompositeState.builder()
-                    .shadeModel(new RenderState.ShadeModelState(true))
-                    .writeMask(new RenderState.WriteMaskState(true, false))
-                    .lightmap(new RenderState.LightmapState(false))
-                    .diffuseLighting(new RenderState.DiffuseLightingState(false))
-                    .transparency(ADDITIVE_TRANSPARENCY)
-                    .texture(new RenderState.TextureState(AtlasTexture.LOCATION_BLOCKS_TEXTURE, false, false))
-                    .build(false)
-    );*/
 }

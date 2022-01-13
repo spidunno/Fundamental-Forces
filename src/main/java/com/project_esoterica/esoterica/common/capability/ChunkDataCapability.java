@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.common.capability;
 
-import com.project_esoterica.esoterica.core.config.CommonConfig;
+import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.chunk.LevelChunk;

@@ -6,7 +6,9 @@ import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,6 +26,8 @@ public class SimpleBlockEntity extends BlockEntity {
         return InteractionResult.PASS;
     }
 
+    public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    }
 
     @Override
     public CompoundTag getUpdateTag() {
@@ -44,11 +48,12 @@ public class SimpleBlockEntity extends BlockEntity {
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
-        handleUpdateTag(getUpdatePacket().getTag());
+        if (getUpdatePacket().getTag() != null) {
+            handleUpdateTag(getUpdatePacket().getTag());
+        }
     }
 
-    public void tick()
-    {
+    public void tick() {
 
     }
 }

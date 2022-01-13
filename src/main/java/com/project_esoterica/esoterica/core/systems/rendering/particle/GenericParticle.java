@@ -1,6 +1,11 @@
 package com.project_esoterica.esoterica.core.systems.rendering.particle;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.project_esoterica.esoterica.config.ClientConfig;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
+import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.util.FastColor;
@@ -56,5 +61,10 @@ public abstract class GenericParticle extends TextureSheetParticle {
     public void tick() {
         updateTraits();
         super.tick();
+    }
+
+    @Override
+    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
+        super.render(ClientConfig.DELAYED_PARTICLE_RENDERING.get() ? RenderManager.DELAYED_RENDER.getBuffer(RenderTypes.ADDITIVE_PARTICLE) : consumer, camera, partialTicks);
     }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "esoterica:block/scorched_earth_side",
+    "bottom": "minecraft:block/dirt",
+    "top": "esoterica:block/scorched_earth_top"
+  }
+}

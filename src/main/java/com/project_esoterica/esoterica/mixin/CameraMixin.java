@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.mixin;
 
-import com.project_esoterica.esoterica.core.config.ClientConfig;
+import com.project_esoterica.esoterica.config.ClientConfig;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;

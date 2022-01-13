@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 import java.io.IOException;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ShaderRegistry {
+@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class Shaders {
 
     public static ExtendedShaderInstance additiveTexture = new ExtendedShaderInstance();
     public static ExtendedShaderInstance additiveParticle = new ExtendedShaderInstance();

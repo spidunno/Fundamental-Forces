@@ -20,9 +20,8 @@ public abstract class GenericAnimatedParticle extends GenericParticle
 
     public void setSprite(int spriteIndex)
     {
-        if (spriteSet instanceof ParticleEngine.MutableSpriteSet)
+        if (spriteSet instanceof ParticleEngine.MutableSpriteSet animatedSprite)
         {
-            ParticleEngine.MutableSpriteSet animatedSprite = (ParticleEngine.MutableSpriteSet) spriteSet;
             if (spriteIndex < animatedSprite.sprites.size() && spriteIndex >= 0)
             {
                 setSprite(animatedSprite.sprites.get(spriteIndex));
