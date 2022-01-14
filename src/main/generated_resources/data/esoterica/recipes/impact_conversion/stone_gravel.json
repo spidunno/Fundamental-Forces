@@ -1,0 +1,9 @@
+{
+  "type": "esoterica:impact_conversion",
+  "input": {
+    "tag": "forge:stone"
+  },
+  "output": {
+    "item": "minecraft:gravel"
+  }
+}

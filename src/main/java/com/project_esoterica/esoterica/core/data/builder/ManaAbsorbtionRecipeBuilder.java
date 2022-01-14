@@ -5,18 +5,19 @@ import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.registry.RecipeTypeRegistry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public class BlockTransmutationRecipeBuilder
+public class ManaAbsorbtionRecipeBuilder
 {
-    private final Block input;
-    private final Block output;
+    private final Ingredient input;
+    private final Ingredient output;
 
-    public BlockTransmutationRecipeBuilder(Block input, Block output)
+    public ManaAbsorbtionRecipeBuilder(Ingredient input, Ingredient output)
     {
         this.input = input;
         this.output = output;
@@ -27,7 +28,7 @@ public class BlockTransmutationRecipeBuilder
     }
     public void build(Consumer<FinishedRecipe> consumerIn)
     {
-        build(consumerIn, output.getRegistryName().getPath());
+        build(consumerIn, output.getItems()[0].getItem().getRegistryName().getPath());
     }
     public void build(Consumer<FinishedRecipe> consumerIn, ResourceLocation id)
     {
@@ -38,10 +39,10 @@ public class BlockTransmutationRecipeBuilder
     {
         private final ResourceLocation id;
 
-        private final Block input;
-        private final Block output;
+        private final Ingredient input;
+        private final Ingredient output;
 
-        public Result(ResourceLocation id, Block input, Block output)
+        public Result(ResourceLocation id, Ingredient input, Ingredient output)
         {
             this.id = id;
             this.input = input;
@@ -50,8 +51,8 @@ public class BlockTransmutationRecipeBuilder
 
         @Override
         public void serializeRecipeData(JsonObject json) {
-            json.addProperty("input", input.getRegistryName().toString());
-            json.addProperty("output", output.getRegistryName().toString());
+            json.add("input", input.toJson().getAsJsonObject());
+            json.add("output", output.toJson().getAsJsonObject());
         }
 
         @Override

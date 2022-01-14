@@ -1,21 +1,39 @@
 package com.project_esoterica.esoterica.mixin;
 
 import com.project_esoterica.esoterica.common.block.FlammableMeteoriteBlock;
+import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
+import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.registry.item.ItemTagRegistry;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BaseFireBlock.class)
 public class BaseFireBlockMixin {
 
-    @Inject(at = @At("RETURN"), method = "getState", cancellable = true)
-    private static void esotericaMeteorFlameMixin(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir)
+    @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
+    private void esotericaConvertToMeteorFlame(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity, CallbackInfo ci) {
+        if (pEntity instanceof ItemEntity itemEntity) {
+            ItemStack stack = itemEntity.getItem();
+            if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem())) {
+                pLevel.setBlock(pPos, BlockRegistry.METEOR_FIRE.get().defaultBlockState(), 3);
+                ci.cancel();
+            }
+        }
+    }
+    @Inject(method = "getState", at = @At("RETURN"), cancellable = true)
+    private static void esotericaCreateMeteorFlame(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir)
     {
         BlockState state = pReader.getBlockState(pPos.below());
         if (state.getBlock() instanceof FlammableMeteoriteBlock block)

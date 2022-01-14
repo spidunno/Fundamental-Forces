@@ -1,0 +1,9 @@
+{
+  "type": "esoterica:mana_absorption",
+  "input": {
+    "tag": "forge:sand"
+  },
+  "output": {
+    "item": "esoterica:volcanic_glass"
+  }
+}

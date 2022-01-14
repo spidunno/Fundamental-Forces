@@ -1,0 +1,9 @@
+{
+  "type": "esoterica:mana_absorption",
+  "input": {
+    "tag": "forge:cobblestone"
+  },
+  "output": {
+    "item": "esoterica:charred_rock"
+  }
+}

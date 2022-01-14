@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.registry;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.recipe.ImpactConversionRecipe;
 import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
 import com.project_esoterica.esoterica.common.recipe.NBTCarryRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -15,4 +16,5 @@ public class RecipeTypeRegistry {
 
     public static final RegistryObject<RecipeSerializer<NBTCarryRecipe>> NBT_CARRY = RECIPE_TYPES.register(NBTCarryRecipe.NAME, NBTCarryRecipe.Serializer::new);
     public static final RegistryObject<RecipeSerializer<ManaAbsorptionRecipe>> MANA_ABSORPTION = RECIPE_TYPES.register(ManaAbsorptionRecipe.NAME, ManaAbsorptionRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<ImpactConversionRecipe>> IMPACT_CONVERSION = RECIPE_TYPES.register(ImpactConversionRecipe.NAME, ImpactConversionRecipe.Serializer::new);
 }

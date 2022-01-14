@@ -48,7 +48,7 @@ public class CommonConfig {
         MAXIMUM_CHUNK_CHANGES = builder.comment("Number of player-made changes to a chunk to mark it as unsafe for an impact event to land on")
                 .define("maximum_chunk_changes", 50);
 
-        STARFALL_SAFETY_RANGE = builder.comment("Number of blocks around the impact site to be checked for blocks that may be placed by a player")
+        STARFALL_SAFETY_RANGE = builder.comment("Number of blocks around the impact site to be checked for blocks that may be placed by a player or structure")
                 .define("starfall_safety_range", 20);
 
         STARFALL_MAXIMUM_TRIES = builder.comment("Number of retries if an impact event fails to find a valid location to fall")

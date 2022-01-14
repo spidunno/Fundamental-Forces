@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.core.registry.RecipeTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.recipe.IEsotericaRecipe;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -12,22 +13,23 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManaAbsorptionRecipe extends IEsotericaRecipe
+public class ImpactConversionRecipe extends IEsotericaRecipe
 {
-    public static final String NAME = "mana_absorption";
-    public static class Type implements RecipeType<ManaAbsorptionRecipe> {
+    public static final String NAME = "impact_conversion";
+    public static class Type implements RecipeType<ImpactConversionRecipe> {
         @Override
         public String toString () {
             return EsotericaMod.MODID + ":" + NAME;
         }
 
-        public static final Type INSTANCE = new Type();
+        public static final ImpactConversionRecipe.Type INSTANCE = new ImpactConversionRecipe.Type();
     }
 
     private final ResourceLocation id;
@@ -35,7 +37,7 @@ public class ManaAbsorptionRecipe extends IEsotericaRecipe
     public final Ingredient input;
     public final Ingredient output;
 
-    public ManaAbsorptionRecipe(ResourceLocation id, Ingredient input, Ingredient output)
+    public ImpactConversionRecipe(ResourceLocation id, Ingredient input, Ingredient output)
     {
         this.id = id;
         this.input = input;
@@ -44,7 +46,7 @@ public class ManaAbsorptionRecipe extends IEsotericaRecipe
     @Override
     public RecipeSerializer<?> getSerializer()
     {
-        return RecipeTypeRegistry.MANA_ABSORPTION.get();
+        return RecipeTypeRegistry.IMPACT_CONVERSION.get();
     }
 
     @Override
@@ -68,34 +70,34 @@ public class ManaAbsorptionRecipe extends IEsotericaRecipe
         return this.output.test(output);
     }
 
-    public static ArrayList<ManaAbsorptionRecipe> getRecipes(Level level, ItemStack input)
+    public static ArrayList<ImpactConversionRecipe> getRecipes(Level level, ItemStack input)
     {
-        List<ManaAbsorptionRecipe> recipes = getRecipes(level);
+        List<ImpactConversionRecipe> recipes = getRecipes(level);
         recipes.removeIf(r -> !r.doesInputMatch(input));
         return new ArrayList<>(recipes);
     }
-    public static List<ManaAbsorptionRecipe> getRecipes(Level level)
+    public static List<ImpactConversionRecipe> getRecipes(Level level)
     {
-        return level.getRecipeManager().getAllRecipesFor(Type.INSTANCE);
+        return level.getRecipeManager().getAllRecipesFor(ImpactConversionRecipe.Type.INSTANCE);
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ManaAbsorptionRecipe> {
+    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ImpactConversionRecipe> {
 
         @Override
-        public ManaAbsorptionRecipe fromJson(ResourceLocation recipeId, JsonObject json)
+        public ImpactConversionRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
-            return new ManaAbsorptionRecipe(recipeId, Ingredient.fromJson(json.getAsJsonObject("input")), Ingredient.fromJson(json.getAsJsonObject("output")));
+            return new ImpactConversionRecipe(recipeId, Ingredient.fromJson(json.getAsJsonObject("input")), Ingredient.fromJson(json.getAsJsonObject("output")));
         }
 
         @Nullable
         @Override
-        public ManaAbsorptionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
+        public ImpactConversionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
         {
-            return new ManaAbsorptionRecipe(recipeId, Ingredient.fromNetwork(buffer), Ingredient.fromNetwork(buffer));
+            return new ImpactConversionRecipe(recipeId, Ingredient.fromNetwork(buffer), Ingredient.fromNetwork(buffer));
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, ManaAbsorptionRecipe recipe)
+        public void toNetwork(FriendlyByteBuf buffer, ImpactConversionRecipe recipe)
         {
             recipe.input.toNetwork(buffer);
             recipe.output.toNetwork(buffer);
