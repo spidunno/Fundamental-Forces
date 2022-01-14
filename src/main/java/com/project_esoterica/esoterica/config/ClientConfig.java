@@ -15,12 +15,12 @@ public class ClientConfig {
         builder.comment("Screenshake settings").push("screenshake");
         ENABLE_SCREENSHAKE = builder.comment("Enable screenshake?")
                 .define("enable_screenshake", true);
-        MAX_SCREENSHAKE_INTENSITY = builder.comment("What's the maximum strength for screenshake?")
+        MAX_SCREENSHAKE_INTENSITY = builder.comment("Maximum screenshake strength")
                 .define("maximum_screenshake_strength", 10f);
         builder.pop();
 
         builder.comment("Graphics settings").push("graphics");
-        DELAYED_PARTICLE_RENDERING = builder.comment("Should particles render on the delayed buffer? This means they will properly render after clouds do, but could cause issues with mods like sodium.")
+        DELAYED_PARTICLE_RENDERING = builder.comment("Should particles render on the delayed buffer? This means they will properly render after clouds do, but could cause issues with mods like Sodium")
                 .define("buffer_particles", true);
         builder.pop();
         builder.pop();
