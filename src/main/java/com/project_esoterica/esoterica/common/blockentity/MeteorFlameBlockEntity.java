@@ -1,11 +1,14 @@
 package com.project_esoterica.esoterica.common.blockentity;
 
+import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
 import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
+import com.project_esoterica.esoterica.core.registry.item.ItemTagRegistry;
 import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,13 +27,23 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
     }
 
     @Override
+    public void tick() {
+
+    }
+
+    @SuppressWarnings("SuspiciousMethodCalls")
+    @Override
     public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof ItemEntity itemEntity) {
-            if (!items.contains(itemEntity)) {
-                items.add(itemEntity);
+            ItemStack stack = itemEntity.getItem();
+            if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem()) || !ManaAbsorptionRecipe.getRecipes(level, stack).isEmpty()) {
+                if (!items.contains(itemEntity)) {
+                    items.add(itemEntity);
+                }
+                return;
             }
         }
-        if (!entity.fireImmune()) {
+        if (!entity.fireImmune() && !items.contains(entity)) {
             entity.setRemainingFireTicks(entity.getRemainingFireTicks() + 1);
             if (entity.getRemainingFireTicks() == 0) {
                 entity.setSecondsOnFire(8);

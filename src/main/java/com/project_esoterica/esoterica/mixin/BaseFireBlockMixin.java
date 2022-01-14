@@ -26,9 +26,11 @@ public class BaseFireBlockMixin {
     private void esotericaConvertToMeteorFlame(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity, CallbackInfo ci) {
         if (pEntity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
-            if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem())) {
-                pLevel.setBlock(pPos, BlockRegistry.METEOR_FIRE.get().defaultBlockState(), 3);
-                ci.cancel();
+            if (pState.equals(pState.getBlock().defaultBlockState())) {
+                if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem())) {
+                    pLevel.setBlock(pPos, BlockRegistry.METEOR_FIRE.get().defaultBlockState(), 3);
+                    ci.cancel();
+                }
             }
         }
     }
