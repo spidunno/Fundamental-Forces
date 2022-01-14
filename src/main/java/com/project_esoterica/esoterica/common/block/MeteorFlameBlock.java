@@ -23,6 +23,7 @@ import java.util.Random;
 
 public class MeteorFlameBlock extends SimpleBlock<MeteorFlameBlockEntity> {
 
+
     protected static final VoxelShape DOWN_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public MeteorFlameBlock(Properties properties) {

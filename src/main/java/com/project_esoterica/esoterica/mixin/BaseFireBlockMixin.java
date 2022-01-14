@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class BaseFireBlockMixin {
 
     @Inject(method = "entityInside", at = @At("HEAD"), cancellable = true)
-    private void esotericaConvertToMeteorFlame(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity, CallbackInfo ci) {
+    private void esotericaConvertMeteorFlame(BlockState pState, Level pLevel, BlockPos pPos, Entity pEntity, CallbackInfo ci) {
         if (pEntity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (pState.equals(pState.getBlock().defaultBlockState())) {

@@ -1,12 +1,14 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,5 +35,8 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void onRenderLast(RenderLevelLastEvent event) {
         RenderManager.onRenderLast(event);
+    }
+    @SubscribeEvent
+    public static void renderBlockOverlay(RenderBlockOverlayEvent event) {
     }
 }

@@ -5,11 +5,14 @@
   "refmap": "esoterica.refmap.json",
   "mixins": [
     "BaseFireBlockMixin",
+    "EntityMixin",
     "FlintAndSteelMixin"
   ],
   "client": [
     "CameraMixin",
-    "ItemRendererMixin"
+    "EntityRenderDispatcherMixin",
+    "ItemRendererMixin",
+    "ScreenEffectRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

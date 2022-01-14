@@ -28,7 +28,7 @@ public class RenderManager {
     public static Matrix4f PARTICLE_MATRIX = null;
     public static Frustum FRUSTUM;
 
-    public static void onClientSetup(FMLClientSetupEvent event) {
+    public static void setupDelayedRenderer(FMLClientSetupEvent event) {
         DELAYED_RENDER = MultiBufferSource.immediateWithBuffers(BUFFERS, new BufferBuilder(256));
     }
     public static void onRenderLast(RenderLevelLastEvent event) {

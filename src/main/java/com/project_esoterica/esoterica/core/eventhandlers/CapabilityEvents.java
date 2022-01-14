@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
+import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
@@ -33,30 +34,18 @@ public class CapabilityEvents {
     }
 
     @SubscribeEvent
-    public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
+    public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            final PlayerDataCapability capability = new PlayerDataCapability();
-            event.addCapability(DataHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
+            event.addCapability(DataHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, PlayerDataCapability::new));
         }
-    }
+        event.addCapability(DataHelper.prefix("entity_data"), new SimpleCapabilityProvider<>(EntityDataCapability.CAPABILITY, EntityDataCapability::new));
 
+    }
 
     @SubscribeEvent
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.level instanceof ServerLevel level) {
-                WorldEventManager.playerJoin(level, player);
-            }
             PlayerDataCapability.getCapability(player).ifPresent(capability -> capability.firstTimeJoin = true);
-        }
-    }
-
-    @SubscribeEvent
-    public static void worldTick(TickEvent.WorldTickEvent event) {
-        if (event.phase.equals(TickEvent.Phase.END)) {
-            if (event.world instanceof ServerLevel serverLevel) {
-                WorldEventManager.serverWorldTick(serverLevel);
-            }
         }
     }
 }

@@ -12,6 +12,6 @@ public class ClientSetupEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         WorldEventRenderers.registerRenderers(event);
-        RenderManager.onClientSetup(event);
+        RenderManager.setupDelayedRenderer(event);
     }
 }

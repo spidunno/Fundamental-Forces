@@ -1,9 +1,13 @@
 package com.project_esoterica.esoterica.common.blockentity;
 
+import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
 import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
+import com.project_esoterica.esoterica.core.registry.DamageSourceRegistry;
 import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemTagRegistry;
 import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntity;
+import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
+import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -13,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MeteorFlameBlockEntity extends SimpleBlockEntity {
@@ -44,11 +49,17 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
             }
         }
         if (!entity.fireImmune() && !items.contains(entity)) {
-            entity.setRemainingFireTicks(entity.getRemainingFireTicks() + 1);
-            if (entity.getRemainingFireTicks() == 0) {
-                entity.setSecondsOnFire(8);
+            if (!MeteorFireHandler.hasMeteorFireInstance(entity))
+            {
+                MeteorFireHandler.setMeteorFireInstance(entity, new MeteorFireInstance(1, 15, Color.BLUE, Color.PINK).addTicks(160));
             }
-            entity.hurt(DamageSource.IN_FIRE, 1);
+            else
+            {
+                EntityDataCapability.getCapability(entity).ifPresent(c -> {
+                    c.meteorFireInstance.remainingTicks++;
+                });
+            }
+            entity.hurt(DamageSourceRegistry.METEOR_FIRE, 1);
         }
     }
 }

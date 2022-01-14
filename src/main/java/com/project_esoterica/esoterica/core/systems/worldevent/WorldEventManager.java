@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.ArrayList;
 
@@ -53,7 +54,29 @@ public class WorldEventManager {
         });
         return instance;
     }
+    public static void breakBlock(BlockEvent.BreakEvent event) {
+        if (event.getPlayer() instanceof ServerPlayer player) {
+            ServerLevel level = player.getLevel();
+            LevelChunk chunk = level.getChunkAt(player.blockPosition());
+            ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
+                if (level.canSeeSky(player.blockPosition())) {
+                    chunkDataCapability.chunkChanges++;
+                }
+            });
+        }
+    }
 
+    public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ServerLevel level = player.getLevel();
+            LevelChunk chunk = level.getChunkAt(player.blockPosition());
+            ChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
+                if (level.canSeeSky(player.blockPosition())) {
+                    chunkDataCapability.chunkChanges++;
+                }
+            });
+        }
+    }
     public static void playerJoin(Level level, Player player) {
         PlayerDataCapability.getCapability(player).ifPresent(capability -> {
             if (level instanceof ServerLevel serverLevel) {
