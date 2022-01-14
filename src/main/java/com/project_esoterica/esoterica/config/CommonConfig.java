@@ -72,7 +72,7 @@ public class CommonConfig {
         ASTEROID_CHANCE = builder.comment("Chance for a space debris impact to come with a certain amount of accompanying asteroids directly after")
                 .defineInRange("asteroid_fall_chance", 0.6, 0, 1.0);
 
-        MAXIMUM_ASTEROID_AMOUNT = builder.comment("Maximum possible amount of asteroids to schedule. Each time an asteroid is spawned the chance for another one is lowered")
+        MAXIMUM_ASTEROID_AMOUNT = builder.comment("Maximum possible amount of asteroids to schedule. Chance for extra asteroids to spawn decreases as they are scheduled.")
                 .define("maximum_asteroid_count", 4);
 
         MINIMUM_ASTEROID_TIME_MULTIPLIER = builder.comment("Minimum cooldown multiplier for asteroid impacts that directly follow space debris impacts")
@@ -98,7 +98,7 @@ public class CommonConfig {
         NATURAL_DEBRIS_COUNTDOWN = builder.comment("Base countdown for every subsequent space debris impact events")
                 .define("natural_space_debris_countdown", 500);
 
-        MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER = builder.comment("Minimum multiplier for space debris impact event countdowns")
+        MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER = builder.comment("Minimum multiplier for space debris impact event countdowns. Every time an impact event occurs, the countdown for the next one is generated and randomized between these two multipliers.")
                 .defineInRange("minimum_asteroid_countdown_multiplier", 0.85, 0, Integer.MAX_VALUE);
 
         MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER = builder.comment("Maximum multiplier for a space debris impact event countdowns")
