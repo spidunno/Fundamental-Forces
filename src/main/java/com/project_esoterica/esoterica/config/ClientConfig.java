@@ -20,7 +20,7 @@ public class ClientConfig {
         builder.pop();
 
         builder.comment("Graphics settings").push("graphics");
-        DELAYED_PARTICLE_RENDERING = builder.comment("Should particles render on the delayed buffer? This means they will properly render after clouds do, but could cause issues with mods like Sodium")
+        DELAYED_PARTICLE_RENDERING = builder.comment("Render particles on the delayed buffer, properly rendering them after clouds do but potentially causing issues with mods like Sodium. Disable if crashes occur when rendering particles.")
                 .define("buffer_particles", true);
         builder.pop();
         builder.pop();
