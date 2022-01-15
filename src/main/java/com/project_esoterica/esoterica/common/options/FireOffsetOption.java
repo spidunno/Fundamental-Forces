@@ -10,17 +10,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraftforge.client.event.ScreenEvent;
 
-public class ScreenshakeOption extends ProgressOption implements IEsotericaOption {
+public class FireOffsetOption extends ProgressOption implements IEsotericaOption {
 
-    private static final Component TOOLTIP = new TranslatableComponent(SpaceModLang.getOptionTooltip("screenshake_intensity"));
+    private static final Component TOOLTIP = new TranslatableComponent(SpaceModLang.getOptionTooltip("fire_offset"));
 
-    public ScreenshakeOption() {
-        super(SpaceModLang.getOption("screenshake_intensity"),
+    public FireOffsetOption() {
+        super(SpaceModLang.getOption("fire_offset"),
                 0.0D,
                 1.0D,
                 0.01F,
-                (options) -> ClientConfig.SCREENSHAKE_INTENSITY.get(),
-                (options, value) -> ClientConfig.SCREENSHAKE_INTENSITY.set(value),
+                (options) -> ClientConfig.FIRE_OVERLAY_OFFSET.get(),
+                (options, value) -> ClientConfig.FIRE_OVERLAY_OFFSET.set(value),
                 (options, progressOption) -> {
                     double value = progressOption.toPct(progressOption.get(options));
                     return value == 0.0D ? progressOption.genericValueLabel(CommonComponents.OPTION_OFF) : progressOption.percentValueLabel(value);

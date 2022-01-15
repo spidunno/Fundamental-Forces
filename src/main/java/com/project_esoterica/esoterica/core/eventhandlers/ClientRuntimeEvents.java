@@ -9,6 +9,8 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Option;
+import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
+import net.minecraft.client.gui.screens.SimpleOptionsSubScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
@@ -18,7 +20,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
-import java.util.ArrayList;
+import static com.project_esoterica.esoterica.core.registry.OptionsRegistry.OPTIONS;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {
@@ -42,11 +44,12 @@ public class ClientRuntimeEvents {
         RenderManager.onRenderLast(event);
     }
 
+    @SuppressWarnings("ALL")
     @SubscribeEvent
     public static void setupScreen(ScreenEvent.InitScreenEvent.Post event) {
-        final ArrayList<Option> options = new ArrayList<>();
-
-        ScreenshakeOption.setup(event);
+        if (event.getScreen() instanceof SimpleOptionsSubScreen subScreen) {
+            subScreen.list.addSmall(OPTIONS.stream().filter(e -> e.canAdd(event)).toArray(Option[]::new));
+        }
     }
 
     @SubscribeEvent

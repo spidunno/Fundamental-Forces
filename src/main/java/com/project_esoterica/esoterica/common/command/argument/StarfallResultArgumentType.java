@@ -9,13 +9,14 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 public class StarfallResultArgumentType implements ArgumentType<String> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(SpaceModLang.getCommandOutput("error.starfall.result"));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(SpaceModLang.getCommandOutput("error.starfall.result")));
 
     public StarfallResultArgumentType() {
     }
@@ -23,7 +24,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
     @Override
     public String parse(final StringReader reader) throws CommandSyntaxException {
         String read = reader.readUnquotedString();
-        if (StarfallActors.STARFALL_RESULTS.containsKey(read)) {
+        if (StarfallActors.ACTORS.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -44,7 +45,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
 
     @Override
     public Collection<String> getExamples() {
-        return StarfallActors.STARFALL_RESULTS.keySet();
+        return StarfallActors.ACTORS.keySet();
     }
 
     private static String escape(final String input) {

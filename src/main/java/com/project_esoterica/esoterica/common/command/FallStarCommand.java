@@ -13,6 +13,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 
@@ -27,21 +28,21 @@ public class FallStarCommand {
                         .then(Commands.argument("position", BlockPosArgument.blockPos())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                     WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined(), false);
-                                    source.sendSuccess(SpaceModLang.getCommandKey("fallstar_natural_position"), true);
+                                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("fallstar_natural_position")), true);
                                     return 1;
                                 }))
                         .then(Commands.argument("target", EntityArgument.player())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
                                     WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined(), false);
-                                    source.sendSuccess(SpaceModLang.getCommandKey("fallstar_natural_target"), true);
+                                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("fallstar_natural_target")), true);
                                     return 1;
                                 })))
 
@@ -51,11 +52,11 @@ public class FallStarCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                             WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos), false);
-                                            source.sendSuccess(SpaceModLang.getCommandKey("fallstar_artificial_position"), true);
+                                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("fallstar_artificial_position")), true);
                                             return 1;
                                         })))
                         .then(Commands.argument("target", EntityArgument.player())
@@ -64,11 +65,11 @@ public class FallStarCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallActor result = StarfallActors.STARFALL_RESULTS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target), false);
-                                            source.sendSuccess(SpaceModLang.getCommandKey("fallstar_artificial_target"), true);
+                                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("fallstar_artificial_target")), true);
                                             return 1;
                                         }))));
     }

@@ -6,6 +6,7 @@ import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -24,23 +25,23 @@ public class StarfallAreaCheckCommand {
                         boolean blocks = WorldEventManager.blockCheck(level, WorldEventManager.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.report.success"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.success")), true);
                         } else {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.report.failure"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.failure")), true);
 
                         }
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);
                         if (heightmap) {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.heightmap.success"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.heightmap.success")), true);
                         } else {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.heightmap.failure"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.heightmap.failure")), true);
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);
                         if (blocks) {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blocktag.success"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.blocktag.success")), true);
                         } else {
-                            source.sendSuccess(SpaceModLang.getCommandKey("checkarea.blocktag.failure"), true);
+                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.blocktag.failure")), true);
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);

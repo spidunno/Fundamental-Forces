@@ -10,6 +10,7 @@ import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.PacketDistributor;
 
@@ -37,7 +38,7 @@ public class ScreenshakeCommand {
                                                                         FloatArgumentType.getFloat(context, "slowFalloff"),
                                                                         FloatArgumentType.getFloat(context, "fastFalloff")));
                                                             }
-                                                            source.sendSuccess(SpaceModLang.getCommandKey("screenshake"), true);
+                                                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("screenshake")), true);
                                                             return 1;
                                                         }))))))
                 .then(Commands.argument("position", BlockPosArgument.blockPos())
@@ -61,7 +62,7 @@ public class ScreenshakeCommand {
                                                                                                 FloatArgumentType.getFloat(context, "slowFalloff"),
                                                                                                 FloatArgumentType.getFloat(context, "fastFalloff")));
                                                                                     }
-                                                                                    source.sendSuccess(SpaceModLang.getCommandKey("screenshake"), true);
+                                                                                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("screenshake")), true);
                                                                                     return 1;
                                                                                 })))))))));
     }

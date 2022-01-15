@@ -15,7 +15,7 @@
   "command.esoterica.checkarea.heightmap.success": "Success: Heightmap levels normal.",
   "command.esoterica.checkarea.report.failure": "Failure: Printing feedback report:",
   "command.esoterica.checkarea.report.success": "Success: Area viable for starfalls!",
-  "command.esoterica.devsetup": "Command Successful you fuckhead.",
+  "command.esoterica.devsetup": "World setup for not-annoying development work",
   "command.esoterica.error.starfall.result": "No such starfall result exists.",
   "command.esoterica.fallstar_artificial_position": "Artificial starfall scheduled to fall at the given position.",
   "command.esoterica.fallstar_artificial_target": "Artificial starfall scheduled for the given target.",
@@ -25,5 +25,9 @@
   "item.esoterica.asteroid_chunk": "Asteroid Chunk",
   "item.esoterica.astral_shard": "Astral Shard",
   "item.esoterica.dev_tool": "Dev Tool",
-  "itemGroup.esoterica": "Empirical Esoterica"
+  "itemGroup.esoterica": "Empirical Esoterica",
+  "options.esoterica.fire_offset": "Fire Overlay Offset",
+  "options.esoterica.fire_offset.tooltip": "Offsets the fire overlay effect downwards, clearing up your vision.",
+  "options.esoterica.screenshake_intensity": "Screenshake Intensity",
+  "options.esoterica.screenshake_intensity.tooltip": "Controls how much screenshake is applied to your screen."
 }

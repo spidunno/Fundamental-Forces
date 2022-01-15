@@ -7,7 +7,6 @@ import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.BlockItem;
@@ -47,14 +46,14 @@ public class SpaceModLang extends LanguageProvider {
         blocks.forEach(b ->
         {
             String name = b.get().getDescriptionId().replaceFirst("block." + MODID + ".", "");
-            name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
+            name = DataHelper.toTitleCase(replaceCommonWords(name), "_");
             add(b.get().getDescriptionId(), name);
         });
 
         items.forEach(i ->
         {
             String name = i.get().getDescriptionId().replaceFirst("item." + MODID + ".", "");
-            name = DataHelper.toTitleCase(specialBlockNameChanges(name), "_");
+            name = DataHelper.toTitleCase(replaceCommonWords(name), "_");
             add(i.get().getDescriptionId(), name);
         });
 
@@ -75,52 +74,63 @@ public class SpaceModLang extends LanguageProvider {
 
         add("itemGroup." + MODID, "Empirical Esoterica");
 
-        addCommandKey("devsetup", "Command Successful you fuckhead.");
+        addOption("screenshake_intensity", "Screenshake Intensity");
+        addOptionTooltip("screenshake_intensity", "Controls how much screenshake is applied to your screen.");
 
-        addCommandKey("fallstar_natural_position", "Natural starfall scheduled to fall at the given position.");
-        addCommandKey("fallstar_natural_target", "Natural starfall scheduled for the given target.");
-        addCommandKey("fallstar_artificial_position", "Artificial starfall scheduled to fall at the given position.");
-        addCommandKey("fallstar_artificial_target", "Artificial starfall scheduled for the given target.");
+        addOption("fire_offset", "Fire Overlay Offset");
+        addOptionTooltip("fire_offset", "Offsets the fire overlay effect downwards, clearing up your vision.");
+
+        addCommand("devsetup", "World setup for not-annoying development work");
+
+        addCommand("fallstar_natural_position", "Natural starfall scheduled to fall at the given position.");
+        addCommand("fallstar_natural_target", "Natural starfall scheduled for the given target.");
+        addCommand("fallstar_artificial_position", "Artificial starfall scheduled to fall at the given position.");
+        addCommand("fallstar_artificial_target", "Artificial starfall scheduled for the given target.");
 
         addCommandOutput("error.starfall.result", "No such starfall result exists.");
-
         addCommandOutput("checkarea.report.success", "Success: Area viable for starfalls!");
         addCommandOutput("checkarea.report.failure", "Failure: Printing feedback report:");
-
         addCommandOutput("checkarea.heightmap.success", "Success: Heightmap levels normal.");
         addCommandOutput("checkarea.heightmap.failure", "Failure: Heightmap levels show signs of player intervention.");
-
         addCommandOutput("checkarea.blocktag.success", "Success: Terrain type is normal.");
         addCommandOutput("checkarea.blocktag.failure", "Failure: Terrain type contains abnormal blocks.");
 
-        addCommandKey("screenshake", "Command Successful, enjoy your screenshake.");
+        addCommand("screenshake", "Command Successful, enjoy your screenshake.");
     }
 
-    public void addEnchantmentDescription(String enchantmentName, String description) {
-        add("enchantment." + MODID + "." + enchantmentName + ".desc", description);
+    public void addOption(String option, String result) {
+        add(getOption(option), result);
     }
 
-    public void addCommandKey(String command) {
-        add("command." + MODID + "." + command, "Command Successful!");
+    public static String getOption(String option) {
+        return "options." + MODID + "." + option;
     }
 
-    public void addCommandKey(String command, String feedback) {
-        add("command." + MODID + "." + command, feedback);
+    public void addOptionTooltip(String option, String result) {
+        add(getOptionTooltip(option), result);
     }
 
-    public static TranslatableComponent getCommandKey(String command) {
-        return new TranslatableComponent("command." + MODID + "." + command);
+    public static String getOptionTooltip(String option) {
+        return "options." + MODID + "." + option + ".tooltip";
+    }
+
+    public void addCommand(String command, String feedback) {
+        add(getCommand(command), feedback);
+    }
+
+    public static String getCommand(String command) {
+        return "command." + MODID + "." + command;
     }
 
     public void addCommandOutput(String output, String feedback) {
-        add("command." + MODID + "." + output, feedback);
+        add(getCommandOutput(output), feedback);
     }
 
-    public static TranslatableComponent getCommandOutput(String output) {
-        return new TranslatableComponent("command." + MODID + "." + output);
+    public static String getCommandOutput(String output) {
+        return "command." + MODID + "." + output;
     }
 
-    public String specialBlockNameChanges(String name) {
+    public String replaceCommonWords(String name) {
         if ((!name.endsWith("_bricks"))) {
             if (name.contains("bricks")) {
                 name = name.replaceFirst("bricks", "brick");

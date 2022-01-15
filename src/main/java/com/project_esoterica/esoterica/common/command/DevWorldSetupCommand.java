@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.GameRules;
 
@@ -24,7 +25,7 @@ public class DevWorldSetupCommand {
                     rules.getRule(GameRules.RULE_WEATHER_CYCLE).set(false, server);
                     rules.getRule(GameRules.RULE_MOBGRIEFING).set(false, server);
                     source.getLevel().setDayTime(2_000);
-                    source.sendSuccess(SpaceModLang.getCommandKey("devsetup"), true);
+                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("devsetup")), true);
                     return 1;
                 });
     }

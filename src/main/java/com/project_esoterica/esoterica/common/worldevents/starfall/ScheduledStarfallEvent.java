@@ -175,7 +175,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
+        actor = StarfallActors.ACTORS.get(tag.getString("resultId"));
         targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);

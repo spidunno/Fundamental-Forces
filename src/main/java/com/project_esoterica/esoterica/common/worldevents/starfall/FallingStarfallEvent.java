@@ -4,16 +4,12 @@ import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.screenshake.PositionedScreenshakeInstance;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
-import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
 public class FallingStarfallEvent extends WorldEventInstance {
     public static final float ACCELERATION = 0.01f;
@@ -116,7 +112,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        actor = StarfallActors.STARFALL_RESULTS.get(tag.getString("resultId"));
+        actor = StarfallActors.ACTORS.get(tag.getString("resultId"));
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         position = new Vec3(tag.getDouble("posX"), tag.getDouble("posY"), tag.getDouble("posZ"));
