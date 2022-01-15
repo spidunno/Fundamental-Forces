@@ -23,7 +23,7 @@ import net.minecraft.world.entity.player.Player;
 public class MeteorFireHandler {
 
     public static void entityUpdate(Entity entity) {
-        if (entity instanceof Player) {
+        if (entity != null) {
             EntityDataCapability.getCapability(entity).ifPresent(c -> {
                 if (c.meteorFireInstance != null && c.meteorFireInstance.isValid()) {
                     c.meteorFireInstance.tick(entity);
