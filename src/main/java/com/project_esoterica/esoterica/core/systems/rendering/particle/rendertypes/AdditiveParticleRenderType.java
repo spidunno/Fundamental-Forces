@@ -1,12 +1,11 @@
 package com.project_esoterica.esoterica.core.systems.rendering.particle.rendertypes;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.project_esoterica.esoterica.core.registry.misc.Shaders;
+import com.project_esoterica.esoterica.core.systems.rendering.Shaders;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;

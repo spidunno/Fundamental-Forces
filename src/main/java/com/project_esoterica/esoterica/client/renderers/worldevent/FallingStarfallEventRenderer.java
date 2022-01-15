@@ -26,7 +26,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
     public static final RenderType LIGHT_TYPE = RenderTypes.createBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, LIGHT_TRAIL);
 
     private static final ResourceLocation STAR = prefix("textures/vfx/star.png");
-    public static final RenderType STAR_TYPE = RenderTypes.createAdditiveQuadRenderType(STAR);
+    public static final RenderType STAR_TYPE = RenderTypes.createQuadRenderType(StateShards.ADDITIVE_TRANSPARENCY, STAR);
 
     public FallingStarfallEventRenderer() {
     }

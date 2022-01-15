@@ -3,7 +3,6 @@ package com.project_esoterica.esoterica.core.systems.rendering;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.registry.misc.Shaders;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -20,8 +19,12 @@ public class RenderTypes extends RenderStateShard{
     public static final RenderType ADDITIVE_PARTICLE = createGenericRenderType("additive_particle", PARTICLE, VertexFormat.Mode.QUADS, Shaders.additiveParticle.shard, StateShards.ADDITIVE_TRANSPARENCY, TextureAtlas.LOCATION_PARTICLES);
     public static final RenderType ADDITIVE_BLOCK_PARTICLE = createGenericRenderType("additive_block_particle", PARTICLE, VertexFormat.Mode.QUADS, Shaders.additiveParticle.shard, StateShards.ADDITIVE_TRANSPARENCY, TextureAtlas.LOCATION_BLOCKS);
 
-    public static RenderType createAdditiveQuadRenderType(ResourceLocation resourceLocation) {
-        return createGenericRenderType("additive_quad", POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, Shaders.additiveTexture.shard, StateShards.ADDITIVE_TRANSPARENCY, resourceLocation);
+    public static RenderType createQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
+        return createGenericRenderType("additive_quad", POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, Shaders.additiveTexture.shard, transparencyStateShard, resourceLocation);
+    }
+
+    public static RenderType createColorGradientQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
+        return createGenericRenderType("color_gradient_quad", POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, Shaders.colorGradientTexture.shard, transparencyStateShard, resourceLocation);
     }
 
     public static RenderType createMovingTrailRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
