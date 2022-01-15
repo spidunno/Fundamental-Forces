@@ -17,7 +17,7 @@ public class CameraMixin {
 
     @Inject( method = "setup", at = @At("RETURN"))
     private void esotericaScreenshake(BlockGetter area, Entity focusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (ClientConfig.ENABLE_SCREENSHAKE.get()) {
+        if (ClientConfig.SCREENSHAKE_INTENSITY.get() > 0) {
             ScreenshakeHandler.cameraTick((Camera) (Object) this, RANDOM);
         }
     }

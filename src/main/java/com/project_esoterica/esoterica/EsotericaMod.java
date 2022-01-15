@@ -19,6 +19,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,7 +51,9 @@ public class EsotericaMod {
         RecipeTypeRegistry.RECIPE_TYPES.register(modBus);
         modBus.addListener(this::gatherData);
 
-        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> TextureGrabber::setup);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            TextureGrabber.setup();
+        }
     }
 
     public void gatherData(GatherDataEvent event) {

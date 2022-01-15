@@ -14,6 +14,5 @@ public class ClientSetupEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         WorldEventRenderers.registerRenderers(event);
         RenderManager.setupDelayedRenderer(event);
-        TextureGrabber.grab(event);
     }
 }
