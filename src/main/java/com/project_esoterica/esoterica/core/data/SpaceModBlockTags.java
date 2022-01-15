@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import static net.minecraft.tags.BlockTags.*;
-import static net.minecraftforge.common.Tags.Blocks.DIRT;
 
 public class SpaceModBlockTags extends BlockTagsProvider {
     public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {

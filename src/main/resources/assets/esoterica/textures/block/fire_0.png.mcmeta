@@ -1,4 +1,7 @@
 {
+  "forge": {
+	"loader": "esoterica:fire_0"
+  },
   "animation": {
     "frames": [
       16,

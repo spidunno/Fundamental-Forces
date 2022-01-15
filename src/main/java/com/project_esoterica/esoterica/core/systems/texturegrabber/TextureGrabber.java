@@ -17,12 +17,11 @@ import java.util.function.Consumer;
 public class TextureGrabber {
 
     public static void setup() {
-        registerGrabber("fire_0", "textures/block/fire_0.png", "block/fire_0");
-        registerGrabber("fire_1", "textures/block/fire_1.png", "block/fire_1");
+        registerGrabber("fire_0", "textures/block/fire_0.png");
+        registerGrabber("fire_1", "textures/block/fire_1.png");
     }
 
-    public static void registerGrabber(String loaderName, String sourcePath, String resultPath) {
-        IEventBus busMod = FMLJavaModLoadingContext.get().getModEventBus();
+    public static void registerGrabber(String loaderName, String sourcePath) {
         MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
             Resource r = null;
             try {
@@ -57,6 +56,5 @@ public class TextureGrabber {
             return new TextureAtlasSprite(atlas, textureInfo, mipmapLevel, atlasWidth, atlasHeight, spriteX, spriteY, image) {
             };
         });
-        busMod.addListener((Consumer<TextureStitchEvent.Pre>) event -> event.addSprite(DataHelper.prefix(resultPath)));
     }
 }
