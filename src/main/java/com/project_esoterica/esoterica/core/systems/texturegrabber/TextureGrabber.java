@@ -10,6 +10,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 //https://github.com/Tamaized/Frostfell/blob/1.18/src/main/java/tamaized/frostfell/client/ClientListener.java#L23-L57
 public class TextureGrabber {
 
-    private static ArrayList<Definition> GRABBERS = new ArrayList<>();
+    private static ArrayList<Pair<String, String>> GRABBERS = new ArrayList<>();
     public static void setup()
     {
         registerGrabber("fire_0", "textures/block/fire_0.png", "block/fire_0");
@@ -31,14 +32,14 @@ public class TextureGrabber {
 
     public static void registerGrabber(String loaderName, String sourcePath, String resultPath) {
         IEventBus busMod = FMLJavaModLoadingContext.get().getModEventBus();
-        GRABBERS.add(new Definition(loaderName, sourcePath, resultPath));
+        GRABBERS.add(Pair.of(loaderName, sourcePath));
         busMod.addListener((Consumer<TextureStitchEvent.Pre>) event -> event.addSprite(DataHelper.prefix(resultPath)));
     }
-    public static void createGrabber(Definition definition) {
-        MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(definition.loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
+    public static void createGrabber(Pair<String, String> textures) {
+        MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(textures.getLeft()), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
                     Resource r = null;
                     try {
-                        r = resourceManager.getResource(new ResourceLocation(definition.sourcePath));
+                        r = resourceManager.getResource(new ResourceLocation(textures.getRight()));
                         NativeImage nativeimage = NativeImage.read(r.getInputStream());
                         for (int x = 0; x < nativeimage.getWidth(); x++) {
                             for (int y = 0; y < nativeimage.getHeight(); y++) {
@@ -69,15 +70,5 @@ public class TextureGrabber {
                     return new TextureAtlasSprite(atlas, textureInfo, mipmapLevel, atlasWidth, atlasHeight, spriteX, spriteY, image) {
                     };
                 });
-    }
-    public static class Definition
-    {
-        public final String loaderName, sourcePath, resultPath;
-
-        public Definition(String loaderName, String sourcePath, String resultPath) {
-            this.loaderName = loaderName;
-            this.sourcePath = sourcePath;
-            this.resultPath = resultPath;
-        }
     }
 }
