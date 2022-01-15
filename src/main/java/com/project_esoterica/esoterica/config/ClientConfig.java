@@ -14,7 +14,7 @@ public class ClientConfig {
 
         builder.comment("Screenshake settings").push("screenshake");
         SCREENSHAKE_INTENSITY = builder.comment("Screenshake intensity comment")
-                .defineInRange("screenshake_intensity", 1d, 0d, 5d);
+                .defineInRange("screenshake_intensity", 1d, 0d, 1d);
         builder.pop();
 
         builder.comment("Fire Overlay settings").push("fire");
