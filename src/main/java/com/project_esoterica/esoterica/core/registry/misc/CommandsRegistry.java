@@ -36,7 +36,7 @@ public class CommandsRegistry {
                 .redirect(cmd));
     }
 
-    public static void registerCommandArgumentTypesSerializers() {
+    public static void register() {
         register(prefix("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
     }
 

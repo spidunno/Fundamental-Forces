@@ -10,8 +10,11 @@ import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
 import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
 import com.project_esoterica.esoterica.core.registry.misc.CommandsRegistry;
 import com.project_esoterica.esoterica.core.registry.worldgen.FeatureRegistry;
+import com.project_esoterica.esoterica.core.systems.texturegrabber.TextureGrabber;
 import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -34,7 +37,7 @@ public class EsotericaMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
-        CommandsRegistry.registerCommandArgumentTypesSerializers();
+        CommandsRegistry.register();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);
@@ -46,6 +49,8 @@ public class EsotericaMod {
         FeatureRegistry.FEATURE_TYPES.register(modBus);
         RecipeTypeRegistry.RECIPE_TYPES.register(modBus);
         modBus.addListener(this::gatherData);
+
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> TextureGrabber::setup);
     }
 
     public void gatherData(GatherDataEvent event) {
