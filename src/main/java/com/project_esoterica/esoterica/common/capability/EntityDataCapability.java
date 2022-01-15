@@ -5,14 +5,13 @@ import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.registry.misc.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.registry.PacketRegistry.INSTANCE;
 
 public class EntityDataCapability implements SimpleCapability {
 

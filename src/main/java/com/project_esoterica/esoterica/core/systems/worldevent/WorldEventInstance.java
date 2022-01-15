@@ -1,12 +1,11 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
-import com.project_esoterica.esoterica.core.registry.misc.PacketRegistry;
+import com.project_esoterica.esoterica.core.registry.PacketRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor;
 
 import java.util.UUID;

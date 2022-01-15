@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.misc;
+package com.project_esoterica.esoterica.core.registry;
 
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;

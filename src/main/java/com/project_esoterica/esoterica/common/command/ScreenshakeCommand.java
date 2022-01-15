@@ -13,7 +13,7 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.registry.misc.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.registry.PacketRegistry.INSTANCE;
 
 public class ScreenshakeCommand {
     public ScreenshakeCommand() {

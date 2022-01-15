@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.command;
+package com.project_esoterica.esoterica.common.command.argument;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.arguments.ArgumentType;

@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.misc;
+package com.project_esoterica.esoterica.core.registry;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
@@ -7,7 +7,7 @@ import com.project_esoterica.esoterica.common.command.DevWorldSetupCommand;
 import com.project_esoterica.esoterica.common.command.FallStarCommand;
 import com.project_esoterica.esoterica.common.command.ScreenshakeCommand;
 import com.project_esoterica.esoterica.common.command.StarfallAreaCheckCommand;
-import com.project_esoterica.esoterica.core.systems.command.StarfallResultArgumentType;
+import com.project_esoterica.esoterica.common.command.argument.StarfallResultArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.ArgumentSerializer;
@@ -36,11 +36,11 @@ public class CommandsRegistry {
                 .redirect(cmd));
     }
 
-    public static void register() {
-        register(prefix("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
+    public static void registerArgumentTypes() {
+        registerArgumentType(prefix("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
     }
 
-    private static <T extends ArgumentType<?>> void register(ResourceLocation key, Class<T> argumentClass, ArgumentSerializer<T> serializer) {
+    private static <T extends ArgumentType<?>> void registerArgumentType(ResourceLocation key, Class<T> argumentClass, ArgumentSerializer<T> serializer) {
         ArgumentTypes.register(key.toString(), argumentClass, serializer);
     }
 }

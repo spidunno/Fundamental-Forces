@@ -2,11 +2,11 @@ package com.project_esoterica.esoterica.common.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.project_esoterica.esoterica.common.command.argument.StarfallResultArgumentType;
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
 import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
-import com.project_esoterica.esoterica.core.systems.command.StarfallResultArgumentType;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
