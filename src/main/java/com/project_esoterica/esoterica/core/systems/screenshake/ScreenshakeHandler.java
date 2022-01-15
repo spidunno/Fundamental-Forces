@@ -1,5 +1,6 @@
 package com.project_esoterica.esoterica.core.systems.screenshake;
 
+import com.project_esoterica.esoterica.config.ClientConfig;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
 
@@ -22,8 +23,8 @@ public class ScreenshakeHandler {
     }
 
     public static void clientTick(Camera camera, Random random) {
-        intensity = (float) INSTANCES.stream().mapToDouble(i1 -> i1.tick(camera, random)).sum();
-        INSTANCES.removeIf(i -> i.intensity <= 0.01f);
+        intensity = (float) (INSTANCES.stream().mapToDouble(i1 -> i1.tick(camera, random)).sum() * ClientConfig.SCREENSHAKE_INTENSITY.get());
+        INSTANCES.removeIf(i -> i.intensity <= 0.001f);
     }
 
     public static void addScreenshake(ScreenshakeInstance instance) {

@@ -18,9 +18,9 @@ public class ScreenshakeOption extends ProgressOption implements IEsotericaOptio
         super(SpaceModLang.getOption("screenshake_intensity"),
                 0.0D,
                 1.0D,
-                0.01F,
+                0F,
                 (options) -> ClientConfig.SCREENSHAKE_INTENSITY.get(),
-                (options, value) -> ClientConfig.SCREENSHAKE_INTENSITY.set(value),
+                (options, value) -> ClientConfig.SCREENSHAKE_INTENSITY.set(Math.round(value*100d)/100d),
                 (options, progressOption) -> {
                     double value = progressOption.toPct(progressOption.get(options));
                     return value == 0.0D ? progressOption.genericValueLabel(CommonComponents.OPTION_OFF) : progressOption.percentValueLabel(value);

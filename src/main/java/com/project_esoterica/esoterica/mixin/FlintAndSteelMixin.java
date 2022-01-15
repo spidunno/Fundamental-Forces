@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FlintAndSteelItem.class)
 public class FlintAndSteelMixin {
 
+
     @Inject(method = "useOn", at = @At(ordinal = 0, value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;hurtAndBreak(ILnet/minecraft/world/entity/LivingEntity;Ljava/util/function/Consumer;)V"), cancellable = true)
     private void esotericaFlintAndSteelDurabilityMixin(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         if (context.getLevel().getBlockState(context.getClickedPos()).getBlock() instanceof FlammableMeteoriteBlock) {
