@@ -21,6 +21,7 @@ public class ColorHelper {
 
     public static Color colorLerp(float pct, Color brightColor, Color darkColor)
     {
+        pct = Mth.clamp(pct, 0, 1);
         int br = brightColor.getRed(), bg = brightColor.getGreen(), bb = brightColor.getBlue();
         int dr = darkColor.getRed(), dg = darkColor.getGreen(), db = darkColor.getBlue();
         int red = (int) Mth.lerp(pct, dr, br);

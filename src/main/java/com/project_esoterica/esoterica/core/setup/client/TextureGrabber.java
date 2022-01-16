@@ -15,8 +15,8 @@ import java.io.IOException;
 public class TextureGrabber {
 
     public static void setup() {
-        registerGrabber("fire_0", "textures/block/fire_0.png", (image)->colorGradient(image, new Color(232, 192, 250), new Color(54, 178, 255)));
-        registerGrabber("fire_1", "textures/block/fire_1.png", (image)->colorGradient(image, new Color(232, 192, 250), new Color(54, 178, 255)));
+        registerGrabber("fire_0", "textures/block/fire_0.png", (image)->colorGradient(image, new Color(251, 209, 240), new Color(187, 97, 249), new Color(49, 155, 255)));
+        registerGrabber("fire_1", "textures/block/fire_1.png", (image)->colorGradient(image, new Color(251, 209, 240), new Color(187, 97, 249), new Color(49, 155, 255)));
     }
     public static void registerGrabber(String loaderName, String sourcePath, TextureModifier modifier) {
         MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
@@ -64,6 +64,19 @@ public class TextureGrabber {
                 int pixel = nativeimage.getPixelRGBA(x, y);
                 int L = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
                 Color color = ColorHelper.colorLerp(L/255f, brightColor, darkColor);
+                nativeimage.setPixelRGBA(x, y, NativeImage.combine((pixel >> 24) & 0xFF, color.getBlue(), color.getGreen(), color.getRed()));
+            }
+        }
+        return nativeimage;
+    }
+    public static NativeImage colorGradient(NativeImage nativeimage, Color brightColor, Color middleColor, Color darkColor)
+    {
+        for (int x = 0; x < nativeimage.getWidth(); x++) {
+            for (int y = 0; y < nativeimage.getHeight(); y++) {
+                int pixel = nativeimage.getPixelRGBA(x, y);
+                int L = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
+                float lerp = L/255f;
+                Color color = lerp <= 0.5f ? ColorHelper.colorLerp(lerp*2f, middleColor, darkColor) : ColorHelper.colorLerp(lerp*2f-1, brightColor, middleColor);
                 nativeimage.setPixelRGBA(x, y, NativeImage.combine((pixel >> 24) & 0xFF, color.getBlue(), color.getGreen(), color.getRed()));
             }
         }
