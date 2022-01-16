@@ -13,12 +13,12 @@ public class ClientConfig {
         builder.comment("Rendering settings").push("rendering");
 
         builder.comment("Screenshake settings").push("screenshake");
-        SCREENSHAKE_INTENSITY = builder.comment("Screenshake intensity comment")
+        SCREENSHAKE_INTENSITY = builder.comment("Intensity of screenshake. Higher numbers increase amplitude.")
                 .defineInRange("screenshake_intensity", 1d, 0d, 1d);
         builder.pop();
 
         builder.comment("Fire Overlay settings").push("fire");
-        FIRE_OVERLAY_OFFSET = builder.comment("Fire overlay downwards offset comment")
+        FIRE_OVERLAY_OFFSET = builder.comment("Downwards offset of Minecraft's first-person fire overlay. Higher numbers cause it to visually display lower and free up more screenspace.")
                 .defineInRange("fire_overlay_offset", 0d, 0d, 1d);
         builder.pop();
 
