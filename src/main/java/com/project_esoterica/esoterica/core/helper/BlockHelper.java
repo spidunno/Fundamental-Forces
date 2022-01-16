@@ -1,6 +1,5 @@
 package com.project_esoterica.esoterica.core.helper;
 
-import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;

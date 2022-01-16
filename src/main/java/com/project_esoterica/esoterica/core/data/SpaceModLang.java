@@ -1,11 +1,11 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.registry.PotionEffectRegistry;
-import com.project_esoterica.esoterica.core.registry.SoundRegistry;
-import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
-import com.project_esoterica.esoterica.core.registry.item.EnchantmentRegistry;
-import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
+import com.project_esoterica.esoterica.core.setup.PotionEffectRegistry;
+import com.project_esoterica.esoterica.core.setup.SoundRegistry;
+import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.item.EnchantmentRegistry;
+import com.project_esoterica.esoterica.core.setup.item.ItemRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
@@ -82,10 +82,10 @@ public class SpaceModLang extends LanguageProvider {
 
         addCommand("devsetup", "World setup for not-annoying development work");
 
-        addCommand("fallstar_natural_position", "Natural starfall scheduled to fall at the given position.");
-        addCommand("fallstar_natural_target", "Natural starfall scheduled for the given target.");
-        addCommand("fallstar_artificial_position", "Artificial starfall scheduled to fall at the given position.");
-        addCommand("fallstar_artificial_target", "Artificial starfall scheduled for the given target.");
+        addCommand("starfall_natural_position", "Natural starfall scheduled to fall at the given position.");
+        addCommand("starfall_natural_target", "Natural starfall scheduled for the given target.");
+        addCommand("starfall_artificial_position", "Artificial starfall scheduled to fall at the given position.");
+        addCommand("starfall_artificial_target", "Artificial starfall scheduled for the given target.");
 
         addCommandOutput("error.starfall.result", "No such starfall result exists.");
         addCommandOutput("checkarea.report.success", "Success: Area viable for starfalls!");

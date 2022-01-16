@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.block;
+package com.project_esoterica.esoterica.core.setup.block;
 
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.tags.BlockTags;

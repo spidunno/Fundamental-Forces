@@ -1,15 +1,12 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.common.options.ScreenshakeOption;
-import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Option;
-import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
 import net.minecraft.client.gui.screens.SimpleOptionsSubScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
@@ -18,9 +15,8 @@ import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import software.bernie.shadowed.eliotlash.mclib.math.functions.limit.Min;
 
-import static com.project_esoterica.esoterica.core.registry.OptionsRegistry.OPTIONS;
+import static com.project_esoterica.esoterica.core.setup.client.OptionsRegistry.OPTIONS;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {

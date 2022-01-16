@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry;
+package com.project_esoterica.esoterica.core.setup.client;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.client.particles.wisp.WispParticleType;

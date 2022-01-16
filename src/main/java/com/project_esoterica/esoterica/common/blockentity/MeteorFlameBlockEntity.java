@@ -2,14 +2,13 @@ package com.project_esoterica.esoterica.common.blockentity;
 
 import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
 import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
-import com.project_esoterica.esoterica.core.registry.DamageSourceRegistry;
-import com.project_esoterica.esoterica.core.registry.block.BlockEntityRegistry;
-import com.project_esoterica.esoterica.core.registry.item.ItemTagRegistry;
+import com.project_esoterica.esoterica.core.setup.DamageSourceRegistry;
+import com.project_esoterica.esoterica.core.setup.block.BlockEntityRegistry;
+import com.project_esoterica.esoterica.core.setup.item.ItemTagRegistry;
 import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntity;
 import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
 import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireInstance;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;

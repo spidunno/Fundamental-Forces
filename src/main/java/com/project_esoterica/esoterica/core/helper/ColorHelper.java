@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.helper;
 
 import net.minecraft.util.FastColor;
+import net.minecraft.util.Mth;
 
 import java.awt.*;
 
@@ -18,6 +19,15 @@ public class ColorHelper {
         return FastColor.ARGB32.color(color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
     }
 
+    public static Color colorLerp(float pct, Color brightColor, Color darkColor)
+    {
+        int br = brightColor.getRed(), bg = brightColor.getGreen(), bb = brightColor.getBlue();
+        int dr = darkColor.getRed(), dg = darkColor.getGreen(), db = darkColor.getBlue();
+        int red = (int) Mth.lerp(pct, dr, br);
+        int green = (int) Mth.lerp(pct, dg, bg);
+        int blue = (int) Mth.lerp(pct, db, bb);
+        return new Color(red,green,blue);
+    }
     public static Color darker(Color color, int times) {
         float FACTOR = (float) Math.pow(0.7f, times);
         return new Color(Math.max((int) (color.getRed() * FACTOR), 0),

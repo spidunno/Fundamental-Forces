@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.worldgen;
+package com.project_esoterica.esoterica.core.setup.worldgen;
 
 import com.project_esoterica.esoterica.common.worldgen.MeteoriteFeature;
 import com.project_esoterica.esoterica.core.helper.DataHelper;

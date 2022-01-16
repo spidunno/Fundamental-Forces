@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.worldevent;
+package com.project_esoterica.esoterica.core.setup.worldevent;
 
 import com.project_esoterica.esoterica.common.worldevents.starfall.FallingStarfallEvent;
 import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;

@@ -1,10 +1,10 @@
-package com.project_esoterica.esoterica.core.registry;
+package com.project_esoterica.esoterica.core.setup;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.project_esoterica.esoterica.common.command.DevWorldSetupCommand;
-import com.project_esoterica.esoterica.common.command.FallStarCommand;
+import com.project_esoterica.esoterica.common.command.IssueStarfallCommand;
 import com.project_esoterica.esoterica.common.command.ScreenshakeCommand;
 import com.project_esoterica.esoterica.common.command.StarfallAreaCheckCommand;
 import com.project_esoterica.esoterica.common.command.argument.StarfallResultArgumentType;
@@ -22,13 +22,13 @@ import static com.project_esoterica.esoterica.EsotericaMod.MODID;
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CommandsRegistry {
+public class CommandRegistry {
     @SubscribeEvent
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
         LiteralCommandNode<CommandSourceStack> cmd = dispatcher.register(Commands.literal("es")
                 .then(DevWorldSetupCommand.register())
-                .then(FallStarCommand.register())
+                .then(IssueStarfallCommand.register())
                 .then(ScreenshakeCommand.register())
                 .then(StarfallAreaCheckCommand.register())
         );

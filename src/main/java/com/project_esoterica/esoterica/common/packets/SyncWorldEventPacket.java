@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.common.packets;
 
-import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventTypes;
+import com.project_esoterica.esoterica.core.setup.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventType;

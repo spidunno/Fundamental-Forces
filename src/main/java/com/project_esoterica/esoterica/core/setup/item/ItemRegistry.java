@@ -1,31 +1,14 @@
-package com.project_esoterica.esoterica.core.registry.item;
+package com.project_esoterica.esoterica.core.setup.item;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.item.DevTool;
-import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
-import com.project_esoterica.esoterica.core.registry.item.tabs.ContentTab;
-import net.minecraft.client.color.block.BlockColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.util.Mth;
+import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.item.tabs.ContentTab;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ColorHandlerEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.HashSet;
-import java.util.Set;
-
-import static com.project_esoterica.esoterica.core.registry.block.BlockRegistry.BLOCKS;
 
 public class ItemRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, EsotericaMod.MODID);

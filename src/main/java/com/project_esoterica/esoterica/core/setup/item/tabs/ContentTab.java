@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.item.tabs;
+package com.project_esoterica.esoterica.core.setup.item.tabs;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.common.entity.robot;
 
-import com.project_esoterica.esoterica.core.registry.EntityRegistry;
-import com.project_esoterica.esoterica.core.registry.ParticleRegistry;
+import com.project_esoterica.esoterica.core.setup.EntityRegistry;
+import com.project_esoterica.esoterica.core.setup.client.ParticleRegistry;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;

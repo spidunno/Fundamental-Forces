@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.config.ClientConfig;
-import com.project_esoterica.esoterica.core.registry.worldevent.WorldEventRenderers;
+import com.project_esoterica.esoterica.core.setup.worldevent.WorldEventRenderers;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;

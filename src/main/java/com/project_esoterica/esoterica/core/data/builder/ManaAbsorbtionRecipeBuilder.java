@@ -2,12 +2,11 @@ package com.project_esoterica.esoterica.core.data.builder;
 
 import com.google.gson.JsonObject;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.registry.RecipeTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.RecipeTypeRegistry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.level.block.Block;
 
 import javax.annotation.Nullable;
 import java.util.function.Consumer;

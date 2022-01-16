@@ -3,7 +3,7 @@ package com.project_esoterica.esoterica.client.renderers.entity.falling;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
-import com.project_esoterica.esoterica.core.systems.rendering.Shaders;
+import com.project_esoterica.esoterica.core.setup.client.ShaderRegistry;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
@@ -14,38 +14,36 @@ import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.createMovingBootlegTriangleRenderType;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.withShaderHandler;
-import static com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities.*;
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
     private static final ResourceLocation STAR = prefix("textures/vfx/energy_trail.png");
     public static final RenderType STAR_TYPE = withShaderHandler(RenderTypes.createColorGradientQuadRenderType(StateShards.ADDITIVE_TRANSPARENCY, STAR), ()->{
-        ShaderInstance instance = Shaders.colorGradientTexture.getInstance().get();
+        ShaderInstance instance = ShaderRegistry.colorGradientTexture.getInstance().get();
         instance.safeGetUniform("DarkColor").set(152f/255f, 1.0f, 241f/255f,1f);
     });
 
     private static final ResourceLocation LIGHT_TRAIL = prefix("textures/vfx/energy_trail.png");
     public static final RenderType LIGHT_TYPE = withShaderHandler(createMovingBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, LIGHT_TRAIL), ()->{
-        ShaderInstance instance = Shaders.movingBootlegTriangle.getInstance().get();
+        ShaderInstance instance = ShaderRegistry.movingBootlegTriangle.getInstance().get();
         instance.safeGetUniform("Speed").set(100f);
     });
 
     private static final ResourceLocation DARKNESS_TRAIL = prefix("textures/vfx/shadow_trail.png");
     public static final RenderType DARKNESS_TYPE = withShaderHandler(createMovingBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, DARKNESS_TRAIL), ()->{
-        ShaderInstance instance = Shaders.movingBootlegTriangle.getInstance().get();
+        ShaderInstance instance = ShaderRegistry.movingBootlegTriangle.getInstance().get();
         instance.safeGetUniform("Speed").set(200f);
     });
 
     private static final ResourceLocation FIRE_TRAIL = prefix("textures/vfx/fire_trail.png");
     public static final RenderType FIRE_TYPE = withShaderHandler(createMovingBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, FIRE_TRAIL), ()->{
-        ShaderInstance instance = Shaders.movingBootlegTriangle.getInstance().get();
+        ShaderInstance instance = ShaderRegistry.movingBootlegTriangle.getInstance().get();
         instance.safeGetUniform("Speed").set(400f);
     });
 

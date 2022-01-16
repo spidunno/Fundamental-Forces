@@ -1,12 +1,10 @@
 package com.project_esoterica.esoterica.core.systems.meteorfire;
 
 import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
-import com.project_esoterica.esoterica.core.registry.DamageSourceRegistry;
+import com.project_esoterica.esoterica.core.setup.DamageSourceRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
 
 import java.awt.*;
 

@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry;
+package com.project_esoterica.esoterica.core.setup;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;

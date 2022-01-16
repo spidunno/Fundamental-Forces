@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.block;
+package com.project_esoterica.esoterica.core.setup.block;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.blockentity.MeteorFlameBlockEntity;

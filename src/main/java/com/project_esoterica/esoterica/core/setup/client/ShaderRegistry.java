@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.rendering;
+package com.project_esoterica.esoterica.core.setup.client;
 
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = EsotericaMod.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class Shaders {
+public class ShaderRegistry {
 
     public static ExtendedShaderInstance additiveTexture = new ExtendedShaderInstance();
     public static ExtendedShaderInstance colorGradientTexture = new ExtendedShaderInstance();

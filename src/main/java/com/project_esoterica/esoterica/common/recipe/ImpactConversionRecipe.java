@@ -2,9 +2,8 @@ package com.project_esoterica.esoterica.common.recipe;
 
 import com.google.gson.JsonObject;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.registry.RecipeTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.RecipeTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.recipe.IEsotericaRecipe;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -12,8 +11,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;

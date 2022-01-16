@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.systems.worldevent;
 
 import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
-import com.project_esoterica.esoterica.core.registry.PacketRegistry;
+import com.project_esoterica.esoterica.core.setup.PacketRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

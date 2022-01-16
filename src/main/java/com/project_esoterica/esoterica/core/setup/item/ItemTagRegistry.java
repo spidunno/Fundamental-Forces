@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.item;
+package com.project_esoterica.esoterica.core.setup.item;
 
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.tags.ItemTags;

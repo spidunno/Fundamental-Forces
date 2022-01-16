@@ -1,26 +1,23 @@
-package com.project_esoterica.esoterica.core.systems.texturegrabber;
+package com.project_esoterica.esoterica.core.setup.client;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.project_esoterica.esoterica.core.helper.ColorHelper;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import java.awt.*;
 import java.io.IOException;
-import java.util.function.Consumer;
 
 //https://github.com/Tamaized/Frostfell/blob/1.18/src/main/java/tamaized/frostfell/client/ClientListener.java#L23-L57
 public class TextureGrabber {
 
     public static void setup() {
-        registerGrabber("fire_0", "textures/block/fire_0.png", TextureGrabber::grayscaleImage);
-        registerGrabber("fire_1", "textures/block/fire_1.png", TextureGrabber::grayscaleImage);
+        registerGrabber("fire_0", "textures/block/fire_0.png", (image)->colorGradient(image, new Color(232, 192, 250), new Color(54, 178, 255)));
+        registerGrabber("fire_1", "textures/block/fire_1.png", (image)->colorGradient(image, new Color(232, 192, 250), new Color(54, 178, 255)));
     }
-
     public static void registerGrabber(String loaderName, String sourcePath, TextureModifier modifier) {
         MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
             Resource r = null;
@@ -49,7 +46,7 @@ public class TextureGrabber {
             };
         });
     }
-    public static NativeImage grayscaleImage(NativeImage nativeimage)
+    public static NativeImage grayscale(NativeImage nativeimage)
     {
         for (int x = 0; x < nativeimage.getWidth(); x++) {
             for (int y = 0; y < nativeimage.getHeight(); y++) {
@@ -60,8 +57,20 @@ public class TextureGrabber {
         }
         return nativeimage;
     }
-    public static interface TextureModifier
+    public static NativeImage colorGradient(NativeImage nativeimage, Color brightColor, Color darkColor)
     {
-        public NativeImage modifyTexture(NativeImage nativeImage);
+        for (int x = 0; x < nativeimage.getWidth(); x++) {
+            for (int y = 0; y < nativeimage.getHeight(); y++) {
+                int pixel = nativeimage.getPixelRGBA(x, y);
+                int L = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
+                Color color = ColorHelper.colorLerp(L/255f, brightColor, darkColor);
+                nativeimage.setPixelRGBA(x, y, NativeImage.combine((pixel >> 24) & 0xFF, color.getBlue(), color.getGreen(), color.getRed()));
+            }
+        }
+        return nativeimage;
+    }
+    public interface TextureModifier
+    {
+        NativeImage modifyTexture(NativeImage nativeImage);
     }
 }

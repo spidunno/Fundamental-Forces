@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.registry.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.setup.worldevent.StarfallActors;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Collection;

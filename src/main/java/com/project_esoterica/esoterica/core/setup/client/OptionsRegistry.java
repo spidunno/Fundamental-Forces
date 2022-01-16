@@ -1,12 +1,9 @@
-package com.project_esoterica.esoterica.core.registry;
+package com.project_esoterica.esoterica.core.setup.client;
 
 import com.project_esoterica.esoterica.common.options.FireOffsetOption;
 import com.project_esoterica.esoterica.common.options.ScreenshakeOption;
 import com.project_esoterica.esoterica.core.systems.option.IEsotericaOption;
-import net.minecraft.client.Option;
-import net.minecraft.client.gui.screens.AccessibilityOptionsScreen;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;

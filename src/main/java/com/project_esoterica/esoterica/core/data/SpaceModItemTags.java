@@ -1,13 +1,11 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.registry.item.ItemRegistry;
-import com.project_esoterica.esoterica.core.registry.item.ItemTagRegistry;
+import com.project_esoterica.esoterica.core.setup.item.ItemRegistry;
+import com.project_esoterica.esoterica.core.setup.item.ItemTagRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 

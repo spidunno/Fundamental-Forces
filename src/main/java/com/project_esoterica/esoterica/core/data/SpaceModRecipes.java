@@ -1,21 +1,16 @@
 package com.project_esoterica.esoterica.core.data;
 
 
-import com.project_esoterica.esoterica.common.recipe.ImpactConversionRecipe;
-import com.project_esoterica.esoterica.common.recipe.ManaAbsorptionRecipe;
 import com.project_esoterica.esoterica.core.data.builder.ImpactConversionRecipeBuilder;
 import com.project_esoterica.esoterica.core.data.builder.ManaAbsorbtionRecipeBuilder;
-import com.project_esoterica.esoterica.core.registry.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
 import net.minecraft.advancements.critereon.*;
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.SimpleCookingSerializer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;

@@ -11,7 +11,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.registry.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
 
 public class EntityDataCapability implements SimpleCapability {
 

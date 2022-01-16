@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.common.entity.falling;
 
-import com.project_esoterica.esoterica.core.registry.EntityRegistry;
+import com.project_esoterica.esoterica.core.setup.EntityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.Level;

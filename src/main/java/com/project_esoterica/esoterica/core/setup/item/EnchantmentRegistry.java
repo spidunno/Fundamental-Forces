@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.registry.item;
+package com.project_esoterica.esoterica.core.setup.item;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import net.minecraft.world.item.enchantment.Enchantment;
