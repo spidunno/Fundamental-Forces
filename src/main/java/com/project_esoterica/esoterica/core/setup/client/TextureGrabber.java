@@ -14,9 +14,13 @@ import java.io.IOException;
 //https://github.com/Tamaized/Frostfell/blob/1.18/src/main/java/tamaized/frostfell/client/ClientListener.java#L23-L57
 public class TextureGrabber {
 
+    private static final ColorLerp GRADIENT = (image, x, y, luminosity) -> ((y % 16) / 16f);
+    private static final ColorLerp LUMINOUS_GRADIENT = (image, x, y, luminosity) -> (((y % 16) / 16f) + luminosity/255f)/2f;
+    private static final ColorLerp LUMINOUS = (image, x, y, luminosity) -> luminosity/255f;
+
     public static void setup() {
-        registerGrabber("fire_0", "textures/block/fire_0.png", (image)->colorGradient(image, new Color(251, 209, 240), new Color(187, 97, 249), new Color(49, 155, 255)));
-        registerGrabber("fire_1", "textures/block/fire_1.png", (image)->colorGradient(image, new Color(251, 209, 240), new Color(187, 97, 249), new Color(49, 155, 255)));
+        registerGrabber("fire_0", "textures/block/fire_0.png", (image)->colorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
+        registerGrabber("fire_1", "textures/block/fire_1.png", (image)->colorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
     }
     public static void registerGrabber(String loaderName, String sourcePath, TextureModifier modifier) {
         MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
@@ -57,30 +61,36 @@ public class TextureGrabber {
         }
         return nativeimage;
     }
-    public static NativeImage colorGradient(NativeImage nativeimage, Color brightColor, Color darkColor)
+    //TODO: eventually rewrite these two methods to use a list of colors instead, allowing for any number of colors in a gradient
+    public static NativeImage colorGradient(NativeImage nativeimage, ColorLerp colorLerp, Color brightColor, Color darkColor)
     {
         for (int x = 0; x < nativeimage.getWidth(); x++) {
             for (int y = 0; y < nativeimage.getHeight(); y++) {
                 int pixel = nativeimage.getPixelRGBA(x, y);
-                int L = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
-                Color color = ColorHelper.colorLerp(L/255f, brightColor, darkColor);
+                int luminosity = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
+                float lerp = colorLerp.lerp(pixel, x, y, luminosity);
+                Color color = ColorHelper.colorLerp(lerp, brightColor, darkColor);
                 nativeimage.setPixelRGBA(x, y, NativeImage.combine((pixel >> 24) & 0xFF, color.getBlue(), color.getGreen(), color.getRed()));
             }
         }
         return nativeimage;
     }
-    public static NativeImage colorGradient(NativeImage nativeimage, Color brightColor, Color middleColor, Color darkColor)
+    public static NativeImage colorGradient(NativeImage nativeimage, ColorLerp colorLerp, Color brightColor, Color middleColor, Color darkColor)
     {
         for (int x = 0; x < nativeimage.getWidth(); x++) {
             for (int y = 0; y < nativeimage.getHeight(); y++) {
                 int pixel = nativeimage.getPixelRGBA(x, y);
-                int L = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
-                float lerp = L/255f;
+                int luminosity = (int) (0.299D * ((pixel) & 0xFF) + 0.587D * ((pixel >> 8) & 0xFF) + 0.114D * ((pixel >> 16) & 0xFF));
+                float lerp = colorLerp.lerp(pixel, x, y, luminosity);
                 Color color = lerp <= 0.5f ? ColorHelper.colorLerp(lerp*2f, middleColor, darkColor) : ColorHelper.colorLerp(lerp*2f-1, brightColor, middleColor);
                 nativeimage.setPixelRGBA(x, y, NativeImage.combine((pixel >> 24) & 0xFF, color.getBlue(), color.getGreen(), color.getRed()));
             }
         }
         return nativeimage;
+    }
+    public interface ColorLerp
+    {
+        float lerp(int pixel, int x, int y, int luminosity);
     }
     public interface TextureModifier
     {
