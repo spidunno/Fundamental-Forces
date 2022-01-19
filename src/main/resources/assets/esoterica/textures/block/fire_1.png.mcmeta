@@ -1,6 +1,5 @@
 {
   "forge": {
 	"loader": "esoterica:fire_1"
-  },
-  "animation": {}
+  }
 }

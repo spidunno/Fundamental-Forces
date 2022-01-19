@@ -58,13 +58,14 @@ public class MeteoriteFeature extends SimpleFeature {
     }
     public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, float rotation, float craterSize, float iterations)
     {
+        float cachedCraterSize = craterSize;
         float decrease = craterSize/iterations;
         for (int i = 1; i < iterations; i++)
         {
             float offset = craterSize*i;
             Vec3 offsetDirection = new Vec3(offset, 0, 0).yRot(rotation);
             BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y+i/iterations*3f, offsetDirection.z);
-            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, craterSize * 0.85f, b -> !level.getBlockState(b).isAir());
+            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, cachedCraterSize * 0.8f, b -> !level.getBlockState(b).isAir());
             craterSphere.forEach(b -> {
                 if (level.getBlockState(b.above()).isAir()) {
                     level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);

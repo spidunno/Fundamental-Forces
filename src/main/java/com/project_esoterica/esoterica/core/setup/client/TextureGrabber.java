@@ -1,16 +1,22 @@
 package com.project_esoterica.esoterica.core.setup.client;
 
 import com.mojang.blaze3d.platform.NativeImage;
+import com.mojang.datafixers.util.Pair;
 import com.project_esoterica.esoterica.core.helper.ColorHelper;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.metadata.animation.AnimationMetadataSection;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.function.Consumer;
 
 //https://github.com/Tamaized/Frostfell/blob/1.18/src/main/java/tamaized/frostfell/client/ClientListener.java#L23-L57
 public class TextureGrabber {
@@ -20,10 +26,12 @@ public class TextureGrabber {
     private static final ColorLerp LUMINOUS = (image, x, y, luminosity) -> luminosity/255f;
 
     public static void setup() {
-        registerGrabber("fire_0", new ResourceLocation("textures/block/fire_0.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
-        registerGrabber("fire_1", new ResourceLocation("textures/block/fire_1.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
+        registerGrabber("fire_0", "block/fire_0",new ResourceLocation("textures/block/fire_0.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
+        registerGrabber("fire_1", "block/fire_1",new ResourceLocation("textures/block/fire_1.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
     }
-    public static void registerGrabber(String loaderName, ResourceLocation sourcePath, TextureModifier modifier) {
+    public static void registerGrabber(String loaderName, String targetPath, ResourceLocation sourcePath, TextureModifier modifier) {
+
+        IEventBus busMod = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForgeClient.registerTextureAtlasSpriteLoader(DataHelper.prefix(loaderName), (atlas, resourceManager, textureInfo, resource, atlasWidth, atlasHeight, spriteX, spriteY, mipmapLevel, image) -> {
             Resource r = null;
             try {
@@ -40,16 +48,25 @@ public class TextureGrabber {
 
                 throwable1.printStackTrace();
             }
+            TextureAtlasSprite.Info info = null;
             if (r != null) {
                 try {
+                    AnimationMetadataSection section = r.getMetadata(AnimationMetadataSection.SERIALIZER);
+                    if (section == null) {
+                        section = AnimationMetadataSection.EMPTY;
+                    }
+
+                    Pair<Integer, Integer> pair = section.getFrameSize(image.getWidth(), image.getHeight());
+                    info = new TextureAtlasSprite.Info(textureInfo.name(), pair.getFirst(), pair.getSecond(), section);
                     r.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            return new TextureAtlasSprite(atlas, textureInfo, mipmapLevel, atlasWidth, atlasHeight, spriteX, spriteY, image) {
+            return new TextureAtlasSprite(atlas, info == null ? textureInfo : info, mipmapLevel, atlasWidth, atlasHeight, spriteX, spriteY, image) {
             };
         });
+        busMod.addListener((Consumer<TextureStitchEvent.Pre>) event -> event.addSprite(DataHelper.prefix(targetPath)));
     }
     public static NativeImage grayscale(NativeImage nativeimage)
     {
