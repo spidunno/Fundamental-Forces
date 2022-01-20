@@ -16,7 +16,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class MeteorFlameBlockEntity extends SimpleBlockEntity {
@@ -32,7 +31,10 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
 
     @Override
     public void tick() {
-
+        if (!level.isClientSide)
+        {
+            items.removeIf(e -> !e.isAlive());
+        }
     }
 
     @SuppressWarnings("SuspiciousMethodCalls")
@@ -40,8 +42,8 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
     public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
-            if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem()) || !ManaAbsorptionRecipe.getRecipes(level, stack).isEmpty()) {
-                if (!items.contains(itemEntity)) {
+            if (!items.contains(itemEntity)) {
+                if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem()) || !ManaAbsorptionRecipe.getRecipes(level, stack).isEmpty()) {
                     items.add(itemEntity);
                 }
                 return;
@@ -50,13 +52,11 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
         if (!entity.fireImmune() && !items.contains(entity)) {
             if (!MeteorFireHandler.hasMeteorFireInstance(entity))
             {
-                MeteorFireHandler.setMeteorFireInstance(entity, new MeteorFireInstance(1, 15, Color.BLUE, Color.PINK).addTicks(160));
+                MeteorFireHandler.setMeteorFireInstance(entity, new MeteorFireInstance(1, 15).addTicks(160));
             }
             else
             {
-                EntityDataCapability.getCapability(entity).ifPresent(c -> {
-                    c.meteorFireInstance.remainingTicks++;
-                });
+                EntityDataCapability.getCapability(entity).ifPresent(c -> c.meteorFireInstance.remainingTicks++);
             }
             entity.hurt(DamageSourceRegistry.METEOR_FIRE, 1);
         }

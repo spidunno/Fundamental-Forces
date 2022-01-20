@@ -6,20 +6,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 
-import java.awt.*;
-
 public class MeteorFireInstance {
     public int remainingTicks;
     public int damage;
     public int frequency;
-    public Color brightColor;
-    public Color darkColor;
 
-    public MeteorFireInstance(int damage, int frequency, Color brightColor, Color darkColor) {
+    public MeteorFireInstance(int damage, int frequency) {
         this.damage = damage;
         this.frequency = frequency;
-        this.brightColor = brightColor;
-        this.darkColor = darkColor;
     }
     public MeteorFireInstance addTicks(int increase)
     {
@@ -31,8 +25,6 @@ public class MeteorFireInstance {
         this.remainingTicks = newInstance.remainingTicks;
         this.damage = newInstance.damage;
         this.frequency = newInstance.frequency;
-        this.brightColor = newInstance.brightColor;
-        this.darkColor = newInstance.darkColor;
         return this;
     }
     public void tick(Entity entity)
@@ -67,13 +59,11 @@ public class MeteorFireInstance {
         tag.putInt("remainingTicks", remainingTicks);
         tag.putInt("damage", damage);
         tag.putInt("frequency", frequency);
-        tag.putInt("brightColor", brightColor.getRGB());
-        tag.putInt("darkColor", darkColor.getRGB());
         return tag;
     }
 
     public static MeteorFireInstance deserializeNBT(CompoundTag tag) {
-        MeteorFireInstance instance = new MeteorFireInstance(tag.getInt("damage"), tag.getInt("frequency"), new Color(tag.getInt("brightColor")), new Color(tag.getInt("darkColor")));
+        MeteorFireInstance instance = new MeteorFireInstance(tag.getInt("damage"), tag.getInt("frequency"));
         return instance.addTicks(tag.getInt("remainingTicks"));
     }
 }
