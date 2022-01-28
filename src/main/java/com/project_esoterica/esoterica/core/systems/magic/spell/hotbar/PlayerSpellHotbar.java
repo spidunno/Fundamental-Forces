@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.spell.hotbar;
+package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
 
 import net.minecraft.nbt.CompoundTag;
 

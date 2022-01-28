@@ -1,6 +1,6 @@
-package com.project_esoterica.esoterica.core.systems.spell.hotbar;
+package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
 
-import com.project_esoterica.esoterica.core.systems.spell.SpellInstance;
+import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 

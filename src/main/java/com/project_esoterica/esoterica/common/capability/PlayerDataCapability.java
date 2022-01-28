@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.common.capability;
 
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
-import com.project_esoterica.esoterica.core.systems.spell.hotbar.PlayerSpellHotbar;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbar;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
