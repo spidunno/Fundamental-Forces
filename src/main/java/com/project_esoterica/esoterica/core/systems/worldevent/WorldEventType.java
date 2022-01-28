@@ -12,9 +12,9 @@ public class WorldEventType {
     }
 
     public WorldEventInstance createInstance(CompoundTag tag) {
-        return supplier.getBookObject(tag);
+        return supplier.fromNbt(tag);
     }
     public interface EventTypeSupplier {
-        WorldEventInstance getBookObject(CompoundTag tag);
+        WorldEventInstance fromNbt(CompoundTag tag);
     }
 }
