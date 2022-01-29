@@ -1,12 +1,14 @@
 package com.project_esoterica.esoterica.core.systems.rendering;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3d;
 import com.mojang.math.Vector3f;
+import com.project_esoterica.esoterica.core.setup.client.ShaderRegistry.ExtendedShaderInstance;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
@@ -20,6 +22,38 @@ import java.util.Random;
 
 public class RenderUtilities {
     public static final int FULL_BRIGHT = 15728880;
+
+    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float uw, float vh, float size) {
+        blit(poseStack, shader, x, y, w, h, u/size, v/size, uw/size, vh/size);
+    }
+    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float uw, float vh) {
+        Matrix4f last = poseStack.last().pose();
+        RenderSystem.setShader(shader.getInstance());
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        bufferbuilder.vertex(last, (float)x, (float)y + (float)h, 0).color(1,1,1,1).uv(u, v + vh).endVertex();
+        bufferbuilder.vertex(last, (float)x + (float)w, (float)y + (float)h, 0).color(1,1,1,1).uv(u + uw, v + vh).endVertex();
+        bufferbuilder.vertex(last, (float)x + (float)w, (float)y, 0).color(1,1,1,1).uv(u + uw, v).endVertex();
+        bufferbuilder.vertex(last, (float)x, (float)y, 0).color(1,1,1,1).uv(u, v).endVertex();
+        bufferbuilder.end();
+        BufferUploader.end(bufferbuilder);
+    }
+
+    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float uw, float vh, float size) {
+        blit(poseStack, x, y, w, h, u/size, v/size, uw/size, vh/size);
+    }
+    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float uw, float vh) {
+        Matrix4f last = poseStack.last().pose();
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        bufferbuilder.vertex(last, (float)x, (float)y + (float)h, 0).color(1,1,1,1).uv(u, v + vh).endVertex();
+        bufferbuilder.vertex(last, (float)x + (float)w, (float)y + (float)h, 0).color(1,1,1,1).uv(u + uw, v + vh).endVertex();
+        bufferbuilder.vertex(last, (float)x + (float)w, (float)y, 0).color(1,1,1,1).uv(u + uw, v).endVertex();
+        bufferbuilder.vertex(last, (float)x, (float)y, 0).color(1,1,1,1).uv(u, v).endVertex();
+        bufferbuilder.end();
+        BufferUploader.end(bufferbuilder);
+    }
 
     public static VertexBuilder create()
     {

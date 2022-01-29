@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
@@ -10,6 +11,7 @@ import net.minecraft.client.Option;
 import net.minecraft.client.gui.screens.SimpleOptionsSubScreen;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
@@ -50,5 +52,9 @@ public class ClientRuntimeEvents {
 
     @SubscribeEvent
     public static void renderBlockOverlay(RenderBlockOverlayEvent event) {
+    }
+    @SubscribeEvent
+    public static void renderOverlay(RenderGameOverlayEvent.Post event) {
+        SpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
     }
 }
