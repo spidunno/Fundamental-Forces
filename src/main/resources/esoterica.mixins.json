@@ -6,11 +6,13 @@
   "mixins": [
     "BaseFireBlockMixin",
     "EntityMixin",
-    "FlintAndSteelMixin"
+    "FlintAndSteelMixin",
+    "InventoryMixin"
   ],
   "client": [
     "CameraMixin",
     "EntityRenderDispatcherMixin",
+    "GuiMixin",
     "ItemRendererMixin",
     "ScreenEffectRendererMixin"
   ],

@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.common.capability;
 
 import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataPacket;
+import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataServerPacket;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
@@ -38,9 +39,10 @@ public class PlayerDataCapability implements SimpleCapability {
     public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             final PlayerDataCapability capability = new PlayerDataCapability();
-            event.addCapability(DataHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, ()->capability));
+            event.addCapability(DataHelper.prefix("player_data"), new SimpleCapabilityProvider<>(PlayerDataCapability.CAPABILITY, () -> capability));
         }
     }
+
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
             PlayerDataCapability.getCapability(player).ifPresent(capability -> capability.firstTimeJoin = true);
@@ -49,6 +51,7 @@ public class PlayerDataCapability implements SimpleCapability {
             }
         }
     }
+
     public static void syncPlayerCapability(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Player player) {
             if (player.level instanceof ServerLevel) {
@@ -56,6 +59,7 @@ public class PlayerDataCapability implements SimpleCapability {
             }
         }
     }
+
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
@@ -73,15 +77,21 @@ public class PlayerDataCapability implements SimpleCapability {
     public static void syncSelf(ServerPlayer player) {
         sync(player, PacketDistributor.PLAYER.with(() -> player));
     }
+
     public static void syncTrackingAndSelf(Player player) {
         sync(player, PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player));
     }
+
     public static void syncTracking(Player player) {
         sync(player, PacketDistributor.TRACKING_ENTITY.with(() -> player));
     }
-    public static void sync(Player player, PacketDistributor.PacketTarget target)
-    {
+
+    public static void sync(Player player, PacketDistributor.PacketTarget target) {
         getCapability(player).ifPresent(c -> INSTANCE.send(target, new SyncPlayerCapabilityDataPacket(player.getUUID(), c.serializeNBT())));
+    }
+
+    public static void syncServer(Player player) {
+        getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.SERVER.noArg(), new SyncPlayerCapabilityDataServerPacket(player.getUUID(), c.serializeNBT())));
     }
 
     public static LazyOptional<PlayerDataCapability> getCapability(Player player) {

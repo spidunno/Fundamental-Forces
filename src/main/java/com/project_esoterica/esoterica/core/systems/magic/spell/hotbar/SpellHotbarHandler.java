@@ -10,12 +10,10 @@ import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
 
 public class SpellHotbarHandler {
@@ -55,7 +53,7 @@ public class SpellHotbarHandler {
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
                 SpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
-                handler.animationProgress = Mth.lerp(0.04f, handler.animationProgress, desired);
+                handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
                 if (KeyBindingRegistry.swapHotbar.consumeClick())
                 {
                     SpellHotbarHandler.ClientOnly.swapHotbar();
@@ -66,12 +64,24 @@ public class SpellHotbarHandler {
         public static void swapHotbar() {
             Player player = Minecraft.getInstance().player;
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                player.sendMessage(new TextComponent("swap these nuts, spell hotbar is " + (c.hotbarHandler.open ? "open" : "closed")), player.getUUID());
                 SpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
+                PlayerDataCapability.syncServer(player);
             });
         }
-
+        public static void moveItemHotbar(boolean reverse, float partialTicks, PoseStack poseStack) {
+            Minecraft minecraft = Minecraft.getInstance();
+            LocalPlayer player = minecraft.player;
+            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                float progress = (c.hotbarHandler.animationProgress) * 2f;
+                float offset = progress * 45;
+                if (reverse)
+                {
+                    offset = -offset;
+                }
+                poseStack.translate(0, offset, 0);
+            });
+        }
         public static void renderSpellHotbar(RenderGameOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
@@ -81,7 +91,7 @@ public class SpellHotbarHandler {
                     float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
                     float offset = (1 - progress) * 45;
                     int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
-                    int top = event.getWindow().getGuiScaledHeight() - ((ForgeIngameGui) Minecraft.getInstance().gui).left_height;
+                    int top = event.getWindow().getGuiScaledHeight() - 31;
                     int slot = player.getInventory().selected;
                     poseStack.pushPose();
                     poseStack.translate(0, offset, 0);
