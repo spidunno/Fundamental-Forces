@@ -2,6 +2,7 @@ package com.project_esoterica.esoterica.common.capability;
 
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbar;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbarHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
@@ -17,8 +18,7 @@ public class PlayerDataCapability implements SimpleCapability {
     });
 
     public boolean firstTimeJoin;
-    public boolean unlockedSpellHotbar;
-    public PlayerSpellHotbar spellHotbar = new PlayerSpellHotbar(9);
+    public SpellHotbarHandler hotbarHandler = new SpellHotbarHandler(new PlayerSpellHotbar(9));
 
     public PlayerDataCapability() {
     }
@@ -27,20 +27,14 @@ public class PlayerDataCapability implements SimpleCapability {
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean("firstTimeJoin", firstTimeJoin);
-        if (unlockedSpellHotbar) {
-            tag.putBoolean("unlockedSpellHotbar", true);
-            spellHotbar.serializeNBT(tag);
-        }
+        hotbarHandler.serializeNBT(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         firstTimeJoin = tag.getBoolean("firstTimeJoin");
-        if (tag.contains("unlockedSpellHotbar")) {
-            unlockedSpellHotbar = true;
-            spellHotbar.deserializeNBT(tag);
-        }
+        hotbarHandler.deserializeNBT(tag);
     }
 
     public static LazyOptional<PlayerDataCapability> getCapability(Player player) {
