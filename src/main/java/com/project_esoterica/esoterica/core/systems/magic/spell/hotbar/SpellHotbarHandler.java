@@ -19,8 +19,8 @@ import net.minecraftforge.event.TickEvent;
 public class SpellHotbarHandler {
     public final SpellHotbar spellHotbar;
     public boolean open;
-    public float animationProgress;
     public boolean unlockedSpellHotbar = true;
+    public float animationProgress;
     public int cachedSlot;
     public boolean updateCachedSlot;
 
@@ -55,18 +55,15 @@ public class SpellHotbarHandler {
                 SpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
-                if (handler.updateCachedSlot)
-                {
-                    if ((handler.open && handler.animationProgress > 0.5f) || (!handler.open && handler.animationProgress < 0.5f))
-                    {
+                if (handler.updateCachedSlot) {
+                    if ((handler.open && handler.animationProgress > 0.5f) || (!handler.open && handler.animationProgress < 0.5f)) {
                         int previousSlot = handler.cachedSlot;
                         handler.cachedSlot = player.getInventory().selected;
                         handler.updateCachedSlot = false;
                         player.getInventory().selected = previousSlot;
                     }
                 }
-                if (KeyBindingRegistry.swapHotbar.consumeClick())
-                {
+                if (KeyBindingRegistry.swapHotbar.consumeClick()) {
                     SpellHotbarHandler.ClientOnly.swapHotbar();
                 }
             });
@@ -81,14 +78,15 @@ public class SpellHotbarHandler {
                 PlayerDataCapability.syncServer(player);
             });
         }
-        public static float itemHotbarOffset()
-        {
+
+        public static float itemHotbarOffset() {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
             float progress = (capability.hotbarHandler.animationProgress) * 2f;
             return progress * 45;
         }
+
         public static boolean moveItemHotbar(boolean reverse, float partialTicks, PoseStack poseStack) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
@@ -99,6 +97,7 @@ public class SpellHotbarHandler {
             }
             return visible;
         }
+
         public static void renderSpellHotbar(RenderGameOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
