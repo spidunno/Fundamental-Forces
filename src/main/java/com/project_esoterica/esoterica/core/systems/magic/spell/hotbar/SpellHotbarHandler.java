@@ -17,7 +17,7 @@ public class SpellHotbarHandler {
     public final PlayerSpellHotbar spellHotbar;
     public boolean open;
     public float animationProgress;
-    public boolean unlockedSpellHotbar;
+    public boolean unlockedSpellHotbar = true;
     public int otherSelectedSlot;
     public SpellHotbarHandler(PlayerSpellHotbar spellHotbar) {
         this.spellHotbar = spellHotbar;
@@ -25,7 +25,6 @@ public class SpellHotbarHandler {
 
     public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putBoolean("open", open);
-        unlockedSpellHotbar = true;
         if (unlockedSpellHotbar) {
             tag.putBoolean("unlockedSpellHotbar", true);
             spellHotbar.serializeNBT(tag);
