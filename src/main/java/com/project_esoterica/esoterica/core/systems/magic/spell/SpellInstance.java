@@ -21,6 +21,6 @@ public class SpellInstance {
     }
 
     public static SpellInstance deserializeNBT(CompoundTag tag) {
-        return SpellTypeRegistry.SPELL_TYPES.getOrDefault(tag.getString("type"), SpellTypeRegistry.EMPTY).deserializeNBT(tag);
+        return SpellTypeRegistry.SPELL_TYPES.getOrDefault(tag.getString("id"), SpellTypeRegistry.EMPTY).deserializeNBT(tag);
     }
 }

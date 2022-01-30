@@ -25,6 +25,7 @@ public class SpellHotbarHandler {
 
     public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putBoolean("open", open);
+        unlockedSpellHotbar = true;
         if (unlockedSpellHotbar) {
             tag.putBoolean("unlockedSpellHotbar", true);
             spellHotbar.serializeNBT(tag);

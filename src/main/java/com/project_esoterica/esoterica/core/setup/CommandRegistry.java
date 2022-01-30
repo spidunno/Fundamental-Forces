@@ -3,10 +3,7 @@ package com.project_esoterica.esoterica.core.setup;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
-import com.project_esoterica.esoterica.common.command.DevWorldSetupCommand;
-import com.project_esoterica.esoterica.common.command.IssueStarfallCommand;
-import com.project_esoterica.esoterica.common.command.ScreenshakeCommand;
-import com.project_esoterica.esoterica.common.command.StarfallAreaCheckCommand;
+import com.project_esoterica.esoterica.common.command.*;
 import com.project_esoterica.esoterica.common.command.argument.StarfallResultArgumentType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -30,6 +27,7 @@ public class CommandRegistry {
                 .then(DevWorldSetupCommand.register())
                 .then(IssueStarfallCommand.register())
                 .then(ScreenshakeCommand.register())
+                .then(SetSpellCommand.register())
                 .then(StarfallAreaCheckCommand.register())
         );
         dispatcher.register(Commands.literal(MODID)
