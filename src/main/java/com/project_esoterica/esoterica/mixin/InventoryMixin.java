@@ -20,7 +20,7 @@ public class InventoryMixin {
     private void esotericaInventoryRemoveSelectedItemMixin(CallbackInfoReturnable<ItemStack> cir)
     {
         PlayerDataCapability.getCapability(player).ifPresent(c -> {
-            if (c.hotbarHandler.open)
+            if (c.hotbarHandler.open || (c.hotbarHandler.updateCachedSlot && player.level.isClientSide))
             {
                 cir.setReturnValue(ItemStack.EMPTY);
             }

@@ -22,6 +22,7 @@ public class SpellHotbarHandler {
     public float animationProgress;
     public boolean unlockedSpellHotbar = true;
     public int cachedSlot;
+    public boolean updateCachedSlot;
 
     public SpellHotbarHandler(SpellHotbar spellHotbar) {
         this.spellHotbar = spellHotbar;
@@ -54,6 +55,16 @@ public class SpellHotbarHandler {
                 SpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
+                if (handler.updateCachedSlot)
+                {
+                    if ((handler.open && handler.animationProgress > 0.5f) || (!handler.open && handler.animationProgress < 0.5f))
+                    {
+                        int previousSlot = handler.cachedSlot;
+                        handler.cachedSlot = player.getInventory().selected;
+                        handler.updateCachedSlot = false;
+                        player.getInventory().selected = previousSlot;
+                    }
+                }
                 if (KeyBindingRegistry.swapHotbar.consumeClick())
                 {
                     SpellHotbarHandler.ClientOnly.swapHotbar();
@@ -66,52 +77,60 @@ public class SpellHotbarHandler {
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
                 SpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
+                handler.updateCachedSlot = true;
                 PlayerDataCapability.syncServer(player);
             });
         }
-        public static void moveItemHotbar(boolean reverse, float partialTicks, PoseStack poseStack) {
+        public static float itemHotbarOffset()
+        {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                float progress = (c.hotbarHandler.animationProgress) * 2f;
-                float offset = progress * 45;
-                if (reverse)
-                {
-                    offset = -offset;
-                }
-                poseStack.translate(0, offset, 0);
-            });
+            PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+            float progress = (capability.hotbarHandler.animationProgress) * 2f;
+            return progress * 45;
+        }
+        public static boolean moveItemHotbar(boolean reverse, float partialTicks, PoseStack poseStack) {
+            Minecraft minecraft = Minecraft.getInstance();
+            LocalPlayer player = minecraft.player;
+            PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+            boolean visible = capability.hotbarHandler.animationProgress >= 0.5f;
+            if (!visible) {
+                poseStack.translate(0, itemHotbarOffset() * (reverse ? -1 : 1), 0);
+            }
+            return visible;
         }
         public static void renderSpellHotbar(RenderGameOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
                 PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                    PoseStack poseStack = event.getMatrixStack();
-                    float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
-                    float offset = (1 - progress) * 45;
-                    int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
-                    int top = event.getWindow().getGuiScaledHeight() - 31;
-                    int slot = player.getInventory().selected;
-                    poseStack.pushPose();
-                    poseStack.translate(0, offset, 0);
-                    RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
-                    RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    RenderUtilities.blit(poseStack, left, top, 218, 28, 1, 1, 256f);
+                    if (c.hotbarHandler.animationProgress >= 0.5f) {
+                        PoseStack poseStack = event.getMatrixStack();
+                        float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
+                        float offset = (1 - progress) * 45;
+                        int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
+                        int top = event.getWindow().getGuiScaledHeight() - 31;
+                        int slot = player.getInventory().selected;
+                        poseStack.pushPose();
+                        poseStack.translate(0, offset, 0);
+                        RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
+                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                        RenderUtilities.blit(poseStack, left, top, 218, 28, 1, 1, 256f);
 
-                    RenderUtilities.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 1, 30, 256f);
-                    for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
-                        SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
-                        if (!instance.isEmpty()) {
-                            ResourceLocation background = instance.type.getBackgroundLocation();
-                            ResourceLocation icon = instance.type.getIconLocation();
-                            RenderSystem.setShaderTexture(0, background);
-                            RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
-                            RenderSystem.setShaderTexture(0, icon);
-                            RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
+                        RenderUtilities.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 1, 30, 256f);
+                        for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
+                            SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
+                            if (!instance.isEmpty()) {
+                                ResourceLocation background = instance.type.getBackgroundLocation();
+                                ResourceLocation icon = instance.type.getIconLocation();
+                                RenderSystem.setShaderTexture(0, background);
+                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
+                                RenderSystem.setShaderTexture(0, icon);
+                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
+                            }
                         }
+                        poseStack.popPose();
                     }
-                    poseStack.popPose();
                 });
             }
         }
