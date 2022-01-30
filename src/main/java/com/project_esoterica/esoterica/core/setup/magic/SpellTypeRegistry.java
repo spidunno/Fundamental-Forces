@@ -23,7 +23,7 @@ public class SpellTypeRegistry {
     public static final SpellType WATER_ORB = registerSpellType(new BlockSpell("water_orb", ()->Blocks.DIAMOND_BLOCK));
 
     public static final SpellType EARTH_BOLT = registerSpellType(new ProjectileSpell("earth_bolt", ElementTypeRegistry.EARTH));
-    public static final SpellType EARTH_ORB = registerSpellType(new BlockSpell("earth_orb", ()->Blocks.DIAMOND_BLOCK));
+    public static final SpellType EARTH_ORB = registerSpellType(new BlockSpell("boulder", ()->Blocks.DIAMOND_BLOCK));
 
     public static final SpellType AIR_BOLT = registerSpellType(new ProjectileSpell("air_bolt", ElementTypeRegistry.AIR));
     public static final SpellType AIR_ORB = registerSpellType(new BlockSpell("air_orb", ()->Blocks.DIAMOND_BLOCK));

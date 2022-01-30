@@ -6,9 +6,11 @@ import net.minecraft.nbt.CompoundTag;
 
 public abstract class AbstractSpellHotbar {
     public int selectedSlot;
+    public final int size;
     public NonNullList<SpellInstance> spells;
 
     protected AbstractSpellHotbar(int size) {
+        this.size = size;
         this.spells = NonNullList.withSize(size, SpellInstance.EMPTY);
     }
 

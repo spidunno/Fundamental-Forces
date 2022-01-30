@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
+import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -55,9 +56,21 @@ public class SpellHotbarHandler {
                     poseStack.pushPose();
                     RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
                     RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                    RenderUtilities.blit(poseStack, left, top, 218, 28, 1, 1, 218, 28, 256f);
+                    RenderUtilities.blit(poseStack, left, top, 218, 28, 1, 1, 256f);
 
-                    RenderUtilities.blit(poseStack, left+slot*24-1, top-1, 28, 30, 1, 30, 28, 30, 256f);
+                    RenderUtilities.blit(poseStack, left+slot*24-1, top-1, 28, 30, 1, 30, 256f);
+                    for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++)
+                    {
+                        SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
+                        if (instance.type.shouldRender) {
+                            ResourceLocation background = instance.type.getBackgroundLocation();
+                            ResourceLocation icon = instance.type.getIconLocation();
+                            RenderSystem.setShaderTexture(0, background);
+                            RenderUtilities.blit(poseStack, left + i * 24+3, top+3, 20, 22, 0, 0, 20, 22);
+                            RenderSystem.setShaderTexture(0, icon);
+                            RenderUtilities.blit(poseStack, left + i * 24+3, top+3, 20, 22, 0, 0, 20, 22);
+                        }
+                    }
                     poseStack.popPose();
                 });
             }

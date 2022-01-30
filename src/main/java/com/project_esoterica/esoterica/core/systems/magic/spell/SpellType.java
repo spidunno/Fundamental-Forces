@@ -26,11 +26,11 @@ public class SpellType {
     }
 
     public ResourceLocation getIconLocation() {
-        return DataHelper.prefix("spell/icon/" + id);
+        return DataHelper.prefix("textures/spell/icon/" + id + ".png");
     }
 
     public ResourceLocation getBackgroundLocation() {
-        return DataHelper.prefix("spell/background/" + id);
+        return DataHelper.prefix("textures/spell/background/" + id + "_background.png");
     }
 
     public SpellType disableRendering() {
