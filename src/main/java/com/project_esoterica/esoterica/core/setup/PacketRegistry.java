@@ -2,6 +2,7 @@ package com.project_esoterica.esoterica.core.setup;
 
 import com.project_esoterica.esoterica.common.packets.SyncEntityCapabilityDataPacket;
 import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataPacket;
+import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataServerPacket;
 import com.project_esoterica.esoterica.common.packets.SyncWorldEventPacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.PositionedScreenshakePacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.ScreenshakePacket;
@@ -28,6 +29,7 @@ public class PacketRegistry {
         PositionedScreenshakePacket.register(INSTANCE, index++);
         SyncWorldEventPacket.register(INSTANCE, index++);
         SyncPlayerCapabilityDataPacket.register(INSTANCE, index++);
+        SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
         SyncEntityCapabilityDataPacket.register(INSTANCE, index++);
     }
 }
