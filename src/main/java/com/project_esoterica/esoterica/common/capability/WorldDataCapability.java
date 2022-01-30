@@ -1,6 +1,8 @@
 package com.project_esoterica.esoterica.common.capability;
 
+import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
+import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +11,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,10 @@ public class WorldDataCapability implements SimpleCapability {
     public WorldDataCapability() {
     }
 
+    public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
+        final WorldDataCapability capability = new WorldDataCapability();
+        event.addCapability(DataHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
+    }
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();

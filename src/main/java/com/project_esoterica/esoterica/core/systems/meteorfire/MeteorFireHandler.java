@@ -15,10 +15,8 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
-import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 public class MeteorFireHandler {
 
@@ -36,7 +34,7 @@ public class MeteorFireHandler {
                 c.meteorFireInstance.remainingTicks = 0;
                 if (!entity.level.isClientSide)
                 {
-                    EntityDataCapability.sync(entity);
+                    EntityDataCapability.syncTrackingAndSelf(entity);
                 }
             }
         });
@@ -58,7 +56,7 @@ public class MeteorFireHandler {
                 entity.setRemainingFireTicks(0);
             }
             if (!entity.level.isClientSide) {
-                EntityDataCapability.sync(entity);
+                EntityDataCapability.syncTrackingAndSelf(entity);
             }
         });
     }

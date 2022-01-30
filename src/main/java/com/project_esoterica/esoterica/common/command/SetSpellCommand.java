@@ -31,7 +31,7 @@ public class SetSpellCommand {
                                                 SpellType result = SpellTypeRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
                                                 int slot = context.getArgument("slot", Integer.class);
                                                 p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));
-                                                PlayerDataCapability.sync(target);
+                                                PlayerDataCapability.syncTrackingAndSelf(target);
                                                 source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("set_spell_success")), true);
                                             });
                                             return 1;

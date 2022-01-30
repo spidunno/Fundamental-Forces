@@ -37,7 +37,7 @@ public class MeteorFireInstance {
         if (!entity.level.isClientSide && entity.getRemainingFireTicks() > 0)
         {
             remainingTicks = 0;
-            EntityDataCapability.sync(entity);
+            EntityDataCapability.syncTrackingAndSelf(entity);
         }
         if (entity.fireImmune()) {
             remainingTicks -=4;

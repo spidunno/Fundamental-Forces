@@ -36,7 +36,7 @@ public class SpellTypeRegistry {
     public static final SpellType AIR_BOLT = registerSpellType(new ProjectileSpell("air_bolt", ElementTypeRegistry.AIR));
     public static final SpellType AIR_ORB = registerSpellType(new BlockSpell("air_orb", ()->Blocks.DIAMOND_BLOCK));
     public static final SpellType AIR_WALL = registerSpellType(new SpellType("air_wall"));
-    public static final SpellType AIR_WAVE = registerSpellType(new SpellType("air_wall"));
+    public static final SpellType AIR_WAVE = registerSpellType(new SpellType("air_wave"));
 
     private static SpellType registerSpellType(SpellType spellType) {
         SPELL_TYPES.put(spellType.id, spellType);
