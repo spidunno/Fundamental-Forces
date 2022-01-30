@@ -47,6 +47,8 @@ public class SpellTypeRegistry {
     public static final SpellType ROCK_WALL = registerSpellType(new SpellType("rock_wall"));
     public static final SpellType EARTH_WAVE = registerSpellType(new SpellType("earth_wave"));
     public static final SpellType ROCKBOMB = registerSpellType(new SpellType("rockbomb"));
+    public static final SpellType STALAGMITE = registerSpellType(new SpellType("stalagmite"));
+    public static final SpellType EARTHQUAKE = registerSpellType(new SpellType("earthquake"));
 
     public static final SpellType AIR_BOLT = registerSpellType(new ProjectileSpell("air_bolt", ElementTypeRegistry.AIR));
     public static final SpellType AIR_ORB = registerSpellType(new BlockSpell("air_orb", ()->Blocks.DIAMOND_BLOCK));
