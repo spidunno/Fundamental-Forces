@@ -33,6 +33,7 @@ public class ClientRuntimeEvents {
                 Camera camera = minecraft.gameRenderer.getMainCamera();
                 WorldEventManager.clientWorldTick(minecraft.level);
                 ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
+                SpellHotbarHandler.ClientOnly.clientTick(event);
             }
         }
     }

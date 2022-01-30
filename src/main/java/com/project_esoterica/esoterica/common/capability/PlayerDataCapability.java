@@ -4,7 +4,7 @@ import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataPa
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbar;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbarHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -30,7 +30,7 @@ public class PlayerDataCapability implements SimpleCapability {
     });
 
     public boolean firstTimeJoin;
-    public SpellHotbarHandler hotbarHandler = new SpellHotbarHandler(new PlayerSpellHotbar(9));
+    public SpellHotbarHandler hotbarHandler = new SpellHotbarHandler(new SpellHotbar(9));
 
     public PlayerDataCapability() {
     }

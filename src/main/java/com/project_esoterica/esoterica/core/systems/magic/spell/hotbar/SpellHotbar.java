@@ -4,12 +4,12 @@ import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 
-public abstract class AbstractSpellHotbar {
+public class SpellHotbar {
     public int selectedSlot;
     public final int size;
     public NonNullList<SpellInstance> spells;
 
-    protected AbstractSpellHotbar(int size) {
+    public SpellHotbar(int size) {
         this.size = size;
         this.spells = NonNullList.withSize(size, SpellInstance.EMPTY);
     }

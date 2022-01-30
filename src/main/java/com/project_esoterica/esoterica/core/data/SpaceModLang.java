@@ -74,6 +74,8 @@ public class SpaceModLang extends LanguageProvider {
 
         add("itemGroup." + MODID, "Empirical Esoterica");
 
+        addKey("swapHotbar", "Swap Hotbar");
+
         addOption("screenshake_intensity", "Screenshake Intensity");
         addOptionTooltip("screenshake_intensity", "Controls how much screenshake is applied to your screen.");
 
@@ -104,6 +106,14 @@ public class SpaceModLang extends LanguageProvider {
 
     public static String getOption(String option) {
         return "options." + MODID + "." + option;
+    }
+
+    public void addKey(String key, String result) {
+        addKey(getKey(key), result);
+    }
+
+    public static String getKey(String key) {
+        return "key." + MODID + "." + key;
     }
 
     public void addOptionTooltip(String option, String result) {

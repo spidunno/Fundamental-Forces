@@ -23,13 +23,13 @@ public class SetSpellCommand {
                 .requires(cs -> cs.hasPermission(2))
                 .then(Commands.argument("type", new SpellTypeArgumentType())
                         .then(Commands.argument("target", EntityArgument.player())
-                                .then(Commands.argument("slot", IntegerArgumentType.integer(0, 8))
+                                .then(Commands.argument("slot", IntegerArgumentType.integer(1, 9))
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             PlayerDataCapability.getCapability(target).ifPresent(p -> {
                                                 SpellType result = SpellTypeRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
-                                                int slot = context.getArgument("slot", Integer.class);
+                                                int slot = context.getArgument("slot", Integer.class)-1;
                                                 p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));
                                                 PlayerDataCapability.syncTrackingAndSelf(target);
                                                 source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("set_spell_success")), true);
