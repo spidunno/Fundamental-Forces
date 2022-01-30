@@ -7,7 +7,6 @@ import net.minecraft.resources.ResourceLocation;
 public class SpellType {
 
     public final String id;
-    public boolean shouldRender = true;
     public SpellType(String id) {
         this.id = id;
     }
@@ -31,10 +30,5 @@ public class SpellType {
 
     public ResourceLocation getBackgroundLocation() {
         return DataHelper.prefix("textures/spell/background/" + id + "_background.png");
-    }
-
-    public SpellType disableRendering() {
-        this.shouldRender = false;
-        return this;
     }
 }

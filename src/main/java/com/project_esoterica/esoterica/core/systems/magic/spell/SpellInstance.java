@@ -16,11 +16,15 @@ public class SpellInstance {
         type.cast(this);
     }
 
+    public boolean isEmpty()
+    {
+        return this.type.equals(SpellTypeRegistry.EMPTY);
+    }
     public CompoundTag serializeNBT(CompoundTag tag) {
         return type.serializeNBT(this, tag);
     }
 
     public static SpellInstance deserializeNBT(CompoundTag tag) {
-        return SpellTypeRegistry.SPELL_TYPES.getOrDefault(tag.getString("id"), SpellTypeRegistry.EMPTY).deserializeNBT(tag);
+        return SpellTypeRegistry.SPELL_TYPES.get(tag.getString("id")).deserializeNBT(tag);
     }
 }

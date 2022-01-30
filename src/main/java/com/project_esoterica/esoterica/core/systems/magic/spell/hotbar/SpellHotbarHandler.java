@@ -62,7 +62,7 @@ public class SpellHotbarHandler {
                     for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++)
                     {
                         SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
-                        if (instance.type.shouldRender) {
+                        if (!instance.isEmpty()) {
                             ResourceLocation background = instance.type.getBackgroundLocation();
                             ResourceLocation icon = instance.type.getIconLocation();
                             RenderSystem.setShaderTexture(0, background);

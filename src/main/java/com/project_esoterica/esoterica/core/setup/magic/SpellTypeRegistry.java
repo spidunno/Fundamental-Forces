@@ -11,7 +11,7 @@ public class SpellTypeRegistry {
 
     public static final HashMap<String, SpellType> SPELL_TYPES = new HashMap<>();
 
-    public static final SpellType EMPTY = registerSpellType(new SpellType("empty").disableRendering());
+    public static final SpellType EMPTY = registerSpellType(new SpellType("empty"));
 
     public static final SpellType FORCE_BOLT = registerSpellType(new ProjectileSpell("force_bolt", ElementTypeRegistry.FORCE));
     public static final SpellType FORCE_ORB = registerSpellType(new BlockSpell("force_orb", ()->Blocks.DIAMOND_BLOCK));
