@@ -5,8 +5,8 @@ import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataSe
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbarHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,7 +31,7 @@ public class PlayerDataCapability implements SimpleCapability {
     });
 
     public boolean firstTimeJoin;
-    public SpellHotbarHandler hotbarHandler = new SpellHotbarHandler(new SpellHotbar(9));
+    public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
 
     public PlayerDataCapability() {
     }
@@ -51,13 +51,21 @@ public class PlayerDataCapability implements SimpleCapability {
             }
         }
     }
-
     public static void syncPlayerCapability(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Player player) {
             if (player.level instanceof ServerLevel) {
                 syncTracking(player);
             }
         }
+    }
+    public static void playerClone(PlayerEvent.Clone event)
+    {
+        event.getOriginal().revive();
+        PlayerDataCapability.getCapability(event.getOriginal()).ifPresent(o -> PlayerDataCapability.getCapability(event.getPlayer()).ifPresent(c -> {
+            CompoundTag tag = o.serializeNBT();
+            c.deserializeNBT(tag);
+            float f = 0;
+        }));
     }
 
     @Override

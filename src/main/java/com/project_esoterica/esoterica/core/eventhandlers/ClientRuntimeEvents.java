@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbarHandler;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
@@ -22,6 +22,7 @@ import static com.project_esoterica.esoterica.core.setup.client.OptionsRegistry.
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {
+
     @SubscribeEvent
     public static void clientTick(TickEvent.ClientTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
@@ -33,7 +34,7 @@ public class ClientRuntimeEvents {
                 Camera camera = minecraft.gameRenderer.getMainCamera();
                 WorldEventManager.clientWorldTick(minecraft.level);
                 ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
-                SpellHotbarHandler.ClientOnly.clientTick(event);
+                PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
             }
         }
     }
@@ -54,12 +55,14 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderBlockOverlay(RenderBlockOverlayEvent event) {
     }
+
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
-        SpellHotbarHandler.ClientOnly.moveOverlays(event);
+        PlayerSpellHotbarHandler.ClientOnly.moveOverlays(event);
     }
+
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
-        SpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
+        PlayerSpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
     }
 }

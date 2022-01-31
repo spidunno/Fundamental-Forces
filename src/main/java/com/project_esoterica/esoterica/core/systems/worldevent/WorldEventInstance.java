@@ -13,7 +13,7 @@ import java.util.UUID;
 public abstract class WorldEventInstance {
     public UUID uuid;
     public String type;
-    public boolean invalidated;
+    public boolean discarded;
 
     public WorldEventInstance(WorldEventType type) {
         this.uuid = UUID.randomUUID();
@@ -29,7 +29,7 @@ public abstract class WorldEventInstance {
     }
 
     public void end(ServerLevel level) {
-        invalidated = true;
+        discarded = true;
     }
 
     public boolean existsOnClient()
@@ -53,19 +53,19 @@ public abstract class WorldEventInstance {
     }
 
     public void clientEnd(Level level) {
-        invalidated = true;
+        discarded = true;
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putUUID("uuid", uuid);
         tag.putString("type", type);
-        tag.putBoolean("invalidated", invalidated);
+        tag.putBoolean("discarded", discarded);
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
         uuid = tag.getUUID("uuid");
         type = tag.getString("type");
-        invalidated = tag.getBoolean("invalidated");
+        discarded = tag.getBoolean("discarded");
     }
 }

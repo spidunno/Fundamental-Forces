@@ -3,21 +3,29 @@ package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
+import com.project_esoterica.esoterica.common.packets.RightClickEmptyPacket;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.setup.client.KeyBindingRegistry;
+import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldown;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.network.PacketDistributor;
 
-public class SpellHotbarHandler {
+import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
+
+public class PlayerSpellHotbarHandler {
     public final SpellHotbar spellHotbar;
     public boolean open;
     public boolean unlockedSpellHotbar = true;
@@ -25,24 +33,58 @@ public class SpellHotbarHandler {
     public int cachedSlot;
     public boolean updateCachedSlot;
 
-    public SpellHotbarHandler(SpellHotbar spellHotbar) {
+    public PlayerSpellHotbarHandler(SpellHotbar spellHotbar) {
         this.spellHotbar = spellHotbar;
     }
 
+    public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
+            Player player = event.getPlayer();
+            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
+                selectedSpell.castBlock(event.getPlayer(), event.getHand(), event.getPos(), event.getHitVec());
+            });
+        }
+    }
+
+    public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
+        if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
+            Player player = event.getPlayer();
+            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
+                if (!SpellCooldown.isOnCooldown(selectedSpell.cooldown)) {
+                    INSTANCE.send(PacketDistributor.SERVER.noArg(), new RightClickEmptyPacket());
+                }
+            });
+        }
+    }
+
+    public static void serverSidePlayerInteract(ServerPlayer player) {
+        PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
+            selectedSpell.cast(player);
+        });
+    }
+
+    public static void tick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        PlayerDataCapability.getCapability(player).ifPresent(c -> c.hotbarHandler.spellHotbar.spells.forEach(SpellInstance::tick));
+    }
+
     public CompoundTag serializeNBT(CompoundTag tag) {
-        tag.putBoolean("open", open);
         if (unlockedSpellHotbar) {
             tag.putBoolean("unlockedSpellHotbar", true);
+            tag.putBoolean("spellHotbarOpen", open);
             spellHotbar.serializeNBT(tag);
         }
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
-        open = tag.getBoolean("open");
-        animationProgress = open ? 1 : 0;
         if (tag.contains("unlockedSpellHotbar")) {
             unlockedSpellHotbar = true;
+            open = tag.getBoolean("spellHotbarOpen");
+            animationProgress = open ? 1 : 0;
             spellHotbar.deserializeNBT(tag);
         }
     }
@@ -50,8 +92,7 @@ public class SpellHotbarHandler {
     public static class ClientOnly {
         private static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
 
-        public static void moveOverlays(RenderGameOverlayEvent.Pre event)
-        {
+        public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
@@ -63,10 +104,11 @@ public class SpellHotbarHandler {
                 ((ForgeIngameGui) Minecraft.getInstance().gui).right_height += offset;
             }
         }
+
         public static void clientTick(TickEvent.ClientTickEvent event) {
             Player player = Minecraft.getInstance().player;
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellHotbarHandler handler = c.hotbarHandler;
+                PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
                 if (handler.updateCachedSlot) {
@@ -78,7 +120,7 @@ public class SpellHotbarHandler {
                     }
                 }
                 if (KeyBindingRegistry.swapHotbar.consumeClick()) {
-                    SpellHotbarHandler.ClientOnly.swapHotbar();
+                    PlayerSpellHotbarHandler.ClientOnly.swapHotbar();
                 }
             });
         }
@@ -86,7 +128,7 @@ public class SpellHotbarHandler {
         public static void swapHotbar() {
             Player player = Minecraft.getInstance().player;
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellHotbarHandler handler = c.hotbarHandler;
+                PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
                 handler.updateCachedSlot = true;
                 PlayerDataCapability.syncServer(player);

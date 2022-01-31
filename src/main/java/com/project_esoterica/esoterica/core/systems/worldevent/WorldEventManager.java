@@ -21,6 +21,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.ArrayList;
@@ -77,45 +79,51 @@ public class WorldEventManager {
             });
         }
     }
-    public static void playerJoin(Level level, Player player) {
-        PlayerDataCapability.getCapability(player).ifPresent(capability -> {
-            if (level instanceof ServerLevel serverLevel) {
-                WorldDataCapability.getCapability(serverLevel).ifPresent(worldCapability -> {
-                    if (player instanceof ServerPlayer serverPlayer) {
-                        for (WorldEventInstance instance : worldCapability.ACTIVE_WORLD_EVENTS) {
-                            if (instance.existsOnClient()) {
-                                instance.addToClient(serverPlayer);
+    public static void playerJoin(EntityJoinWorldEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            if (player.level instanceof ServerLevel level) {
+                PlayerDataCapability.getCapability(player).ifPresent(capability -> {
+                    WorldDataCapability.getCapability(level).ifPresent(worldCapability -> {
+                        if (player instanceof ServerPlayer serverPlayer) {
+                            for (WorldEventInstance instance : worldCapability.ACTIVE_WORLD_EVENTS) {
+                                if (instance.existsOnClient()) {
+                                    instance.addToClient(serverPlayer);
+                                }
                             }
+                        }
+                    });
+                    if (ScheduledStarfallEvent.areStarfallsAllowed(level)) {
+                        if (!capability.firstTimeJoin) {
+                            addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
+                        } else {
+                            ScheduledStarfallEvent.addMissingStarfall(level, player);
                         }
                     }
                 });
-                if (ScheduledStarfallEvent.areStarfallsAllowed(serverLevel)) {
-                    if (!capability.firstTimeJoin) {
-                        addWorldEvent(serverLevel, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(serverLevel).looping().determined());
-                    } else {
-                        ScheduledStarfallEvent.addMissingStarfall(serverLevel, player);
-                    }
-                }
             }
-        });
+        }
     }
 
-    public static void serverWorldTick(ServerLevel level) {
-        WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
-                instance.tick(level);
+    public static void serverWorldTick(TickEvent.WorldTickEvent event) {
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            if (event.world instanceof ServerLevel serverLevel) {
+                WorldDataCapability.getCapability(serverLevel).ifPresent(capability -> {
+                    for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+                        instance.tick(serverLevel);
+                    }
+                    capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.discarded);
+                    capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
+                    capability.INBOUND_WORLD_EVENTS.clear();
+                });
             }
-            capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.invalidated);
-            capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
-            capability.INBOUND_WORLD_EVENTS.clear();
-        });
+        }
     }
     public static void clientWorldTick(Level level) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
                 instance.clientTick(level);
             }
-            capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.invalidated);
+            capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.discarded);
             capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
             capability.INBOUND_WORLD_EVENTS.clear();
         });

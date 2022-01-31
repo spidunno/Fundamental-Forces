@@ -1,27 +1,27 @@
 package com.project_esoterica.esoterica.core.systems.magic.spell;
 
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class SpellType {
 
     public final String id;
+
     public SpellType(String id) {
         this.id = id;
     }
 
-    public void cast(SpellInstance instance) {
-
+    public void cast(SpellInstance instance, Player player, InteractionHand hand, BlockPos pos, BlockHitResult hitVec) {
+        player.sendMessage(new TextComponent(instance.type.id+"-block"), player.getUUID());
     }
-
-    public CompoundTag serializeNBT(SpellInstance instance, CompoundTag tag) {
-        tag.putString("id", id);
-        return tag;
-    }
-
-    public SpellInstance deserializeNBT(CompoundTag tag) {
-        return new SpellInstance(this);
+    public void cast(SpellInstance instance, ServerPlayer player) {
+        player.sendMessage(new TextComponent(instance.type.id+"-air"), player.getUUID());
     }
 
     public ResourceLocation getIconLocation() {
