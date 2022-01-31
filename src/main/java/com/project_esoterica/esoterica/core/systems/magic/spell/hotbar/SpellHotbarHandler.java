@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
 
 public class SpellHotbarHandler {
@@ -49,6 +50,19 @@ public class SpellHotbarHandler {
     public static class ClientOnly {
         private static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
 
+        public static void moveOverlays(RenderGameOverlayEvent.Pre event)
+        {
+            if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
+                Minecraft minecraft = Minecraft.getInstance();
+                LocalPlayer player = minecraft.player;
+                PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+                float progress = Math.max(0, capability.hotbarHandler.animationProgress - 0.5f) * 2f;
+                float offset = progress * 4;
+
+                ((ForgeIngameGui) Minecraft.getInstance().gui).left_height += offset;
+                ((ForgeIngameGui) Minecraft.getInstance().gui).right_height += offset;
+            }
+        }
         public static void clientTick(TickEvent.ClientTickEvent event) {
             Player player = Minecraft.getInstance().player;
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
@@ -87,7 +101,7 @@ public class SpellHotbarHandler {
             return progress * 45;
         }
 
-        public static boolean moveItemHotbar(boolean reverse, float partialTicks, PoseStack poseStack) {
+        public static boolean moveVanillaUI(boolean reverse, PoseStack poseStack) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());

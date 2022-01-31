@@ -55,6 +55,10 @@ public class ClientRuntimeEvents {
     public static void renderBlockOverlay(RenderBlockOverlayEvent event) {
     }
     @SubscribeEvent
+    public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
+        SpellHotbarHandler.ClientOnly.moveOverlays(event);
+    }
+    @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         SpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
     }
