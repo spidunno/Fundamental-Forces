@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.setup;
 
 import com.project_esoterica.esoterica.common.packets.*;
+import com.project_esoterica.esoterica.common.packets.interaction.ResetRightClickDelayPacket;
 import com.project_esoterica.esoterica.common.packets.interaction.RightClickEmptyPacket;
 import com.project_esoterica.esoterica.common.packets.interaction.UpdateLeftClickPacket;
 import com.project_esoterica.esoterica.common.packets.interaction.UpdateRightClickPacket;
@@ -34,5 +35,6 @@ public class PacketRegistry {
         RightClickEmptyPacket.register(INSTANCE, index++);
         UpdateLeftClickPacket.register(INSTANCE, index++);
         UpdateRightClickPacket.register(INSTANCE, index++);
+        ResetRightClickDelayPacket.register(INSTANCE, index++);
     }
 }

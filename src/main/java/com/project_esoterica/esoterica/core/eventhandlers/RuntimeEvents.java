@@ -53,11 +53,12 @@ public class RuntimeEvents {
         PlayerSpellHotbarHandler.playerInteract(event);
 
     }
+
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
     }
+
     public static void serverSidePlayerInteract(ServerPlayer player) {
-        PlayerSpellHotbarHandler.serverSidePlayerInteract(player);
     }
 
     @SubscribeEvent

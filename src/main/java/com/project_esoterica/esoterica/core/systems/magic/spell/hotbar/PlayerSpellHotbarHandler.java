@@ -57,12 +57,6 @@ public class PlayerSpellHotbarHandler {
         }
     }
 
-    public static void serverSidePlayerInteract(ServerPlayer player) {
-        PlayerDataCapability.getCapability(player).ifPresent(c -> {
-            SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
-            selectedSpell.cast(player);
-        });
-    }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
         if (unlockedSpellHotbar) {
