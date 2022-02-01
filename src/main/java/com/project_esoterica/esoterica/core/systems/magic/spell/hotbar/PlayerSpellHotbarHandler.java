@@ -41,8 +41,8 @@ public class PlayerSpellHotbarHandler {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
             Player player = event.getPlayer();
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
-                selectedSpell.castBlock(event.getPlayer(), event.getHand(), event.getPos(), event.getHitVec());
+                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
+                selectedSpell.castBlock(event.getPlayer(), event.getPos(), event.getHitVec());
             });
         }
     }
@@ -51,7 +51,7 @@ public class PlayerSpellHotbarHandler {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
             Player player = event.getPlayer();
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
+                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
                 if (!SpellCooldown.isOnCooldown(selectedSpell.cooldown)) {
                     INSTANCE.send(PacketDistributor.SERVER.noArg(), new RightClickEmptyPacket());
                 }
@@ -61,7 +61,7 @@ public class PlayerSpellHotbarHandler {
 
     public static void serverSidePlayerInteract(ServerPlayer player) {
         PlayerDataCapability.getCapability(player).ifPresent(c -> {
-            SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell();
+            SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
             selectedSpell.cast(player);
         });
     }

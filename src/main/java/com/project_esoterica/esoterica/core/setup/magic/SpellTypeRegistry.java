@@ -1,7 +1,8 @@
 package com.project_esoterica.esoterica.core.setup.magic;
 
-import com.project_esoterica.esoterica.common.magic.spell.BlockSpell;
-import com.project_esoterica.esoterica.common.magic.spell.ProjectileSpell;
+import com.project_esoterica.esoterica.common.magic.BlockSpell;
+import com.project_esoterica.esoterica.common.magic.ProjectileSpell;
+import com.project_esoterica.esoterica.common.magic.spell.tier1.ForceOrb;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellType;
 import net.minecraft.world.level.block.Blocks;
 
@@ -14,7 +15,7 @@ public class SpellTypeRegistry {
     public static final SpellType EMPTY = registerSpellType(new SpellType("empty"));
 
     public static final SpellType FORCE_BOLT = registerSpellType(new ProjectileSpell("force_bolt", ElementTypeRegistry.FORCE));
-    public static final SpellType FORCE_ORB = registerSpellType(new BlockSpell("force_orb", ()->Blocks.DIAMOND_BLOCK));
+    public static final SpellType FORCE_ORB = registerSpellType(new ForceOrb());
     public static final SpellType FORCE_WALL = registerSpellType(new SpellType("force_wall"));
     public static final SpellType FORCE_WAVE = registerSpellType(new SpellType("force_wave"));
     public static final SpellType PERSONAL_SHIELD = registerSpellType(new SpellType("personal_shield"));

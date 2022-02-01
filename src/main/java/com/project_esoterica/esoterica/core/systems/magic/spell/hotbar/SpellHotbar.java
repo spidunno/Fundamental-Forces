@@ -3,9 +3,9 @@ package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 
 public class SpellHotbar {
-    public int selectedSlot;
     public final int size;
     public NonNullList<SpellInstance> spells;
 
@@ -14,8 +14,8 @@ public class SpellHotbar {
         this.spells = NonNullList.withSize(size, SpellInstance.EMPTY);
     }
 
-    public SpellInstance getSelectedSpell() {
-        return spells.get(selectedSlot);
+    public SpellInstance getSelectedSpell(Player player) {
+        return spells.get(player.getInventory().selected);
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
