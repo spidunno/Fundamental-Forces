@@ -1,6 +1,9 @@
 package com.project_esoterica.esoterica.core.setup;
 
 import com.project_esoterica.esoterica.common.packets.*;
+import com.project_esoterica.esoterica.common.packets.interaction.RightClickEmptyPacket;
+import com.project_esoterica.esoterica.common.packets.interaction.UpdateLeftClickPacket;
+import com.project_esoterica.esoterica.common.packets.interaction.UpdateRightClickPacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.PositionedScreenshakePacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.ScreenshakePacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,5 +32,7 @@ public class PacketRegistry {
         SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
         SyncEntityCapabilityDataPacket.register(INSTANCE, index++);
         RightClickEmptyPacket.register(INSTANCE, index++);
+        UpdateLeftClickPacket.register(INSTANCE, index++);
+        UpdateRightClickPacket.register(INSTANCE, index++);
     }
 }

@@ -4,7 +4,6 @@ import com.project_esoterica.esoterica.core.setup.magic.SpellTypeRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class SpellInstance {
@@ -23,14 +22,14 @@ public class SpellInstance {
         this.cooldown = cooldown;
     }
 
-    public void castBlock(Player player, BlockPos pos, BlockHitResult hitVec) {
+    public void castBlock(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
         if (!SpellCooldown.isOnCooldown(cooldown)) {
             type.castBlock(this, player, pos, hitVec);
         }
     }
     public void cast(ServerPlayer player) {
         if (!SpellCooldown.isOnCooldown(cooldown)) {
-            type.castBlock(this, player);
+            type.cast(this, player);
         }
     }
 

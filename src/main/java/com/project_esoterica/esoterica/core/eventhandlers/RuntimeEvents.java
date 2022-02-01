@@ -44,7 +44,8 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
-        PlayerSpellHotbarHandler.tick(event);
+        PlayerSpellHotbarHandler.playerTick(event);
+        PlayerDataCapability.playerTick(event);
     }
 
     @SubscribeEvent
@@ -54,8 +55,6 @@ public class RuntimeEvents {
     }
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
-        PlayerSpellHotbarHandler.playerInteract(event);
-
     }
     public static void serverSidePlayerInteract(ServerPlayer player) {
         PlayerSpellHotbarHandler.serverSidePlayerInteract(player);

@@ -2,11 +2,14 @@ package com.project_esoterica.esoterica.common.capability;
 
 import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataPacket;
 import com.project_esoterica.esoterica.common.packets.SyncPlayerCapabilityDataServerPacket;
+import com.project_esoterica.esoterica.common.packets.interaction.UpdateLeftClickPacket;
+import com.project_esoterica.esoterica.common.packets.interaction.UpdateRightClickPacket;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -17,6 +20,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
@@ -31,6 +35,11 @@ public class PlayerDataCapability implements SimpleCapability {
     });
 
     public boolean firstTimeJoin;
+    public boolean rightClickHeld;
+    public int rightClickTime;
+    public boolean leftClickHeld;
+    public int leftClickTime;
+
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
 
     public PlayerDataCapability() {
@@ -51,6 +60,7 @@ public class PlayerDataCapability implements SimpleCapability {
             }
         }
     }
+
     public static void syncPlayerCapability(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Player player) {
             if (player.level instanceof ServerLevel) {
@@ -58,13 +68,19 @@ public class PlayerDataCapability implements SimpleCapability {
             }
         }
     }
-    public static void playerClone(PlayerEvent.Clone event)
-    {
+
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        PlayerDataCapability.getCapability(event.player).ifPresent(c ->
+        {
+            c.rightClickTime = c.rightClickHeld ? c.rightClickTime + 1 : 0;
+            c.leftClickTime = c.leftClickHeld ? c.leftClickTime + 1 : 0;
+        });
+    }
+
+    public static void playerClone(PlayerEvent.Clone event) {
         event.getOriginal().revive();
         PlayerDataCapability.getCapability(event.getOriginal()).ifPresent(o -> PlayerDataCapability.getCapability(event.getPlayer()).ifPresent(c -> {
-            CompoundTag tag = o.serializeNBT();
-            c.deserializeNBT(tag);
-            float f = 0;
+            c.deserializeNBT(o.serializeNBT());
         }));
     }
 
@@ -104,5 +120,24 @@ public class PlayerDataCapability implements SimpleCapability {
 
     public static LazyOptional<PlayerDataCapability> getCapability(Player player) {
         return player.getCapability(CAPABILITY);
+    }
+
+    public static class ClientOnly {
+        public static void clientTick(TickEvent.ClientTickEvent event) {
+            Minecraft minecraft = Minecraft.getInstance();
+            Player player = minecraft.player;
+            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                boolean left = minecraft.options.keyAttack.isDown();
+                boolean right = minecraft.options.keyUse.isDown();
+                if (left != c.leftClickHeld) {
+                    c.leftClickHeld = left;
+                    INSTANCE.send(PacketDistributor.SERVER.noArg(), new UpdateLeftClickPacket(c.leftClickHeld));
+                }
+                if (right != c.rightClickHeld) {
+                    c.rightClickHeld = right;
+                    INSTANCE.send(PacketDistributor.SERVER.noArg(), new UpdateRightClickPacket(c.rightClickHeld));
+                }
+            });
+        }
     }
 }

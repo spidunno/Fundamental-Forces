@@ -1,8 +1,7 @@
-package com.project_esoterica.esoterica.common.packets;
+package com.project_esoterica.esoterica.common.packets.interaction;
 
 import com.project_esoterica.esoterica.core.eventhandlers.RuntimeEvents;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.InteractionHand;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.simple.SimpleChannel;
 

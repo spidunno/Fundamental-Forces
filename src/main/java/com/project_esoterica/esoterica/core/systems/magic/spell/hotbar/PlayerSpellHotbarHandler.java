@@ -3,10 +3,8 @@ package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
-import com.project_esoterica.esoterica.common.packets.RightClickEmptyPacket;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.setup.client.KeyBindingRegistry;
-import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldown;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
@@ -21,9 +19,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.network.PacketDistributor;
-
-import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
 
 public class PlayerSpellHotbarHandler {
     public final SpellHotbar spellHotbar;
@@ -39,21 +34,24 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
-            Player player = event.getPlayer();
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
-                selectedSpell.castBlock(event.getPlayer(), event.getPos(), event.getHitVec());
-            });
+            if (event.getPlayer() instanceof ServerPlayer player) {
+                PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                    if (c.hotbarHandler.open) {
+                        SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
+                        selectedSpell.castBlock(player, event.getPos(), event.getHitVec());
+                    }
+                });
+            }
         }
     }
 
-    public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
-        if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
-            Player player = event.getPlayer();
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        if (event.player instanceof ServerPlayer player) {
             PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
-                if (!SpellCooldown.isOnCooldown(selectedSpell.cooldown)) {
-                    INSTANCE.send(PacketDistributor.SERVER.noArg(), new RightClickEmptyPacket());
+                c.hotbarHandler.spellHotbar.spells.forEach(SpellInstance::tick);
+                if (c.hotbarHandler.open && c.rightClickHeld) {
+                    SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
+                    selectedSpell.cast(player);
                 }
             });
         }
@@ -64,11 +62,6 @@ public class PlayerSpellHotbarHandler {
             SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
             selectedSpell.cast(player);
         });
-    }
-
-    public static void tick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        PlayerDataCapability.getCapability(player).ifPresent(c -> c.hotbarHandler.spellHotbar.spells.forEach(SpellInstance::tick));
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {

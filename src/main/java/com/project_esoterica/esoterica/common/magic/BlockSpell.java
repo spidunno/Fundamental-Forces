@@ -3,8 +3,8 @@ package com.project_esoterica.esoterica.common.magic;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -18,7 +18,7 @@ public class BlockSpell extends SpellType {
     }
 
     @Override
-    public void castBlock(SpellInstance instance, Player player, BlockPos pos, BlockHitResult hitVec) {
+    public void castBlock(SpellInstance instance, ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
         player.level.setBlockAndUpdate(pos.relative(hitVec.getDirection()), blockSupplier.get().defaultBlockState());
         player.swing(InteractionHand.MAIN_HAND,true);
     }

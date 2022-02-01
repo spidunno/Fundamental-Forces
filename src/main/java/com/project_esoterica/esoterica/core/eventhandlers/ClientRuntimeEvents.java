@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
 import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
@@ -35,6 +36,7 @@ public class ClientRuntimeEvents {
                 WorldEventManager.clientWorldTick(minecraft.level);
                 ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
                 PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
+                PlayerDataCapability.ClientOnly.clientTick(event);
             }
         }
     }
