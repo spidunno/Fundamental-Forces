@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.setup.client.KeyBindingRegistry;
+import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldownData;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,7 @@ public class PlayerSpellHotbarHandler {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
                         selectedSpell.castBlock(player, event.getPos(), event.getHitVec());
+                        selectedSpell.castCommon(player);
                     }
                 });
             }
@@ -46,15 +48,23 @@ public class PlayerSpellHotbarHandler {
     }
 
     public static void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player instanceof ServerPlayer player) {
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
-                c.hotbarHandler.spellHotbar.spells.forEach(SpellInstance::tick);
-                if (c.hotbarHandler.open && c.rightClickHeld) {
-                    SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
-                    selectedSpell.cast(player);
+        Player player = event.player;
+        PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            PlayerSpellHotbarHandler handler = c.hotbarHandler;
+            for (int i = 0; i < handler.spellHotbar.spells.size(); i++) {
+                int selected = handler.spellHotbar.getSelectedSpellIndex(player);
+                SpellInstance instance = handler.spellHotbar.spells.get(i);
+                instance.selected = i == selected;
+                instance.baseTick();
+            }
+            if (event.player instanceof ServerPlayer serverPlayer) {
+                if (handler.open && c.rightClickHeld) {
+                    SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
+                    selectedSpell.cast(serverPlayer);
+                    selectedSpell.castCommon(serverPlayer);
                 }
-            });
-        }
+            }
+        });
     }
 
 
@@ -157,9 +167,9 @@ public class PlayerSpellHotbarHandler {
                         poseStack.translate(0, offset, 0);
                         RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
                         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                        RenderUtilities.blit(poseStack, left, top, 218, 28, 1, 1, 256f);
+                        RenderUtilities.blit(poseStack, left, top, 218, 28, 0, 0, 256f);
 
-                        RenderUtilities.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 1, 30, 256f);
+                        RenderUtilities.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 0, 28, 256f);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
@@ -171,6 +181,23 @@ public class PlayerSpellHotbarHandler {
                                 RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
                             }
                         }
+                        RenderSystem.enableBlend();
+                        RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
+                        for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
+                            SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
+                            if (!instance.isEmpty() && instance.getFade() > 0) {
+                                RenderSystem.setShaderColor(1f, 1f, 1f, instance.getFade());
+                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 28, 28, 256f);
+                            }
+                            if (SpellCooldownData.isOnCooldown(instance.cooldown)) {
+                                int cooldownHeight = (int) (22 * instance.cooldown.getPercentage());
+                                int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
+                                RenderSystem.setShaderColor(1f, 1f, 1f, 0.5f);
+                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, cooldownHeight, 28, 28 + cooldownOffset, 256f);
+                            }
+                        }
+                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+                        RenderSystem.disableBlend();
                         poseStack.popPose();
                     }
                 });

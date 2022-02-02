@@ -1,6 +1,7 @@
 package com.project_esoterica.esoterica.common.magic;
 
 import com.project_esoterica.esoterica.common.packets.interaction.ResetRightClickDelayPacket;
+import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldownData;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellType;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,7 @@ public class BlockSpell extends SpellType {
 
     @Override
     public void castBlock(SpellInstance instance, ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
+        instance.cooldown = new SpellCooldownData(100);
         player.level.setBlockAndUpdate(pos.relative(hitVec.getDirection()), blockSupplier.get().defaultBlockState());
         INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new ResetRightClickDelayPacket());
         player.swing(InteractionHand.MAIN_HAND,true);

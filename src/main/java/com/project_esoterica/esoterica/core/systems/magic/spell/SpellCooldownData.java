@@ -2,12 +2,12 @@ package com.project_esoterica.esoterica.core.systems.magic.spell;
 
 import net.minecraft.nbt.CompoundTag;
 
-public class SpellCooldown {
+public class SpellCooldownData {
     public final int duration;
     public int timer;
     public boolean discarded;
 
-    public SpellCooldown(int duration) {
+    public SpellCooldownData(int duration) {
         this.duration = duration;
     }
 
@@ -33,12 +33,13 @@ public class SpellCooldown {
         }
         return tag;
     }
-    public static boolean isOnCooldown(SpellCooldown cooldown)
-    {
+
+    public static boolean isOnCooldown(SpellCooldownData cooldown) {
         return cooldown != null && !cooldown.discarded;
     }
-    public static SpellCooldown deserializeNBT(CompoundTag tag) {
-        SpellCooldown cooldown = new SpellCooldown(tag.getInt("duration"));
+
+    public static SpellCooldownData deserializeNBT(CompoundTag tag) {
+        SpellCooldownData cooldown = new SpellCooldownData(tag.getInt("duration"));
         cooldown.timer = tag.getInt("timer");
         return cooldown;
     }

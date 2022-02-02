@@ -15,7 +15,10 @@ public class SpellHotbar {
     }
 
     public SpellInstance getSelectedSpell(Player player) {
-        return spells.get(player.getInventory().selected);
+        return spells.get(getSelectedSpellIndex(player));
+    }
+    public int getSelectedSpellIndex(Player player) {
+        return player.getInventory().selected;
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
