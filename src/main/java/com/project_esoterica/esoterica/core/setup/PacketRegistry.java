@@ -7,6 +7,7 @@ import com.project_esoterica.esoterica.common.packets.interaction.UpdateLeftClic
 import com.project_esoterica.esoterica.common.packets.interaction.UpdateRightClickPacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.PositionedScreenshakePacket;
 import com.project_esoterica.esoterica.common.packets.screenshake.ScreenshakePacket;
+import com.project_esoterica.esoterica.common.packets.spell.UpdateCooldownPacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -36,5 +37,6 @@ public class PacketRegistry {
         UpdateLeftClickPacket.register(INSTANCE, index++);
         UpdateRightClickPacket.register(INSTANCE, index++);
         ResetRightClickDelayPacket.register(INSTANCE, index++);
+        UpdateCooldownPacket.register(INSTANCE, index++);
     }
 }

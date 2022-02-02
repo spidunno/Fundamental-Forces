@@ -1,17 +1,24 @@
 package com.project_esoterica.esoterica.core.systems.magic.spell;
 
+import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
+import com.project_esoterica.esoterica.common.packets.spell.UpdateCooldownPacket;
 import com.project_esoterica.esoterica.core.setup.magic.SpellTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.easing.Easing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.network.PacketDistributor;
+
+import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
 
 public class SpellInstance {
 
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
     public static final SpellInstance EMPTY = new SpellInstance(SpellTypeRegistry.EMPTY);
     public final SpellType type;
+    public SpellCooldownData oldCooldown;
     public SpellCooldownData cooldown;
     public boolean selected;
     public int selectedTime;
@@ -42,10 +49,10 @@ public class SpellInstance {
         }
     }
 
-    public void tick() {
+    public void tick(Level level) {
     }
 
-    public void baseTick() {
+    public void baseTick(Level level) {
         if (SpellCooldownData.isOnCooldown(cooldown)) {
             cooldown.tick();
         }
@@ -58,7 +65,13 @@ public class SpellInstance {
         {
             selectedFadeAnimation--;
         }
-        tick();
+        tick(level);
+    }
+    public void playerTick(ServerPlayer player) {
+        if (cooldown != null && !cooldown.equals(oldCooldown)) {
+            PlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
+        }
+        oldCooldown = cooldown;
     }
 
     public float getFade()

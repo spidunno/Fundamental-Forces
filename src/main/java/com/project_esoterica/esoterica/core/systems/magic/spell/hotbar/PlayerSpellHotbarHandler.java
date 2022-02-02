@@ -55,7 +55,10 @@ public class PlayerSpellHotbarHandler {
                 int selected = handler.spellHotbar.getSelectedSpellIndex(player);
                 SpellInstance instance = handler.spellHotbar.spells.get(i);
                 instance.selected = i == selected;
-                instance.baseTick();
+                instance.baseTick(player.level);
+                if (player instanceof ServerPlayer serverPlayer) {
+                    instance.playerTick(serverPlayer);
+                }
             }
             if (event.player instanceof ServerPlayer serverPlayer) {
                 if (handler.open && c.rightClickHeld) {
@@ -190,10 +193,9 @@ public class PlayerSpellHotbarHandler {
                                 RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 28, 28, 256f);
                             }
                             if (SpellCooldownData.isOnCooldown(instance.cooldown)) {
-                                int cooldownHeight = (int) (22 * instance.cooldown.getPercentage());
                                 int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
                                 RenderSystem.setShaderColor(1f, 1f, 1f, 0.5f);
-                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, cooldownHeight, 28, 28 + cooldownOffset, 256f);
+                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3+cooldownOffset, 20, 22-cooldownOffset, 28, 28 + cooldownOffset, 256f);
                             }
                         }
                         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
