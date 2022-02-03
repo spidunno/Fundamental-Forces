@@ -9,8 +9,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 
-import static com.mojang.blaze3d.vertex.DefaultVertexFormat.PARTICLE;
-import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP;
+import static com.mojang.blaze3d.vertex.DefaultVertexFormat.*;
+import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR_TEX;
 
 public class RenderTypes extends RenderStateShard{
     public RenderTypes(String p_110161_, Runnable p_110162_, Runnable p_110163_) {
@@ -22,6 +22,13 @@ public class RenderTypes extends RenderStateShard{
 
     public static RenderType createQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
         return createGenericRenderType("additive_quad", POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, ShaderRegistry.additiveTexture.shard, transparencyStateShard, resourceLocation);
+    }
+    public static RenderType createRadialNoiseQuadRenderType(ResourceLocation resourceLocation) {
+        return createGenericRenderType("radial_noise_quad", POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, ShaderRegistry.radialNoise.shard, StateShards.ADDITIVE_TRANSPARENCY, resourceLocation);
+    }
+
+    public static RenderType createRadialScatterNoiseQuadRenderType(ResourceLocation resourceLocation) {
+        return createGenericRenderType("radial_scatter_noise_quad", POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, ShaderRegistry.radialScatterNoise.shard, StateShards.ADDITIVE_TRANSPARENCY, resourceLocation);
     }
 
     public static RenderType createColorGradientQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {

@@ -3,6 +3,7 @@ package com.project_esoterica.esoterica.core.setup.block;
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.block.FlammableMeteoriteBlock;
 import com.project_esoterica.esoterica.common.block.MeteorFlameBlock;
+import com.project_esoterica.esoterica.common.block.OrbBlock;
 import com.project_esoterica.esoterica.common.block.ScorchedEarthBlock;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
@@ -41,6 +42,11 @@ public class BlockRegistry {
     public static SimpleBlockProperties SCORCHED_EARTH_PROPERTIES() {
         return new SimpleBlockProperties(Material.GRASS).sound(SoundType.GRASS).noOcclusion().strength(0.7f);
     }
+    public static SimpleBlockProperties ORB_PROPERTIES() {
+        return new SimpleBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14);
+    }
+
+    public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock(ORB_PROPERTIES()));
 
     public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock(METEOR_FIRE_PROPERTIES()));
     public static final RegistryObject<Block> ASTEROID_ROCK = BLOCKS.register("asteroid_rock", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p)-> METEOR_FIRE.get().defaultBlockState()));

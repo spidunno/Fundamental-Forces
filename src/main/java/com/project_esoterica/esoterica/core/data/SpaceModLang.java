@@ -109,7 +109,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public void addKey(String key, String result) {
-        addKey(getKey(key), result);
+        add(getKey(key), result);
     }
 
     public static String getKey(String key) {
