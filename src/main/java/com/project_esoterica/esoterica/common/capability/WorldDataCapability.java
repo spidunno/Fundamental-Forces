@@ -10,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
@@ -27,10 +28,15 @@ public class WorldDataCapability implements SimpleCapability {
     public WorldDataCapability() {
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(WorldDataCapability.class);
+    }
+
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final WorldDataCapability capability = new WorldDataCapability();
         event.addCapability(DataHelper.prefix("world_data"), new SimpleCapabilityProvider<>(WorldDataCapability.CAPABILITY, () -> capability));
     }
+
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();

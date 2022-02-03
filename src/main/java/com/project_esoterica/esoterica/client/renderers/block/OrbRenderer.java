@@ -31,6 +31,7 @@ public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
         ShaderInstance instance = ShaderRegistry.radialNoise.getInstance().get();
         instance.safeGetUniform("Speed").set(2500f);
         instance.safeGetUniform("Intensity").set(45f);
+        instance.safeGetUniform("Falloff").set(2f);
     });
     private static final ResourceLocation SECONDARY_ORB_NOISE = prefix("textures/vfx/noise/orb_noise_secondary.png");
     public static final RenderType SECONDARY_ORB_NOISE_TYPE = RenderTypes.withShaderHandler(RenderTypes.createRadialScatterNoiseQuadRenderType(SECONDARY_ORB_NOISE), () -> {
@@ -39,6 +40,7 @@ public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
         instance.safeGetUniform("Speed").set(-1500f);
         instance.safeGetUniform("ScatterPower").set(-20f);
         instance.safeGetUniform("Intensity").set(55f);
+        instance.safeGetUniform("Falloff").set(2f);
     });
     private static final ResourceLocation TRINARY_ORB_NOISE = prefix("textures/vfx/noise/orb_noise_trinary.png");
     public static final RenderType TRINARY_ORB_NOISE_TYPE = RenderTypes.withShaderHandler(RenderTypes.createRadialNoiseQuadRenderType(TRINARY_ORB_NOISE), () -> {
@@ -46,6 +48,7 @@ public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
         ShaderInstance instance = ShaderRegistry.radialNoise.getInstance().get();
         instance.safeGetUniform("Speed").set(2000f);
         instance.safeGetUniform("Intensity").set(75f);
+        instance.safeGetUniform("Falloff").set(2f);
     });
 
     @Override

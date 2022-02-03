@@ -1,5 +1,5 @@
-# Blender v3.0.0 OBJ File: 'meteor.blend' www.blender.org
 # Model by SuperAndyHero#1185 <@!317900589830897675>
+mtllib meteor.mtl
 o Cube
 v 0.001975 1.309845 -0.123434
 v 0.006751 0.282477 -0.495328
@@ -370,6 +370,7 @@ vn -0.3989 0.3713 -0.8385
 vn -0.3711 -0.5589 -0.7415
 vn -0.2346 -0.8697 -0.4343
 vn -0.4270 -0.1982 -0.8822
+usemtl mat_sample
 s 1
 f 1/1/1 48/2/2 6/3/3
 f 63/4/4 5/5/5 12/6/6

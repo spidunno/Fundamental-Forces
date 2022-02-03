@@ -11,6 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -29,6 +30,9 @@ public class EntityDataCapability implements SimpleCapability {
 
     }
 
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(EntityDataCapability.class);
+    }
     public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
         final EntityDataCapability capability = new EntityDataCapability();
         event.addCapability(DataHelper.prefix("entity_data"), new SimpleCapabilityProvider<>(EntityDataCapability.CAPABILITY, ()->capability));

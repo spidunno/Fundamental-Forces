@@ -9,6 +9,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 
@@ -22,6 +23,9 @@ public class ChunkDataCapability implements SimpleCapability {
     public int chunkChanges;
 
     public ChunkDataCapability() {
+    }
+    public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(ChunkDataCapability.class);
     }
     public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event)
     {

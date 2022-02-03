@@ -6,6 +6,7 @@ uniform float Speed;
 uniform float XFrequency;
 uniform float YFrequency;
 uniform float Intensity;
+uniform float Falloff;
 
 uniform vec4 ColorModulator;
 
@@ -26,5 +27,5 @@ void main() {
     uv = uv*rot(time+gameTime);
     uv = uv*rot(sin(time*XFrequency));
     uv = uv*rot(cos(time*XFrequency));
-    fragColor = vertexColor * texture(Sampler0, uv) * ColorModulator - toCenter*2.;
+    fragColor = vertexColor * texture(Sampler0, uv) * ColorModulator - toCenter*Falloff;
 }

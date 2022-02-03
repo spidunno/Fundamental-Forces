@@ -24,6 +24,7 @@
     { "name": "YFrequency", "type": "float", "count": 1, "values": [ 0.2 ] },
     { "name": "Intensity", "type": "float", "count": 1, "values": [ 40 ] },
     { "name": "ScatterPower", "type": "float", "count": 1, "values": [ 40 ] },
-    { "name": "ScatterFrequency", "type": "float", "count": 1, "values": [ 0.1 ] }
+    { "name": "ScatterFrequency", "type": "float", "count": 1, "values": [ 0.1 ] },
+    { "name": "Falloff", "type": "float", "count": 1, "values": [ 2 ] }
   ]
 }
