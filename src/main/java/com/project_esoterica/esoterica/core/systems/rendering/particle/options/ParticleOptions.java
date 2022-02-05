@@ -14,6 +14,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
     public float r1 = 1, g1 = 1, b1 = 1, a1 = 1, r2 = 1, g2 = 1, b2 = 1, a2 = 0;
     public float scale1 = 1, scale2 = 0;
     public int lifetime = 20;
+    public float startingSpin = 0;
     public float spin = 0;
     public boolean gravity = false;
     public boolean noClip = false;
@@ -32,12 +33,13 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
                 Codec.FLOAT.fieldOf("scale1").forGetter(d -> d.scale1),
                 Codec.FLOAT.fieldOf("scale2").forGetter(d -> d.scale2),
                 Codec.INT.fieldOf("lifetime").forGetter(d -> d.lifetime),
+                Codec.FLOAT.fieldOf("startingSpin").forGetter(d -> d.startingSpin),
                 Codec.FLOAT.fieldOf("spin").forGetter(d -> d.spin),
                 Codec.BOOL.fieldOf("gravity").forGetter(d -> d.gravity),
                 Codec.BOOL.fieldOf("noClip").forGetter(d -> d.noClip),
                 Codec.FLOAT.fieldOf("colorCurveMultiplier").forGetter(d -> d.colorCurveMultiplier)
         ).apply(instance, (r1, g1, b1, a1, r2, g2, b2, a2, scale1, scale2,
-                           lifetime, spin, gravity, noClip, colorCurveMultiplier) -> {
+                           lifetime, spin, startingSpin, gravity, noClip, colorCurveMultiplier) -> {
             ParticleOptions data = new ParticleOptions(type);
             data.r1 = r1;
             data.g1 = g1;
@@ -50,6 +52,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
             data.scale1 = scale1;
             data.scale2 = scale2;
             data.lifetime = lifetime;
+            data.startingSpin = startingSpin;
             data.spin = spin;
             data.gravity = gravity;
             data.noClip = noClip;
@@ -71,11 +74,11 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buffer) {
-
         buffer.writeFloat(r1).writeFloat(g1).writeFloat(b1).writeFloat(a1);
         buffer.writeFloat(r2).writeFloat(g2).writeFloat(b2).writeFloat(a2);
         buffer.writeFloat(scale1).writeFloat(scale2);
         buffer.writeInt(lifetime);
+        buffer.writeFloat(startingSpin);
         buffer.writeFloat(spin);
         buffer.writeBoolean(gravity);
         buffer.writeBoolean(noClip);
@@ -84,8 +87,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
 
     @Override
     public String writeToString() {
-        String result = " " + r1 + " " + g1;
-        return Registry.PARTICLE_TYPE.getKey(this.getType()) + " " + r1 + " " + g1 + " " + b1 + " " + a1 + " " + r2 + " " + g2 + " " + b2 + " " + a2 + " " + scale1 + " " + scale2 + " " + lifetime + " " + spin + " " + gravity + " " + noClip + " " + colorCurveMultiplier;
+        return Registry.PARTICLE_TYPE.getKey(this.getType()) + " " + r1 + " " + g1 + " " + b1 + " " + a1 + " " + r2 + " " + g2 + " " + b2 + " " + a2 + " " + scale1 + " " + scale2 + " " + lifetime + " " + startingSpin + " " + spin + " " + gravity + " " + noClip + " " + colorCurveMultiplier;
     }
 
     public void setColor(float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2) {
@@ -118,7 +120,6 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
     }
 
     public static final Deserializer<ParticleOptions> DESERIALIZER = new Deserializer<>() {
-
         @Override
         public ParticleOptions fromCommand(ParticleType<ParticleOptions> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
@@ -144,6 +145,8 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
             reader.expect(' ');
             int lifetime = reader.readInt();
             reader.expect(' ');
+            float startingSpin = reader.readFloat();
+            reader.expect(' ');
             float spin = reader.readFloat();
             reader.expect(' ');
             boolean gravity = reader.readBoolean();
@@ -163,6 +166,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
             data.scale1 = scale1;
             data.scale2 = scale2;
             data.lifetime = lifetime;
+            data.startingSpin = startingSpin;
             data.spin = spin;
             data.gravity = gravity;
             data.noClip = noClip;
@@ -183,6 +187,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
             float scale1 = buf.readFloat();
             float scale2 = buf.readFloat();
             int lifetime = buf.readInt();
+            float startingSpin = buf.readFloat();
             float spin = buf.readFloat();
             boolean gravity = buf.readBoolean();
             boolean noClip = buf.readBoolean();
@@ -199,6 +204,7 @@ public class ParticleOptions implements net.minecraft.core.particles.ParticleOpt
             data.scale1 = scale1;
             data.scale2 = scale2;
             data.lifetime = lifetime;
+            data.startingSpin = startingSpin;
             data.spin = spin;
             data.gravity = gravity;
             data.noClip = noClip;

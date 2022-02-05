@@ -20,6 +20,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
     public GenericParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
         super(world, x, y, z);
         this.data = data;
+        this.roll = data.startingSpin;
         this.xd = vx;
         this.yd = vy;
         this.zd = vz;
@@ -44,7 +45,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
         float coeff = getCoeff();
         quadSize = Mth.lerp(coeff, data.scale1, data.scale2);
         coeff = getColorCoeff();
-        float h = Mth.rotLerp(coeff, 360 * hsv1[0], 360 * hsv2[0]) / 360;
+        float h = Mth.rotLerp(coeff, 360f * hsv1[0], 360f * hsv2[0]) / 360f;
         float s = Mth.lerp(coeff, hsv1[1], hsv2[1]);
         float v = Mth.lerp(coeff, hsv1[2], hsv2[2]);
         int packed = Color.HSBtoRGB(h, s, v);

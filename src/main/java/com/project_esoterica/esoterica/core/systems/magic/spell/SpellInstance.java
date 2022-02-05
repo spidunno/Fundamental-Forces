@@ -57,13 +57,13 @@ public class SpellInstance {
             cooldown.tick();
         }
         selectedTime = selected ? selectedTime+1 : 0;
-        if (selected && selectedFadeAnimation < 40)
+        if (selected && selectedFadeAnimation < 20)
         {
             selectedFadeAnimation++;
         }
         else if (selectedFadeAnimation > 0)
         {
-            selectedFadeAnimation--;
+            selectedFadeAnimation -= 0.5f;
         }
         tick(level);
     }
@@ -81,7 +81,7 @@ public class SpellInstance {
         {
             easing = Easing.EXPO_OUT;
         }
-        return 0.5f- easing.ease(selectedFadeAnimation, 0, 0.5f, 40);
+        return 0.5f- easing.ease(selectedFadeAnimation, 0, 0.5f, 20);
     }
 
     public boolean isEmpty() {

@@ -26,26 +26,39 @@ public class OrbBlockEntity extends SimpleBlockEntity {
             double x = worldPosition.getX() + 0.5;
             double y = worldPosition.getY() + 0.5;
             double z = worldPosition.getZ() + 0.5;
-            int lifeTime = 6 + level.random.nextInt(12);
+            int lifeTime = 3 + level.random.nextInt(9);
             float scale = 0.1f + level.random.nextFloat() * 0.07f;
-            RenderUtilities.create(ParticleRegistry.WISP_PARTICLE)
-                    .setScale(scale * 2, 0)
+            RenderUtilities.create(ParticleRegistry.WISP)
+                    .setScale(scale, 0)
                     .setLifetime(lifeTime)
-                    .setAlpha(0.24f)
+                    .setAlpha(0.2f)
                     .randomVelocity(0.02f)
                     .randomOffset(0.05f)
                     .setColor(Color.CYAN, Color.YELLOW)
                     .setColorCurveMultiplier(1.25f)
                     .spawn(level, x, y, z);
-            RenderUtilities.create(ParticleRegistry.WISP_PARTICLE)
+            if (level.getGameTime() % 2L == 0) {
+                RenderUtilities.create(ParticleRegistry.SQUARE)
+                        .setScale(scale * 2, 0)
+                        .setLifetime(lifeTime + 4)
+                        .setAlpha(0, 0.8f)
+                        .addVelocity(0, 0.04f, 0)
+                        .randomVelocity(0.02f)
+                        .randomOffset(0.1f)
+                        .setColor(Color.CYAN, Color.YELLOW)
+                        .setColorCurveMultiplier(1.25f)
+                        .spawn(level, x, y, z);
+            }
+            RenderUtilities.create(ParticleRegistry.CIRCLE)
                     .setScale(scale, 0)
-                    .setLifetime(lifeTime)
-                    .setAlpha(0.24f)
+                    .setLifetime(lifeTime + 4)
+                    .setAlpha(0, 0.3f)
                     .randomVelocity(0.02f)
-                    .randomOffset(0.05f)
-                    .setColor(Color.YELLOW, Color.YELLOW)
-                    .setColorCurveMultiplier(2f)
-                    .spawn(level, x, y, z);
+                    .randomOffset(0.1f)
+                    .setColor(Color.CYAN, Color.YELLOW)
+                    .setColorCurveMultiplier(1.5f)
+                    .spawn(level, x, y+0.025f, z);
+
         }
     }
 }

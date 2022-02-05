@@ -23,6 +23,7 @@ import net.minecraftforge.client.model.renderable.MultipartTransforms;
 import net.minecraftforge.client.model.renderable.SimpleRenderable;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
+import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.createMovingBootlegTriangleRenderType;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.withShaderHandler;
 
@@ -69,16 +70,16 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         RenderSystem.setShaderColor(255/255f, 152/255f, 55/255f, 1f);
         poseStack.pushPose();
         poseStack.scale(beamWidth+1, beamWidth+1,beamWidth+1);
-        RENDER.render(poseStack, bufferSource, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
+        RENDER.render(poseStack, DELAYED_RENDER, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
         poseStack.scale(1.02f, 1.04f,1.02f);
-        RENDER.render(poseStack, bufferSource, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
+        RENDER.render(poseStack, DELAYED_RENDER, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
         poseStack.scale(1.02f, 1.04f,1.02f);
-        RENDER.render(poseStack, bufferSource, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
+        RENDER.render(poseStack, DELAYED_RENDER, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
         poseStack.mulPose(Vector3f.YP.rotationDegrees(90));
         poseStack.scale(1.02f, 1.04f,1.02f);
-        RENDER.render(poseStack, bufferSource, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
+        RENDER.render(poseStack, DELAYED_RENDER, (r)->STAR_TYPE, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, partialTicks, MultipartTransforms.EMPTY);
         poseStack.popPose();
 //        RenderUtilities.create().setUV(0, 0, 1, 0.5f).setOffset(0, 4, 0).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 4, 2);
 //        RenderUtilities.create().setUV(0, 0.5f, 1, 1).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 4, 2);
