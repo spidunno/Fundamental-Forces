@@ -27,6 +27,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
         this.setLifetime(data.lifetime);
         this.gravity = data.gravity ? 1 : 0;
         this.hasPhysics = !data.noClip;
+
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r2)), (int) (255 * Math.min(1.0f, data.g2)), (int) (255 * Math.min(1.0f, data.b2)), hsv2);
         updateTraits();
@@ -40,20 +41,25 @@ public abstract class GenericParticle extends TextureSheetParticle {
         float increasedAge = Math.min(this.age * data.colorCurveMultiplier, this.lifetime);
         return increasedAge / (float) this.lifetime;
     }
+    protected float getAlphaCoeff() {
+        float increasedAge = Math.min(this.age * data.alphaCurveMultiplier, this.lifetime);
+        return increasedAge / (float) this.lifetime;
+    }
 
     protected void updateTraits() {
-        float coeff = getCoeff();
-        quadSize = Mth.lerp(coeff, data.scale1, data.scale2);
-        coeff = getColorCoeff();
-        float h = Mth.rotLerp(coeff, 360f * hsv1[0], 360f * hsv2[0]) / 360f;
-        float s = Mth.lerp(coeff, hsv1[1], hsv2[1]);
-        float v = Mth.lerp(coeff, hsv1[2], hsv2[2]);
+        float scaleCoeff = getCoeff();
+        float colorCoeff = getColorCoeff();
+        float alphaCoeff = getCoeff();
+        quadSize = Mth.lerp(scaleCoeff, data.scale1, data.scale2);
+        float h = Mth.rotLerp(colorCoeff, 360f * hsv1[0], 360f * hsv2[0]) / 360f;
+        float s = Mth.lerp(colorCoeff, hsv1[1], hsv2[1]);
+        float v = Mth.lerp(colorCoeff, hsv1[2], hsv2[2]);
         int packed = Color.HSBtoRGB(h, s, v);
         float r = FastColor.ARGB32.red(packed) / 255.0f;
         float g = FastColor.ARGB32.green(packed) / 255.0f;
         float b = FastColor.ARGB32.blue(packed) / 255.0f;
         setColor(r, g, b);
-        setAlpha(Mth.lerp(coeff, data.a1, data.a2));
+        setAlpha(Mth.lerp(alphaCoeff, data.a1, data.a2));
         oRoll = roll;
         roll += data.spin;
     }

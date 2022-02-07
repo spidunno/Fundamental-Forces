@@ -23,23 +23,23 @@ import java.util.Random;
 public class RenderUtilities {
     public static final int FULL_BRIGHT = 15728880;
 
-    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float xCanvasSize, float yCanvasSize) {
+    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, int x, int y, double w, double h, float u, float v, float xCanvasSize, float yCanvasSize) {
         innerBlit(poseStack, shader, x, y, w, h, u / xCanvasSize, v / yCanvasSize, (float) w / xCanvasSize, (float) h / yCanvasSize);
     }
 
-    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
+    public static void blit(PoseStack poseStack, ExtendedShaderInstance shader, int x, int y, double w, double h, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
         innerBlit(poseStack, shader, x, y, w, h, u / xCanvasSize, v / xCanvasSize, uw / yCanvasSize, vh / yCanvasSize);
     }
 
-    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float canvasSize) {
+    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, int x, int y, double w, double h, float u, float v, float canvasSize) {
         innerBlit(poseStack, shader, x, y, w, h, u / canvasSize, v / canvasSize, (float) w / canvasSize, (float) h / canvasSize);
     }
 
-    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float uw, float vh, float canvasSize) {
+    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, int x, int y, double w, double h, float u, float v, float uw, float vh, float canvasSize) {
         innerBlit(poseStack, shader, x, y, w, h, u / canvasSize, v / canvasSize, uw / canvasSize, vh / canvasSize);
     }
 
-    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, double x, double y, double w, double h, float u, float v, float uw, float vh) {
+    public static void innerBlit(PoseStack poseStack, ExtendedShaderInstance shader, int x, int y, double w, double h, float u, float v, float uw, float vh) {
         Matrix4f last = poseStack.last().pose();
         RenderSystem.setShader(shader.getInstance());
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
@@ -52,23 +52,23 @@ public class RenderUtilities {
         BufferUploader.end(bufferbuilder);
     }
 
-    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float xCanvasSize, float yCanvasSize) {
+    public static void blit(PoseStack poseStack, int x, int y, double w, double h, float u, float v, float xCanvasSize, float yCanvasSize) {
         innerBlit(poseStack, x, y, w, h, u / xCanvasSize, v / yCanvasSize, (float) w / xCanvasSize, (float) h / yCanvasSize);
     }
 
-    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
+    public static void blit(PoseStack poseStack, int x, int y, double w, double h, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
         innerBlit(poseStack, x, y, w, h, u / xCanvasSize, v / yCanvasSize, uw / xCanvasSize, vh / yCanvasSize);
     }
 
-    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float canvasSize) {
+    public static void blit(PoseStack poseStack, int x, int y, double w, double h, float u, float v, float canvasSize) {
         innerBlit(poseStack, x, y, w, h, u / canvasSize, v / canvasSize, (float) w / canvasSize, (float) h / canvasSize);
     }
 
-    public static void blit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float uw, float vh, float canvasSize) {
+    public static void blit(PoseStack poseStack, int x, int y, double w, double h, float u, float v, float uw, float vh, float canvasSize) {
         innerBlit(poseStack, x, y, w, h, u / canvasSize, v / canvasSize, uw / canvasSize, vh / canvasSize);
     }
 
-    public static void innerBlit(PoseStack poseStack, double x, double y, double w, double h, float u, float v, float uw, float vh) {
+    public static void innerBlit(PoseStack poseStack, int x, int y, double w, double h, float u, float v, float uw, float vh) {
         Matrix4f last = poseStack.last().pose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
@@ -259,28 +259,23 @@ public class RenderUtilities {
         }
 
         public ParticleBuilder setColor(float r, float g, float b) {
-            setColor(r, g, b, data.a1, r, g, b, data.a2);
-            return this;
+            return setColor(r, g, b, data.a1, r, g, b, data.a2);
         }
 
         public ParticleBuilder setColor(float r, float g, float b, float a) {
-            setColor(r, g, b, a, r, g, b, a);
-            return this;
+            return setColor(r, g, b, a, r, g, b, a);
         }
 
         public ParticleBuilder setColor(float r, float g, float b, float a1, float a2) {
-            setColor(r, g, b, a1, r, g, b, a2);
-            return this;
+            return setColor(r, g, b, a1, r, g, b, a2);
         }
 
         public ParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2) {
-            setColor(r1, g1, b1, data.a1, r2, g2, b2, data.a2);
-            return this;
+            return setColor(r1, g1, b1, data.a1, r2, g2, b2, data.a2);
         }
 
         public ParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2, float a) {
-            setColor(r1, g1, b1, a, r2, g2, b2, a);
-            return this;
+            return setColor(r1, g1, b1, a, r2, g2, b2, a);
         }
 
         public ParticleBuilder setColor(float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2) {
@@ -310,9 +305,13 @@ public class RenderUtilities {
             return this;
         }
 
-        public ParticleBuilder setAlpha(float a) {
-            setAlpha(a, a);
+        public ParticleBuilder setAlphaCurveMultiplier(float alphaCurveMultiplier) {
+            data.alphaCurveMultiplier = alphaCurveMultiplier;
             return this;
+        }
+
+        public ParticleBuilder setAlpha(float a) {
+            return setAlpha(a, a);
         }
 
         public ParticleBuilder setAlpha(float a1, float a2) {
@@ -322,8 +321,7 @@ public class RenderUtilities {
         }
 
         public ParticleBuilder setScale(float scale) {
-            setScale(scale, scale);
-            return this;
+            return setScale(scale, scale);
         }
 
         public ParticleBuilder setScale(float scale1, float scale2) {
@@ -367,13 +365,11 @@ public class RenderUtilities {
         }
 
         public ParticleBuilder randomVelocity(double maxSpeed) {
-            randomVelocity(maxSpeed, maxSpeed, maxSpeed);
-            return this;
+            return randomVelocity(maxSpeed, maxSpeed, maxSpeed);
         }
 
         public ParticleBuilder randomVelocity(double maxHSpeed, double maxVSpeed) {
-            randomVelocity(maxHSpeed, maxVSpeed, maxHSpeed);
-            return this;
+            return randomVelocity(maxHSpeed, maxVSpeed, maxHSpeed);
         }
 
         public ParticleBuilder randomVelocity(double maxXSpeed, double maxYSpeed, double maxZSpeed) {
@@ -398,13 +394,11 @@ public class RenderUtilities {
         }
 
         public ParticleBuilder randomOffset(double maxDistance) {
-            randomOffset(maxDistance, maxDistance, maxDistance);
-            return this;
+            return randomOffset(maxDistance, maxDistance, maxDistance);
         }
 
         public ParticleBuilder randomOffset(double maxHDist, double maxVDist) {
-            randomOffset(maxHDist, maxVDist, maxHDist);
-            return this;
+            return randomOffset(maxHDist, maxVDist, maxHDist);
         }
 
         public ParticleBuilder randomOffset(double maxXDist, double maxYDist, double maxZDist) {

@@ -13,10 +13,25 @@ public class ColorHelper {
         int blue = FastColor.ARGB32.blue(decimal);
         return new Color(red, green, blue);
     }
-
+    public static void RGBToHSV(Color color, float[] hsv)
+    {
+        Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsv);
+    }
     public static int getColor(Color color)
     {
         return FastColor.ARGB32.color(color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue());
+    }
+    public static int getColor(int r, int g, int b)
+    {
+        return FastColor.ARGB32.color(255, r, g, b);
+    }
+    public static int getColor(int r, int g, int b, int a)
+    {
+        return FastColor.ARGB32.color(a, r, g, b);
+    }
+    public static int getColor(float r, float g, float b, float a)
+    {
+        return FastColor.ARGB32.color((int)(a*255f), (int)(r*255f), (int)(g*255f), (int)(b*255f));
     }
 
     public static Color colorLerp(float pct, Color brightColor, Color darkColor)
