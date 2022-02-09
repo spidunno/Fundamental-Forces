@@ -35,7 +35,7 @@ public class PlayerDataCapability implements SimpleCapability {
     public static Capability<PlayerDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public boolean firstTimeJoin;
+    public boolean hasJoinedBefore;
     public boolean rightClickHeld;
     public int rightClickTime;
     public boolean leftClickHeld;
@@ -58,7 +58,7 @@ public class PlayerDataCapability implements SimpleCapability {
 
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
-            PlayerDataCapability.getCapability(player).ifPresent(capability -> capability.firstTimeJoin = true);
+            PlayerDataCapability.getCapability(player).ifPresent(capability -> capability.hasJoinedBefore = true);
             if (player instanceof ServerPlayer serverPlayer) {
                 syncSelf(serverPlayer);
             }
@@ -91,14 +91,14 @@ public class PlayerDataCapability implements SimpleCapability {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putBoolean("firstTimeJoin", firstTimeJoin);
+        tag.putBoolean("firstTimeJoin", hasJoinedBefore);
         hotbarHandler.serializeNBT(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        firstTimeJoin = tag.getBoolean("firstTimeJoin");
+        hasJoinedBefore = tag.getBoolean("firstTimeJoin");
         hotbarHandler.deserializeNBT(tag);
     }
 

@@ -93,7 +93,7 @@ public class WorldEventManager {
                         }
                     });
                     if (ScheduledStarfallEvent.areStarfallsAllowed(level)) {
-                        if (!capability.firstTimeJoin) {
+                        if (!capability.hasJoinedBefore) {
                             addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
                         } else {
                             ScheduledStarfallEvent.addMissingStarfall(level, player);
