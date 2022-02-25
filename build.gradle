@@ -36,8 +36,6 @@ minecraft {
 
     runs {
         client {
-            properties 'mixin.env.remapRefMap': 'true'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
             arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
@@ -52,8 +50,6 @@ minecraft {
         }
 
         server {
-            properties 'mixin.env.remapRefMap': 'true'
-            property 'mixin.env.refMapRemappingFile', "${project.projectDir}/build/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
             arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
@@ -106,7 +102,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
 
     if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
 
     implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')

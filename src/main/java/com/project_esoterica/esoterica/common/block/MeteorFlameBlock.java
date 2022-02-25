@@ -1,7 +1,6 @@
 package com.project_esoterica.esoterica.common.block;
 
 import com.project_esoterica.esoterica.common.blockentity.MeteorFlameBlockEntity;
-import com.project_esoterica.esoterica.core.setup.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.systems.block.SimpleBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -17,14 +16,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Random;
 
-public class MeteorFlameBlock extends SimpleBlock<MeteorFlameBlockEntity> {
-
-
+public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends SimpleBlock<T> {
     protected static final VoxelShape DOWN_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public MeteorFlameBlock(Properties properties) {
         super(properties);
-        setTile(BlockEntityRegistry.METEOR_FLAME);
     }
 
     @Override

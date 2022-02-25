@@ -14,7 +14,7 @@ import net.minecraft.util.Mth;
 import java.awt.*;
 
 public abstract class GenericParticle extends TextureSheetParticle {
-    ParticleOptions data;
+    protected ParticleOptions data;
     float[] hsv1 = new float[3], hsv2 = new float[3];
 
     public GenericParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
@@ -27,7 +27,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
         this.setLifetime(data.lifetime);
         this.gravity = data.gravity ? 1 : 0;
         this.hasPhysics = !data.noClip;
-
+        this.friction = data.activeMotionMultiplier;
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r2)), (int) (255 * Math.min(1.0f, data.g2)), (int) (255 * Math.min(1.0f, data.b2)), hsv2);
         updateTraits();
@@ -49,7 +49,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
     protected void updateTraits() {
         float scaleCoeff = getCoeff();
         float colorCoeff = getColorCoeff();
-        float alphaCoeff = getCoeff();
+        float alphaCoeff = getAlphaCoeff();
         quadSize = Mth.lerp(scaleCoeff, data.scale1, data.scale2);
         float h = Mth.rotLerp(colorCoeff, 360f * hsv1[0], 360f * hsv2[0]) / 360f;
         float s = Mth.lerp(colorCoeff, hsv1[1], hsv2[1]);
@@ -62,6 +62,7 @@ public abstract class GenericParticle extends TextureSheetParticle {
         setAlpha(Mth.lerp(alphaCoeff, data.a1, data.a2));
         oRoll = roll;
         roll += data.spin;
+        data.spin*=data.activeSpinMultiplier;
     }
 
     @Override

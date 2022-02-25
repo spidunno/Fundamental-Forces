@@ -17,12 +17,14 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties.StateType.custom;
 
 public class BlockRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, EsotericaMod.MODID);
@@ -31,7 +33,7 @@ public class BlockRegistry {
         return new SimpleBlockProperties(Material.STONE, MaterialColor.STONE).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(1.25F, 9.0F);
     }
     public static SimpleBlockProperties METEOR_FIRE_PROPERTIES() {
-        return new SimpleBlockProperties(Material.FIRE, MaterialColor.FIRE).ignoreBlockStateDatagen().ignoreLootDatagen().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15);
+        return new SimpleBlockProperties(Material.FIRE, MaterialColor.FIRE).blockStateDefinition(custom).customLoot().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15);
     }
     public static SimpleBlockProperties CHARRED_ROCK_PROPERTIES() {
         return new SimpleBlockProperties(Material.STONE, MaterialColor.STONE).needsPickaxe().sound(SoundType.BASALT).requiresCorrectToolForDrops().strength(1.5F, 9.0F);
@@ -46,9 +48,9 @@ public class BlockRegistry {
         return new SimpleBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14);
     }
 
-    public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock(ORB_PROPERTIES()));
+    public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock<>(ORB_PROPERTIES()).setTile(BlockEntityRegistry.ORB));
 
-    public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock(METEOR_FIRE_PROPERTIES()));
+    public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock<>(METEOR_FIRE_PROPERTIES()).setTile(BlockEntityRegistry.METEOR_FLAME));
     public static final RegistryObject<Block> ASTEROID_ROCK = BLOCKS.register("asteroid_rock", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p)-> METEOR_FIRE.get().defaultBlockState()));
 
     public static final RegistryObject<Block> CHARRED_ROCK = BLOCKS.register("charred_rock", () -> new Block(CHARRED_ROCK_PROPERTIES()));

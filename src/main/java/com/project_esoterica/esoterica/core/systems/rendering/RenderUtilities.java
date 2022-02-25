@@ -358,6 +358,14 @@ public class RenderUtilities {
             data.startingSpin = angularVelocity;
             return this;
         }
+        public ParticleBuilder setActiveMotionMultiplier(float multiplier) {
+            data.activeMotionMultiplier = multiplier;
+            return this;
+        }
+        public ParticleBuilder setActiveSpinMultiplier(float multiplier) {
+            data.activeSpinMultiplier = multiplier;
+            return this;
+        }
 
         public ParticleBuilder setLifetime(int lifetime) {
             data.lifetime = lifetime;

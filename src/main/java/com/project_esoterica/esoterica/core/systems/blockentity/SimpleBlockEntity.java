@@ -7,11 +7,15 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 
 public class SimpleBlockEntity extends BlockEntity {
     public SimpleBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -22,13 +26,23 @@ public class SimpleBlockEntity extends BlockEntity {
         invalidateCaps();
     }
 
+    public void onPlace(LivingEntity placer, ItemStack stack) {
+    }
+
+    public void onNeighborUpdate(BlockState state, BlockPos pos, BlockPos neighbor) {
+    }
+
+    public ItemStack onClone(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+        return ItemStack.EMPTY;
+    }
+
     public InteractionResult onUse(Player player, InteractionHand hand) {
         return InteractionResult.PASS;
     }
 
     public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-    }
 
+    }
     @Override
     public CompoundTag getUpdateTag() {
         return this.saveWithoutMetadata();
@@ -36,21 +50,20 @@ public class SimpleBlockEntity extends BlockEntity {
 
     @Override
     public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
-        load(tag);
+        if (tag != null) {
+            super.handleUpdateTag(tag);
+        }
     }
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this); // (this.worldPosition, 3, this.getUpdateTag());
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
         super.onDataPacket(net, pkt);
-        if (getUpdatePacket().getTag() != null) {
-            handleUpdateTag(getUpdatePacket().getTag());
-        }
+        handleUpdateTag(getUpdatePacket().getTag());
     }
 
     public void tick() {

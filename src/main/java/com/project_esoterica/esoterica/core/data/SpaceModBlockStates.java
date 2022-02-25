@@ -43,7 +43,10 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     protected void registerStatesAndModels() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
-        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).ignoreBlockStateDatagen);
+        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.predefined));
+        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.custom)).forEach(this::customBlock);
+        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.layered)).forEach(this::glowingBlock);
+
 
         takeAll(blocks, b -> b.get() instanceof OrbBlock).forEach(this::emptyBlock);
 
@@ -85,6 +88,12 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(sign).build());
     }
 
+    public void customBlock(RegistryObject<Block> blockRegistryObject)
+    {
+        String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
+        ModelFile model = models().withExistingParent(name+"_child", prefix("block/"+name));
+        getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(model).build());
+    }
     public void glowingBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String glow = name + "_glow";

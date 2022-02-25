@@ -11,6 +11,7 @@ import net.minecraft.world.level.material.MaterialColor;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
+@SuppressWarnings("ALL")
 public class SimpleBlockProperties extends BlockBehaviour.Properties {
     public boolean needsPickaxe;
     public boolean needsAxe;
@@ -21,23 +22,29 @@ public class SimpleBlockProperties extends BlockBehaviour.Properties {
     public boolean needsIron;
     public boolean needsDiamond;
 
+    public boolean cutout;
+
     public boolean ignoreLootDatagen;
-    public boolean ignoreBlockStateDatagen;
+
+    public enum StateType {
+        predefined, automatic, custom, layered
+    }
+    public StateType type = StateType.automatic;
 
     public SimpleBlockProperties(Material material, MaterialColor color) {
-        super(material, (m) -> color);
+        super(material, (state) -> color);
     }
     public SimpleBlockProperties(Material material) {
-        super(material, (m)->material.getColor());
+        super(material, (state) -> material.getColor());
     }
-    public SimpleBlockProperties ignoreLootDatagen()
+    public SimpleBlockProperties customLoot()
     {
         ignoreLootDatagen = true;
         return this;
     }
-    public SimpleBlockProperties ignoreBlockStateDatagen()
+    public SimpleBlockProperties blockStateDefinition(StateType type)
     {
-        ignoreBlockStateDatagen = true;
+        this.type = type;
         return this;
     }
     public SimpleBlockProperties needsPickaxe()
@@ -74,6 +81,12 @@ public class SimpleBlockProperties extends BlockBehaviour.Properties {
     public SimpleBlockProperties needsDiamond()
     {
         needsDiamond = true;
+        return this;
+    }
+
+    public SimpleBlockProperties isCutout()
+    {
+        cutout = true;
         return this;
     }
 
@@ -149,7 +162,7 @@ public class SimpleBlockProperties extends BlockBehaviour.Properties {
 
     @Override
     public SimpleBlockProperties lootFrom(Supplier<? extends Block> blockIn) {
-        ignoreLootDatagen();
+        customLoot();
         return (SimpleBlockProperties) super.lootFrom(blockIn);
     }
 
