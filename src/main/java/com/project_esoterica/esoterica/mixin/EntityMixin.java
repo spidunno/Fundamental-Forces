@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.mixin;
 
-import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
+import com.project_esoterica.esoterica.core.handlers.MeteorFireHandler;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

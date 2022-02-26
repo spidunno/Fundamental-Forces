@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.worldevent;
+package com.project_esoterica.esoterica.core.handlers;
 
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
@@ -8,6 +8,8 @@ import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.setup.block.BlockTagRegistry;
 import com.project_esoterica.esoterica.core.setup.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.setup.worldevent.WorldEventTypes;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
+import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +29,7 @@ import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.ArrayList;
 
-public class WorldEventManager {
+public class WorldEventHandler {
 
     public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
         return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);

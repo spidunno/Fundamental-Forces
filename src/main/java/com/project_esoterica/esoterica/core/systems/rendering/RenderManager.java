@@ -26,6 +26,7 @@ public class RenderManager {
     public static HashMap<RenderType, RenderTypeShaderHandler> HANDLERS = new HashMap<>();
     public static MultiBufferSource.BufferSource DELAYED_RENDER = null;
     public static Matrix4f PARTICLE_MATRIX = null;
+    public static Matrix4f SCREEN_PARTICLE_MATRIX = null;
     public static Frustum FRUSTUM;
 
     public static void setupDelayedRenderer(FMLClientSetupEvent event) {
@@ -54,10 +55,8 @@ public class RenderManager {
             RenderSystem.applyModelViewMatrix();
         }
         event.getPoseStack().pushPose();
-        for (RenderType type : BUFFERS.keySet())
-        {
-            if (HANDLERS.containsKey(type))
-            {
+        for (RenderType type : BUFFERS.keySet()) {
+            if (HANDLERS.containsKey(type)) {
                 RenderTypeShaderHandler handler = HANDLERS.get(type);
                 handler.updateShaderData();
             }

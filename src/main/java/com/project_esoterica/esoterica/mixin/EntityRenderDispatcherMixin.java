@@ -1,8 +1,7 @@
 package com.project_esoterica.esoterica.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
-import net.minecraft.client.Camera;
+import com.project_esoterica.esoterica.core.handlers.MeteorFireHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;

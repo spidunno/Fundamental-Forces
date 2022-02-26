@@ -28,7 +28,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
             double z = worldPosition.getZ() + 0.5;
             int lifeTime = 3 + level.random.nextInt(9);
             float scale = 0.1f + level.random.nextFloat() * 0.07f;
-            RenderUtilities.create(ParticleRegistry.WISP)
+            RenderUtilities.create(ParticleRegistry.SCREEN_WISP)
                     .setScale(scale, 0)
                     .setLifetime(lifeTime)
                     .setAlpha(0.2f)

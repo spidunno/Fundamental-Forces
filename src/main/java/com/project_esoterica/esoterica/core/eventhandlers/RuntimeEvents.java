@@ -4,8 +4,8 @@ import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.PlayerSpellHotbarHandler;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -23,17 +23,17 @@ import net.minecraftforge.fml.common.Mod;
 public class RuntimeEvents {
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event) {
-        WorldEventManager.breakBlock(event);
+        WorldEventHandler.breakBlock(event);
     }
 
     @SubscribeEvent
     public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
-        WorldEventManager.placeBlock(event);
+        WorldEventHandler.placeBlock(event);
     }
 
     @SubscribeEvent
     public static void entityJoin(EntityJoinWorldEvent event) {
-        WorldEventManager.playerJoin(event);
+        WorldEventHandler.playerJoin(event);
         PlayerDataCapability.playerJoin(event);
     }
 
@@ -63,7 +63,7 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        WorldEventManager.serverWorldTick(event);
+        WorldEventHandler.serverWorldTick(event);
     }
 
     @SubscribeEvent

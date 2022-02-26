@@ -4,7 +4,7 @@ import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.ChunkDataCapability;
 import com.project_esoterica.esoterica.config.CommonConfig;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
@@ -45,8 +45,8 @@ public class StarfallActor {
         if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty())) {
             return false;
         }
-        boolean heightmap = WorldEventManager.heightmapCheck(level, pos, 2);
-        boolean blocks = WorldEventManager.blockCheck(level, WorldEventManager.nearbyBlockList(level, pos));
+        boolean heightmap = WorldEventHandler.heightmapCheck(level, pos, 2);
+        boolean blocks = WorldEventHandler.blockCheck(level, WorldEventHandler.nearbyBlockList(level, pos));
         return heightmap && blocks;
     }
 

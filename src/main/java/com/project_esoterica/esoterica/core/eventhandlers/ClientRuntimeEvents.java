@@ -2,10 +2,11 @@ package com.project_esoterica.esoterica.core.eventhandlers;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
+import com.project_esoterica.esoterica.core.handlers.ScreenParticleHandler;
+import com.project_esoterica.esoterica.core.handlers.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
-import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.ScreenshakeHandler;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Option;
@@ -33,7 +34,7 @@ public class ClientRuntimeEvents {
                     return;
                 }
                 Camera camera = minecraft.gameRenderer.getMainCamera();
-                WorldEventManager.clientWorldTick(minecraft.level);
+                WorldEventHandler.clientWorldTick(minecraft.level);
                 ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
                 PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
                 PlayerDataCapability.ClientOnly.clientTick(event);
@@ -66,5 +67,6 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         PlayerSpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
+        ScreenParticleHandler.renderParticles(event);
     }
 }

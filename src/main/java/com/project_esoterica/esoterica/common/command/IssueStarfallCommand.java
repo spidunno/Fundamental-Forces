@@ -7,7 +7,7 @@ import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor
 import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
 import com.project_esoterica.esoterica.core.setup.worldevent.StarfallActors;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -31,7 +31,7 @@ public class IssueStarfallCommand {
                                     StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
-                                    WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined(), false);
+                                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined(), false);
                                     source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_natural_position")), true);
                                     return 1;
                                 }))
@@ -41,7 +41,7 @@ public class IssueStarfallCommand {
                                     StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
-                                    WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined(), false);
+                                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined(), false);
                                     source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_natural_target")), true);
                                     return 1;
                                 })))
@@ -55,7 +55,7 @@ public class IssueStarfallCommand {
                                             StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
-                                            WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos), false);
+                                            WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos), false);
                                             source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_artificial_position")), true);
                                             return 1;
                                         })))
@@ -68,7 +68,7 @@ public class IssueStarfallCommand {
                                             StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
-                                            WorldEventManager.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target), false);
+                                            WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target), false);
                                             source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_artificial_target")), true);
                                             return 1;
                                         }))));

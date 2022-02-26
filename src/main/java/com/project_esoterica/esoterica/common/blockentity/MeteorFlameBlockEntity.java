@@ -6,7 +6,7 @@ import com.project_esoterica.esoterica.core.setup.DamageSourceRegistry;
 import com.project_esoterica.esoterica.core.setup.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.setup.item.ItemTagRegistry;
 import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntity;
-import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
+import com.project_esoterica.esoterica.core.handlers.MeteorFireHandler;
 import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

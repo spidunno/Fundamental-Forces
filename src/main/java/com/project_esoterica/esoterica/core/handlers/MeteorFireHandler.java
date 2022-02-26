@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.meteorfire;
+package com.project_esoterica.esoterica.core.handlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -7,6 +7,7 @@ import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.common.capability.EntityDataCapability;
 import com.project_esoterica.esoterica.config.ClientConfig;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
+import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireInstance;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;

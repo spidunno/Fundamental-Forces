@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.common.packets;
 
 import com.project_esoterica.esoterica.core.setup.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +51,7 @@ public class SyncWorldEventPacket {
     public static class ClientOnly {
         public static void addWorldEvent(String type, boolean start, CompoundTag eventData) {
             WorldEventType eventType = WorldEventTypes.EVENT_TYPES.get(type);
-            WorldEventInstance instance = WorldEventManager.addClientWorldEvent(Minecraft.getInstance().level, eventType.createInstance(eventData));
+            WorldEventInstance instance = WorldEventHandler.addClientWorldEvent(Minecraft.getInstance().level, eventType.createInstance(eventData));
             if (start) {
                 instance.clientStart(Minecraft.getInstance().level);
             }

@@ -4,7 +4,7 @@ import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
@@ -40,13 +40,13 @@ public class WorldDataCapability implements SimpleCapability {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        WorldEventManager.serializeNBT(this, tag);
+        WorldEventHandler.serializeNBT(this, tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        WorldEventManager.deserializeNBT(this, nbt);
+        WorldEventHandler.deserializeNBT(this, nbt);
     }
 
     public static LazyOptional<WorldDataCapability> getCapability(Level level) {

@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.project_esoterica.esoterica.config.ClientConfig;
-import com.project_esoterica.esoterica.core.systems.meteorfire.MeteorFireHandler;
+import com.project_esoterica.esoterica.core.handlers.MeteorFireHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
 import org.spongepowered.asm.mixin.Mixin;

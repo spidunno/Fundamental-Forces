@@ -1,5 +1,6 @@
 {
   "block.esoterica.asteroid_rock": "Asteroid Rock",
+  "block.esoterica.block_of_crack": "Block Of Crack",
   "block.esoterica.charred_rock": "Charred Rock",
   "block.esoterica.charred_rock_slab": "Charred Rock Slab",
   "block.esoterica.charred_rock_stairs": "Charred Rock Stairs",
@@ -25,6 +26,7 @@
   "command.esoterica.starfall_natural_target": "Natural starfall scheduled for the given target.",
   "item.esoterica.asteroid_chunk": "Asteroid Chunk",
   "item.esoterica.astral_shard": "Astral Shard",
+  "item.esoterica.crack": "Crack",
   "item.esoterica.dev_tool": "Dev Tool",
   "itemGroup.esoterica": "Empirical Esoterica",
   "key.esoterica.swapHotbar": "Swap Hotbar",

@@ -7,7 +7,7 @@ import com.project_esoterica.esoterica.common.packets.interaction.UpdateRightCli
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapability;
 import com.project_esoterica.esoterica.core.systems.capability.SimpleCapabilityProvider;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
+import com.project_esoterica.esoterica.core.handlers.PlayerSpellHotbarHandler;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;

@@ -1,6 +1,7 @@
-package com.project_esoterica.esoterica.core.systems.screenshake;
+package com.project_esoterica.esoterica.core.handlers;
 
 import com.project_esoterica.esoterica.config.ClientConfig;
+import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeInstance;
 import net.minecraft.client.Camera;
 import net.minecraft.util.Mth;
 

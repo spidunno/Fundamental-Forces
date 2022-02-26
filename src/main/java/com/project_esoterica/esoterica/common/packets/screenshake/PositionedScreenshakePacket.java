@@ -1,8 +1,7 @@
 package com.project_esoterica.esoterica.common.packets.screenshake;
 
 import com.project_esoterica.esoterica.core.systems.screenshake.PositionedScreenshakeInstance;
-import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeHandler;
-import com.project_esoterica.esoterica.core.systems.screenshake.ScreenshakeInstance;
+import com.project_esoterica.esoterica.core.handlers.ScreenshakeHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkEvent;

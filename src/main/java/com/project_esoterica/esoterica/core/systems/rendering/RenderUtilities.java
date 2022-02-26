@@ -80,6 +80,78 @@ public class RenderUtilities {
         bufferbuilder.end();
         BufferUploader.end(bufferbuilder);
     }
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float u, float v, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, u / xCanvasSize, v / yCanvasSize, (float) w / xCanvasSize, (float) h / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, u / xCanvasSize, v / yCanvasSize, uw / xCanvasSize, vh / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float u, float v, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, u / canvasSize, v / canvasSize, (float) w / canvasSize, (float) h / canvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float u, float v, float uw, float vh, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, u / canvasSize, v / canvasSize, uw / canvasSize, vh / canvasSize);
+    }
+
+    public static void innerBlit(VertexConsumer consumer, int x, int y, double w, double h, float u, float v, float uw, float vh) {
+        innermostBlit(consumer, x, y, w, h, 1, 1, 1, 1, u, v, u+uw, v+vh);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, u / xCanvasSize, v / yCanvasSize, (float) w / xCanvasSize, (float) h / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, u / xCanvasSize, v / yCanvasSize, uw / xCanvasSize, vh / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, u / canvasSize, v / canvasSize, (float) w / canvasSize, (float) h / canvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float uw, float vh, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, u / canvasSize, v / canvasSize, uw / canvasSize, vh / canvasSize);
+    }
+
+    public static void innerBlit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float uw, float vh) {
+        innermostBlit(consumer, x, y, w, h, r, g, b, a, u, v, u+uw, v+vh);
+    }
+
+    public static void innermostBlit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, float u0, float v0, float u1, float v1) {
+        consumer.vertex((float) x, (float) y + (float) h, 0).color(r, g, b, a).uv(u0, v1).endVertex();
+        consumer.vertex((float) x + (float) w, (float) y + (float) h, 0).color(r, g, b, a).uv(u1, v1).endVertex();
+        consumer.vertex((float) x + (float) w, (float) y, 0).color(r, g, b, a).uv(u1, v0).endVertex();
+        consumer.vertex((float) x, (float) y, 0).color(r, g, b, a).uv(u0, v0).endVertex();
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u, float v, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, light, u / xCanvasSize, v / yCanvasSize, (float) w / xCanvasSize, (float) h / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u, float v, float uw, float vh, float xCanvasSize, float yCanvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, light, u / xCanvasSize, v / yCanvasSize, uw / xCanvasSize, vh / yCanvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u, float v, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, light, u / canvasSize, v / canvasSize, (float) w / canvasSize, (float) h / canvasSize);
+    }
+
+    public static void blit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u, float v, float uw, float vh, float canvasSize) {
+        innerBlit(consumer, x, y, w, h, r, g, b, a, light, u / canvasSize, v / canvasSize, uw / canvasSize, vh / canvasSize);
+    }
+
+    public static void innerBlit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u, float v, float uw, float vh) {
+        innermostBlit(consumer, x, y, w, h, r, g, b, a, light, u, v, u+uw, v+vh);
+    }
+    public static void innermostBlit(VertexConsumer consumer, int x, int y, double w, double h, float r, float g, float b, float a, int light, float u0, float v0, float u1, float v1) {
+        consumer.vertex((float) x, (float) y + (float) h, 0).uv(u0, v1).color(r, g, b, a).uv2(light).endVertex();
+        consumer.vertex((float) x + (float) w, (float) y + (float) h, 0).uv(u1, v1).color(r, g, b, a).uv2(light).endVertex();
+        consumer.vertex((float) x + (float) w, (float) y, 0).uv(u1, v0).color(r, g, b, a).uv2(light).endVertex();
+        consumer.vertex((float) x, (float) y, 0).uv(u0, v0).color(r, g, b, a).uv2(light).endVertex();
+    }
 
     public static VertexBuilder create() {
         return new VertexBuilder();

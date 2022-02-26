@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.PlayerSpellHotbarHandler;
+import com.project_esoterica.esoterica.core.handlers.PlayerSpellHotbarHandler;
 import net.minecraft.client.gui.Gui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

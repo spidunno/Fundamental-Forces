@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventManager;
+import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
@@ -21,8 +21,8 @@ public class StarfallAreaCheckCommand {
                     CommandSourceStack source = context.getSource();
                     if (source.getEntity() instanceof ServerPlayer player) {
                         ServerLevel level = context.getSource().getLevel();
-                        boolean heightmap = WorldEventManager.heightmapCheck(level, player.blockPosition(), 1);
-                        boolean blocks = WorldEventManager.blockCheck(level, WorldEventManager.nearbyBlockList(level, player.blockPosition()));
+                        boolean heightmap = WorldEventHandler.heightmapCheck(level, player.blockPosition(), 1);
+                        boolean blocks = WorldEventHandler.blockCheck(level, WorldEventHandler.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
                             source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.success")), true);

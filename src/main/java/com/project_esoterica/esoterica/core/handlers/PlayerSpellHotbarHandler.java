@@ -1,4 +1,4 @@
-package com.project_esoterica.esoterica.core.systems.magic.spell.hotbar;
+package com.project_esoterica.esoterica.core.handlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -7,6 +7,7 @@ import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.setup.client.KeyBindingRegistry;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldownData;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
+import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -35,12 +36,12 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
-            if (event.getPlayer() instanceof ServerPlayer player) {
-                PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
+                PlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
-                        SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(player);
-                        selectedSpell.castBlock(player, event.getPos(), event.getHitVec());
-                        selectedSpell.castCommon(player);
+                        SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
+                        selectedSpell.castBlock(serverPlayer, event.getPos(), event.getHitVec());
+                        selectedSpell.castCommon(serverPlayer);
                     }
                 });
             }
