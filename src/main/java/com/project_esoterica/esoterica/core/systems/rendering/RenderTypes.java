@@ -3,6 +3,7 @@ package com.project_esoterica.esoterica.core.systems.rendering;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.project_esoterica.esoterica.EsotericaMod;
+import com.project_esoterica.esoterica.core.handlers.RenderHandler;
 import com.project_esoterica.esoterica.core.setup.client.ShaderRegistry;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -18,7 +19,6 @@ public class RenderTypes extends RenderStateShard{
     }
 
     public static final RenderType ADDITIVE_PARTICLE = createGenericRenderType("additive_particle", PARTICLE, VertexFormat.Mode.QUADS, ShaderRegistry.additiveParticle.shard, StateShards.ADDITIVE_TRANSPARENCY, TextureAtlas.LOCATION_PARTICLES);
-    public static final RenderType ADDITIVE_SCREEN_PARTICLE = createGenericRenderType("additive_screen_particle", PARTICLE, VertexFormat.Mode.QUADS, ShaderRegistry.additiveParticle.shard, StateShards.ADDITIVE_TRANSPARENCY, TextureAtlas.LOCATION_PARTICLES);
     public static final RenderType ADDITIVE_BLOCK_PARTICLE = createGenericRenderType("additive_block_particle", PARTICLE, VertexFormat.Mode.QUADS, ShaderRegistry.additiveParticle.shard, StateShards.ADDITIVE_TRANSPARENCY, TextureAtlas.LOCATION_BLOCKS);
 
     public static RenderType createQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
@@ -59,12 +59,12 @@ public class RenderTypes extends RenderStateShard{
                         .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
                         .setCullState(new RenderStateShard.CullStateShard(true))
                         .createCompositeState(true));
-        RenderManager.BUFFERS.put(type, new BufferBuilder(type.bufferSize()));
+        RenderHandler.BUFFERS.put(type, new BufferBuilder(type.bufferSize()));
         return type;
     }
     public static RenderType withShaderHandler(RenderType type, RenderTypeShaderHandler handler)
     {
-        RenderManager.HANDLERS.put(type, handler);
+        RenderHandler.HANDLERS.put(type, handler);
         return type;
     }
 }

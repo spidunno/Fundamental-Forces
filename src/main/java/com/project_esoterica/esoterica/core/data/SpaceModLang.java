@@ -1,11 +1,11 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.setup.PotionEffectRegistry;
-import com.project_esoterica.esoterica.core.setup.SoundRegistry;
-import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
-import com.project_esoterica.esoterica.core.setup.item.EnchantmentRegistry;
-import com.project_esoterica.esoterica.core.setup.item.ItemRegistry;
+import com.project_esoterica.esoterica.core.setup.content.potion.PotionEffectRegistry;
+import com.project_esoterica.esoterica.core.setup.content.SoundRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.content.item.EnchantmentRegistry;
+import com.project_esoterica.esoterica.core.setup.content.item.ItemRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;

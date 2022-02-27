@@ -6,7 +6,7 @@ import com.google.common.collect.Sets;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
-import com.project_esoterica.esoterica.core.setup.RecipeTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.RecipeTypeRegistry;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;

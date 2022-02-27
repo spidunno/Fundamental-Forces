@@ -1,7 +1,7 @@
 package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.setup.item.ItemRegistry;
+import com.project_esoterica.esoterica.core.setup.content.item.ItemRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;

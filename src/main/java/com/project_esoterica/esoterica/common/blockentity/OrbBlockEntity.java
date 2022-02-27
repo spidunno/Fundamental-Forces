@@ -1,9 +1,9 @@
 package com.project_esoterica.esoterica.common.blockentity;
 
-import com.project_esoterica.esoterica.core.setup.block.BlockEntityRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockEntityRegistry;
 import com.project_esoterica.esoterica.core.setup.client.ParticleRegistry;
 import com.project_esoterica.esoterica.core.systems.blockentity.SimpleBlockEntity;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
+import com.project_esoterica.esoterica.core.helper.RenderHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,7 +28,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
             double z = worldPosition.getZ() + 0.5;
             int lifeTime = 3 + level.random.nextInt(9);
             float scale = 0.1f + level.random.nextFloat() * 0.07f;
-            RenderUtilities.create(ParticleRegistry.SCREEN_WISP)
+            RenderHelper.create(ParticleRegistry.WISP)
                     .setScale(scale, 0)
                     .setLifetime(lifeTime)
                     .setAlpha(0.2f)
@@ -38,7 +38,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
                     .setColorCurveMultiplier(1.25f)
                     .spawn(level, x, y, z);
             if (level.getGameTime() % 2L == 0) {
-                RenderUtilities.create(ParticleRegistry.SQUARE)
+                RenderHelper.create(ParticleRegistry.SQUARE)
                         .setScale(scale * 2, 0)
                         .setLifetime(lifeTime + 4)
                         .setAlpha(0, 0.8f)
@@ -49,7 +49,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
                         .setColorCurveMultiplier(1.25f)
                         .spawn(level, x, y, z);
             }
-            RenderUtilities.create(ParticleRegistry.CIRCLE)
+            RenderHelper.create(ParticleRegistry.CIRCLE)
                     .setScale(scale, 0)
                     .setLifetime(lifeTime + 4)
                     .setAlpha(0, 0.3f)

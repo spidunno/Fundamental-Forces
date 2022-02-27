@@ -2,8 +2,8 @@ package com.project_esoterica.esoterica.common.worldevents.starfall;
 
 import com.project_esoterica.esoterica.common.capability.WorldDataCapability;
 import com.project_esoterica.esoterica.config.CommonConfig;
-import com.project_esoterica.esoterica.core.setup.worldevent.StarfallActors;
-import com.project_esoterica.esoterica.core.setup.worldevent.WorldEventTypes;
+import com.project_esoterica.esoterica.core.setup.content.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.setup.content.worldevent.WorldEventTypes;
 import com.project_esoterica.esoterica.core.systems.worldevent.WorldEventInstance;
 import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.core.BlockPos;

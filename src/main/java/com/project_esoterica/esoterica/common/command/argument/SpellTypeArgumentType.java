@@ -8,7 +8,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.setup.magic.SpellTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.magic.SpellTypeRegistry;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Collection;

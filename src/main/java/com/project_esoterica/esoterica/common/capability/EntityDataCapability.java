@@ -17,7 +17,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.setup.server.PacketRegistry.INSTANCE;
 
 public class EntityDataCapability implements SimpleCapability {
 

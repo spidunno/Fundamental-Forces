@@ -4,7 +4,7 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "esoterica:noise/radial_noise",
+  "vertex": "esoterica:position_color_tex",
   "fragment": "esoterica:noise/radial_noise",
   "attributes": [
     "Position",

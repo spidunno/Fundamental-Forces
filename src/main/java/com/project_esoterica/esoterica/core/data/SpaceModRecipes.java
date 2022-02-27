@@ -3,7 +3,7 @@ package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.core.data.builder.ImpactConversionRecipeBuilder;
 import com.project_esoterica.esoterica.core.data.builder.ManaAbsorbtionRecipeBuilder;
-import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockRegistry;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;

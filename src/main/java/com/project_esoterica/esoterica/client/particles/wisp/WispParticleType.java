@@ -28,7 +28,6 @@ public class WispParticleType extends ParticleType<ParticleOptions> {
             this.sprite = sprite;
         }
 
-
         @Nullable
         @Override
         public Particle createParticle(ParticleOptions data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {

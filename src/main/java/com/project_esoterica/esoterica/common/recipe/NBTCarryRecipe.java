@@ -4,7 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import com.project_esoterica.esoterica.core.setup.RecipeTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.RecipeTypeRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;

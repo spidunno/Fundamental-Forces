@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.BlockPos;

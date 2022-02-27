@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.data;
 
 import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.block.OrbBlock;
-import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockRegistry;
 import com.project_esoterica.esoterica.core.systems.block.SimpleBlockProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;

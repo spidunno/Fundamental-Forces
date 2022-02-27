@@ -1,8 +1,8 @@
 package com.project_esoterica.esoterica.mixin;
 
 import com.project_esoterica.esoterica.common.block.FlammableMeteoriteBlock;
-import com.project_esoterica.esoterica.core.setup.block.BlockRegistry;
-import com.project_esoterica.esoterica.core.setup.item.ItemTagRegistry;
+import com.project_esoterica.esoterica.core.setup.content.block.BlockRegistry;
+import com.project_esoterica.esoterica.core.setup.content.item.ItemTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;

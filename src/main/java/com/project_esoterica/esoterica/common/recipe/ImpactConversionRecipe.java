@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.common.recipe;
 
 import com.google.gson.JsonObject;
 import com.project_esoterica.esoterica.EsotericaMod;
-import com.project_esoterica.esoterica.core.setup.RecipeTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.RecipeTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.recipe.IEsotericaRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

@@ -31,7 +31,7 @@ public class ShaderRegistry {
     @SubscribeEvent
     public static void shaderRegistry(RegisterShadersEvent event) throws IOException {
 
-        event.registerShader(new ShaderInstance(event.getResourceManager(), DataHelper.prefix("additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> additiveTexture.setInstance(shaderInstance));
+        event.registerShader(new ShaderInstance(event.getResourceManager(), DataHelper.prefix("additive_texture"), DefaultVertexFormat.POSITION_COLOR_TEX), shaderInstance -> additiveTexture.setInstance(shaderInstance));
         event.registerShader(new ShaderInstance(event.getResourceManager(), DataHelper.prefix("color_gradient_texture"), DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP), shaderInstance -> colorGradientTexture.setInstance(shaderInstance));
         event.registerShader(new ShaderInstance(event.getResourceManager(), DataHelper.prefix("additive_particle"), DefaultVertexFormat.PARTICLE), shaderInstance -> additiveParticle.setInstance(shaderInstance));
 

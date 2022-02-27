@@ -6,7 +6,7 @@ import com.project_esoterica.esoterica.common.command.argument.StarfallResultArg
 import com.project_esoterica.esoterica.common.worldevents.starfall.StarfallActor;
 import com.project_esoterica.esoterica.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.setup.worldevent.StarfallActors;
+import com.project_esoterica.esoterica.core.setup.content.worldevent.StarfallActors;
 import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

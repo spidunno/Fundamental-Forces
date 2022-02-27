@@ -1,14 +1,14 @@
 package com.project_esoterica.esoterica.core.handlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.*;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.helper.DataHelper;
 import com.project_esoterica.esoterica.core.setup.client.KeyBindingRegistry;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellCooldownData;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
+import com.project_esoterica.esoterica.core.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -92,7 +92,6 @@ public class PlayerSpellHotbarHandler {
 
     public static class ClientOnly {
         private static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
-
         public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
@@ -162,44 +161,40 @@ public class PlayerSpellHotbarHandler {
                 PlayerDataCapability.getCapability(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         PoseStack poseStack = event.getMatrixStack();
+                        poseStack.pushPose();
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
                         float offset = (1 - progress) * 45;
                         int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
                         int top = event.getWindow().getGuiScaledHeight() - 31;
                         int slot = player.getInventory().selected;
-                        poseStack.pushPose();
                         poseStack.translate(0, offset, 0);
+                        RenderSystem.enableBlend();
                         RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
-                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
-                        RenderUtilities.blit(poseStack, left, top, 218, 28, 0, 0, 256f);
+                        RenderHelper.blit(poseStack, left, top, 218, 28, 0, 0, 256f);
 
-                        RenderUtilities.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 0, 28, 256f);
+                        RenderHelper.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 0, 28, 256f);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
                                 ResourceLocation background = instance.type.getBackgroundLocation();
                                 ResourceLocation icon = instance.type.getIconLocation();
                                 RenderSystem.setShaderTexture(0, background);
-                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
+                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
                                 RenderSystem.setShaderTexture(0, icon);
-                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
+                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
                             }
                         }
-                        RenderSystem.enableBlend();
                         RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty() && instance.getFade() > 0) {
-                                RenderSystem.setShaderColor(1f, 1f, 1f, instance.getFade());
-                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 28, 28, 256f);
+                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 1f, 1f, 1f, instance.getFade(), 28, 28, 256f);
                             }
                             if (SpellCooldownData.isOnCooldown(instance.cooldown)) {
                                 int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
-                                RenderSystem.setShaderColor(1f, 1f, 1f, 0.5f);
-                                RenderUtilities.blit(poseStack, left + i * 24 + 3, top + 3+cooldownOffset, 20, 22-cooldownOffset, 28, 28 + cooldownOffset, 256f);
+                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3+cooldownOffset, 20, 22-cooldownOffset, 1f, 1f, 1f, 0.5f, 28, 28 + cooldownOffset, 256f);
                             }
                         }
-                        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
                         RenderSystem.disableBlend();
                         poseStack.popPose();
                     }

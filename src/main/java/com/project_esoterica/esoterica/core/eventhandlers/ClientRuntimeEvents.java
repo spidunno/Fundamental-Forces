@@ -4,7 +4,7 @@ import com.project_esoterica.esoterica.EsotericaMod;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.core.handlers.ScreenParticleHandler;
 import com.project_esoterica.esoterica.core.handlers.PlayerSpellHotbarHandler;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderManager;
+import com.project_esoterica.esoterica.core.handlers.RenderHandler;
 import com.project_esoterica.esoterica.core.handlers.ScreenshakeHandler;
 import com.project_esoterica.esoterica.core.handlers.WorldEventHandler;
 import net.minecraft.client.Camera;
@@ -38,13 +38,14 @@ public class ClientRuntimeEvents {
                 ScreenshakeHandler.clientTick(camera, EsotericaMod.RANDOM);
                 PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
                 PlayerDataCapability.ClientOnly.clientTick(event);
+                ScreenParticleHandler.clientTick(event);
             }
         }
     }
 
     @SubscribeEvent
     public static void onRenderLast(RenderLevelLastEvent event) {
-        RenderManager.onRenderLast(event);
+        RenderHandler.onRenderLast(event);
     }
 
     @SuppressWarnings("ALL")

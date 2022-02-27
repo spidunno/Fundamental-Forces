@@ -1,40 +1,29 @@
 package com.project_esoterica.esoterica.client.particles.wisp;
 
-import com.mojang.serialization.Codec;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticle;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.ParticleType;
 
-import javax.annotation.Nullable;
+public class WispScreenParticleType extends ScreenParticleType<ScreenParticleOptions> {
 
-public class WispScreenParticleType extends ParticleType<ParticleOptions> {
     public WispScreenParticleType() {
-        super(false, ParticleOptions.DESERIALIZER);
+        super();
     }
 
-
-    @Override
-    public Codec<ParticleOptions> codec() {
-        return ParticleOptions.codecFor(this);
-    }
-
-    public static class Factory implements ParticleProvider<ParticleOptions> {
-        private final SpriteSet sprite;
+    public static class Factory implements ParticleProvider<ScreenParticleOptions> {
+        public final SpriteSet sprite;
 
         public Factory(SpriteSet sprite) {
             this.sprite = sprite;
         }
 
-
-        @Nullable
         @Override
-        public Particle createParticle(ParticleOptions data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
-            WispScreenParticle ret = new WispScreenParticle(world, data, x, y, mx, my);
-            ret.pickSprite(sprite);
-            return ret;
+        public ScreenParticle createParticle(ClientLevel pLevel, ScreenParticleOptions options, double pX, double pY, double pXSpeed, double pYSpeed) {
+            WispScreenParticle particle = new WispScreenParticle(pLevel, options, pX, pY, pXSpeed, pYSpeed);
+            particle.pickSprite(sprite);
+            return particle;
         }
     }
 }

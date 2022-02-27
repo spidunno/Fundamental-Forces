@@ -2,7 +2,7 @@ package com.project_esoterica.esoterica.core.systems.magic.spell;
 
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.packets.spell.UpdateCooldownPacket;
-import com.project_esoterica.esoterica.core.setup.magic.SpellTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.magic.SpellTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.easing.Easing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.setup.server.PacketRegistry.INSTANCE;
 
 public class SpellInstance {
 

@@ -14,7 +14,7 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.PacketDistributor;
 
-import static com.project_esoterica.esoterica.core.setup.PacketRegistry.INSTANCE;
+import static com.project_esoterica.esoterica.core.setup.server.PacketRegistry.INSTANCE;
 
 public class ScreenshakeCommand {
     public ScreenshakeCommand() {

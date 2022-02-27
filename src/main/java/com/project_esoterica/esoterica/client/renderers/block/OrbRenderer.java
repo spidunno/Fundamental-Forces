@@ -5,8 +5,8 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.common.blockentity.OrbBlockEntity;
 import com.project_esoterica.esoterica.core.setup.client.ShaderRegistry;
+import com.project_esoterica.esoterica.core.helper.RenderHelper;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -18,14 +18,14 @@ import net.minecraft.resources.ResourceLocation;
 import java.awt.*;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
-import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
+import static com.project_esoterica.esoterica.core.handlers.RenderHandler.DELAYED_RENDER;
 
 
 public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
     public OrbRenderer(BlockEntityRendererProvider.Context context) {
     }
 
-    private static final RenderUtilities.VertexBuilder BUILDER = RenderUtilities.create();
+    private static final RenderHelper.VertexBuilder BUILDER = RenderHelper.create();
     private static final ResourceLocation ORB_NOISE = prefix("textures/vfx/noise/orb_noise.png");
     public static final RenderType ORB_NOISE_TYPE = RenderTypes.withShaderHandler(RenderTypes.createRadialNoiseQuadRenderType(ORB_NOISE), () -> {
         ShaderInstance instance = ShaderRegistry.radialNoise.getInstance().get();

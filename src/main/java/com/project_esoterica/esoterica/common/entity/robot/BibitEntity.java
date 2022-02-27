@@ -1,8 +1,8 @@
 package com.project_esoterica.esoterica.common.entity.robot;
 
-import com.project_esoterica.esoterica.core.setup.EntityRegistry;
+import com.project_esoterica.esoterica.core.setup.content.entity.EntityRegistry;
 import com.project_esoterica.esoterica.core.setup.client.ParticleRegistry;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
+import com.project_esoterica.esoterica.core.helper.RenderHelper;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -123,7 +123,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
         super.tick();
         if (level.isClientSide)
         {
-            RenderUtilities.create(ParticleRegistry.WISP)
+            RenderHelper.create(ParticleRegistry.WISP)
                     .setAlpha(0.5f, 0f)
                     .setLifetime(20 + level.random.nextInt(4))
                     .setSpin(Mth.nextFloat(level.random, 0.05f, 0.1f))

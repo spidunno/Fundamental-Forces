@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.project_esoterica.esoterica.common.capability.PlayerDataCapability;
 import com.project_esoterica.esoterica.common.command.argument.SpellTypeArgumentType;
 import com.project_esoterica.esoterica.core.data.SpaceModLang;
-import com.project_esoterica.esoterica.core.setup.magic.SpellTypeRegistry;
+import com.project_esoterica.esoterica.core.setup.content.magic.SpellTypeRegistry;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellInstance;
 import com.project_esoterica.esoterica.core.systems.magic.spell.SpellType;
 import net.minecraft.commands.CommandSourceStack;

@@ -5,8 +5,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.project_esoterica.esoterica.common.entity.falling.FallingEntity;
 import com.project_esoterica.esoterica.core.setup.client.ShaderRegistry;
+import com.project_esoterica.esoterica.core.helper.RenderHelper;
 import com.project_esoterica.esoterica.core.systems.rendering.RenderTypes;
-import com.project_esoterica.esoterica.core.systems.rendering.RenderUtilities;
 import com.project_esoterica.esoterica.core.systems.rendering.StateShards;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -23,7 +23,7 @@ import net.minecraftforge.client.model.renderable.MultipartTransforms;
 import net.minecraftforge.client.model.renderable.SimpleRenderable;
 
 import static com.project_esoterica.esoterica.core.helper.DataHelper.prefix;
-import static com.project_esoterica.esoterica.core.systems.rendering.RenderManager.DELAYED_RENDER;
+import static com.project_esoterica.esoterica.core.handlers.RenderHandler.DELAYED_RENDER;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.createMovingBootlegTriangleRenderType;
 import static com.project_esoterica.esoterica.core.systems.rendering.RenderTypes.withShaderHandler;
 
@@ -55,7 +55,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         instance.safeGetUniform("Speed").set(400f);
     });
 
-    public static final RenderUtilities.VertexBuilder builder = RenderUtilities.create();
+    public static final RenderHelper.VertexBuilder builder = RenderHelper.create();
     public static final OBJModel METEOR_TEARDROP = OBJLoader.INSTANCE.loadModel(new OBJModel.ModelSettings(prefix("models/obj/meteor.obj"), false, false, true, true, null));
     public static final SimpleRenderable RENDER = METEOR_TEARDROP.bakeRenderable(StandaloneModelConfiguration.INSTANCE);
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
