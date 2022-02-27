@@ -21,12 +21,12 @@ public class ScreenParticleHandler {
 
     public static void clientTick(TickEvent.ClientTickEvent event) {
         ParticleHelper.create(ScreenParticleRegistry.WISP)
-                .addVelocity(0, 1)
-                .setLifetime(120)
-                .randomVelocity(1)
-                .setColor(24/255f, 20/255f, 142/255f, 85/255f, 100/255f, 10/255f)
-                .setColorCurveMultiplier(1f)
-                .setAlpha(0.5f, 0)
+                .addVelocity(1, 0)
+                .setLifetime(200)
+                .setColor(24/255f, 20/255f, 142/255f, 85/255f, 2/255f, 10/255f)
+                .setAlphaCurveMultiplier(0.5f)
+                .setScale(2, 0.5f)
+                .setAlpha(0.25f, 0)
                 .spawn(100, 100);
 
         PARTICLES.forEach((type, particles) -> {
