@@ -3,18 +3,15 @@ package com.project_esoterica.esoterica.core.setup.client;
 import com.google.common.collect.Maps;
 import com.project_esoterica.esoterica.client.particles.wisp.WispScreenParticleType;
 import com.project_esoterica.esoterica.core.handlers.ScreenParticleHandler;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
-@Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ScreenParticleRegistry {
     public static final ArrayList<ScreenParticleType<?>> PARTICLE_TYPES = new ArrayList<>();
 

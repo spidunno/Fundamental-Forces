@@ -1,7 +1,6 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle;
+package com.project_esoterica.esoterica.core.systems.rendering.screenparticle;
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
-import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.TextureSheetScreenParticle;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.FastColor;
 import net.minecraft.util.Mth;

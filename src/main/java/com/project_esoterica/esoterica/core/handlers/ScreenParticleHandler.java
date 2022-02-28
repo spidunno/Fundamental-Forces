@@ -3,7 +3,7 @@ package com.project_esoterica.esoterica.core.handlers;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.project_esoterica.esoterica.core.helper.ParticleHelper;
 import com.project_esoterica.esoterica.core.setup.client.ScreenParticleRegistry;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticle;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.client.Minecraft;
@@ -21,13 +21,16 @@ public class ScreenParticleHandler {
 
     public static void clientTick(TickEvent.ClientTickEvent event) {
         ParticleHelper.create(ScreenParticleRegistry.WISP)
-                .addVelocity(1, 0)
-                .setLifetime(200)
+                .setLifetime(20)
                 .setColor(24/255f, 20/255f, 142/255f, 85/255f, 2/255f, 10/255f)
-                .setAlphaCurveMultiplier(0.5f)
+                .setAlphaCurveMultiplier(0.75f)
                 .setScale(2, 0.5f)
-                .setAlpha(0.25f, 0)
-                .spawn(100, 100);
+                .setAlpha(0.75f, 0)
+                .setSpin(Minecraft.getInstance().level.random.nextFloat()*6.28f)
+                .setStartingSpin(Minecraft.getInstance().level.random.nextFloat()*6.28f)
+                .randomOffset(4)
+                .randomVelocity(1, 1)
+                .repeat(100, 100, 4);
 
         PARTICLES.forEach((type, particles) -> {
             Iterator<ScreenParticle> iterator = particles.iterator();
@@ -43,13 +46,15 @@ public class ScreenParticleHandler {
     public static final Tesselator TESSELATOR = new Tesselator();
 
     public static void renderParticles(RenderGameOverlayEvent.Post event) {
-        PARTICLES.forEach((type, particles) -> {
-            event.getMatrixStack().pushPose();
-            type.begin(TESSELATOR.getBuilder(), Minecraft.getInstance().textureManager);
-            particles.forEach(p -> p.render(TESSELATOR.getBuilder(), event));
-            type.end(TESSELATOR);
-            event.getMatrixStack().popPose();
-        });
+        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
+            PARTICLES.forEach((type, particles) -> {
+                event.getMatrixStack().pushPose();
+                type.begin(TESSELATOR.getBuilder(), Minecraft.getInstance().textureManager);
+                particles.forEach(p -> p.render(TESSELATOR.getBuilder(), event));
+                type.end(TESSELATOR);
+                event.getMatrixStack().popPose();
+            });
+        }
     }
 
     @SuppressWarnings("ALL")

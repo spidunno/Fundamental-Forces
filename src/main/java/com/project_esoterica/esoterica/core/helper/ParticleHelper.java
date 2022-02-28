@@ -3,7 +3,7 @@ package com.project_esoterica.esoterica.core.helper;
 import com.mojang.math.Vector3d;
 import com.project_esoterica.esoterica.core.handlers.ScreenParticleHandler;
 import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ParticleOptions;
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

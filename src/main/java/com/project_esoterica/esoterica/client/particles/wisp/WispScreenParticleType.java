@@ -1,6 +1,6 @@
 package com.project_esoterica.esoterica.client.particles.wisp;
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticle;
 import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.client.multiplayer.ClientLevel;

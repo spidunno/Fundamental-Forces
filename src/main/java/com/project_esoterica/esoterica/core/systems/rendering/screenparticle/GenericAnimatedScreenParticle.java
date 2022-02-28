@@ -1,6 +1,6 @@
-package com.project_esoterica.esoterica.core.systems.rendering.particle;
+package com.project_esoterica.esoterica.core.systems.rendering.screenparticle;
 
-import com.project_esoterica.esoterica.core.systems.rendering.particle.options.ScreenParticleOptions;
+import com.project_esoterica.esoterica.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.SpriteSet;
