@@ -28,7 +28,7 @@
   "item.fundamental_forces.astral_shard": "Astral Shard",
   "item.fundamental_forces.crack": "Crack",
   "item.fundamental_forces.dev_tool": "Dev Tool",
-  "itemGroup.fundamental_forces": "Empirical Esoterica",
+  "itemGroup.fundamental_forces": "Fundamental Forces",
   "key.fundamental_forces.swapHotbar": "Swap Hotbar",
   "options.fundamental_forces.fire_offset": "Fire Overlay Offset",
   "options.fundamental_forces.fire_offset.tooltip": "Offsets the fire overlay effect downwards, clearing up your vision.",

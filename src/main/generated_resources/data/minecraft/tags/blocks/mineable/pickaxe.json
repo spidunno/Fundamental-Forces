@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "fundamental_forces:block_of_crack",
     "fundamental_forces:charred_rock",
     "fundamental_forces:polished_charred_rock",
     "fundamental_forces:charred_rock_slab",
