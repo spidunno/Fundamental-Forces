@@ -41,11 +41,6 @@ public class ScreenParticleHandler {
         canSpawnItemParticles = true;
     }
 
-    public static void renderOverlay(RenderGameOverlayEvent.Post event)
-    {
-        if (event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
-        }
-    }
     public static void renderItem(ItemStack stack) {
         Minecraft minecraft = Minecraft.getInstance();
         if (canSpawnItemParticles && minecraft.level != null) {

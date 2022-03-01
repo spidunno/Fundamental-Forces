@@ -77,6 +77,5 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderOverlay(RenderGameOverlayEvent.Post event) {
         PlayerSpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
-        ScreenParticleHandler.renderOverlay(event);
     }
 }
