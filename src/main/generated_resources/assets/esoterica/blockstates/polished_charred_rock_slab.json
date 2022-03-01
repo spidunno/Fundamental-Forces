@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=top": {
-      "model": "esoterica:block/polished_charred_rock_slab_top"
+      "model": "fundamental_forces:block/polished_charred_rock_slab_top"
     },
     "type=bottom": {
-      "model": "esoterica:block/polished_charred_rock_slab"
+      "model": "fundamental_forces:block/polished_charred_rock_slab"
     },
     "type=double": {
-      "model": "esoterica:block/polished_charred_rock"
+      "model": "fundamental_forces:block/polished_charred_rock"
     }
   }
 }

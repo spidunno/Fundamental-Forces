@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "esoterica:block/force_orb"
+      "model": "fundamental_forces:block/force_orb"
     }
   }
 }

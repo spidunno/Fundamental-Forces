@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "com.sammy.fundamental_forces.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "refmap": "fundamental_forces.refmap.json",
+  "mixins": [
+    "BaseFireBlockMixin",
+    "EntityMixin",
+    "FlintAndSteelMixin",
+    "InventoryMixin"
+  ],
+  "client": [
+    "CameraMixin",
+    "EntityRenderDispatcherMixin",
+    "GuiMixin",
+    "ItemRendererMixin",
+    "ScreenEffectRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8.5"
+}

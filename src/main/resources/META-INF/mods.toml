@@ -2,20 +2,20 @@ modLoader="javafml"
 loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
-modId="esoterica"
+modId="fundamental_forces"
 version="${file.jarVersion}"
-displayName="Esoterica"
-logoFile="esoterica.png"
+displayName="Fundamental Forces"
+logoFile="fundamental_forces.png"
 credits="Credits go here"
 authors="Authors go here"
 description=''' '''
-[[dependencies.esoterica]]
+[[dependencies.fundamental_forces]]
     modId="forge"
     mandatory=true
     versionRange="[39,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.esoterica]]
+[[dependencies.fundamental_forces]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.18.1,)"

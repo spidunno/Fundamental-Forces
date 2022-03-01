@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "esoterica:block/asteroid_rock"
+      "model": "fundamental_forces:block/asteroid_rock"
     }
   }
 }

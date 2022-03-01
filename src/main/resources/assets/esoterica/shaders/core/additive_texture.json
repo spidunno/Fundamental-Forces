@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "esoterica:position_color_tex",
-  "fragment": "esoterica:additive_texture",
+  "vertex": "fundamental_forces:position_color_tex",
+  "fragment": "fundamental_forces:additive_texture",
   "attributes": [
     "Position",
     "Color",

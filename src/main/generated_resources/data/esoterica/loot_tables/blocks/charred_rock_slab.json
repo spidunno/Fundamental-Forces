@@ -13,7 +13,7 @@
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
-                  "block": "esoterica:charred_rock_slab",
+                  "block": "fundamental_forces:charred_rock_slab",
                   "properties": {
                     "type": "double"
                   }
@@ -26,7 +26,7 @@
               "function": "minecraft:explosion_decay"
             }
           ],
-          "name": "esoterica:charred_rock_slab"
+          "name": "fundamental_forces:charred_rock_slab"
         }
       ]
     }

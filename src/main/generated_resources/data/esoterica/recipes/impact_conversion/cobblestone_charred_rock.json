@@ -1,9 +1,9 @@
 {
-  "type": "esoterica:impact_conversion",
+  "type": "fundamental_forces:impact_conversion",
   "input": {
     "tag": "forge:cobblestone"
   },
   "output": {
-    "item": "esoterica:charred_rock"
+    "item": "fundamental_forces:charred_rock"
   }
 }

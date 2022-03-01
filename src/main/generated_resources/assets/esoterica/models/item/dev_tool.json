@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "esoterica:item/dev_tool"
+    "layer0": "fundamental_forces:item/dev_tool"
   }
 }

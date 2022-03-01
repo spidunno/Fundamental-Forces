@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "esoterica:block/block_of_crack"
+      "model": "fundamental_forces:block/block_of_crack"
     }
   }
 }

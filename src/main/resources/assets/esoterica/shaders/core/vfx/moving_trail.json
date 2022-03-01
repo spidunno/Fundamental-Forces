@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "esoterica:position_color_tex_lightmap",
-  "fragment": "esoterica:vfx/moving_trail",
+  "vertex": "fundamental_forces:position_color_tex_lightmap",
+  "fragment": "fundamental_forces:vfx/moving_trail",
   "attributes": [
     "Position",
     "Color",

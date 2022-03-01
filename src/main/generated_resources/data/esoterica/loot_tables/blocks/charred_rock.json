@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "esoterica:charred_rock"
+          "name": "fundamental_forces:charred_rock"
         }
       ],
       "conditions": [

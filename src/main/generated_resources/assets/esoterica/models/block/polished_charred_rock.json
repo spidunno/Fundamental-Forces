@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "esoterica:block/polished_charred_rock"
+    "all": "fundamental_forces:block/polished_charred_rock"
   }
 }

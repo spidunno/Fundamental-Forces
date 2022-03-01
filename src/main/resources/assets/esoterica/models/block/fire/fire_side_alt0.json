@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_fire_side_alt",
   "textures": {
-    "fire": "esoterica:block/fire_0"
+    "fire": "fundamental_forces:block/fire_0"
   }
 }

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "esoterica:block/volcanic_glass"
+      "model": "fundamental_forces:block/volcanic_glass"
     }
   }
 }

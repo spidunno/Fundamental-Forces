@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "esoterica:additive_particle",
-  "fragment": "esoterica:additive_particle",
+  "vertex": "fundamental_forces:additive_particle",
+  "fragment": "fundamental_forces:additive_particle",
   "attributes": [
     "Position",
     "UV0",

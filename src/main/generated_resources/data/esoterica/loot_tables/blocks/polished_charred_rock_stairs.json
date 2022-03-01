@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "esoterica:polished_charred_rock_stairs"
+          "name": "fundamental_forces:polished_charred_rock_stairs"
         }
       ],
       "conditions": [

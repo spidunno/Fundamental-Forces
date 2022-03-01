@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "esoterica:item/crack"
+    "layer0": "fundamental_forces:item/crack"
   }
 }

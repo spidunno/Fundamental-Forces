@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "esoterica:item/asteroid_chunk"
+    "layer0": "fundamental_forces:item/asteroid_chunk"
   }
 }

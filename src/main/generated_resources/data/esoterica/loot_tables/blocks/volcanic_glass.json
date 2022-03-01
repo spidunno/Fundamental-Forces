@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "esoterica:volcanic_glass"
+          "name": "fundamental_forces:volcanic_glass"
         }
       ],
       "conditions": [

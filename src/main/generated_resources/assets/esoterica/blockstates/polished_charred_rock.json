@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "esoterica:block/polished_charred_rock"
+      "model": "fundamental_forces:block/polished_charred_rock"
     }
   }
 }

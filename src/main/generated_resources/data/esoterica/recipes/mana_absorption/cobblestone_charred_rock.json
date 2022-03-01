@@ -1,9 +1,9 @@
 {
-  "type": "esoterica:mana_absorption",
+  "type": "fundamental_forces:mana_absorption",
   "input": {
     "tag": "forge:cobblestone"
   },
   "output": {
-    "item": "esoterica:charred_rock"
+    "item": "fundamental_forces:charred_rock"
   }
 }

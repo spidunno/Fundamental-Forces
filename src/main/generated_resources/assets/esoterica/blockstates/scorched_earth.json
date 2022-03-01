@@ -2,18 +2,18 @@
   "variants": {
     "": [
       {
-        "model": "esoterica:block/scorched_earth"
+        "model": "fundamental_forces:block/scorched_earth"
       },
       {
-        "model": "esoterica:block/scorched_earth",
+        "model": "fundamental_forces:block/scorched_earth",
         "y": 90
       },
       {
-        "model": "esoterica:block/scorched_earth",
+        "model": "fundamental_forces:block/scorched_earth",
         "y": 180
       },
       {
-        "model": "esoterica:block/scorched_earth",
+        "model": "fundamental_forces:block/scorched_earth",
         "y": 270
       }
     ]

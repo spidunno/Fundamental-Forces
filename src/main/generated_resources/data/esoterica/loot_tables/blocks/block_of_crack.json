@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "esoterica:block_of_crack"
+          "name": "fundamental_forces:block_of_crack"
         }
       ],
       "conditions": [

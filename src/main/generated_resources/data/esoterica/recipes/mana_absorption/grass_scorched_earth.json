@@ -1,9 +1,9 @@
 {
-  "type": "esoterica:mana_absorption",
+  "type": "fundamental_forces:mana_absorption",
   "input": {
     "item": "minecraft:grass_block"
   },
   "output": {
-    "item": "esoterica:scorched_earth"
+    "item": "fundamental_forces:scorched_earth"
   }
 }

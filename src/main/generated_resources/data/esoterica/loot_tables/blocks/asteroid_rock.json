@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "esoterica:asteroid_rock"
+          "name": "fundamental_forces:asteroid_rock"
         }
       ],
       "conditions": [
