@@ -13,8 +13,10 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,13 +64,16 @@ public class ScreenParticleHandler {
 
     public static void renderParticles(TickEvent.RenderTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
-            PARTICLES.forEach((type, particles) -> {
-                type.begin(TESSELATOR.getBuilder(), Minecraft.getInstance().textureManager);
-                particles.forEach(p -> p.render(TESSELATOR.getBuilder(), event));
-                type.end(TESSELATOR);
-            });
-            canSpawnItemParticles = false;
+            renderParticles();
         }
+    }
+    public static void renderParticles() {
+        PARTICLES.forEach((type, particles) -> {
+            type.begin(TESSELATOR.getBuilder(), Minecraft.getInstance().textureManager);
+            particles.forEach(p -> p.render(TESSELATOR.getBuilder()));
+            type.end(TESSELATOR);
+        });
+        canSpawnItemParticles = false;
     }
 
     @SuppressWarnings("ALL")

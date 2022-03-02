@@ -26,7 +26,7 @@ public abstract class QuadScreenParticle extends ScreenParticle {
    }
 
    @Override
-   public void render(BufferBuilder bufferBuilder, TickEvent.RenderTickEvent event) {
+   public void render(BufferBuilder bufferBuilder) {
       float partialTicks = Minecraft.getInstance().timer.partialTick;
       float size = getQuadSize(partialTicks) * 10;
       float u0 = getU0();
@@ -43,11 +43,10 @@ public abstract class QuadScreenParticle extends ScreenParticle {
          vector3f.add((float) x, (float) y, 0);
       }
 
-      float z = (Minecraft.getInstance().level.getGameTime()%2000)-1000;
-      bufferBuilder.vertex(vectors[0].x(), vectors[0].y(), z).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
-      bufferBuilder.vertex(vectors[1].x(), vectors[1].y(), z).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
-      bufferBuilder.vertex(vectors[2].x(), vectors[2].y(), z).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
-      bufferBuilder.vertex(vectors[3].x(), vectors[3].y(), z).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
+      bufferBuilder.vertex(vectors[0].x(), vectors[0].y(), 0).uv(u1, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
+      bufferBuilder.vertex(vectors[1].x(), vectors[1].y(), 0).uv(u1, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
+      bufferBuilder.vertex(vectors[2].x(), vectors[2].y(), 0).uv(u0, v0).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
+      bufferBuilder.vertex(vectors[3].x(), vectors[3].y(), 0).uv(u0, v1).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(FULL_BRIGHT).endVertex();
    }
 
    public float getQuadSize(float partialTicks) {

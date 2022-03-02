@@ -94,7 +94,7 @@ public abstract class ScreenParticle {
       }
    }
 
-   public abstract void render(BufferBuilder bufferBuilder, TickEvent.RenderTickEvent event);
+   public abstract void render(BufferBuilder bufferBuilder);
 
    public abstract ParticleRenderType getRenderType();
 

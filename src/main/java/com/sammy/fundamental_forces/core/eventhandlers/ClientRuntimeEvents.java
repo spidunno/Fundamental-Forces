@@ -49,7 +49,9 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderTick(TickEvent.RenderTickEvent event) {
         ScreenParticleHandler.renderParticles(event);
-        canSpawnParticles = false;
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            canSpawnParticles = false;
+        }
     }
 
     @SubscribeEvent
