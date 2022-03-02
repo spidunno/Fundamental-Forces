@@ -63,7 +63,7 @@ public class ScreenParticleHandler {
     }
 
     public static void renderParticles(TickEvent.RenderTickEvent event) {
-        if (event.phase.equals(TickEvent.Phase.END)) {
+        if (Minecraft.getInstance().screen == null && event.phase.equals(TickEvent.Phase.END)) {
             renderParticles();
         }
     }
