@@ -36,7 +36,7 @@ public class ClientRuntimeEvents {
                     return;
                 }
                 Camera camera = minecraft.gameRenderer.getMainCamera();
-                WorldEventHandler.clientWorldTick(minecraft.level);
+                WorldEventHandler.tick(minecraft.level);
                 ScreenshakeHandler.clientTick(camera, FundamentalForcesMod.RANDOM);
                 PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
                 PlayerDataCapability.ClientOnly.clientTick(event);

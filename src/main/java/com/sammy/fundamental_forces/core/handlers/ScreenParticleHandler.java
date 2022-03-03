@@ -4,7 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticle;
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticleType;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.emitter.ItemParticleEmitter;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
@@ -12,15 +12,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.event.TickEvent;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
+
+import static com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle.RenderOrder.*;
 
 public class ScreenParticleHandler {
 
@@ -45,7 +41,7 @@ public class ScreenParticleHandler {
 
     public static void renderItem(ItemStack stack) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (canSpawnItemParticles && minecraft.level != null) {
+        if (canSpawnItemParticles && minecraft.level != null && minecraft.player != null) {
             if (minecraft.isPaused()) {
                 return;
             }
@@ -56,24 +52,38 @@ public class ScreenParticleHandler {
                     Matrix4f last = posestack.last().pose();
                     float x = last.m03;
                     float y = last.m13;
-                    emitter.tick(stack, x, y);
+                    ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
+                    if (minecraft.screen != null) {
+                        renderOrder = BEFORE_TOOLTIPS;
+                        if (y > 240 && !minecraft.player.containerMenu.getCarried().equals(stack)) {
+                            renderOrder = BEFORE_UI;
+                        }
+                    }
+                    emitter.tick(stack, x, y, renderOrder);
                 }
             }
         }
     }
 
     public static void renderParticles(TickEvent.RenderTickEvent event) {
-        if (Minecraft.getInstance().screen == null && event.phase.equals(TickEvent.Phase.END)) {
-            renderParticles();
+        if (event.phase.equals(TickEvent.Phase.END)) {
+            if (Minecraft.getInstance().screen == null) {
+                renderParticles(AFTER_EVERYTHING, BEFORE_UI);
+            }
+            canSpawnItemParticles = false;
         }
     }
-    public static void renderParticles() {
+
+    public static void renderParticles(ScreenParticle.RenderOrder... renderOrders) {
         PARTICLES.forEach((type, particles) -> {
             type.begin(TESSELATOR.getBuilder(), Minecraft.getInstance().textureManager);
-            particles.forEach(p -> p.render(TESSELATOR.getBuilder()));
+            particles.forEach(p -> {
+                if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(p.getRenderOrder()))) {
+                    p.render(TESSELATOR.getBuilder());
+                }
+            });
             type.end(TESSELATOR);
         });
-        canSpawnItemParticles = false;
     }
 
     @SuppressWarnings("ALL")

@@ -1,4 +1,4 @@
-package com.sammy.fundamental_forces.client.particles.wisp;
+package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
 
 
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.GenericScreenParticle;
@@ -8,8 +8,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 
 
-public class WispScreenParticle extends GenericScreenParticle {
-    public WispScreenParticle(ClientLevel world, ScreenParticleOptions data, double x, double y, double vx, double vy) {
+public class GlowingScreenParticle extends GenericScreenParticle {
+    public GlowingScreenParticle(ClientLevel world, ScreenParticleOptions data, double x, double y, double vx, double vy) {
         super(world, data, x, y, vx, vy);
     }
     @Override

@@ -3,6 +3,7 @@ package com.sammy.fundamental_forces.core.helper;
 import com.mojang.math.Vector3d;
 import com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.options.ParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticleType;
 import net.minecraft.core.BlockPos;
@@ -334,23 +335,23 @@ public class ParticleHelper {
         }
 
         public ScreenParticleBuilder setColor(float r, float g, float b) {
-            return setColor(r, g, b, data.a1, r, g, b, data.a2);
+            return setColor(r/255f, g/255f, b/255f, data.a1, r/255f, g/255f, b/255f, data.a2);
         }
 
         public ScreenParticleBuilder setColor(float r, float g, float b, float a) {
-            return setColor(r, g, b, a, r, g, b, a);
+            return setColor(r/255f, g/255f, b/255f, a/255f, r/255f, g/255f, b/255f, a/255f);
         }
 
         public ScreenParticleBuilder setColor(float r, float g, float b, float a1, float a2) {
-            return setColor(r, g, b, a1, r, g, b, a2);
+            return setColor(r/255f, g/255f, b/255f, a1/255f, r/255f, g/255f, b/255f, a2/255f);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2) {
-            return setColor(r1, g1, b1, data.a1, r2, g2, b2, data.a2);
+            return setColor(r1/255f, g1/255f, b1/255f, data.a1, r2/255f, g2/255f, b2/255f, data.a2);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2, float a) {
-            return setColor(r1, g1, b1, a, r2, g2, b2, a);
+            return setColor(r1/255f, g1/255f, b1/255f, a/255f, r2/255f, g2/255f, b2/255f, a/255f);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2) {
@@ -471,7 +472,11 @@ public class ParticleHelper {
             this.maxYDist = maxYDist;
             return this;
         }
-
+        public ScreenParticleBuilder setRenderOrder(ScreenParticle.RenderOrder renderOrder)
+        {
+            data.renderOrder = renderOrder;
+            return this;
+        }
         public ScreenParticleBuilder spawnCircle(double x, double y, double distance, double currentCount, double totalCount) {
             double xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed;
             double theta = (Math.PI * 2) / totalCount;

@@ -52,19 +52,22 @@ public class ItemRegistry {
     public static class ClientOnly {
 
         public static void registerParticleEmitters(FMLClientSetupEvent event) {
-            registerItemParticleEmitter((s, x, y) -> {
+            registerItemParticleEmitter((s, x, y, order) -> {
                 Random random = Minecraft.getInstance().level.random;
-                ParticleHelper.create(ScreenParticleRegistry.WISP)
-                        .setLifetime(5+random.nextInt(5))
-                        .setColor(214 / 255f, 39 / 255f, 131 / 255f, 6 / 255f, 69 / 255f, 92 / 255f)
-                        .setAlphaCurveMultiplier(0.75f+random.nextFloat()*0.5f)
-                        .setScale(0.7f+random.nextFloat()*0.2f, 0f)
-                        .setAlpha(0.08f+random.nextFloat()*0.05f, 0)
-                        .setSpin(random.nextFloat() * 6.28f)
-                        .setStartingSpin(random.nextFloat() * 6.28f)
-                        .randomOffset(0.25f)
-                        .randomVelocity(1.5f, 1.5f)
-                        .repeat(x, y, 2);
+                if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
+                    ParticleHelper.create(ScreenParticleRegistry.STAR)
+                            .setLifetime(15 + random.nextInt(10))
+                            .setColor(255, 255, 255, 248, 69, 106)
+                            .setAlphaCurveMultiplier(0.5f)
+                            .setColorCurveMultiplier(0.8f)
+                            .setScale(0.15f + random.nextFloat() * 0.1f)
+                            .setAlpha(0.8f + random.nextFloat() * 0.2f, 0.1f)
+                            .randomOffset(8, 4)
+                            .randomVelocity(0.2f, 0.2f)
+                            .setActiveMotionMultiplier(0.98f)
+                            .setRenderOrder(order)
+                            .repeat(x, y-0.25f, 1);
+                }
             }, CRACK.get(), BLOCK_OF_CRACK.get());
         }
     }

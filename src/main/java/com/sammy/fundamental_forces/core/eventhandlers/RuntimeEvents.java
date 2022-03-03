@@ -63,7 +63,7 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        WorldEventHandler.serverWorldTick(event);
+        WorldEventHandler.worldTick(event);
     }
 
     @SubscribeEvent

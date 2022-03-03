@@ -37,7 +37,7 @@ public class RenderHandler {
     public static void renderLast(RenderLevelLastEvent event) {
         prepareFrustum(event.getPoseStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
         WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
-            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+            for (WorldEventInstance instance : capability.activeWorldEvents) {
                 WorldEventRenderer<WorldEventInstance> renderer = WorldEventRenderers.RENDERERS.get(instance.type);
                 if (renderer != null) {
                     if (renderer.canRender(instance)) {

@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle.RenderOrder.BEFORE_TOOLTIPS;
+
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
-
     @Inject(at = @At("HEAD"), method = "renderTooltip")
-    private void fundamentalForcesParticleDepthMixin(PoseStack pPoseStack, int pX, int pY, CallbackInfo ci)
-    {
-        ScreenParticleHandler.renderParticles();
+    private void fundamentalForcesBeforeTooltipParticleMixin(PoseStack pPoseStack, int pX, int pY, CallbackInfo ci) {
+        ScreenParticleHandler.renderParticles(BEFORE_TOOLTIPS);
     }
 }

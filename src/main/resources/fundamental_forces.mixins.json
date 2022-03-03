@@ -15,7 +15,8 @@
     "EntityRenderDispatcherMixin",
     "GuiMixin",
     "ItemRendererMixin",
-    "ScreenEffectRendererMixin"
+    "ScreenEffectRendererMixin",
+    "ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

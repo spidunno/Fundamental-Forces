@@ -1,4 +1,4 @@
-package com.sammy.fundamental_forces.client.particles.wisp;
+package com.sammy.fundamental_forces.core.systems.rendering.particle.rendertypes;
 
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -10,8 +10,8 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 
 
-public class WispParticle extends GenericParticle {
-    public WispParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
+public class GlowingParticle extends GenericParticle {
+    public GlowingParticle(ClientLevel world, ParticleOptions data, double x, double y, double z, double vx, double vy, double vz) {
         super(world, data, x, y, z, vx, vy, vz);
     }
 
@@ -23,10 +23,5 @@ public class WispParticle extends GenericParticle {
     @Override
     public ParticleRenderType getRenderType() {
         return AdditiveParticleRenderType.INSTANCE;
-    }
-
-    @Override
-    public void render(VertexConsumer consumer, Camera camera, float partialTicks) {
-        super.render(consumer, camera, partialTicks);
     }
 }

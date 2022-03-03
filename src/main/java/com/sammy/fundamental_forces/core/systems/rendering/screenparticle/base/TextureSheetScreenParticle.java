@@ -1,4 +1,4 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
+package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SpriteSet;

@@ -1,15 +1,15 @@
-package com.sammy.fundamental_forces.client.particles.wisp;
+package com.sammy.fundamental_forces.client.particles.textured;
 
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.GlowingScreenParticle;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.AnimatedScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticleType;
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.SpriteSet;
 
-public class WispScreenParticleType extends ScreenParticleType<ScreenParticleOptions> {
+public class AnimatedScreenParticleType extends ScreenParticleType<ScreenParticleOptions> {
 
-    public WispScreenParticleType() {
+    public AnimatedScreenParticleType() {
         super();
     }
 
@@ -22,9 +22,7 @@ public class WispScreenParticleType extends ScreenParticleType<ScreenParticleOpt
 
         @Override
         public ScreenParticle createParticle(ClientLevel pLevel, ScreenParticleOptions options, double pX, double pY, double pXSpeed, double pYSpeed) {
-            GlowingScreenParticle particle = new GlowingScreenParticle(pLevel, options, pX, pY, pXSpeed, pYSpeed);
-            particle.pickSprite(sprite);
-            return particle;
+            return new AnimatedScreenParticle(pLevel, options, pX, pY, pXSpeed, pYSpeed, sprite);
         }
     }
 }

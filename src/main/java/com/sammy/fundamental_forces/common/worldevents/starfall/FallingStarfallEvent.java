@@ -51,14 +51,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     }
 
     @Override
-    public void start(ServerLevel level) {
-        if (existsOnClient()) {
-            addToClient();
-        }
-    }
-
-    @Override
-    public void tick(ServerLevel level) {
+    public void tick(Level level) {
         move();
         if (position.y() <= targetedPos.getY()) {
             end(level);
@@ -66,30 +59,22 @@ public class FallingStarfallEvent extends WorldEventInstance {
     }
 
     @Override
-    public void end(ServerLevel level) {
-        actor.act(level, targetedPos);
-        super.end(level);
+    public void end(Level level) {
+        if (level instanceof ServerLevel serverLevel) {
+            actor.act(serverLevel, targetedPos);
+        }
+        else
+        {
+            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
+        }
+        discarded = true;
     }
 
     @Override
-    public boolean existsOnClient() {
+    public boolean isClientSynced() {
         return true;
     }
 
-    @Override
-    public void clientTick(Level level) {
-        move();
-        if (position.y() <= targetedPos.getY()) {
-            clientEnd(level);
-        }
-    }
-
-    // TODO: make farther players experience less screenshake
-    @Override
-    public void clientEnd(Level level) {
-        ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
-        super.clientEnd(level);
-    }
 
     private void move() {
         position = position.add(motion.multiply(speed, speed, speed));

@@ -1,4 +1,4 @@
-package com.sammy.fundamental_forces.core.systems.rendering.particle.rendertypes;
+package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.rendertypes;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -6,22 +6,20 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.sammy.fundamental_forces.core.setup.client.ShaderRegistry;
-import com.sammy.fundamental_forces.core.handlers.RenderHandler;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import org.lwjgl.opengl.GL11;
 
-public class AdditiveParticleRenderType implements ParticleRenderType {
-    public static final AdditiveParticleRenderType INSTANCE = new AdditiveParticleRenderType();
+public class TransparentScreenParticleRenderType implements ParticleRenderType {
+    public static final TransparentScreenParticleRenderType INSTANCE = new TransparentScreenParticleRenderType();
 
     public void begin(BufferBuilder builder, TextureManager manager) {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderSystem.setShader(ShaderRegistry.additiveParticle.getInstance());
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
-        RenderHandler.PARTICLE_MATRIX = RenderSystem.getModelViewMatrix();
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
     }
 
@@ -33,6 +31,6 @@ public class AdditiveParticleRenderType implements ParticleRenderType {
     }
 
     public String toString() {
-        return "PARTICLE_SHEET_ADDITIVE";
+        return "SCREEN_PARTICLE_SHEET_ADDITIVE";
     }
 }

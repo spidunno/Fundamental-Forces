@@ -28,36 +28,18 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class WorldEventHandler {
 
-    public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance, boolean inbound) {
-        return inbound ? addInboundWorldEvent(level, instance) : addWorldEvent(level, instance);
-    }
-
-    public static <T extends WorldEventInstance> T addInboundWorldEvent(ServerLevel level, T instance) {
+    public static <T extends WorldEventInstance> T addWorldEvent(Level level, T instance) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            capability.INBOUND_WORLD_EVENTS.add(instance);
+            capability.inboundWorldEvents.add(instance);
             instance.start(level);
         });
         return instance;
     }
 
-    public static <T extends WorldEventInstance> T addWorldEvent(ServerLevel level, T instance) {
-        WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            capability.ACTIVE_WORLD_EVENTS.add(instance);
-            instance.start(level);
-        });
-        return instance;
-    }
-
-    public static <T extends WorldEventInstance> T addClientWorldEvent(Level level, T instance) {
-        WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            capability.ACTIVE_WORLD_EVENTS.add(instance);
-            instance.clientStart(level);
-        });
-        return instance;
-    }
     public static void breakBlock(BlockEvent.BreakEvent event) {
         if (event.getPlayer() instanceof ServerPlayer player) {
             ServerLevel level = player.getLevel();
@@ -81,15 +63,16 @@ public class WorldEventHandler {
             });
         }
     }
+
     public static void playerJoin(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (player.level instanceof ServerLevel level) {
                 PlayerDataCapability.getCapability(player).ifPresent(capability -> {
                     WorldDataCapability.getCapability(level).ifPresent(worldCapability -> {
                         if (player instanceof ServerPlayer serverPlayer) {
-                            for (WorldEventInstance instance : worldCapability.ACTIVE_WORLD_EVENTS) {
-                                if (instance.existsOnClient()) {
-                                    instance.addToClient(serverPlayer);
+                            for (WorldEventInstance instance : worldCapability.activeWorldEvents) {
+                                if (instance.isClientSynced()) {
+                                    WorldEventInstance.sync(instance, serverPlayer);
                                 }
                             }
                         }
@@ -106,35 +89,34 @@ public class WorldEventHandler {
         }
     }
 
-    public static void serverWorldTick(TickEvent.WorldTickEvent event) {
+    public static void worldTick(TickEvent.WorldTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
-            if (event.world instanceof ServerLevel serverLevel) {
-                WorldDataCapability.getCapability(serverLevel).ifPresent(capability -> {
-                    for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
-                        instance.tick(serverLevel);
-                    }
-                    capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.discarded);
-                    capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
-                    capability.INBOUND_WORLD_EVENTS.clear();
-                });
+            if (!event.world.isClientSide) {
+                tick(event.world);
             }
         }
     }
-    public static void clientWorldTick(Level level) {
+
+    public static void tick(Level level)
+    {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
-            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
-                instance.clientTick(level);
+            capability.activeWorldEvents.addAll(capability.inboundWorldEvents);
+            capability.inboundWorldEvents.clear();
+            Iterator<WorldEventInstance> iterator = capability.activeWorldEvents.iterator();
+            while (iterator.hasNext()) {
+                WorldEventInstance instance = iterator.next();
+                if (instance.discarded) {
+                    iterator.remove();
+                } else {
+                    instance.tick(level);
+                }
             }
-            capability.ACTIVE_WORLD_EVENTS.removeIf(e -> e.discarded);
-            capability.ACTIVE_WORLD_EVENTS.addAll(capability.INBOUND_WORLD_EVENTS);
-            capability.INBOUND_WORLD_EVENTS.clear();
         });
     }
-
     public static void serializeNBT(WorldDataCapability capability, CompoundTag tag) {
-        tag.putInt("worldEventCount", capability.ACTIVE_WORLD_EVENTS.size());
-        for (int i = 0; i < capability.ACTIVE_WORLD_EVENTS.size(); i++) {
-            WorldEventInstance instance = capability.ACTIVE_WORLD_EVENTS.get(i);
+        tag.putInt("worldEventCount", capability.activeWorldEvents.size());
+        for (int i = 0; i < capability.activeWorldEvents.size(); i++) {
+            WorldEventInstance instance = capability.activeWorldEvents.get(i);
             CompoundTag instanceTag = new CompoundTag();
             instance.serializeNBT(instanceTag);
             tag.put("worldEvent_" + i, instanceTag);
@@ -142,14 +124,14 @@ public class WorldEventHandler {
     }
 
     public static void deserializeNBT(WorldDataCapability capability, CompoundTag tag) {
-        capability.ACTIVE_WORLD_EVENTS.clear();
+        capability.activeWorldEvents.clear();
         int starfallCount = tag.getInt("worldEventCount");
         for (int i = 0; i < starfallCount; i++) {
             CompoundTag instanceTag = tag.getCompound("worldEvent_" + i);
             WorldEventType reader = WorldEventTypes.EVENT_TYPES.get(instanceTag.getString("type"));
             WorldEventInstance eventInstance = reader.createInstance(instanceTag);
 
-            capability.ACTIVE_WORLD_EVENTS.add(eventInstance);
+            capability.activeWorldEvents.add(eventInstance);
         }
     }
 

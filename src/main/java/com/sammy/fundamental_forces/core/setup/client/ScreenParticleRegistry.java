@@ -1,6 +1,7 @@
 package com.sammy.fundamental_forces.core.setup.client;
 
 import com.google.common.collect.Maps;
+import com.sammy.fundamental_forces.client.particles.textured.AnimatedScreenParticleType;
 import com.sammy.fundamental_forces.client.particles.wisp.WispScreenParticleType;
 import com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler;
 import com.sammy.fundamental_forces.core.helper.DataHelper;
@@ -22,6 +23,8 @@ public class ScreenParticleRegistry {
     public static final ScreenParticleType<ScreenParticleOptions> SPARKLE = registerType(new WispScreenParticleType());
     public static final ScreenParticleType<ScreenParticleOptions> TWINKLE = registerType(new WispScreenParticleType());
 
+    public static final ScreenParticleType<ScreenParticleOptions> STAR = registerType(new AnimatedScreenParticleType());
+
     static {
         ScreenParticleHandler.PARTICLES = Maps.newTreeMap(Comparator.comparingInt(PARTICLE_TYPES::indexOf));
     }
@@ -31,6 +34,7 @@ public class ScreenParticleRegistry {
         registerProvider(SMOKE, new WispScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("smoke"))));
         registerProvider(SPARKLE, new WispScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("sparkle"))));
         registerProvider(TWINKLE, new WispScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("twinkle"))));
+        registerProvider(STAR, new AnimatedScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("star"))));
     }
 
     public static <T extends ScreenParticleOptions> ScreenParticleType<T> registerType(ScreenParticleType<T> type) {
@@ -41,8 +45,8 @@ public class ScreenParticleRegistry {
     public static <T extends ScreenParticleOptions> void registerProvider(ScreenParticleType<T> type, ScreenParticleType.ParticleProvider<T> provider) {
         type.provider = provider;
     }
-    public static SpriteSet getSpriteSet(ResourceLocation resourceLocation)
-    {
+
+    public static SpriteSet getSpriteSet(ResourceLocation resourceLocation) {
         return Minecraft.getInstance().particleEngine.spriteSets.get(resourceLocation);
     }
 }

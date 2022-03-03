@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -89,65 +90,68 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     }
 
     @Override
-    public void tick(ServerLevel level) {
-        if (level.getGameTime() % 100L == 0) {
-            if (isEntityValid(level)) {
-                targetedPos = targetedEntity.getOnPos();
+    public void tick(Level level) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (level.getGameTime() % 100L == 0) {
+                if (isEntityValid(serverLevel)) {
+                    targetedPos = targetedEntity.getOnPos();
+                }
             }
-        }
-        countdown--;
-        if (countdown <= 0) {
-            end(level);
+            countdown--;
+            if (countdown <= 0) {
+                end(level);
+            }
         }
     }
 
     @Override
-    public void end(ServerLevel level) {
-        if (timesDelayed != 3 && isEntityValid(level) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition()))
-        {
-            countdown = actor.randomizedCountdown(level.random, startingCountdown/10);
-            timesDelayed++;
-            return;
-        }
-        boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.get();
-        if (determined) {
-            int failures = 0;
-            int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.get();
-            while (true) {
-                if (failures >= maximumFailures) {
-                    break;
+    public void end(Level level) {
+        if (level instanceof ServerLevel serverLevel) {
+            if (timesDelayed != 3 && isEntityValid(serverLevel) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition())) {
+                countdown = actor.randomizedCountdown(level.random, startingCountdown / 10);
+                timesDelayed++;
+                return;
+            }
+            boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.get();
+            if (determined) {
+                int failures = 0;
+                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.get();
+                while (true) {
+                    if (failures >= maximumFailures) {
+                        break;
+                    }
+                    BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(serverLevel, targetedPos);
+                    if (target == null) {
+                        failures++;
+                        continue;
+                    }
+                    boolean success = disregardOSHARegulations || exactPosition || actor.canFall(serverLevel, target);
+                    if (success) {
+                        Vec3 spawnPos = actor.randomizedStarfallStartPosition(serverLevel, target, targetedPos);
+                        Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
+                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target));
+                        break;
+                    } else {
+                        failures++;
+                    }
                 }
-                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(level, targetedPos);
-                if (target == null) {
-                    failures++;
-                    continue;
-                }
-                boolean success = disregardOSHARegulations || exactPosition || actor.canFall(level, target);
-                if (success) {
-                    Vec3 spawnPos = actor.randomizedStarfallStartPosition(level, target, targetedPos);
-                    Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
-                    WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target), true);
-                    break;
-                } else {
-                    failures++;
+            } else {
+                BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(serverLevel, targetedPos);
+                if (target != null) {
+                    boolean success = disregardOSHARegulations || exactPosition || actor.canFall(serverLevel, target);
+                    if (success) {
+                        Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
+                        Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.get(), Mth.nextDouble(level.random, -150, 150));
+                        Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
+                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target));
+                    }
                 }
             }
-        } else {
-            BlockPos target = exactPosition ? targetedPos : actor.randomizedStarfallTargetPosition(level, targetedPos);
-            if (target != null) {
-                boolean success = disregardOSHARegulations || exactPosition || actor.canFall(level, target);
-                if (success) {
-                    Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                    Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150),CommonConfig.STARFALL_SPAWN_HEIGHT.get(),Mth.nextDouble(level.random, -150, 150));
-                    Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
-                    WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target), true);
-                }
+            if (loop && isEntityValid(serverLevel)) {
+                addNaturalStarfall(serverLevel, targetedEntity);
             }
+            super.end(level);
         }
-        if (loop && isEntityValid(level)) {
-            addNaturalStarfall(level, targetedEntity, true);
-        }
-        super.end(level);
     }
 
     public boolean isEntityValid(ServerLevel level) {
@@ -191,7 +195,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     public static void addMissingStarfall(ServerLevel level, Player player) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             boolean isMissingStarfall = true;
-            for (WorldEventInstance instance : capability.ACTIVE_WORLD_EVENTS) {
+            for (WorldEventInstance instance : capability.activeWorldEvents) {
                 if (instance instanceof ScheduledStarfallEvent scheduledStarfallEvent) {
                     if (player.getUUID().equals(scheduledStarfallEvent.targetedUUID)) {
                         isMissingStarfall = false;
@@ -201,19 +205,19 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
             }
 
             if (isMissingStarfall) {
-                addNaturalStarfall(level, player, false);
+                addNaturalStarfall(level, player);
             }
         });
     }
 
-    public static void addNaturalStarfall(ServerLevel level, LivingEntity entity, boolean inbound) {
+    public static void addNaturalStarfall(ServerLevel level, LivingEntity entity) {
         if (areStarfallsAllowed(level)) {
-            ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined(), inbound);
+            ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined());
             Double chance = CommonConfig.ASTEROID_CHANCE.get();
             int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.get();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
-                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined(), inbound);
+                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined());
                     chance *= 0.8f;
                 } else {
                     break;

@@ -1,8 +1,8 @@
-package com.sammy.fundamental_forces.client.particles.wisp;
+package com.sammy.fundamental_forces.client.particles.textured;
 
 import com.mojang.serialization.Codec;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.AnimatedParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.options.ParticleOptions;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.rendertypes.GlowingParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
@@ -11,8 +11,8 @@ import net.minecraft.core.particles.ParticleType;
 
 import javax.annotation.Nullable;
 
-public class WispParticleType extends ParticleType<ParticleOptions> {
-    public WispParticleType() {
+public class AnimatedParticleType extends ParticleType<ParticleOptions> {
+    public AnimatedParticleType() {
         super(false, ParticleOptions.DESERIALIZER);
     }
 
@@ -32,9 +32,7 @@ public class WispParticleType extends ParticleType<ParticleOptions> {
         @Nullable
         @Override
         public Particle createParticle(ParticleOptions data, ClientLevel world, double x, double y, double z, double mx, double my, double mz) {
-            GlowingParticle ret = new GlowingParticle(world, data, x, y, z, mx, my, mz);
-            ret.pickSprite(sprite);
-            return ret;
+            return new AnimatedParticle(world, data, x, y, z, mx, my, mz, sprite);
         }
     }
 }

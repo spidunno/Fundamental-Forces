@@ -10,6 +10,7 @@ import com.sammy.fundamental_forces.core.setup.client.ShaderRegistry;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import org.lwjgl.opengl.GL11;
 
 public class AdditiveScreenParticleRenderType implements ParticleRenderType {
     public static final AdditiveScreenParticleRenderType INSTANCE = new AdditiveScreenParticleRenderType();
@@ -17,7 +18,7 @@ public class AdditiveScreenParticleRenderType implements ParticleRenderType {
     public void begin(BufferBuilder builder, TextureManager manager) {
         RenderSystem.depthMask(false);
         RenderSystem.enableBlend();
-        RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         RenderSystem.setShader(ShaderRegistry.additiveParticle.getInstance());
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
         builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);

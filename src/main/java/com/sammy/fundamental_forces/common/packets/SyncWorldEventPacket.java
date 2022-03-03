@@ -5,6 +5,7 @@ import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
 import com.sammy.fundamental_forces.core.handlers.WorldEventHandler;
 import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;
@@ -51,9 +52,10 @@ public class SyncWorldEventPacket {
     public static class ClientOnly {
         public static void addWorldEvent(String type, boolean start, CompoundTag eventData) {
             WorldEventType eventType = WorldEventTypes.EVENT_TYPES.get(type);
-            WorldEventInstance instance = WorldEventHandler.addClientWorldEvent(Minecraft.getInstance().level, eventType.createInstance(eventData));
+            ClientLevel level = Minecraft.getInstance().level;
+            WorldEventInstance instance = WorldEventHandler.addWorldEvent(level, eventType.createInstance(eventData));
             if (start) {
-                instance.clientStart(Minecraft.getInstance().level);
+                instance.start(level);
             }
         }
     }

@@ -1,15 +1,13 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
+package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
 
 import static com.sammy.fundamental_forces.core.helper.RenderHelper.FULL_BRIGHT;
 

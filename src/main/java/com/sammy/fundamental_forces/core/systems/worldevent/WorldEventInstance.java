@@ -3,7 +3,6 @@ package com.sammy.fundamental_forces.core.systems.worldevent;
 import com.sammy.fundamental_forces.common.packets.SyncWorldEventPacket;
 import com.sammy.fundamental_forces.core.setup.server.PacketRegistry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.PacketDistributor;
@@ -20,40 +19,22 @@ public abstract class WorldEventInstance {
         this.type = type.id;
     }
 
-    public void start(ServerLevel level) {
+    public void start(Level level) {
+        if (!level.isClientSide && isClientSynced()) {
+            sync(this);
+        }
+    }
+
+    public void tick(Level level) {
 
     }
 
-    public void tick(ServerLevel level) {
-
-    }
-
-    public void end(ServerLevel level) {
+    public void end(Level level) {
         discarded = true;
     }
 
-    public boolean existsOnClient()
-    {
+    public boolean isClientSynced() {
         return false;
-    }
-    public void addToClient() {
-        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncWorldEventPacket(type, true, serializeNBT(new CompoundTag())));
-    }
-
-    public void addToClient(ServerPlayer player) {
-        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(()->player), new SyncWorldEventPacket(type, false, serializeNBT(new CompoundTag())));
-    }
-
-    public void clientStart(Level level) {
-
-    }
-
-    public void clientTick(Level level) {
-
-    }
-
-    public void clientEnd(Level level) {
-        discarded = true;
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
@@ -67,5 +48,13 @@ public abstract class WorldEventInstance {
         uuid = tag.getUUID("uuid");
         type = tag.getString("type");
         discarded = tag.getBoolean("discarded");
+    }
+
+    public static <T extends WorldEventInstance> void sync(T instance) {
+        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncWorldEventPacket(instance.type, true, instance.serializeNBT(new CompoundTag())));
+    }
+
+    public static <T extends WorldEventInstance> void sync(T instance, ServerPlayer player) {
+        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncWorldEventPacket(instance.type, false, instance.serializeNBT(new CompoundTag())));
     }
 }

@@ -1,5 +1,6 @@
 package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
 
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 

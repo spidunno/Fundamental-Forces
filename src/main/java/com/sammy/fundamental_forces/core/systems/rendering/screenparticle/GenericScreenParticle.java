@@ -1,5 +1,6 @@
 package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
 
+import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.TextureSheetScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.util.FastColor;
@@ -18,6 +19,7 @@ public abstract class GenericScreenParticle extends TextureSheetScreenParticle {
         this.xMotion = vx;
         this.yMotion = vy;
         this.setLifetime(data.lifetime);
+        this.setRenderOrder(data.renderOrder);
         this.gravity = data.gravity ? 1 : 0;
         this.friction = data.activeMotionMultiplier;
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);

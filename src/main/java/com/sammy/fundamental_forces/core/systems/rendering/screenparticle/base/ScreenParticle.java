@@ -1,16 +1,20 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
+package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.TickEvent;
 
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class ScreenParticle {
+
+   public enum RenderOrder{
+      BEFORE_UI, BEFORE_TOOLTIPS, AFTER_EVERYTHING
+   }
+
    protected final ClientLevel level;
    protected double xOld;
    protected double yOld;
@@ -31,6 +35,7 @@ public abstract class ScreenParticle {
    protected float roll;
    protected float oRoll;
    protected float friction = 0.98F;
+   protected RenderOrder renderOrder = RenderOrder.AFTER_EVERYTHING;
 
    protected ScreenParticle(ClientLevel pLevel, double pX, double pY) {
       this.level = pLevel;
@@ -78,6 +83,14 @@ public abstract class ScreenParticle {
 
    public int getLifetime() {
       return this.lifetime;
+   }
+
+   public void setRenderOrder(RenderOrder renderOrder){
+      this.renderOrder = renderOrder;
+   }
+
+   public RenderOrder getRenderOrder() {
+      return renderOrder;
    }
 
    public void tick() {
