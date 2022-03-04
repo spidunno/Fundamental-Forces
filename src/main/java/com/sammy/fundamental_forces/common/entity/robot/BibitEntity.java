@@ -3,6 +3,7 @@ package com.sammy.fundamental_forces.common.entity.robot;
 import com.sammy.fundamental_forces.core.setup.content.entity.EntityRegistry;
 import com.sammy.fundamental_forces.core.setup.client.ParticleRegistry;
 import com.sammy.fundamental_forces.core.helper.RenderHelper;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -123,7 +124,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
         super.tick();
         if (level.isClientSide)
         {
-            RenderHelper.create(ParticleRegistry.WISP)
+            ParticleBuilders.create(ParticleRegistry.WISP)
                     .setAlpha(0.5f, 0f)
                     .setLifetime(20 + level.random.nextInt(4))
                     .setSpin(Mth.nextFloat(level.random, 0.05f, 0.1f))
@@ -131,7 +132,7 @@ public class BibitEntity extends PathfinderMob implements IAnimatable {
                     .setColor(new Color(54, 54, 227), new Color(233, 197, 255).darker())
                     .randomOffset(0.1f)
                     .enableNoClip()
-                    .randomVelocity(0.02f, 0.02f)
+                    .randomMotion(0.02f, 0.02f)
                     .repeat(level, getX(), getY()+2, getZ(), 1);
         }
     }

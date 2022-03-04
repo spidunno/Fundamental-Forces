@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle.RenderOrder.BEFORE_TOOLTIPS;
+import static com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle.RenderOrder.BEFORE_TOOLTIPS;
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {

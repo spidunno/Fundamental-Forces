@@ -1,11 +1,14 @@
-package com.sammy.fundamental_forces.core.helper;
+package com.sammy.fundamental_forces.core.systems.rendering.particle;
 
 import com.mojang.math.Vector3d;
+import com.mojang.math.Vector3f;
 import com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.options.ParticleOptions;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticleType;
+import com.sammy.fundamental_forces.core.systems.easing.Easing;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.world.WorldParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
@@ -15,7 +18,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.awt.*;
 import java.util.Random;
 
-public class ParticleHelper {
+public class ParticleBuilders {
 
     public static WorldParticleBuilder create(ParticleType<?> type) {
         return new WorldParticleBuilder(type);
@@ -29,7 +32,7 @@ public class ParticleHelper {
         static Random random = new Random();
 
         ParticleType<?> type;
-        ParticleOptions data;
+        WorldParticleOptions data;
         double vx = 0, vy = 0, vz = 0;
         double dx = 0, dy = 0, dz = 0;
         double maxXSpeed = 0, maxYSpeed = 0, maxZSpeed = 0;
@@ -37,11 +40,25 @@ public class ParticleHelper {
 
         protected WorldParticleBuilder(ParticleType<?> type) {
             this.type = type;
-            this.data = new ParticleOptions(type);
+            this.data = new WorldParticleOptions(type);
+        }
+
+        public WorldParticleBuilder overwriteRenderType(ParticleRenderType renderType) {
+            data.renderType = renderType;
+            return this;
+        }
+        public WorldParticleBuilder setColorEasing(Easing easing) {
+            data.colorCurveEasing = easing;
+            return this;
+        }
+
+        public WorldParticleBuilder setColorCurveMultiplier(float colorCurveMultiplier) {
+            data.colorCurveMultiplier = colorCurveMultiplier;
+            return this;
         }
 
         public WorldParticleBuilder setColor(float r, float g, float b) {
-            return setColor(r, g, b, data.a1, r, g, b, data.a2);
+            return setColor(r, g, b, data.alpha1, r, g, b, data.alpha2);
         }
 
         public WorldParticleBuilder setColor(float r, float g, float b, float a) {
@@ -53,7 +70,7 @@ public class ParticleHelper {
         }
 
         public WorldParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2) {
-            return setColor(r1, g1, b1, data.a1, r2, g2, b2, data.a2);
+            return setColor(r1, g1, b1, data.alpha1, r2, g2, b2, data.alpha2);
         }
 
         public WorldParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2, float a) {
@@ -64,11 +81,11 @@ public class ParticleHelper {
             data.r1 = r1;
             data.g1 = g1;
             data.b1 = b1;
-            data.a1 = a1;
+            data.alpha1 = a1;
             data.r2 = r2;
             data.g2 = g2;
             data.b2 = b2;
-            data.a2 = a2;
+            data.alpha2 = a2;
             return this;
         }
 
@@ -82,8 +99,14 @@ public class ParticleHelper {
             return this;
         }
 
-        public WorldParticleBuilder setColorCurveMultiplier(float colorCurveMultiplier) {
-            data.colorCurveMultiplier = colorCurveMultiplier;
+        public WorldParticleBuilder setAlphaEasing(Easing startEasing, Easing endEasing) {
+            data.alphaCurveStartEasing = startEasing;
+            data.alphaCurveEndEasing = endEasing;
+            return this;
+        }
+
+        public WorldParticleBuilder setAlphaEasing(Easing easing) {
+            data.alphaCurveStartEasing = easing;
             return this;
         }
 
@@ -92,13 +115,34 @@ public class ParticleHelper {
             return this;
         }
 
-        public WorldParticleBuilder setAlpha(float a) {
-            return setAlpha(a, a);
+        public WorldParticleBuilder setAlpha(float alpha) {
+            return setAlpha(alpha, alpha);
         }
 
-        public WorldParticleBuilder setAlpha(float a1, float a2) {
-            data.a1 = a1;
-            data.a2 = a2;
+        public WorldParticleBuilder setAlpha(float alpha1, float alpha2) {
+            return setAlpha(alpha1, alpha2, alpha2);
+        }
+
+        public WorldParticleBuilder setAlpha(float alpha1, float alpha2, float alpha3) {
+            data.alpha1 = alpha1;
+            data.alpha2 = alpha2;
+            data.alpha3 = alpha3;
+            return this;
+        }
+
+        public WorldParticleBuilder setScaleEasing(Easing startEasing, Easing endEasing) {
+            data.scaleCurveStartEasing = startEasing;
+            data.scaleCurveEndEasing = endEasing;
+            return this;
+        }
+
+        public WorldParticleBuilder setScaleEasing(Easing easing) {
+            data.scaleCurveStartEasing = easing;
+            return this;
+        }
+
+        public WorldParticleBuilder setScaleCurveMultiplier(float scaleCurveMultiplier) {
+            data.scaleCurveMultiplier = scaleCurveMultiplier;
             return this;
         }
 
@@ -107,8 +151,13 @@ public class ParticleHelper {
         }
 
         public WorldParticleBuilder setScale(float scale1, float scale2) {
+            return setScale(scale1, scale2, scale2);
+        }
+
+        public WorldParticleBuilder setScale(float scale1, float scale2, float scale3) {
             data.scale1 = scale1;
             data.scale2 = scale2;
+            data.scale3 = scale3;
             return this;
         }
 
@@ -132,23 +181,28 @@ public class ParticleHelper {
             return this;
         }
 
-        public WorldParticleBuilder setSpin(float angularVelocity) {
-            data.spin = angularVelocity;
+        public WorldParticleBuilder setSpinEasing(Easing easing) {
+            data.spinEasing = easing;
             return this;
         }
 
-        public WorldParticleBuilder setStartingSpin(float angularVelocity) {
-            data.startingSpin = angularVelocity;
+        public WorldParticleBuilder setSpinCurveMultiplier(float spinCurveMultiplier) {
+            data.spinCurveMultiplier = spinCurveMultiplier;
             return this;
         }
 
-        public WorldParticleBuilder setActiveMotionMultiplier(float multiplier) {
-            data.activeMotionMultiplier = multiplier;
+        public WorldParticleBuilder setSpinOffset(float spinOffset) {
+            data.spinOffset = spinOffset;
             return this;
         }
 
-        public WorldParticleBuilder setActiveSpinMultiplier(float multiplier) {
-            data.activeSpinMultiplier = multiplier;
+        public WorldParticleBuilder setSpin(float spin) {
+            return setSpin(spin, spin);
+        }
+
+        public WorldParticleBuilder setSpin(float spin1, float spin2) {
+            data.spin1 = spin1;
+            data.spin2 = spin2;
             return this;
         }
 
@@ -157,32 +211,44 @@ public class ParticleHelper {
             return this;
         }
 
-        public WorldParticleBuilder randomVelocity(double maxSpeed) {
-            return randomVelocity(maxSpeed, maxSpeed, maxSpeed);
+        public WorldParticleBuilder randomMotion(double maxSpeed) {
+            return randomMotion(maxSpeed, maxSpeed, maxSpeed);
         }
 
-        public WorldParticleBuilder randomVelocity(double maxHSpeed, double maxVSpeed) {
-            return randomVelocity(maxHSpeed, maxVSpeed, maxHSpeed);
+        public WorldParticleBuilder randomMotion(double maxHSpeed, double maxVSpeed) {
+            return randomMotion(maxHSpeed, maxVSpeed, maxHSpeed);
         }
 
-        public WorldParticleBuilder randomVelocity(double maxXSpeed, double maxYSpeed, double maxZSpeed) {
+        public WorldParticleBuilder randomMotion(double maxXSpeed, double maxYSpeed, double maxZSpeed) {
             this.maxXSpeed = maxXSpeed;
             this.maxYSpeed = maxYSpeed;
             this.maxZSpeed = maxZSpeed;
             return this;
         }
 
-        public WorldParticleBuilder addVelocity(double vx, double vy, double vz) {
+        public WorldParticleBuilder addMotion(double vx, double vy, double vz) {
             this.vx += vx;
             this.vy += vy;
             this.vz += vz;
             return this;
         }
 
-        public WorldParticleBuilder setVelocity(double vx, double vy, double vz) {
+        public WorldParticleBuilder setMotion(double vx, double vy, double vz) {
             this.vx = vx;
             this.vy = vy;
             this.vz = vz;
+            return this;
+        }
+
+        public WorldParticleBuilder setForcedMotion(Vector3f startingMotion, Vector3f endingMotion) {
+            data.forcedMotion = true;
+            data.startingMotion = startingMotion;
+            data.endingMotion = endingMotion;
+            return this;
+        }
+
+        public WorldParticleBuilder disableForcedMotion() {
+            data.forcedMotion = false;
             return this;
         }
 
@@ -334,35 +400,53 @@ public class ParticleHelper {
             this.data = new ScreenParticleOptions(type);
         }
 
+        public ScreenParticleBuilder overwriteRenderType(ParticleRenderType renderType) {
+            data.renderType = renderType;
+            return this;
+        }
+        public ScreenParticleBuilder overwriteRenderOrder(ScreenParticle.RenderOrder renderOrder) {
+            data.renderOrder = renderOrder;
+            return this;
+        }
+        public ScreenParticleBuilder setColorEasing(Easing easing) {
+            data.colorCurveEasing = easing;
+            return this;
+        }
+
+        public ScreenParticleBuilder setColorCurveMultiplier(float colorCurveMultiplier) {
+            data.colorCurveMultiplier = colorCurveMultiplier;
+            return this;
+        }
+
         public ScreenParticleBuilder setColor(float r, float g, float b) {
-            return setColor(r/255f, g/255f, b/255f, data.a1, r/255f, g/255f, b/255f, data.a2);
+            return setColor(r, g, b, data.alpha1, r, g, b, data.alpha2);
         }
 
         public ScreenParticleBuilder setColor(float r, float g, float b, float a) {
-            return setColor(r/255f, g/255f, b/255f, a/255f, r/255f, g/255f, b/255f, a/255f);
+            return setColor(r, g, b, a, r, g, b, a);
         }
 
         public ScreenParticleBuilder setColor(float r, float g, float b, float a1, float a2) {
-            return setColor(r/255f, g/255f, b/255f, a1/255f, r/255f, g/255f, b/255f, a2/255f);
+            return setColor(r, g, b, a1, r, g, b, a2);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2) {
-            return setColor(r1/255f, g1/255f, b1/255f, data.a1, r2/255f, g2/255f, b2/255f, data.a2);
+            return setColor(r1, g1, b1, data.alpha1, r2, g2, b2, data.alpha2);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float r2, float g2, float b2, float a) {
-            return setColor(r1/255f, g1/255f, b1/255f, a/255f, r2/255f, g2/255f, b2/255f, a/255f);
+            return setColor(r1, g1, b1, a, r2, g2, b2, a);
         }
 
         public ScreenParticleBuilder setColor(float r1, float g1, float b1, float a1, float r2, float g2, float b2, float a2) {
             data.r1 = r1;
             data.g1 = g1;
             data.b1 = b1;
-            data.a1 = a1;
+            data.alpha1 = a1;
             data.r2 = r2;
             data.g2 = g2;
             data.b2 = b2;
-            data.a2 = a2;
+            data.alpha2 = a2;
             return this;
         }
 
@@ -376,8 +460,14 @@ public class ParticleHelper {
             return this;
         }
 
-        public ScreenParticleBuilder setColorCurveMultiplier(float colorCurveMultiplier) {
-            data.colorCurveMultiplier = colorCurveMultiplier;
+        public ScreenParticleBuilder setAlphaEasing(Easing startEasing, Easing endEasing) {
+            data.alphaCurveStartEasing = startEasing;
+            data.alphaCurveEndEasing = endEasing;
+            return this;
+        }
+
+        public ScreenParticleBuilder setAlphaEasing(Easing easing) {
+            data.alphaCurveStartEasing = easing;
             return this;
         }
 
@@ -386,13 +476,34 @@ public class ParticleHelper {
             return this;
         }
 
-        public ScreenParticleBuilder setAlpha(float a) {
-            return setAlpha(a, a);
+        public ScreenParticleBuilder setAlpha(float alpha) {
+            return setAlpha(alpha, alpha);
         }
 
-        public ScreenParticleBuilder setAlpha(float a1, float a2) {
-            data.a1 = a1;
-            data.a2 = a2;
+        public ScreenParticleBuilder setAlpha(float alpha1, float alpha2) {
+            return setAlpha(alpha1, alpha2, alpha2);
+        }
+
+        public ScreenParticleBuilder setAlpha(float alpha1, float alpha2, float alpha3) {
+            data.alpha1 = alpha1;
+            data.alpha2 = alpha2;
+            data.alpha3 = alpha3;
+            return this;
+        }
+
+        public ScreenParticleBuilder setScaleEasing(Easing startEasing, Easing endEasing) {
+            data.scaleCurveStartEasing = startEasing;
+            data.scaleCurveEndEasing = endEasing;
+            return this;
+        }
+
+        public ScreenParticleBuilder setScaleEasing(Easing easing) {
+            data.scaleCurveStartEasing = easing;
+            return this;
+        }
+
+        public ScreenParticleBuilder setScaleCurveMultiplier(float scaleCurveMultiplier) {
+            data.scaleCurveMultiplier = scaleCurveMultiplier;
             return this;
         }
 
@@ -401,8 +512,13 @@ public class ParticleHelper {
         }
 
         public ScreenParticleBuilder setScale(float scale1, float scale2) {
+            return setScale(scale1, scale2, scale2);
+        }
+
+        public ScreenParticleBuilder setScale(float scale1, float scale2, float scale3) {
             data.scale1 = scale1;
             data.scale2 = scale2;
+            data.scale3 = scale3;
             return this;
         }
 
@@ -416,23 +532,38 @@ public class ParticleHelper {
             return this;
         }
 
-        public ScreenParticleBuilder setSpin(float angularVelocity) {
-            data.spin = angularVelocity;
+        public ScreenParticleBuilder enableNoClip() {
+            data.noClip = true;
             return this;
         }
 
-        public ScreenParticleBuilder setStartingSpin(float angularVelocity) {
-            data.startingSpin = angularVelocity;
+        public ScreenParticleBuilder disableNoClip() {
+            data.noClip = false;
             return this;
         }
 
-        public ScreenParticleBuilder setActiveMotionMultiplier(float multiplier) {
-            data.activeMotionMultiplier = multiplier;
+        public ScreenParticleBuilder setSpinEasing(Easing easing) {
+            data.spinEasing = easing;
             return this;
         }
 
-        public ScreenParticleBuilder setActiveSpinMultiplier(float multiplier) {
-            data.activeSpinMultiplier = multiplier;
+        public ScreenParticleBuilder setSpinCurveMultiplier(float spinCurveMultiplier) {
+            data.spinCurveMultiplier = spinCurveMultiplier;
+            return this;
+        }
+
+        public ScreenParticleBuilder setSpinOffset(float spinOffset) {
+            data.spinOffset = spinOffset;
+            return this;
+        }
+
+        public ScreenParticleBuilder setSpin(float spin) {
+            return setSpin(spin, spin);
+        }
+
+        public ScreenParticleBuilder setSpin(float spin1, float spin2) {
+            data.spin1 = spin1;
+            data.spin2 = spin2;
             return this;
         }
 
@@ -441,25 +572,41 @@ public class ParticleHelper {
             return this;
         }
 
-        public ScreenParticleBuilder randomVelocity(double maxSpeed) {
-            return randomVelocity(maxSpeed, maxSpeed);
+        public ScreenParticleBuilder setMotionCurveMultiplier(float motionCurveMultiplier) {
+            data.motionCurveMultiplier = motionCurveMultiplier;
+            return this;
+        }
+        public ScreenParticleBuilder randomMotion(double maxSpeed) {
+            return randomMotion(maxSpeed, maxSpeed);
         }
 
-        public ScreenParticleBuilder randomVelocity(double maxXSpeed, double maxYSpeed) {
+        public ScreenParticleBuilder randomMotion(double maxXSpeed, double maxYSpeed) {
             this.maxXSpeed = maxXSpeed;
             this.maxYSpeed = maxYSpeed;
             return this;
         }
 
-        public ScreenParticleBuilder addVelocity(double vx, double vy) {
+        public ScreenParticleBuilder addMotion(double vx, double vy) {
             this.vx += vx;
             this.vy += vy;
             return this;
         }
 
-        public ScreenParticleBuilder setVelocity(double vx, double vy) {
+        public ScreenParticleBuilder setMotion(double vx, double vy) {
             this.vx = vx;
             this.vy = vy;
+            return this;
+        }
+
+        public ScreenParticleBuilder setForcedMotion(Vector3f startingMotion, Vector3f endingMotion) {
+            data.forcedMotion = true;
+            data.startingMotion = startingMotion;
+            data.endingMotion = endingMotion;
+            return this;
+        }
+
+        public ScreenParticleBuilder disableForcedMotion() {
+            data.forcedMotion = false;
             return this;
         }
 
@@ -472,11 +619,7 @@ public class ParticleHelper {
             this.maxYDist = maxYDist;
             return this;
         }
-        public ScreenParticleBuilder setRenderOrder(ScreenParticle.RenderOrder renderOrder)
-        {
-            data.renderOrder = renderOrder;
-            return this;
-        }
+
         public ScreenParticleBuilder spawnCircle(double x, double y, double distance, double currentCount, double totalCount) {
             double xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed;
             double theta = (Math.PI * 2) / totalCount;

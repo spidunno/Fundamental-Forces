@@ -1,7 +1,5 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
+package com.sammy.fundamental_forces.core.systems.rendering.particle.screen;
 
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.rendertypes.TransparentScreenParticleRenderType;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -10,24 +8,16 @@ import net.minecraft.client.particle.SpriteSet;
 import java.util.ArrayList;
 
 public class FrameSetScreenParticle extends GenericScreenParticle {
-    public final ParticleEngine.MutableSpriteSet spriteSet;
     public ArrayList<Integer> frameSet = new ArrayList<>();
 
-    public FrameSetScreenParticle(ClientLevel world, ScreenParticleOptions data, double x, double y, double vx, double vy, SpriteSet spriteSet) {
-        super(world, data, x, y, vx, vy);
-        this.spriteSet = (ParticleEngine.MutableSpriteSet) spriteSet;
-        this.setSprite(0);
+    public FrameSetScreenParticle(ClientLevel world, ScreenParticleOptions data, ParticleEngine.MutableSpriteSet spriteSet, double x, double y, double xMotion, double yMotion) {
+        super(world, data, spriteSet, x, y, xMotion, yMotion);
     }
 
     @Override
     public void tick() {
         setSprite(frameSet.get(age));
         super.tick();
-    }
-
-    @Override
-    public ParticleRenderType getRenderType() {
-        return TransparentScreenParticleRenderType.INSTANCE;
     }
 
     public void setSprite(int spriteIndex) {

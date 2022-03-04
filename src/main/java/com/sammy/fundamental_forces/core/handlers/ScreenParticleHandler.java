@@ -4,10 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.ScreenParticleType;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.emitter.ItemParticleEmitter;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.item.Item;
@@ -16,7 +16,7 @@ import net.minecraftforge.event.TickEvent;
 
 import java.util.*;
 
-import static com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle.RenderOrder.*;
+import static com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle.RenderOrder.*;
 
 public class ScreenParticleHandler {
 

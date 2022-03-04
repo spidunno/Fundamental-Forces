@@ -1,6 +1,6 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.emitter;
+package com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter;
 
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
 import net.minecraft.world.item.ItemStack;
 
 public interface ItemParticleEmitter {

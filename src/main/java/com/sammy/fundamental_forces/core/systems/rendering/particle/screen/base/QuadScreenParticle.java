@@ -1,4 +1,4 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base;
+package com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.math.Quaternion;

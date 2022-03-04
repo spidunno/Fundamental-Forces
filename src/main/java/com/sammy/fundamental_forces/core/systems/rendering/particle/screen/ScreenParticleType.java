@@ -1,7 +1,6 @@
-package com.sammy.fundamental_forces.core.systems.rendering.screenparticle;
+package com.sammy.fundamental_forces.core.systems.rendering.particle.screen;
 
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.base.ScreenParticle;
-import com.sammy.fundamental_forces.core.systems.rendering.screenparticle.options.ScreenParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
 import net.minecraft.client.multiplayer.ClientLevel;
 
 public class ScreenParticleType<T extends ScreenParticleOptions>  extends net.minecraftforge.registries.ForgeRegistryEntry<ScreenParticleType<?>> {

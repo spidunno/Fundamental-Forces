@@ -2,7 +2,7 @@ package com.sammy.fundamental_forces.core.setup.content.item;
 
 import com.sammy.fundamental_forces.FundamentalForcesMod;
 import com.sammy.fundamental_forces.common.item.DevTool;
-import com.sammy.fundamental_forces.core.helper.ParticleHelper;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
 import com.sammy.fundamental_forces.core.setup.client.ScreenParticleRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.tabs.ContentTab;
@@ -55,17 +55,17 @@ public class ItemRegistry {
             registerItemParticleEmitter((s, x, y, order) -> {
                 Random random = Minecraft.getInstance().level.random;
                 if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
-                    ParticleHelper.create(ScreenParticleRegistry.STAR)
+                    ParticleBuilders.create(ScreenParticleRegistry.STAR)
                             .setLifetime(15 + random.nextInt(10))
                             .setColor(255, 255, 255, 248, 69, 106)
                             .setAlphaCurveMultiplier(0.5f)
                             .setColorCurveMultiplier(0.8f)
+                            .setMotionCurveMultiplier(0.98f)
                             .setScale(0.15f + random.nextFloat() * 0.1f)
                             .setAlpha(0.8f + random.nextFloat() * 0.2f, 0.1f)
                             .randomOffset(8, 4)
-                            .randomVelocity(0.2f, 0.2f)
-                            .setActiveMotionMultiplier(0.98f)
-                            .setRenderOrder(order)
+                            .randomMotion(0.2f, 0.2f)
+                            .overwriteRenderOrder(order)
                             .repeat(x, y-0.25f, 1);
                 }
             }, CRACK.get(), BLOCK_OF_CRACK.get());
