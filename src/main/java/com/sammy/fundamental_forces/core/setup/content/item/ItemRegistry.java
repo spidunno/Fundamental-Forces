@@ -7,6 +7,7 @@ import com.sammy.fundamental_forces.core.setup.client.ScreenParticleRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.tabs.ContentTab;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleRenderTypes;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.SimpleParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -68,6 +69,7 @@ public class ItemRegistry {
                             .randomMotion(0.2f, 0.2f)
                             .overwriteRenderType(ParticleRenderTypes.TRANSPARENT)
                             .overwriteRenderOrder(order)
+                            .overwriteAnimator(SimpleParticleOptions.Animator.LAST_INDEX)
                             .repeat(x, y-0.25f, 1);
                 }
             }, CRACK.get(), BLOCK_OF_CRACK.get());

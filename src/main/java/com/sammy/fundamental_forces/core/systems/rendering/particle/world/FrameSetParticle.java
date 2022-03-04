@@ -22,7 +22,7 @@ public class FrameSetParticle extends GenericParticle {
 
     @Override
     public SimpleParticleOptions.Animator getAnimator() {
-        return SimpleParticleOptions.Animator.NONE_OR_CUSTOM;
+        return SimpleParticleOptions.Animator.FIRST_INDEX;
     }
 
     protected void addLoop(int min, int max, int times) {

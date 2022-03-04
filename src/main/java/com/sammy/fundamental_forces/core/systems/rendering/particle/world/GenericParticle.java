@@ -42,8 +42,11 @@ public class GenericParticle extends TextureSheetParticle {
         if (getAnimator().equals(SimpleParticleOptions.Animator.RANDOM_SPRITE)) {
             pickSprite(spriteSet);
         }
-        if (getAnimator().equals(SimpleParticleOptions.Animator.NONE_OR_CUSTOM) || getAnimator().equals(SimpleParticleOptions.Animator.WITH_AGE)) {
+        if (getAnimator().equals(SimpleParticleOptions.Animator.FIRST_INDEX) || getAnimator().equals(SimpleParticleOptions.Animator.WITH_AGE)) {
             pickSprite(0);
+        }
+        if (getAnimator().equals(SimpleParticleOptions.Animator.LAST_INDEX)) {
+            pickSprite(spriteSet.sprites.size()-1);
         }
         updateTraits();
     }
