@@ -43,6 +43,10 @@ public class ParticleBuilders {
             this.data = new WorldParticleOptions(type);
         }
 
+        public WorldParticleBuilder overwriteAnimator(SimpleParticleOptions.Animator animator) {
+            data.animator = animator;
+            return this;
+        }
         public WorldParticleBuilder overwriteRenderType(ParticleRenderType renderType) {
             data.renderType = renderType;
             return this;
@@ -399,7 +403,10 @@ public class ParticleBuilders {
             this.type = type;
             this.data = new ScreenParticleOptions(type);
         }
-
+        public ScreenParticleBuilder overwriteAnimator(SimpleParticleOptions.Animator animator) {
+            data.animator = animator;
+            return this;
+        }
         public ScreenParticleBuilder overwriteRenderType(ParticleRenderType renderType) {
             data.renderType = renderType;
             return this;

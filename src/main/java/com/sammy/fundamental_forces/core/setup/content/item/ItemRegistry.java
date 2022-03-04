@@ -6,6 +6,7 @@ import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuil
 import com.sammy.fundamental_forces.core.setup.client.ScreenParticleRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.tabs.ContentTab;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleRenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -57,7 +58,7 @@ public class ItemRegistry {
                 if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
                     ParticleBuilders.create(ScreenParticleRegistry.STAR)
                             .setLifetime(15 + random.nextInt(10))
-                            .setColor(255, 255, 255, 248, 69, 106)
+                            .setColor(255, 142, 139, 248, 69, 106)
                             .setAlphaCurveMultiplier(0.5f)
                             .setColorCurveMultiplier(0.8f)
                             .setMotionCurveMultiplier(0.98f)
@@ -65,6 +66,7 @@ public class ItemRegistry {
                             .setAlpha(0.8f + random.nextFloat() * 0.2f, 0.1f)
                             .randomOffset(8, 4)
                             .randomMotion(0.2f, 0.2f)
+                            .overwriteRenderType(ParticleRenderTypes.TRANSPARENT)
                             .overwriteRenderOrder(order)
                             .repeat(x, y-0.25f, 1);
                 }
