@@ -83,19 +83,19 @@ repositories {
     mavenCentral()
     maven {
         name 'Curios maven'
-        url = "https://maven.theillusivec4.top/"
+        url "https://maven.theillusivec4.top/"
     }
     maven {
         name 'JEI maven'
-        url = "https://dvs1.progwml6.com/files/maven"
+        url "https://dvs1.progwml6.com/files/maven"
     }
     maven {
-        name = "CTM Maven"
-        url = "https://maven.tterrag.com/"
+        name "CTM Maven"
+        url "https://maven.tterrag.com/"
     }
     maven {
-        name = "GeckoLib Maven"
-        url = "https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/"
+        name "Moonflower Maven"
+        url "https://repo.moonflower.gg/releases"
     }
 }
 dependencies {
@@ -105,7 +105,9 @@ dependencies {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
 
-    implementation fg.deobf('software.bernie.geckolib:geckolib-1.18-forge:3.0.3')
+    implementation fg.deobf('gg.moonflower:pollen-forge:1.1.1+1.18.1') {
+        transitive = false
+    }
 
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4")

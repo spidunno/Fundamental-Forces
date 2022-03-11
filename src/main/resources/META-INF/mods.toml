@@ -10,6 +10,12 @@ credits="Credits go here"
 authors="Authors go here"
 description=''' '''
 [[dependencies.fundamental_forces]]
+    modId="pollen"
+    mandatory=true
+    versionRange="[FORGE-1.18.1,)"
+    ordering="AFTER"
+    side="BOTH"
+[[dependencies.fundamental_forces]]
     modId="forge"
     mandatory=true
     versionRange="[39,)"

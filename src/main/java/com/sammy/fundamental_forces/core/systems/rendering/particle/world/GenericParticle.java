@@ -72,35 +72,39 @@ public class GenericParticle extends TextureSheetParticle {
         setColor(r, g, b);
     }
 
+    public float getCurve(float multiplier) {
+        return Mth.clamp((age * multiplier) / (float)lifetime, 0, 1);
+    }
+
     protected void updateTraits() {
-        pickColor(data.colorCurveEasing.ease(age * data.colorCurveMultiplier, 0, 1, lifetime));
+        pickColor(data.colorCurveEasing.ease(getCurve(data.colorCurveMultiplier), 0, 1, 1));
         if (data.isTrinaryScale()) {
-            float trinaryAge = Math.min(1, age * data.scaleCurveMultiplier / lifetime);
+            float trinaryAge = getCurve(data.scaleCurveMultiplier);
             if (trinaryAge >= 0.5f) {
-                quadSize = Mth.lerp(data.scaleCurveEndEasing.ease((trinaryAge - 0.5f), 1, 0, 0.5f), data.scale2, data.scale3);
+                quadSize = Mth.lerp(data.scaleCurveEndEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.scale2, data.scale3);
             } else {
                 quadSize = Mth.lerp(data.scaleCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.scale1, data.scale2);
             }
         } else {
-            quadSize = Mth.lerp(data.scaleCurveStartEasing.ease(Math.min(lifetime, age * data.scaleCurveMultiplier), 0, 1, data.lifetime), data.scale1, data.scale2);
+            quadSize = Mth.lerp(data.scaleCurveStartEasing.ease(getCurve(data.scaleCurveMultiplier), 0, 1, 1), data.scale1, data.scale2);
         }
         if (data.isTrinaryAlpha()) {
-            float trinaryAge = Math.min(1, age * data.alphaCurveMultiplier / lifetime);
+            float trinaryAge = getCurve(data.alphaCurveMultiplier);
             if (trinaryAge >= 0.5f) {
-                alpha = Mth.lerp(data.alphaCurveEndEasing.ease((trinaryAge - 0.5f), 1, 0, 0.5f), data.alpha2, data.alpha3);
+                alpha = Mth.lerp(data.alphaCurveStartEasing.ease(trinaryAge-0.5f, 0, 1, 0.5f), data.alpha2, data.alpha3);
             } else {
                 alpha = Mth.lerp(data.alphaCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.alpha1, data.alpha2);
             }
         } else {
-            alpha = Mth.lerp(data.alphaCurveStartEasing.ease(Math.min(lifetime, age * data.alphaCurveMultiplier), 0, 1, data.lifetime), data.alpha1, data.alpha2);
+            alpha = Mth.lerp(data.alphaCurveStartEasing.ease(getCurve(data.alphaCurveMultiplier), 0, 1, 1), data.alpha1, data.alpha2);
         }
         oRoll = roll;
-        roll += data.spinOffset + Mth.lerp(data.spinEasing.ease(Math.min(lifetime, age * data.spinCurveMultiplier), 0, 1, data.lifetime), data.spin1, data.spin2);
+        roll += Mth.lerp(data.spinEasing.ease(getCurve(data.spinCurveMultiplier), 0, 1, 1), data.spin1, data.spin2);
         if (data.forcedMotion) {
-            float motionAge = Math.min(lifetime, age * data.motionCurveMultiplier);
-            xd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, data.lifetime), data.startingMotion.x(), data.endingMotion.x());
-            yd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, data.lifetime), data.startingMotion.y(), data.endingMotion.y());
-            zd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, data.lifetime), data.startingMotion.z(), data.endingMotion.z());
+            float motionAge = getCurve(data.motionCurveMultiplier);
+            xd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.x(), data.endingMotion.x());
+            yd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.y(), data.endingMotion.y());
+            zd = Mth.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.z(), data.endingMotion.z());
         } else {
             xd *= data.motionCurveMultiplier;
             yd *= data.motionCurveMultiplier;
