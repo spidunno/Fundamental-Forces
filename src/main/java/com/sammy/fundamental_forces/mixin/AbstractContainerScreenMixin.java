@@ -12,8 +12,8 @@ import static com.sammy.fundamental_forces.core.systems.rendering.particle.scree
 
 @Mixin(AbstractContainerScreen.class)
 public class AbstractContainerScreenMixin {
-    @Inject(at = @At("HEAD"), method = "renderTooltip")
-    private void fundamentalForcesBeforeTooltipParticleMixin(PoseStack pPoseStack, int pX, int pY, CallbackInfo ci) {
+    @Inject(at = @At("RETURN"), method = "render")
+    private void fundamentalForcesBeforeTooltipParticleMixin(PoseStack i1, int slot, int k, float l1, CallbackInfo ci) {
         ScreenParticleHandler.renderParticles(BEFORE_TOOLTIPS);
     }
 }

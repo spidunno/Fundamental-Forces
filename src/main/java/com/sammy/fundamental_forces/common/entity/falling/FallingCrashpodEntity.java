@@ -7,8 +7,8 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 public class FallingCrashpodEntity extends FallingEntity {
-    public FallingCrashpodEntity(Level p_37249_) {
-        super(EntityRegistry.FALLING_CRASHPOD.get(), p_37249_);
+    public FallingCrashpodEntity(Level level) {
+        super(EntityRegistry.FALLING_CRASHPOD.get(), level);
     }
 
     @Override

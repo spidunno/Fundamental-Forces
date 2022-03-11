@@ -8,6 +8,7 @@ import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
+import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ParticleEmitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.item.Item;
@@ -20,10 +21,11 @@ import static com.sammy.fundamental_forces.core.systems.rendering.particle.scree
 
 public class ScreenParticleHandler {
 
-    public static Map<ParticleRenderType, ArrayList<ScreenParticle>> PARTICLES;
-    public static Map<Item, ItemParticleEmitter> EMITTERS = new HashMap<>();
+    public static Map<ParticleRenderType, ArrayList<ScreenParticle>> PARTICLES = new HashMap<>();
+    public static Map<Item, ParticleEmitter> EMITTERS = new HashMap<>();
     public static final Tesselator TESSELATOR = new Tesselator();
-    public static boolean canSpawnItemParticles;
+    public static boolean canSpawnParticles;
+    public static boolean renderingHotbar;
 
     public static void clientTick(TickEvent.ClientTickEvent event) {
         PARTICLES.forEach((type, particles) -> {
@@ -36,30 +38,33 @@ public class ScreenParticleHandler {
                 }
             }
         });
-        canSpawnItemParticles = true;
+        canSpawnParticles = true;
     }
 
     public static void renderItem(ItemStack stack) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (canSpawnItemParticles && minecraft.level != null && minecraft.player != null) {
+        if (minecraft.level != null && minecraft.player != null) {
             if (minecraft.isPaused()) {
                 return;
             }
             if (!stack.isEmpty()) {
-                ItemParticleEmitter emitter = ScreenParticleHandler.EMITTERS.get(stack.getItem());
+                ParticleEmitter emitter = ScreenParticleHandler.EMITTERS.get(stack.getItem());
                 if (emitter != null) {
                     PoseStack posestack = RenderSystem.getModelViewStack();
                     Matrix4f last = posestack.last().pose();
                     float x = last.m03;
                     float y = last.m13;
-                    ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
-                    if (minecraft.screen != null) {
-                        renderOrder = BEFORE_TOOLTIPS;
-                        if (y > 240 && !minecraft.player.containerMenu.getCarried().equals(stack)) {
-                            renderOrder = BEFORE_UI;
+                    if (canSpawnParticles) {
+                        ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
+                        if (minecraft.screen != null) {
+                            renderOrder = BEFORE_TOOLTIPS;
+                            if (renderingHotbar) {
+                                renderOrder = BEFORE_UI;
+                            }
                         }
+                        emitter.tick(stack, x, y, renderOrder);
                     }
-                    emitter.tick(stack, x, y, renderOrder);
+                    emitter.render(stack, x, y);
                 }
             }
         }
@@ -70,7 +75,7 @@ public class ScreenParticleHandler {
             if (Minecraft.getInstance().screen == null) {
                 renderParticles(AFTER_EVERYTHING, BEFORE_UI);
             }
-            canSpawnItemParticles = false;
+            canSpawnParticles = false;
         }
     }
 
@@ -97,13 +102,13 @@ public class ScreenParticleHandler {
         return particle;
     }
 
-    public static void registerItemParticleEmitter(Item item, ItemParticleEmitter emitter) {
-        EMITTERS.put(item, emitter);
+    public static void registerItemParticleEmitter(Item item, ParticleEmitter.EmitterSupplier emitter) {
+        EMITTERS.put(item, new ParticleEmitter(emitter));
     }
 
-    public static void registerItemParticleEmitter(ItemParticleEmitter emitter, Item... items) {
+    public static void registerItemParticleEmitter(ParticleEmitter.EmitterSupplier emitter, Item... items) {
         for (Item item : items) {
-            EMITTERS.put(item, emitter);
+            EMITTERS.put(item, new ParticleEmitter(emitter));
         }
     }
 }

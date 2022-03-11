@@ -14,8 +14,7 @@ import static com.sammy.fundamental_forces.core.systems.rendering.particle.scree
 public class ScreenMixin {
 
     @Inject(at = @At("HEAD"), method = "renderBackground(Lcom/mojang/blaze3d/vertex/PoseStack;I)V")
-    private void fundamentalForcesBeforeBackgroundParticleMixin(PoseStack pPoseStack, int pVOffset, CallbackInfo ci)
-    {
+    private void fundamentalForcesBeforeBackgroundParticleMixin(PoseStack pPoseStack, int pVOffset, CallbackInfo ci) {
         ScreenParticleHandler.renderParticles(BEFORE_UI);
     }
 }
