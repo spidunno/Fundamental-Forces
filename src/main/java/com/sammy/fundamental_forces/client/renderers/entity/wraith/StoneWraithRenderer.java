@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class StoneWraithRenderer extends AnimatedEntityRenderer<StoneWraith> {
-    private static final ResourceLocation[] DEFAULT_ANIMATIONS = new ResourceLocation[]{DataHelper.prefix("wraith.idle")};
+    private static final ResourceLocation[] DEFAULT_ANIMATIONS = new ResourceLocation[]{DataHelper.prefix("stone_wraith.twitchlayer"), DataHelper.prefix("stone_wraith.idle")};
     private static final ResourceLocation WRAITH_LOCATION = DataHelper.prefix("stone_wraith");
 
     public StoneWraithRenderer(EntityRendererProvider.Context context) {
