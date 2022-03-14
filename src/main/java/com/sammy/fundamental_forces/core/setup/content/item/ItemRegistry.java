@@ -34,8 +34,9 @@ public class ItemRegistry {
     public static final RegistryObject<Item> CRACK = ITEMS.register("crack", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> BLOCK_OF_CRACK = ITEMS.register("block_of_crack", () -> new BlockItem(BlockRegistry.BLOCK_OF_CRACK.get(), DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> ASTEROID_ROCK = ITEMS.register("asteroid_rock", () -> new BlockItem(BlockRegistry.ASTEROID_ROCK.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> ASTEROID_CHUNK = ITEMS.register("asteroid_chunk", () -> new Item(DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> ORTUSITE = ITEMS.register("ortusite", () -> new BlockItem(BlockRegistry.ORTUSITE.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> DEPLETED_ORTUSITE = ITEMS.register("depleted_ortusite", () -> new BlockItem(BlockRegistry.DEPLETED_ORTUSITE.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> ORTUSITE_CHUNK = ITEMS.register("ortusite_chunk", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ASTRAL_SHARD = ITEMS.register("astral_shard", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> DEV_TOOL = ITEMS.register("dev_tool", () -> new DevTool(GEAR_PROPERTIES()));
 

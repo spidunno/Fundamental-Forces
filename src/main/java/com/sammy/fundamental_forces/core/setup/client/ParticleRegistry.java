@@ -13,18 +13,21 @@ public class ParticleRegistry
 {
     public static DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, FundamentalForcesMod.MODID);
 
-    public static RegistryObject<SimpleParticleType> WISP = PARTICLES.register("wisp", SimpleParticleType::new);
-    public static RegistryObject<SimpleParticleType> SMOKE = PARTICLES.register("smoke", SimpleParticleType::new);
-    public static RegistryObject<SimpleParticleType> SPARKLE = PARTICLES.register("sparkle", SimpleParticleType::new);
-    public static RegistryObject<SimpleParticleType> TWINKLE = PARTICLES.register("twinkle", SimpleParticleType::new);
+    public static RegistryObject<SimpleParticleType> WISPY_WISP = PARTICLES.register("wispy_wisp", SimpleParticleType::new);
+    public static RegistryObject<SimpleParticleType> WISPY_SMOKE = PARTICLES.register("wispy_smoke", SimpleParticleType::new);
+    public static RegistryObject<SimpleParticleType> WISPY_SPARKLE = PARTICLES.register("wispy_sparkle", SimpleParticleType::new);
+    public static RegistryObject<SimpleParticleType> WISPY_TWINKLE = PARTICLES.register("wispy_twinkle", SimpleParticleType::new);
+
     public static RegistryObject<SimpleParticleType> STAR = PARTICLES.register("star", SimpleParticleType::new);
+    public static RegistryObject<SimpleParticleType> SMOKE = PARTICLES.register("smoke", SimpleParticleType::new);
 
     public static void registerParticleFactory(ParticleFactoryRegisterEvent event) {
-        Minecraft.getInstance().particleEngine.register(WISP.get(), SimpleParticleType.Factory::new);
-        Minecraft.getInstance().particleEngine.register(SMOKE.get(), SimpleParticleType.Factory::new);
-        Minecraft.getInstance().particleEngine.register(SPARKLE.get(), SimpleParticleType.Factory::new);
-        Minecraft.getInstance().particleEngine.register(TWINKLE.get(), SimpleParticleType.Factory::new);
+        Minecraft.getInstance().particleEngine.register(WISPY_WISP.get(), SimpleParticleType.Factory::new);
+        Minecraft.getInstance().particleEngine.register(WISPY_SMOKE.get(), SimpleParticleType.Factory::new);
+        Minecraft.getInstance().particleEngine.register(WISPY_SPARKLE.get(), SimpleParticleType.Factory::new);
+        Minecraft.getInstance().particleEngine.register(WISPY_TWINKLE.get(), SimpleParticleType.Factory::new);
 
         Minecraft.getInstance().particleEngine.register(STAR.get(), SimpleParticleType.Factory::new);
+        Minecraft.getInstance().particleEngine.register(SMOKE.get(), SimpleParticleType.Factory::new);
     }
 }

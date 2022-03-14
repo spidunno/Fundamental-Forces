@@ -3,7 +3,6 @@ package com.sammy.fundamental_forces.common.blockentity;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fundamental_forces.core.setup.client.ParticleRegistry;
 import com.sammy.fundamental_forces.core.systems.blockentity.SimpleBlockEntity;
-import com.sammy.fundamental_forces.core.helper.RenderHelper;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -29,7 +28,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
             double z = worldPosition.getZ() + 0.5;
             int lifeTime = 3 + level.random.nextInt(9);
             float scale = 0.1f + level.random.nextFloat() * 0.07f;
-            ParticleBuilders.create(ParticleRegistry.WISP)
+            ParticleBuilders.create(ParticleRegistry.WISPY_WISP)
                     .setScale(scale, 0)
                     .setLifetime(lifeTime)
                     .setAlpha(0.2f)

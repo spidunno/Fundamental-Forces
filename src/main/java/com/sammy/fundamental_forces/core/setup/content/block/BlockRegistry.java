@@ -30,7 +30,8 @@ public class BlockRegistry {
     public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock<>(ORB_PROPERTIES()).setTile(BlockEntityRegistry.ORB));
 
     public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock<>(METEOR_FIRE_PROPERTIES()).setTile(BlockEntityRegistry.METEOR_FLAME));
-    public static final RegistryObject<Block> ASTEROID_ROCK = BLOCKS.register("asteroid_rock", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p) -> METEOR_FIRE.get().defaultBlockState()));
+    public static final RegistryObject<Block> ORTUSITE = BLOCKS.register("ortusite", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p) -> METEOR_FIRE.get().defaultBlockState()));
+    public static final RegistryObject<Block> DEPLETED_ORTUSITE = BLOCKS.register("depleted_ortusite", () -> new Block(ASTEROID_ROCK_PROPERTIES()));
 
     public static final RegistryObject<Block> CHARRED_ROCK = BLOCKS.register("charred_rock", () -> new Block(CHARRED_ROCK_PROPERTIES()));
     public static final RegistryObject<Block> POLISHED_CHARRED_ROCK = BLOCKS.register("polished_charred_rock", () -> new Block(CHARRED_ROCK_PROPERTIES()));

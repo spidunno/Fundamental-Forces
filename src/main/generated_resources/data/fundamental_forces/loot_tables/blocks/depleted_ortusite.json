@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "fundamental_forces:asteroid_rock"
+          "name": "fundamental_forces:depleted_ortusite"
         }
       ],
       "conditions": [

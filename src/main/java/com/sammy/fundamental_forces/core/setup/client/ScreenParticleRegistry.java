@@ -17,23 +17,26 @@ import java.util.Comparator;
 public class ScreenParticleRegistry {
     public static final ArrayList<ScreenParticleType<?>> PARTICLE_TYPES = new ArrayList<>();
 
-    public static final ScreenParticleType<ScreenParticleOptions> WISP = registerType(new SimpleScreenParticleType());
-    public static final ScreenParticleType<ScreenParticleOptions> SMOKE = registerType(new SimpleScreenParticleType());
-    public static final ScreenParticleType<ScreenParticleOptions> SPARKLE = registerType(new SimpleScreenParticleType());
-    public static final ScreenParticleType<ScreenParticleOptions> TWINKLE = registerType(new SimpleScreenParticleType());
+    public static final ScreenParticleType<ScreenParticleOptions> WISPY_WISP = registerType(new SimpleScreenParticleType());
+    public static final ScreenParticleType<ScreenParticleOptions> WISPY_SMOKE = registerType(new SimpleScreenParticleType());
+    public static final ScreenParticleType<ScreenParticleOptions> WISPY_SPARKLE = registerType(new SimpleScreenParticleType());
+    public static final ScreenParticleType<ScreenParticleOptions> WISPY_TWINKLE = registerType(new SimpleScreenParticleType());
 
     public static final ScreenParticleType<ScreenParticleOptions> STAR = registerType(new SimpleScreenParticleType());
+    public static final ScreenParticleType<ScreenParticleOptions> SMOKE = registerType(new SimpleScreenParticleType());
 
     static {
         ScreenParticleHandler.PARTICLES = Maps.newTreeMap(Comparator.comparingInt(PARTICLE_TYPES::indexOf));
     }
 
     public static void registerParticleFactory(ParticleFactoryRegisterEvent event) {
-        registerProvider(WISP, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("wisp"))));
-        registerProvider(SMOKE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("smoke"))));
-        registerProvider(SPARKLE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("sparkle"))));
-        registerProvider(TWINKLE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("twinkle"))));
+        registerProvider(WISPY_WISP, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("wispy_wisp"))));
+        registerProvider(WISPY_SMOKE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("wispy_smoke"))));
+        registerProvider(WISPY_SPARKLE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("wispy_sparkle"))));
+        registerProvider(WISPY_TWINKLE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("wispy_twinkle"))));
+
         registerProvider(STAR, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("star"))));
+        registerProvider(SMOKE, new SimpleScreenParticleType.Factory(getSpriteSet(DataHelper.prefix("smoke"))));
     }
 
     public static <T extends ScreenParticleOptions> ScreenParticleType<T> registerType(ScreenParticleType<T> type) {
