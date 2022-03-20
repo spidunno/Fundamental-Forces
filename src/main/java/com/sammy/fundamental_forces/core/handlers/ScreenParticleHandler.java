@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ParticleEmitter;
 import net.minecraft.client.Minecraft;

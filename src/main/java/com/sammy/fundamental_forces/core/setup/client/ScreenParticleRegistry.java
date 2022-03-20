@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.sammy.fundamental_forces.client.particles.SimpleScreenParticleType;
 import com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler;
 import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.core.systems.backstreet_hooks.BackstreetHooks;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
 import net.minecraft.client.Minecraft;
@@ -27,6 +28,7 @@ public class ScreenParticleRegistry {
 
     static {
         ScreenParticleHandler.PARTICLES = Maps.newTreeMap(Comparator.comparingInt(PARTICLE_TYPES::indexOf));
+        BackstreetHooks.PRE_ITEM_GUI_RENDER.add(((pStack, pX, pY, model) -> ScreenParticleHandler.renderItem(pStack)));
     }
 
     public static void registerParticleFactory(ParticleFactoryRegisterEvent event) {
