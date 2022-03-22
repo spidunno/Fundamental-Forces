@@ -72,7 +72,7 @@ public class StarfallActor {
     {
         ForgeChunkManager.forceChunk(level, FundamentalForcesMod.MODID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
         BlockPos surfacePos = level.getHeightmapPos(type, pos);
-        while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS))
+        while (level.getBlockState(surfacePos.below()).m_204336_(BlockTags.LOGS))
         {
             //TODO: it'd be best to replace this while statement with a custom Heightmap.Types' type.
             // However the Heightmap.Types enum isn't an IExtendibleEnum, we would need to make a dreaded forge PR for them to make it one

@@ -21,6 +21,6 @@ public class SpaceModItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(ItemTagRegistry.METEOR_FLAME_CATALYST).add(ItemRegistry.ORTUSITE_CHUNK.get());
+        m_206424_(ItemTagRegistry.METEOR_FLAME_CATALYST).add(ItemRegistry.ORTUSITE_CHUNK.get());
     }
 }

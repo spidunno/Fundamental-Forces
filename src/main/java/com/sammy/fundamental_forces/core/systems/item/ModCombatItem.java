@@ -59,7 +59,7 @@ public class ModCombatItem extends TieredItem {
             return 15.0F;
         } else {
             Material material = p_43289_.getMaterial();
-            return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.is(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
+            return material != Material.PLANT && material != Material.REPLACEABLE_PLANT && !p_43289_.m_204336_(BlockTags.LEAVES) && material != Material.VEGETABLE ? 1.0F : 1.5F;
         }
     }
 

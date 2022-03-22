@@ -43,7 +43,7 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (!items.contains(itemEntity)) {
-                if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem()) || !ManaAbsorptionRecipe.getRecipes(level, stack).isEmpty()) {
+                if (stack.m_204117_(ItemTagRegistry.METEOR_FLAME_CATALYST) || !ManaAbsorptionRecipe.getRecipes(level, stack).isEmpty()) {
                     items.add(itemEntity);
                 }
                 return;

@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -177,7 +178,7 @@ public class WorldEventHandler {
             if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
                 failed += 8;
             }
-            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
+            if (state.m_204336_(BlockTags.FEATURES_CANNOT_REPLACE)) {
                 return false;
             }
             if (!blockEntityCheck(level, pos)) {
@@ -199,9 +200,9 @@ public class WorldEventHandler {
 
     @SuppressWarnings("all")
     public static boolean blockCheck(ServerLevel level, BlockState state) {
-        Tag.Named<Block>[] tags = new Tag.Named[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTagRegistry.TERRACOTTA, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.MUSHROOM_GROW_BLOCK, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.SNOW, BlockTags.SAND, Tags.Blocks.SANDSTONE};
-        for (Tag.Named<Block> tag : tags) {
-            if (state.is(tag)) {
+        TagKey<Block>[] tags = new TagKey[]{BlockTagRegistry.STARFALL_ALLOWED, BlockTagRegistry.TERRACOTTA, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.MUSHROOM_GROW_BLOCK, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.SNOW, BlockTags.SAND, Tags.Blocks.SANDSTONE};
+        for (TagKey<Block> tag : tags) {
+            if (state.m_204336_(tag)) {
                 return true;
             }
         }

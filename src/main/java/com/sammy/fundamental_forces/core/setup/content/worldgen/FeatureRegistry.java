@@ -24,7 +24,7 @@ public class FeatureRegistry {
 
     public static final DeferredRegister<Feature<?>> FEATURE_TYPES = DeferredRegister.create(ForgeRegistries.FEATURES, MODID);
 
-    public static final RegistryObject<SimpleFeature> METEORITE = FEATURE_TYPES.register("meteorite", MeteoriteFeature::new);
+    //public static final RegistryObject<SimpleFeature> METEORITE = FEATURE_TYPES.register("meteorite", MeteoriteFeature::new);
 
 
 
@@ -34,11 +34,11 @@ public class FeatureRegistry {
         });
     }
 
-    static <C extends FeatureConfiguration, F extends Feature<C>> PlacedFeature registerPlacedFeature(String registryName, ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
-        return PlacementUtils.register(registryName, registerConfiguredFeature(registryName, feature).placed(placementModifiers));
-    }
-
-    static <C extends FeatureConfiguration, F extends Feature<C>> ConfiguredFeature<C, F> registerConfiguredFeature(String registryName, ConfiguredFeature<C, F> feature) {
-        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, DataHelper.prefix(registryName), feature);
-    }
+//    static <C extends FeatureConfiguration, F extends Feature<C>> PlacedFeature registerPlacedFeature(String registryName, ConfiguredFeature<C, F> feature, PlacementModifier... placementModifiers) {
+//        return PlacementUtils.register(registryName, registerConfiguredFeature(registryName, feature).placed(placementModifiers));
+//    }
+//
+//    static <C extends FeatureConfiguration, F extends Feature<C>> ConfiguredFeature<C, F> registerConfiguredFeature(String registryName, ConfiguredFeature<C, F> feature) {
+//        return BuiltinRegistries.register(BuiltinRegistries.CONFIGURED_FEATURE, DataHelper.prefix(registryName), feature);
+//    }
 }

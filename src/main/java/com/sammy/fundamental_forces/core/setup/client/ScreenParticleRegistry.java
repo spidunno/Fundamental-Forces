@@ -27,7 +27,6 @@ public class ScreenParticleRegistry {
     public static final ScreenParticleType<ScreenParticleOptions> SMOKE = registerType(new SimpleScreenParticleType());
 
     static {
-        ScreenParticleHandler.PARTICLES = Maps.newTreeMap(Comparator.comparingInt(PARTICLE_TYPES::indexOf));
         BackstreetHooks.PRE_ITEM_GUI_RENDER.add(((pStack, pX, pY, model) -> ScreenParticleHandler.renderItem(pStack)));
     }
 

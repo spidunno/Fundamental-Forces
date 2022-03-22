@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
 import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -31,17 +32,17 @@ public class SpaceModRecipes extends RecipeProvider {
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "cobblestone_gravel");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "stone_charred_rock");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "stone_gravel");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(Blocks.COBBLESTONE)).build(consumer, "stone_cobblestone");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.NETHERRACK), Ingredient.of(Blocks.MAGMA_BLOCK)).build(consumer, "netherrack_magma_block");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.COBBLESTONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "cobblestone_gravel");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.STONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "stone_charred_rock");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.STONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "stone_gravel");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.STONE), Ingredient.of(Blocks.COBBLESTONE)).build(consumer, "stone_cobblestone");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
+        new ImpactConversionRecipeBuilder(Ingredient.m_204132_(Tags.Items.NETHERRACK), Ingredient.of(Blocks.MAGMA_BLOCK)).build(consumer, "netherrack_magma_block");
 
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.GLASS), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "glass_volcanic_glass");
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.m_204132_(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.m_204132_(Tags.Items.GLASS), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "glass_volcanic_glass");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.m_204132_(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
         new ManaAbsorbtionRecipeBuilder(Ingredient.of(Items.GRASS_BLOCK), Ingredient.of(BlockRegistry.SCORCHED_EARTH.get())).build(consumer, "grass_scorched_earth");
     }
 
@@ -57,8 +58,8 @@ public class SpaceModRecipes extends RecipeProvider {
         return inventoryTrigger(ItemPredicate.Builder.item().of(pItemLike).build());
     }
 
-    protected static InventoryChangeTrigger.TriggerInstance has(Tag<Item> pTag) {
-        return inventoryTrigger(ItemPredicate.Builder.item().of(pTag).build());
+    protected static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> pTag) {
+        return inventoryTrigger(ItemPredicate.Builder.item().m_204145_(pTag).build());
     }
 
     protected static InventoryChangeTrigger.TriggerInstance inventoryTrigger(ItemPredicate... pPredicates) {
