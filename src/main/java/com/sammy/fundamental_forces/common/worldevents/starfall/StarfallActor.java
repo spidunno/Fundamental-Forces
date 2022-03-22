@@ -70,6 +70,7 @@ public class StarfallActor {
     }
     public static BlockPos heightmapPosAt(Heightmap.Types type, ServerLevel level, BlockPos pos)
     {
+
         ForgeChunkManager.forceChunk(level, FundamentalForcesMod.MODID, pos, SectionPos.blockToSectionCoord(pos.getX()),SectionPos.blockToSectionCoord(pos.getZ()),true,false);
         BlockPos surfacePos = level.getHeightmapPos(type, pos);
         while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS))

@@ -105,7 +105,7 @@ dependencies {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
 
-    implementation fg.deobf('gg.moonflower:pollen-forge:1.1.1+1.18.1') {
+    implementation fg.deobf('gg.moonflower:pollen-forge:1.2.0+1.18.1') {
         transitive = false
     }
 

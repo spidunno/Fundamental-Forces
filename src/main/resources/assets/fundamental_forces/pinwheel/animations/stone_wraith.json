@@ -12,19 +12,19 @@
 						},
 						"0.375": {
 							"post": [-75.9, -3.84, 13.37],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"0.9167": {
 							"post": [-78, -3.5, 12],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.75": {
 							"post": [-80.19431, -3.00159, 9.57293],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"2.7917": {
 							"post": [-77.84, -3.5, 12],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"3.25": {
 							"post": [-75.9, -3.84, 13.37],
@@ -32,11 +32,11 @@
 						},
 						"3.75": {
 							"post": [-75, -4, 14],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"4.0": {
 							"post": [-75.26, -3.95, 13.82],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						}
 					},
 					"position": {
@@ -48,15 +48,15 @@
 						},
 						"1.5": {
 							"post": [0, -1.25, 0],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"2.5": {
 							"post": [0, -1.125, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"4.0": {
 							"post": [0, -1, 0],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						}
 					}
 				},
@@ -64,23 +64,23 @@
 					"rotation": {
 						"0.0": {
 							"post": [-87.51, 0, -10],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.0": {
 							"post": [-90, 0, -12.5],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"2.9167": {
 							"post": [-88, -0.41, -8],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"3.625": {
 							"post": ["-1-87.13", -0.24, -8],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"4.0": {
 							"post": [-87.51, 0, -10],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					},
 					"position": {
@@ -89,11 +89,11 @@
 						},
 						"2.0": {
 							"post": [0, -0.75, 0],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"4.0": {
 							"post": [0, -1, 0],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					}
 				},
@@ -104,7 +104,7 @@
 						},
 						"4.0": {
 							"post": [7.5, -27.5, -7.5],
-							"lerp_mode": "easeInOutCubic"
+							"lerp_mode": "ease_in_out_cubic"
 						}
 					},
 					"position": {
@@ -118,7 +118,7 @@
 						},
 						"4.0": {
 							"post": [-10.80711, 15.98419, 5.01185],
-							"lerp_mode": "easeInOutCubic"
+							"lerp_mode": "ease_in_out_cubic"
 						}
 					},
 					"position": {
@@ -132,11 +132,11 @@
 						},
 						"2.0": {
 							"post": [5, 0, 1],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"4.0": {
 							"post": [2.50238, -2.49762, -0.10912],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						}
 					}
 				},
@@ -147,11 +147,11 @@
 						},
 						"2.1667": {
 							"post": [22.54256, 0.65182, 7.47178],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"4.0": {
 							"post": [17.54256, 0.65182, 7.47178],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					}
 				}
@@ -171,30 +171,30 @@
 						},
 						"0.5833": {
 							"post": [-85.39483, -1.63967, 16],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"0.6667": {
 							"post": [-89, -1.45, 15],
-							"lerp_mode": "easeOutCirc"
+							"lerp_mode": "ease_out_circ"
 						},
 						"1.2083": {
 							"post": [-86, -1.45, 15.2],
-							"lerp_mode": "easeOutQuad"
+							"lerp_mode": "ease_out_quad"
 						},
 						"1.5833": {
 							"post": [-87.76, -1.45, 13.92],
-							"lerp_mode": "easeOutCirc"
+							"lerp_mode": "ease_out_circ"
 						},
 						"2.0": {
 							"post": [-87.76, -1.45, 13.92]
 						},
 						"2.0417": {
 							"post": [-85.39483, -1.63967, 16],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"2.4583": {
 							"post": [-87.76, -1.45, 13.92],
-							"lerp_mode": "easeOutExpo"
+							"lerp_mode": "ease_out_expo"
 						}
 					},
 					"position": {
@@ -205,26 +205,26 @@
 					"rotation": {
 						"0.0": {
 							"post": [-87.51, 0, -10],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"2.9167": {
 							"post": [-88, -0.41, -10],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"3.0": {
 							"post": [-86, -0.43523, -11],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"3.625": {
 							"post": ["-1-87.13", -0.24, -12],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"3.7083": {
 							"post": [-86, -0.15, -11]
 						},
 						"4.0": {
 							"post": [-87.51, 0, -10],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						}
 					},
 					"position": {
@@ -246,37 +246,37 @@
 						},
 						"1.0417": {
 							"post": [0, 0, -0.06],
-							"lerp_mode": "easeInQuad"
+							"lerp_mode": "ease_in_quad"
 						},
 						"1.125": {
 							"post": [0.59818, -0.2, 1],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.2083": {
 							"post": [0, 0, 0.95],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"1.5833": {
 							"post": [0, -0.1, 0.99],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.6667": {
 							"post": [0, 0, 0.99]
 						},
 						"2.875": {
 							"post": [0, 0, 1],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"2.9583": {
 							"post": [0.19261, 0.23941, -1],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"3.875": {
 							"post": [0, 0, -1]
 						},
 						"3.9583": {
 							"post": [0, -0.10912, 0.2],
-							"lerp_mode": "easeOutQuad"
+							"lerp_mode": "ease_out_quad"
 						}
 					}
 				},
@@ -287,27 +287,27 @@
 						},
 						"0.2917": {
 							"post": [0, 0, 0],
-							"lerp_mode": "easeInElastic"
+							"lerp_mode": "ease_in_elastic"
 						},
 						"1.8333": {
 							"post": [0, 0.65, 2],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.9167": {
 							"post": [0.5, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"2.0": {
 							"post": [0.4, 0.65182, 2],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"2.0833": {
 							"post": [0.5, 0.65, 1],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"2.1667": {
 							"post": [0.4, 0.65182, 2],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"2.75": {
 							"post": [-0.42, 1.15, 0.24]
@@ -326,7 +326,7 @@
 						},
 						"4.0": {
 							"post": [-0.05681, 0, 1],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					}
 				}
@@ -343,7 +343,7 @@
 						},
 						"0.1667": {
 							"post": [-97, 0, 20],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.5": {
 							"post": [-100, 0, 20],
@@ -351,7 +351,7 @@
 						},
 						"0.7917": {
 							"post": [-97, 0, 20],
-							"lerp_mode": "easeOutElastic",
+							"lerp_mode": "ease_out_elastic",
 							"lerp_modeArgs": [0.5]
 						},
 						"1.125": {
@@ -360,7 +360,7 @@
 						},
 						"1.25": {
 							"post": [-99, 0, 20],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					},
 					"position": {
@@ -374,7 +374,7 @@
 						},
 						"0.1667": {
 							"post": [-97, 0, -20],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.5": {
 							"post": [-100, 0, -20],
@@ -382,7 +382,7 @@
 						},
 						"0.7917": {
 							"post": [-97, 0, -20],
-							"lerp_mode": "easeOutElastic",
+							"lerp_mode": "ease_out_elastic",
 							"lerp_modeArgs": [0.5]
 						},
 						"1.125": {
@@ -391,7 +391,7 @@
 						},
 						"1.25": {
 							"post": [-99, 0, -20],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					},
 					"position": {
@@ -402,36 +402,36 @@
 					"rotation": {
 						"0.0": {
 							"post": [-20, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"0.1667": {
 							"post": [-11.7692, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"0.625": {
 							"post": [11.33, 0, 0]
 						},
 						"0.875": {
 							"post": [19.33333, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"1.25": {
 							"post": [-20, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						}
 					},
 					"position": {
 						"0.0": {
 							"post": [0.1, 0.1, -4.5],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.1667": {
 							"post": [0.1, 0, -3.27],
-							"lerp_mode": "easeInCubic"
+							"lerp_mode": "ease_in_cubic"
 						},
 						"0.625": {
 							"post": [0.1, 0, 3.5],
-							"lerp_mode": "easeOutQuad"
+							"lerp_mode": "ease_out_quad"
 						},
 						"0.875": {
 							"post": [0.1, 1, 2.25],
@@ -439,7 +439,7 @@
 						},
 						"1.25": {
 							"post": [0.1, 0.1, -4.5],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					}
 				},
@@ -447,29 +447,29 @@
 					"rotation": {
 						"0.0": {
 							"post": [11.33333, 0, 0],
-							"lerp_mode": "easeOutCubic"
+							"lerp_mode": "ease_out_cubic"
 						},
 						"0.25": {
 							"post": [19.33333, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"0.625": {
 							"post": [-20, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"0.7917": {
 							"post": [-11.7692, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.25": {
 							"post": [11.33333, 0, 0],
-							"lerp_mode": "easeOutCubic"
+							"lerp_mode": "ease_out_cubic"
 						}
 					},
 					"position": {
 						"0.0": {
 							"post": [-0.1, 0, 3.5],
-							"lerp_mode": "easeOutQuad"
+							"lerp_mode": "ease_out_quad"
 						},
 						"0.25": {
 							"post": [-0.1, 1, 2.25],
@@ -477,15 +477,15 @@
 						},
 						"0.625": {
 							"post": [-0.1, 0.1, -4.5],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.7917": {
 							"post": [-0.1, 0, -3.27],
-							"lerp_mode": "easeInCubic"
+							"lerp_mode": "ease_in_cubic"
 						},
 						"1.25": {
 							"post": [-0.1, 0, 3.5],
-							"lerp_mode": "easeOutQuad"
+							"lerp_mode": "ease_out_quad"
 						}
 					}
 				},
@@ -493,23 +493,23 @@
 					"rotation": {
 						"0.0": {
 							"post": [10, -4.9809, 0.43688],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"0.375": {
 							"post": [10, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"0.625": {
 							"post": [10, 4.9809, -0.43688],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"1.0": {
 							"post": [10, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.25": {
 							"post": [10, -4.9809, 0.43688],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						}
 					}
 				},
@@ -520,19 +520,19 @@
 						},
 						"0.375": {
 							"post": [-10, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"0.75": {
 							"post": [-12.07883, 0, -0.7],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"1.0": {
 							"post": [-10, 0, 0],
-							"lerp_mode": "easeInOutQuad"
+							"lerp_mode": "ease_in_out_quad"
 						},
 						"1.25": {
 							"post": [-12.5, 0, 1],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					},
 					"position": {
@@ -557,19 +557,19 @@
 						},
 						"0.375": {
 							"post": [0, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"0.625": {
 							"post": [0, -4.98093, -0.43688],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						},
 						"1.0": {
 							"post": [0, 0, 0],
-							"lerp_mode": "easeInSine"
+							"lerp_mode": "ease_in_sine"
 						},
 						"1.25": {
 							"post": [0, 4.98093, 0.43688],
-							"lerp_mode": "easeOutSine"
+							"lerp_mode": "ease_out_sine"
 						}
 					},
 					"position": {
@@ -578,19 +578,19 @@
 						},
 						"0.375": {
 							"post": [0, 0, 0],
-							"lerp_mode": "easeInOutCubic"
+							"lerp_mode": "ease_in_out_cubic"
 						},
 						"0.625": {
 							"post": [0, -0.7, 0.5],
-							"lerp_mode": "easeInQuad"
+							"lerp_mode": "ease_in_quad"
 						},
 						"1.0": {
 							"post": [0, 0, 0],
-							"lerp_mode": "easeInOutCubic"
+							"lerp_mode": "ease_in_out_cubic"
 						},
 						"1.25": {
 							"post": [0, -0.7, 0.5],
-							"lerp_mode": "easeInQuad"
+							"lerp_mode": "ease_in_quad"
 						}
 					}
 				},
@@ -598,23 +598,23 @@
 					"rotation": {
 						"0.0": {
 							"post": [5, 0, 0.43688],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.375": {
 							"post": [2, 0, 0],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"0.625": {
 							"post": [5, 0, -0.43688],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"1.0": {
 							"post": [2, 0, 0],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						},
 						"1.25": {
 							"post": [5, 0, 0.43688],
-							"lerp_mode": "easeInOutSine"
+							"lerp_mode": "ease_in_out_sine"
 						}
 					}
 				}

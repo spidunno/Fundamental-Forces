@@ -18,6 +18,7 @@ public class CommonConfig {
 
     public static ForgeConfigSpec.ConfigValue<List<? extends String>> STARFALL_ALLOWED_DIMENSIONS;
     public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_SPAWN_HEIGHT;
+    public static ForgeConfigSpec.ConfigValue<Integer> STARFALL_ATMOSPHERE_ENTRY_HEIGHT;
     public static ForgeConfigSpec.ConfigValue<Integer> MINIMUM_STARFALL_DISTANCE;
     public static ForgeConfigSpec.ConfigValue<Integer> MAXIMUM_STARFALL_DISTANCE;
 
@@ -61,6 +62,9 @@ public class CommonConfig {
 
         STARFALL_SPAWN_HEIGHT = builder.comment("Altitude for impact events to spawn their incoming objects")
                 .define("starfall_spawn_height", 600);
+
+        STARFALL_ATMOSPHERE_ENTRY_HEIGHT = builder.comment("Altitude for impact event objects to enter the atmosphere")
+                .define("starfall_atmosphere_entry_height", 400);
 
         MINIMUM_STARFALL_DISTANCE = builder.comment("Minimum distance away from a player to spawn an impact event")
                 .define("minimum_starfall_distance", 64);

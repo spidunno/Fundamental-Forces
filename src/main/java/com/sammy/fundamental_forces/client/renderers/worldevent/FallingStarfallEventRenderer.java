@@ -17,6 +17,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
+
 import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
 import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_RENDER;
 
@@ -34,26 +36,30 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
     @Override
     public boolean canRender(FallingStarfallEvent instance) {
         float renderSize = 25;
-        return RenderHandler.FRUSTUM.isVisible(new AABB(instance.position.subtract(renderSize,renderSize,renderSize), instance.position.add(renderSize,renderSize,renderSize)));
+        return RenderHandler.FRUSTUM.isVisible(new AABB(instance.position.subtract(renderSize, renderSize, renderSize), instance.position.add(renderSize, renderSize, renderSize)));
     }
 
     @Override
     public void render(FallingStarfallEvent instance, PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
-        poseStack.pushPose();
         LocalPlayer player = Minecraft.getInstance().player;
         float beamLength = 20f;
         float beamWidth = 4f;
-        VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
-        float starSize = 5f;
+        float flareSize = 5f;
+        Color startColor = Color.WHITE;
+        Color flameColor = Color.ORANGE;
+        Color currentColor = instance.
         RenderHelper.VertexBuilder builder = RenderHelper.create();
-        Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed*partialTicks,instance.speed*partialTicks,instance.speed*partialTicks));
+        VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
+        VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
+        Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed * partialTicks, instance.speed * partialTicks, instance.speed * partialTicks));
         Vec3 position = instance.position.add(motion);
+
+        poseStack.pushPose();
         poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ());
         builder.renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
-        VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        builder.renderQuad(starConsumer, poseStack, starSize, starSize);
+        builder.renderQuad(starConsumer, poseStack, flareSize, flareSize);
         poseStack.popPose();
     }
 }
