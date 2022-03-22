@@ -47,7 +47,6 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float flareSize = 5f;
         Color startColor = Color.WHITE;
         Color flameColor = Color.ORANGE;
-        Color currentColor = instance.
         RenderHelper.VertexBuilder builder = RenderHelper.create();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
