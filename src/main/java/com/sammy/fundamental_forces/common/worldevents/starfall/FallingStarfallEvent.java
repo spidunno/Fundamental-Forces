@@ -12,42 +12,32 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class FallingStarfallEvent extends WorldEventInstance {
-    public static final float ACCELERATION = 0.01f;
 
     public StarfallActor actor;
     public BlockPos targetedPos = BlockPos.ZERO;
+    public Vec3 startingPosition = Vec3.ZERO;
     public Vec3 position = Vec3.ZERO;
     public Vec3 motion = Vec3.ZERO;
+    public float acceleration = 0.01f;
     public float speed;
 
     private FallingStarfallEvent() {
         super(WorldEventTypes.FALLING_STARFALL);
     }
 
-    public FallingStarfallEvent(StarfallActor actor) {
-        super(WorldEventTypes.FALLING_STARFALL);
+    public FallingStarfallEvent(StarfallActor actor, Vec3 position, Vec3 motion, BlockPos targetedPos) {
+        this();
         this.actor = actor;
+        this.startingPosition = position;
+        this.position = position;
+        this.motion = motion;
+        this.targetedPos = targetedPos;
     }
 
     public static FallingStarfallEvent fromNBT(CompoundTag tag) {
         FallingStarfallEvent instance = new FallingStarfallEvent();
         instance.deserializeNBT(tag);
         return instance;
-    }
-
-    public FallingStarfallEvent startPosition(Vec3 position) {
-        this.position = position;
-        return this;
-    }
-
-    public FallingStarfallEvent motion(Vec3 motion) {
-        this.motion = motion;
-        return this;
-    }
-
-    public FallingStarfallEvent targetPosition(BlockPos targetedPos) {
-        this.targetedPos = targetedPos;
-        return this;
     }
 
     @Override
@@ -78,7 +68,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
 
     private void move() {
         position = position.add(motion.multiply(speed, speed, speed));
-        speed += ACCELERATION;
+        speed += acceleration;
     }
 
     @Override

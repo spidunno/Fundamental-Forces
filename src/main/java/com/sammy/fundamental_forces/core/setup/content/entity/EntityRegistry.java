@@ -33,6 +33,7 @@ public class EntityRegistry {
         event.put(STONE_WRAITH.get(), StoneWraith.createAttributes().build());
     }
 
+    //TODO: make this wokr, for whatever reason the attempt to register a spawn egg makes it cry
     private static <T extends Mob> RegistryObject<EntityType<T>> register(String id, EntityType.Builder<T> builder, int primaryColor, int secondaryColor) {
         RegistryObject<EntityType<T>> object = ENTITY_TYPES.register(id, () -> builder.build(id));
         ItemRegistry.ITEMS.register(id + "_spawn_egg", () -> new SpawnEggItemBase<>(object, primaryColor, secondaryColor, true, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import static com.mojang.blaze3d.vertex.DefaultVertexFormat.*;
 import static com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR_TEX;
 
-public class RenderTypes extends RenderStateShard{
+public class RenderTypes extends RenderStateShard {
     public RenderTypes(String p_110161_, Runnable p_110162_, Runnable p_110163_) {
         super(p_110161_, p_110162_, p_110163_);
     }
@@ -24,6 +24,7 @@ public class RenderTypes extends RenderStateShard{
     public static RenderType createQuadRenderType(TransparencyStateShard transparencyStateShard, ResourceLocation resourceLocation) {
         return createGenericRenderType("additive_quad", POSITION_COLOR_TEX_LIGHTMAP, VertexFormat.Mode.QUADS, ShaderRegistry.additiveTexture.shard, transparencyStateShard, resourceLocation);
     }
+
     public static RenderType createRadialNoiseQuadRenderType(ResourceLocation resourceLocation) {
         return createGenericRenderType("radial_noise_quad", POSITION_COLOR_TEX, VertexFormat.Mode.QUADS, ShaderRegistry.radialNoise.shard, StateShards.ADDITIVE_TRANSPARENCY, resourceLocation);
     }
@@ -49,7 +50,7 @@ public class RenderTypes extends RenderStateShard{
     }
 
     public static RenderType createGenericRenderType(String name, VertexFormat format, VertexFormat.Mode mode, ShaderStateShard shader, TransparencyStateShard transparency, ResourceLocation texture) {
-        RenderType type =  RenderType.create(
+        RenderType type = RenderType.create(
                 FundamentalForcesMod.MODID + ":" + name, format, mode, 256, false, false,
                 RenderType.CompositeState.builder()
                         .setShaderState(shader)
@@ -62,8 +63,8 @@ public class RenderTypes extends RenderStateShard{
         RenderHandler.BUFFERS.put(type, new BufferBuilder(type.bufferSize()));
         return type;
     }
-    public static RenderType withShaderHandler(RenderType type, RenderTypeShaderHandler handler)
-    {
+
+    public static RenderType withShaderHandler(RenderType type, RenderTypeShaderHandler handler) {
         RenderHandler.HANDLERS.put(type, handler);
         return type;
     }

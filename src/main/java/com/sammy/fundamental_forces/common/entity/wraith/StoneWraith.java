@@ -31,8 +31,8 @@ import java.util.stream.Stream;
 
 public class StoneWraith extends Monster implements AnimatedEntity {
 
-    public static final AnimationState VIBING = new AnimationState(53, DataHelper.prefix("stone_wraith.twitchlayer"), DataHelper.prefix("stone_wraith.idle"));
-    public static final AnimationState WALKING = new AnimationState(10, DataHelper.prefix("stone_wraith.twitchlayer"), DataHelper.prefix("stone_wraith.walk"));
+    public static final AnimationState VIBING = new AnimationState(80, DataHelper.prefix("stone_wraith.idle"), DataHelper.prefix("stone_wraith.twitchlayer"));
+    public static final AnimationState WALKING = new AnimationState(25, DataHelper.prefix("stone_wraith.walk"), DataHelper.prefix("stone_wraith.twitchlayer"));
     private static final AnimationState[] ANIMATIONS = Stream.of(VIBING, WALKING).toArray(AnimationState[]::new);
 
     private final AnimationEffectHandler effectHandler;
@@ -42,7 +42,7 @@ public class StoneWraith extends Monster implements AnimatedEntity {
     public StoneWraith(Level level) {
         super(EntityRegistry.STONE_WRAITH.get(), level);
         this.effectHandler = new AnimationEffectHandler(this);
-        this.animationState = AnimationState.EMPTY;
+        this.animationState = VIBING;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -64,11 +64,6 @@ public class StoneWraith extends Monster implements AnimatedEntity {
     }
 
     @Override
-    public boolean isImmobile() {
-        return !this.isNoAnimationPlaying();
-    }
-
-    @Override
     public void tick() {
         super.tick();
         this.animationTick();
@@ -76,7 +71,7 @@ public class StoneWraith extends Monster implements AnimatedEntity {
 
     @Override
     public void resetAnimationState() {
-        this.setAnimationState(AnimationState.EMPTY);
+        this.setAnimationState(WALKING);
     }
 
     @Override

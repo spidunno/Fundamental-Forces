@@ -129,7 +129,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     if (success) {
                         Vec3 spawnPos = actor.randomizedStarfallStartPosition(serverLevel, target, targetedPos);
                         Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
-                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnPos).motion(motion).targetPosition(target));
+                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor, spawnPos, motion, target));
                         break;
                     } else {
                         failures++;
@@ -141,9 +141,9 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     boolean success = disregardOSHARegulations || exactPosition || actor.canFall(serverLevel, target);
                     if (success) {
                         Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                        Vec3 spawnVec = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.get(), Mth.nextDouble(level.random, -150, 150));
-                        Vec3 motion = spawnVec.vectorTo(targetVec).normalize();
-                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor).startPosition(spawnVec).motion(motion).targetPosition(target));
+                        Vec3 spawnPos = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.get(), Mth.nextDouble(level.random, -150, 150));
+                        Vec3 motion = spawnPos.vectorTo(targetVec).normalize();
+                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor, spawnPos, motion, target));
                     }
                 }
             }
