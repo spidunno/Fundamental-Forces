@@ -5,14 +5,17 @@ import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import com.sammy.fundamental_forces.common.capability.WorldDataCapability;
 import com.sammy.fundamental_forces.config.ClientConfig;
+import com.sammy.fundamental_forces.core.helper.RenderHelper;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventRenderers;
 import com.sammy.fundamental_forces.core.systems.rendering.RenderTypeShaderHandler;
 import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
+import com.sammy.fundamental_forces.core.systems.rendering.ExtendedShaderInstance;
 import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
 import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,7 +29,7 @@ import java.util.HashMap;
 public class RenderHandler {
     public static HashMap<RenderType, BufferBuilder> BUFFERS = new HashMap<>();
     public static HashMap<RenderType, RenderTypeShaderHandler> HANDLERS = new HashMap<>();
-    public static MultiBufferSource.BufferSource DELAYED_RENDER = null;
+    public static MultiBufferSource.BufferSource DELAYED_RENDER;
     public static Matrix4f PARTICLE_MATRIX = null;
     public static Frustum FRUSTUM;
 
@@ -36,16 +39,7 @@ public class RenderHandler {
 
     public static void renderLast(RenderLevelLastEvent event) {
         prepareFrustum(event.getPoseStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
-        WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
-            for (WorldEventInstance instance : capability.activeWorldEvents) {
-                WorldEventRenderer<WorldEventInstance> renderer = WorldEventRenderers.RENDERERS.get(instance.type);
-                if (renderer != null) {
-                    if (renderer.canRender(instance)) {
-                        renderer.render(instance, event.getPoseStack(), RenderHandler.DELAYED_RENDER, event.getPartialTick());
-                    }
-                }
-            }
-        });
+        WorldEventHandler.ClientOnly.renderWorldEvents(event);
         if (ClientConfig.DELAYED_PARTICLE_RENDERING.get()) {
             RenderSystem.getModelViewStack().pushPose();
             RenderSystem.getModelViewStack().setIdentity();
@@ -58,12 +52,18 @@ public class RenderHandler {
         }
         event.getPoseStack().pushPose();
         for (RenderType type : BUFFERS.keySet()) {
+            ShaderInstance instance = RenderHelper.getShader(type);
             if (HANDLERS.containsKey(type)) {
                 RenderTypeShaderHandler handler = HANDLERS.get(type);
-                handler.updateShaderData();
+                handler.updateShaderData(instance);
             }
             DELAYED_RENDER.endBatch(type);
+
+            if (instance instanceof ExtendedShaderInstance extendedShaderInstance) {
+                extendedShaderInstance.setUniformDefaults();
+            }
         }
+        DELAYED_RENDER.endBatch();
         event.getPoseStack().popPose();
     }
 

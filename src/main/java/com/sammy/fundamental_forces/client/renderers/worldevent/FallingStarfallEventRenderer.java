@@ -25,10 +25,10 @@ import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_R
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
     private static final ResourceLocation LIGHT_TRAIL = prefix("textures/vfx/light_trail.png");
-    public static final RenderType LIGHT_TYPE = RenderTypes.createBootlegTriangleRenderType(StateShards.ADDITIVE_TRANSPARENCY, LIGHT_TRAIL);
+    public static final RenderType LIGHT_TYPE = RenderTypes.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation STAR = prefix("textures/vfx/star.png");
-    public static final RenderType STAR_TYPE = RenderTypes.createQuadRenderType(StateShards.ADDITIVE_TRANSPARENCY, STAR);
+    public static final RenderType STAR_TYPE = RenderTypes.ADDITIVE_TEXTURE.apply(STAR);
 
     public FallingStarfallEventRenderer() {
     }
@@ -45,8 +45,6 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamLength = 20f;
         float beamWidth = 4f;
         float flareSize = 5f;
-        Color startColor = Color.WHITE;
-        Color flameColor = Color.ORANGE;
         RenderHelper.VertexBuilder builder = RenderHelper.create();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);

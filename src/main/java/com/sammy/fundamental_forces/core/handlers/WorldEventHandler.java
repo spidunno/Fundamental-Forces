@@ -7,9 +7,12 @@ import com.sammy.fundamental_forces.common.worldevents.starfall.ScheduledStarfal
 import com.sammy.fundamental_forces.config.CommonConfig;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockTagRegistry;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.StarfallActors;
+import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventRenderers;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventTypes;
 import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
+import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventRenderer;
 import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -31,6 +35,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class WorldEventHandler {
+
+    public static class ClientOnly {
+        public static void renderWorldEvents(RenderLevelLastEvent event) {
+            WorldDataCapability.getCapability(Minecraft.getInstance().level).ifPresent(capability -> {
+                for (WorldEventInstance instance : capability.activeWorldEvents) {
+                    WorldEventRenderer<WorldEventInstance> renderer = WorldEventRenderers.RENDERERS.get(instance.type);
+                    if (renderer != null) {
+                        if (renderer.canRender(instance)) {
+                            renderer.render(instance, event.getPoseStack(), RenderHandler.DELAYED_RENDER, event.getPartialTick());
+                        }
+                    }
+                }
+            });
+        }
+    }
 
     public static <T extends WorldEventInstance> T addWorldEvent(Level level, T instance) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
@@ -97,8 +116,7 @@ public class WorldEventHandler {
         }
     }
 
-    public static void tick(Level level)
-    {
+    public static void tick(Level level) {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             capability.activeWorldEvents.addAll(capability.inboundWorldEvents);
             capability.inboundWorldEvents.clear();
@@ -113,6 +131,7 @@ public class WorldEventHandler {
             }
         });
     }
+
     public static void serializeNBT(WorldDataCapability capability, CompoundTag tag) {
         tag.putInt("worldEventCount", capability.activeWorldEvents.size());
         for (int i = 0; i < capability.activeWorldEvents.size(); i++) {

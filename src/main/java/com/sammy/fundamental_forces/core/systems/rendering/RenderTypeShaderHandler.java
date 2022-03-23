@@ -1,6 +1,7 @@
 package com.sammy.fundamental_forces.core.systems.rendering;
 
-public interface RenderTypeShaderHandler {
-    void updateShaderData();
+import net.minecraft.client.renderer.ShaderInstance;
 
+public interface RenderTypeShaderHandler {
+    void updateShaderData(ShaderInstance instance);
 }
