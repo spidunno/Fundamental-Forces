@@ -9,6 +9,10 @@ import net.minecraftforge.network.PacketDistributor;
 
 import java.util.UUID;
 
+/**
+ * World events are tickable instanced objects which are saved in a level capability, which means they are unique per dimension.
+ * They can exist on the client and are ticked separately.
+ */
 public abstract class WorldEventInstance {
     public UUID uuid;
     public String type;
@@ -19,10 +23,15 @@ public abstract class WorldEventInstance {
         this.type = type.id;
     }
 
-    public void start(Level level) {
+    /**
+     * Syncs the world event to all nearby players.
+     */
+    public void sync(Level level) {
         if (!level.isClientSide && isClientSynced()) {
             sync(this);
         }
+    }
+    public void start(Level level) {
     }
 
     public void tick(Level level) {
@@ -33,6 +42,9 @@ public abstract class WorldEventInstance {
         discarded = true;
     }
 
+    /**
+     * Should this event exist on the client? It will be automatically synced in {@link #sync(Level)}
+     */
     public boolean isClientSynced() {
         return false;
     }

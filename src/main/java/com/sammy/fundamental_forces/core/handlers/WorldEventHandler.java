@@ -55,6 +55,7 @@ public class WorldEventHandler {
         WorldDataCapability.getCapability(level).ifPresent(capability -> {
             capability.inboundWorldEvents.add(instance);
             instance.start(level);
+            instance.sync(level);
         });
         return instance;
     }

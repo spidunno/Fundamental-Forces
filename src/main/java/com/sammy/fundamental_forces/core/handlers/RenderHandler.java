@@ -3,15 +3,11 @@ package com.sammy.fundamental_forces.core.handlers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
-import com.sammy.fundamental_forces.common.capability.WorldDataCapability;
 import com.sammy.fundamental_forces.config.ClientConfig;
 import com.sammy.fundamental_forces.core.helper.RenderHelper;
-import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventRenderers;
-import com.sammy.fundamental_forces.core.systems.rendering.RenderTypeShaderHandler;
+import com.sammy.fundamental_forces.core.systems.rendering.ShaderUniformHandler;
 import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
 import com.sammy.fundamental_forces.core.systems.rendering.ExtendedShaderInstance;
-import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
-import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -28,7 +24,7 @@ import java.util.HashMap;
 @OnlyIn(Dist.CLIENT)
 public class RenderHandler {
     public static HashMap<RenderType, BufferBuilder> BUFFERS = new HashMap<>();
-    public static HashMap<RenderType, RenderTypeShaderHandler> HANDLERS = new HashMap<>();
+    public static HashMap<RenderType, ShaderUniformHandler> HANDLERS = new HashMap<>();
     public static MultiBufferSource.BufferSource DELAYED_RENDER;
     public static Matrix4f PARTICLE_MATRIX = null;
     public static Frustum FRUSTUM;
@@ -39,7 +35,6 @@ public class RenderHandler {
 
     public static void renderLast(RenderLevelLastEvent event) {
         prepareFrustum(event.getPoseStack(), Minecraft.getInstance().getEntityRenderDispatcher().camera.getPosition(), event.getProjectionMatrix());
-        WorldEventHandler.ClientOnly.renderWorldEvents(event);
         if (ClientConfig.DELAYED_PARTICLE_RENDERING.get()) {
             RenderSystem.getModelViewStack().pushPose();
             RenderSystem.getModelViewStack().setIdentity();
@@ -54,11 +49,10 @@ public class RenderHandler {
         for (RenderType type : BUFFERS.keySet()) {
             ShaderInstance instance = RenderHelper.getShader(type);
             if (HANDLERS.containsKey(type)) {
-                RenderTypeShaderHandler handler = HANDLERS.get(type);
+                ShaderUniformHandler handler = HANDLERS.get(type);
                 handler.updateShaderData(instance);
             }
             DELAYED_RENDER.endBatch(type);
-
             if (instance instanceof ExtendedShaderInstance extendedShaderInstance) {
                 extendedShaderInstance.setUniformDefaults();
             }

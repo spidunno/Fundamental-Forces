@@ -71,7 +71,7 @@ public class StoneWraith extends Monster implements AnimatedEntity {
 
     @Override
     public void resetAnimationState() {
-        this.setAnimationState(WALKING);
+        this.setAnimationState(VIBING);
     }
 
     @Override

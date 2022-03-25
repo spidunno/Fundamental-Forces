@@ -46,7 +46,7 @@ public class GenericParticle extends TextureSheetParticle {
             pickSprite(0);
         }
         if (getAnimator().equals(SimpleParticleOptions.Animator.LAST_INDEX)) {
-            pickSprite(spriteSet.sprites.size()-1);
+            pickSprite(spriteSet.sprites.size() - 1);
         }
         updateTraits();
     }
@@ -73,7 +73,7 @@ public class GenericParticle extends TextureSheetParticle {
     }
 
     public float getCurve(float multiplier) {
-        return Mth.clamp((age * multiplier) / (float)lifetime, 0, 1);
+        return Mth.clamp((age * multiplier) / (float) lifetime, 0, 1);
     }
 
     protected void updateTraits() {
@@ -91,7 +91,7 @@ public class GenericParticle extends TextureSheetParticle {
         if (data.isTrinaryAlpha()) {
             float trinaryAge = getCurve(data.alphaCurveMultiplier);
             if (trinaryAge >= 0.5f) {
-                alpha = Mth.lerp(data.alphaCurveStartEasing.ease(trinaryAge-0.5f, 0, 1, 0.5f), data.alpha2, data.alpha3);
+                alpha = Mth.lerp(data.alphaCurveStartEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.alpha2, data.alpha3);
             } else {
                 alpha = Mth.lerp(data.alphaCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.alpha1, data.alpha2);
             }

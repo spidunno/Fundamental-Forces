@@ -30,14 +30,7 @@ public class WorldFiller
         entries.set(index, entry);
     }
 
-    public static class FillerEntry {
-        public final BlockState state;
-        public final BlockPos pos;
-
-        public FillerEntry(BlockState state, BlockPos pos) {
-            this.state = state;
-            this.pos = pos;
-        }
+    public record FillerEntry(BlockState state, BlockPos pos) {
 
         public boolean canPlace(WorldGenLevel level) {
             return canPlace(level, pos);

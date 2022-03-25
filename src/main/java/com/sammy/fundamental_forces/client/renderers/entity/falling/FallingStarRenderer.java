@@ -2,22 +2,18 @@ package com.sammy.fundamental_forces.client.renderers.entity.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 import com.sammy.fundamental_forces.common.entity.falling.FallingEntity;
 import com.sammy.fundamental_forces.core.helper.RenderHelper;
 import com.sammy.fundamental_forces.core.helper.RenderHelper.VertexBuilder;
 import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.model.StandaloneModelConfiguration;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.renderable.MultipartTransforms;
 import net.minecraftforge.client.model.renderable.SimpleRenderable;
 
 import java.awt.*;
@@ -25,7 +21,7 @@ import java.awt.*;
 import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
 import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_RENDER;
 import static com.sammy.fundamental_forces.core.helper.RenderHelper.FULL_BRIGHT;
-import static com.sammy.fundamental_forces.core.systems.rendering.RenderTypes.bufferUniformChanges;
+import static com.sammy.fundamental_forces.core.systems.rendering.RenderTypes.queueUniformChanges;
 import static com.sammy.fundamental_forces.core.systems.rendering.RenderTypes.copy;
 
 public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
@@ -59,15 +55,21 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         VertexBuilder builder = RenderHelper.create().setLight(FULL_BRIGHT);
         for (int i = 0; i < colors.length; i++) {
             int finalI = i;
-            VertexConsumer fire = DELAYED_RENDER.getBuffer(bufferUniformChanges(copy(i, FIRE_TYPE),
-                    (instance -> instance.safeGetUniform("Speed").set(300f + 100f * finalI))));
+            VertexConsumer fire = DELAYED_RENDER.getBuffer(queueUniformChanges(copy(i, FIRE_TYPE),
+                    (instance -> instance.safeGetUniform("Speed").set(100f + 300f * finalI))));
 
-            float size = (colors.length - i);
-            float beamLength = size * 2;
+            float index = colors.length-i;
+            float size = index*2+(float)Math.exp(i*0.15f);
+            float width = size * 0.75f;
+            float length = size * 1.5f;
+            float alpha = 0.1f + 0.15f *(float)Math.exp(i*0.5f);
             Color color = colors[i];
-            builder.setColor(color).setAlpha(0.1f + 0.15f * (colors.length - i))
-                    .renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(0, beamLength, 0), size)
-                    .renderBeam(fire, poseStack, entity.position(), entity.position().add(0, beamLength, 0), size);
+            builder.setColor(color)
+                    .setAlpha(alpha)
+                    .renderBeam(fire, poseStack, entity.position(), entity.position().add(0, length, 0), width)
+                    .setAlpha(alpha*0.75f)
+                    .renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(0, length, 0), width*0.7f);
+
         }
         poseStack.popPose();
     }

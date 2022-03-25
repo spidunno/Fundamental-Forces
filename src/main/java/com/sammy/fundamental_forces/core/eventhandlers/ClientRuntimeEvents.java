@@ -57,6 +57,7 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderLast(RenderLevelLastEvent event) {
         RenderHandler.renderLast(event);
+        WorldEventHandler.ClientOnly.renderWorldEvents(event);
     }
 
     @SuppressWarnings("ALL")
