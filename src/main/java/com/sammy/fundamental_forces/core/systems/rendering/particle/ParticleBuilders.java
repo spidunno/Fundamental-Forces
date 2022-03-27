@@ -12,6 +12,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -413,6 +414,16 @@ public class ParticleBuilders {
         }
         public ScreenParticleBuilder overwriteRenderOrder(ScreenParticle.RenderOrder renderOrder) {
             data.renderOrder = renderOrder;
+            return this;
+        }
+        public ScreenParticleBuilder centerOnStack(ItemStack stack) {
+            data.stack = stack;
+            return this;
+        }
+        public ScreenParticleBuilder centerOnStack(ItemStack stack, float xOffset, float yOffset) {
+            data.stack = stack;
+            data.xOffset = xOffset;
+            data.yOffset = yOffset;
             return this;
         }
         public ScreenParticleBuilder setColorEasing(Easing easing) {
