@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.math.Matrix4f;
+import com.sammy.fundamental_forces.core.systems.backstreet_hooks.BackstreetHooks;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
@@ -40,6 +41,9 @@ public class ScreenParticleHandler {
         canSpawnParticles = true;
     }
 
+    static {
+        BackstreetHooks.PRE_ITEM_GUI_RENDER.add(((pStack, pX, pY, model) -> ScreenParticleHandler.renderItem(pStack)));
+    }
     public static void renderItem(ItemStack stack) {
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level != null && minecraft.player != null) {

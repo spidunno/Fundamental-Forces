@@ -1,13 +1,11 @@
 package com.sammy.fundamental_forces.core.eventhandlers;
 
-import com.sammy.fundamental_forces.common.capability.ChunkDataCapability;
-import com.sammy.fundamental_forces.common.capability.EntityDataCapability;
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
-import com.sammy.fundamental_forces.common.capability.WorldDataCapability;
+import com.sammy.fundamental_forces.common.capability.*;
 import com.sammy.fundamental_forces.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fundamental_forces.core.handlers.WorldEventHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -80,6 +78,11 @@ public class RuntimeEvents {
     public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
         PlayerDataCapability.attachPlayerCapability(event);
         EntityDataCapability.attachEntityCapability(event);
+    }
+
+    @SubscribeEvent
+    public static void attachItemStackCapability(AttachCapabilitiesEvent<ItemStack> event) {
+        ItemStackCapability.attachItemCapability(event);
     }
 
     @SubscribeEvent
