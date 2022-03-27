@@ -55,4 +55,7 @@ public class ItemStackCapability implements SimpleCapability {
     @Override
     public void deserializeNBT(CompoundTag tag) {
     }
+    public static LazyOptional<ItemStackCapability> getCapability(ItemStack stack) {
+        return stack.getCapability(CAPABILITY);
+    }
 }
