@@ -7,7 +7,7 @@ import com.mojang.math.Vector3f;
 import com.sammy.fundamental_forces.common.capability.EntityDataCapability;
 import com.sammy.fundamental_forces.config.ClientConfig;
 import com.sammy.fundamental_forces.core.helper.DataHelper;
-import com.sammy.fundamental_forces.core.systems.meteorfire.MeteorFireInstance;
+import com.sammy.fundamental_forces.core.systems.meteorfire.FireEffectInstance;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
@@ -19,42 +19,34 @@ import net.minecraft.client.resources.model.Material;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
-public class MeteorFireHandler {
+public class CustomFireHandler {
 
     public static void entityUpdate(Entity entity) {
-        EntityDataCapability.getCapability(entity).ifPresent(c -> {
-            if (c.meteorFireInstance != null && c.meteorFireInstance.isValid()) {
-                c.meteorFireInstance.tick(entity);
+        FireEffectInstance instance = getFireEffectInstance(entity);
+        if (instance != null) {
+            instance.tick(entity);
+            if (!instance.isValid()) {
+                setCustomFireInstance(entity, null);
             }
-        });
+        }
     }
 
-    public static void removeMeteorFire(Entity entity) {
-        EntityDataCapability.getCapability(entity).ifPresent(c -> {
-            if (c.meteorFireInstance != null && c.meteorFireInstance.isValid()) {
-                c.meteorFireInstance.remainingTicks = 0;
-                if (!entity.level.isClientSide)
-                {
-                    EntityDataCapability.syncTrackingAndSelf(entity);
-                }
-            }
-        });
+    public static void onVanillaFireTimeUpdate(Entity entity) {
+        setCustomFireInstance(entity, null);
     }
 
-    public static boolean hasMeteorFireInstance(Entity entity) {
+    public static FireEffectInstance getFireEffectInstance(Entity entity) {
         EntityDataCapability capability = EntityDataCapability.getCapability(entity).orElse(new EntityDataCapability());
-        return capability.meteorFireInstance != null && capability.meteorFireInstance.isValid();
+        return capability.fireEffectInstance;
     }
 
-    public static void setMeteorFireInstance(Entity entity, MeteorFireInstance instance) {
+    public static void setCustomFireInstance(Entity entity, FireEffectInstance instance) {
         EntityDataCapability.getCapability(entity).ifPresent(c -> {
-            if (c.meteorFireInstance == null || !c.meteorFireInstance.isValid()) {
-                c.meteorFireInstance = instance;
-            } else {
-                c.meteorFireInstance.override(instance);
-            }
-            if (entity.getRemainingFireTicks() > 0) {
-                entity.setRemainingFireTicks(0);
+            c.fireEffectInstance = instance;
+            if (instance != null) {
+                if (entity.getRemainingFireTicks() > 0) {
+                    entity.setRemainingFireTicks(0);
+                }
             }
             if (!entity.level.isClientSide) {
                 EntityDataCapability.syncTrackingAndSelf(entity);
@@ -66,10 +58,9 @@ public class MeteorFireHandler {
         public static final Material GRAYSCALE_FIRE_0 = new Material(TextureAtlas.LOCATION_BLOCKS, DataHelper.prefix("block/fire_0"));
         public static final Material GRAYSCALE_FIRE_1 = new Material(TextureAtlas.LOCATION_BLOCKS, DataHelper.prefix("block/fire_1"));
 
-
         public static void renderUIMeteorFire(Minecraft pMinecraft, PoseStack pPoseStack) {
             if (pMinecraft.player != null) {
-                if (!hasMeteorFireInstance(pMinecraft.player)) {
+                if (getFireEffectInstance(pMinecraft.player) == null) {
                     return;
                 }
             }
@@ -97,7 +88,7 @@ public class MeteorFireHandler {
             for (int i = 0; i < 2; ++i) {
                 pPoseStack.pushPose();
                 pPoseStack.translate(((float) (-(i * 2 - 1)) * 0.24F), -0.3F, 0.0D);
-                pPoseStack.translate(0, -(ClientConfig.FIRE_OVERLAY_OFFSET.get())*0.3f, 0);
+                pPoseStack.translate(0, -(ClientConfig.FIRE_OVERLAY_OFFSET.get()) * 0.3f, 0);
                 pPoseStack.mulPose(Vector3f.YP.rotationDegrees((float) (i * 2 - 1) * 10.0F));
                 Matrix4f matrix4f = pPoseStack.last().pose();
                 bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
@@ -116,7 +107,7 @@ public class MeteorFireHandler {
         }
 
         public static void renderWorldMeteorFire(PoseStack pMatrixStack, MultiBufferSource pBuffer, Camera camera, Entity pEntity) {
-            if (!hasMeteorFireInstance(pEntity)) {
+            if (getFireEffectInstance(pEntity) == null) {
                 return;
             }
             TextureAtlasSprite textureAtlasSprite0 = GRAYSCALE_FIRE_0.sprite();

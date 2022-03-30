@@ -21,7 +21,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     public float acceleration = 0.01f;
     public float speed;
 
-    private FallingStarfallEvent() {
+    public FallingStarfallEvent() {
         super(WorldEventTypes.FALLING_STARFALL);
     }
 
@@ -32,12 +32,6 @@ public class FallingStarfallEvent extends WorldEventInstance {
         this.position = position;
         this.motion = motion;
         this.targetedPos = targetedPos;
-    }
-
-    public static FallingStarfallEvent fromNBT(CompoundTag tag) {
-        FallingStarfallEvent instance = new FallingStarfallEvent();
-        instance.deserializeNBT(tag);
-        return instance;
     }
 
     @Override
@@ -52,9 +46,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     public void end(Level level) {
         if (level instanceof ServerLevel serverLevel) {
             actor.act(serverLevel, targetedPos);
-        }
-        else
-        {
+        } else {
             ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
         }
         discarded = true;
@@ -86,7 +78,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
+    public FallingStarfallEvent deserializeNBT(CompoundTag tag) {
         actor = StarfallActors.ACTORS.get(tag.getString("resultId"));
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
@@ -94,5 +86,6 @@ public class FallingStarfallEvent extends WorldEventInstance {
         motion = new Vec3(tag.getDouble("motionX"), tag.getDouble("motionY"), tag.getDouble("motionZ"));
         speed = tag.getFloat("speed");
         super.deserializeNBT(tag);
+        return this;
     }
 }

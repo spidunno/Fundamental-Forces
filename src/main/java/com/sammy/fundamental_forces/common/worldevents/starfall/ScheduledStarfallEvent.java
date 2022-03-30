@@ -32,19 +32,13 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     protected boolean determined;
     protected boolean exactPosition;
 
-    private ScheduledStarfallEvent() {
+    public ScheduledStarfallEvent() {
         super(WorldEventTypes.SCHEDULED_STARFALL);
     }
 
     public ScheduledStarfallEvent(StarfallActor actor) {
         super(WorldEventTypes.SCHEDULED_STARFALL);
         this.actor = actor;
-    }
-
-    public static ScheduledStarfallEvent fromNBT(CompoundTag tag) {
-        ScheduledStarfallEvent instance = new ScheduledStarfallEvent();
-        instance.deserializeNBT(tag);
-        return instance;
     }
 
     public ScheduledStarfallEvent targetEntity(LivingEntity target) {
@@ -178,7 +172,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
+    public ScheduledStarfallEvent deserializeNBT(CompoundTag tag) {
         actor = StarfallActors.ACTORS.get(tag.getString("resultId"));
         targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("targetedPos");
@@ -190,6 +184,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         determined = tag.getBoolean("determined");
         exactPosition = tag.getBoolean("exactPosition");
         super.deserializeNBT(tag);
+        return this;
     }
 
     public static void addMissingStarfall(ServerLevel level, Player player) {

@@ -2,7 +2,7 @@ package com.sammy.fundamental_forces.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sammy.fundamental_forces.config.ClientConfig;
-import com.sammy.fundamental_forces.core.handlers.MeteorFireHandler;
+import com.sammy.fundamental_forces.core.handlers.CustomFireHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ScreenEffectRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ScreenEffectRendererMixin {
     @Inject(method = "renderScreenEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"))
     private static void fundamentalForcesMeteorFireRendering(Minecraft overlay, PoseStack pMinecraft, CallbackInfo ci) {
-        MeteorFireHandler.ClientOnly.renderUIMeteorFire(overlay, pMinecraft);
+        CustomFireHandler.ClientOnly.renderUIMeteorFire(overlay, pMinecraft);
     }
 
     @Inject(method = "renderFire", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V"))

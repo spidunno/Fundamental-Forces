@@ -1,6 +1,7 @@
 package com.sammy.fundamental_forces.core.systems.worldevent;
 
 import com.sammy.fundamental_forces.common.packets.SyncWorldEventPacket;
+import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventTypes;
 import com.sammy.fundamental_forces.core.setup.server.PacketRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,23 +15,31 @@ import java.util.UUID;
  * They can exist on the client and are ticked separately.
  */
 public abstract class WorldEventInstance {
-    public UUID uuid;
-    public String type;
+    public UUID uuid; //TODO: figure out why this is here.
+    public WorldEventType type;
     public boolean discarded;
 
     public WorldEventInstance(WorldEventType type) {
         this.uuid = UUID.randomUUID();
-        this.type = type.id;
+        this.type = type;
     }
 
     /**
-     * Syncs the world event to all nearby players.
+     * Syncs the world event to all players.
      */
     public void sync(Level level) {
         if (!level.isClientSide && isClientSynced()) {
             sync(this);
         }
     }
+
+    /**
+     * Should this event exist on the client? It will be automatically synced in {@link #sync(Level)}
+     */
+    public boolean isClientSynced() {
+        return false;
+    }
+
     public void start(Level level) {
     }
 
@@ -42,31 +51,25 @@ public abstract class WorldEventInstance {
         discarded = true;
     }
 
-    /**
-     * Should this event exist on the client? It will be automatically synced in {@link #sync(Level)}
-     */
-    public boolean isClientSynced() {
-        return false;
-    }
-
     public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putUUID("uuid", uuid);
-        tag.putString("type", type);
+        tag.putString("type", type.id);
         tag.putBoolean("discarded", discarded);
         return tag;
     }
 
-    public void deserializeNBT(CompoundTag tag) {
+    public WorldEventInstance deserializeNBT(CompoundTag tag) {
         uuid = tag.getUUID("uuid");
-        type = tag.getString("type");
+        type = WorldEventTypes.EVENT_TYPES.get(tag.getString("type"));
         discarded = tag.getBoolean("discarded");
+        return this;
     }
 
     public static <T extends WorldEventInstance> void sync(T instance) {
-        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncWorldEventPacket(instance.type, true, instance.serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.ALL.noArg(), new SyncWorldEventPacket(instance.type.id, true, instance.serializeNBT(new CompoundTag())));
     }
 
     public static <T extends WorldEventInstance> void sync(T instance, ServerPlayer player) {
-        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncWorldEventPacket(instance.type, false, instance.serializeNBT(new CompoundTag())));
+        PacketRegistry.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncWorldEventPacket(instance.type.id, false, instance.serializeNBT(new CompoundTag())));
     }
 }

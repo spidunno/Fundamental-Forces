@@ -10,8 +10,8 @@ public class WorldEventTypes {
 
     public static HashMap<String, WorldEventType> EVENT_TYPES = new HashMap<>();
 
-    public static WorldEventType SCHEDULED_STARFALL = registerEventType(new WorldEventType("scheduled_starfall", ScheduledStarfallEvent::fromNBT));
-    public static WorldEventType FALLING_STARFALL = registerEventType(new WorldEventType("falling_starfall", FallingStarfallEvent::fromNBT));
+    public static WorldEventType SCHEDULED_STARFALL = registerEventType(new WorldEventType("scheduled_starfall", ScheduledStarfallEvent::new));
+    public static WorldEventType FALLING_STARFALL = registerEventType(new WorldEventType("falling_starfall", FallingStarfallEvent::new));
 
     private static WorldEventType registerEventType(WorldEventType eventType) {
         EVENT_TYPES.put(eventType.id, eventType);

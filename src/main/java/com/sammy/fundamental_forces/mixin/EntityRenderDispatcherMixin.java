@@ -1,7 +1,7 @@
 package com.sammy.fundamental_forces.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sammy.fundamental_forces.core.handlers.MeteorFireHandler;
+import com.sammy.fundamental_forces.core.handlers.CustomFireHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
@@ -17,6 +17,6 @@ public class EntityRenderDispatcherMixin {
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/EntityRenderer;render(Lnet/minecraft/world/entity/Entity;FFLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V"))
     private void fundamentalForcesMeteorFireWorldRendering(Entity pEntity, double pX, double pY, double pZ, float pRotationYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight, CallbackInfo ci)
     {
-        MeteorFireHandler.ClientOnly.renderWorldMeteorFire(pMatrixStack, pBuffer, Minecraft.getInstance().gameRenderer.getMainCamera(), pEntity);
+        CustomFireHandler.ClientOnly.renderWorldMeteorFire(pMatrixStack, pBuffer, Minecraft.getInstance().gameRenderer.getMainCamera(), pEntity);
     }
 }
