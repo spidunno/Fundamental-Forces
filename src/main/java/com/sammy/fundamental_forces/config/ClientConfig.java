@@ -6,8 +6,8 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ClientConfig {
 
     public static ForgeConfigSpec.ConfigValue<Boolean> DELAYED_PARTICLE_RENDERING;
-    public static ForgeConfigSpec.DoubleValue SCREENSHAKE_INTENSITY;
-    public static ForgeConfigSpec.DoubleValue FIRE_OVERLAY_OFFSET;
+    public static ForgeConfigSpec.ConfigValue<Double> SCREENSHAKE_INTENSITY;
+    public static ForgeConfigSpec.ConfigValue<Double> FIRE_OVERLAY_OFFSET;
 
     public ClientConfig(ForgeConfigSpec.Builder builder) {
         builder.comment("Rendering settings").push("rendering");

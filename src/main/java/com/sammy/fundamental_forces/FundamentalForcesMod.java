@@ -2,6 +2,7 @@ package com.sammy.fundamental_forces;
 
 import com.sammy.fundamental_forces.config.ClientConfig;
 import com.sammy.fundamental_forces.config.CommonConfig;
+import com.sammy.fundamental_forces.config.CommonConfigNew;
 import com.sammy.fundamental_forces.core.data.*;
 import com.sammy.fundamental_forces.core.setup.content.SoundRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockEntityRegistry;
@@ -15,6 +16,8 @@ import com.sammy.fundamental_forces.core.setup.content.item.ItemRegistry;
 import com.sammy.fundamental_forces.core.setup.content.potion.PotionEffectRegistry;
 import com.sammy.fundamental_forces.core.setup.content.worldgen.FeatureRegistry;
 import com.sammy.fundamental_forces.core.setup.server.CommandRegistry;
+import gg.moonflower.pollen.api.config.ConfigManager;
+import gg.moonflower.pollen.api.config.PollinatedConfigType;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -36,11 +39,11 @@ public class FundamentalForcesMod {
     public static final String MODID = "fundamental_forces";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final Random RANDOM = new Random();
+    public static final CommonConfigNew CONFIG = ConfigManager.register(MODID, PollinatedConfigType.COMMON, CommonConfigNew::new);
 
     public FundamentalForcesMod() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
         CommandRegistry.registerArgumentTypes();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
