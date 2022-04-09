@@ -26,8 +26,8 @@ public class TextureGrabber {
     private static final ColorLerp LUMINOUS = (image, x, y, luminosity) -> luminosity/255f;
 
     public static void setup() {
-        registerGrabber("fire_0", "block/fire_0",new ResourceLocation("textures/block/fire_0.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
-        registerGrabber("fire_1", "block/fire_1",new ResourceLocation("textures/block/fire_1.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(246, 255, 255), new Color(174, 198, 255), new Color(122, 56, 201)));
+        registerGrabber("fire_0", "block/fire_0",new ResourceLocation("textures/block/fire_0.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(255,255,255), new Color(255,0,255), new Color(100, 25, 200)));
+        registerGrabber("fire_1", "block/fire_1",new ResourceLocation("textures/block/fire_1.png"), (image)->multiColorGradient(image, LUMINOUS, new Color(255,255,255), new Color(255,0,255), new Color(100, 25, 200)));
     }
     public static void registerGrabber(String loaderName, String targetPath, ResourceLocation sourcePath, TextureModifier modifier) {
 

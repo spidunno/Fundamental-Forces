@@ -9,7 +9,10 @@ import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.ScreenParticleOptions;
 import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ParticleEmitter;
+import mezz.jei.api.runtime.IRecipesGui;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.ChatScreen;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -59,8 +62,11 @@ public class ScreenParticleHandler {
                     float y = last.m13;
                     if (canSpawnParticles) {
                         ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
-                        if (minecraft.screen != null) {
-                            renderOrder = BEFORE_TOOLTIPS;
+                        Screen screen = minecraft.screen;
+                        if (screen != null) {
+                            if (!(screen instanceof IRecipesGui)) {
+                                renderOrder = BEFORE_TOOLTIPS;
+                            }
                             if (renderingHotbar) {
                                 renderOrder = BEFORE_UI;
                             }
@@ -75,7 +81,8 @@ public class ScreenParticleHandler {
 
     public static void renderParticles(TickEvent.RenderTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.END)) {
-            if (Minecraft.getInstance().screen == null) {
+            Screen screen = Minecraft.getInstance().screen;
+            if (screen == null || screen instanceof IRecipesGui || screen instanceof ChatScreen) {
                 renderParticles(AFTER_EVERYTHING, BEFORE_UI);
             }
             canSpawnParticles = false;

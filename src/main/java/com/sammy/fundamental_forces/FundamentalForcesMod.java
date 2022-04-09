@@ -2,7 +2,6 @@ package com.sammy.fundamental_forces;
 
 import com.sammy.fundamental_forces.config.ClientConfig;
 import com.sammy.fundamental_forces.config.CommonConfig;
-import com.sammy.fundamental_forces.config.CommonConfigNew;
 import com.sammy.fundamental_forces.core.data.*;
 import com.sammy.fundamental_forces.core.setup.content.SoundRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockEntityRegistry;
@@ -39,11 +38,12 @@ public class FundamentalForcesMod {
     public static final String MODID = "fundamental_forces";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final Random RANDOM = new Random();
-    public static final CommonConfigNew CONFIG = ConfigManager.register(MODID, PollinatedConfigType.COMMON, CommonConfigNew::new);
+
 
     public FundamentalForcesMod() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
         CommandRegistry.registerArgumentTypes();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         BlockRegistry.BLOCKS.register(modBus);
