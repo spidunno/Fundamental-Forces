@@ -56,7 +56,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
                 Color.RED, Color.ORANGE, Color.RED, Color.YELLOW, Color.WHITE, Color.WHITE
         };
         VertexBuilder builder = RenderHelper.create().setLight(FULL_BRIGHT);
-        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 4, 60, (long) (entity.level.getGameTime()+partialTicks), 360);
+        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 4, 20, (long) (entity.level.getGameTime()+partialTicks), 360);
         for (int i = 0; i < colors.length; i++) {
             int finalI = i;
             VertexConsumer fire = DELAYED_RENDER.getBuffer(queueUniformChanges(copy(i, FIRE_TYPE),
@@ -78,6 +78,25 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 //                    .setOffset((float)position.x, (float)position.y, (float)position.z)
 //                    .renderQuad(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, 2);
 //        }
+
+//          for (int i = 0; i < colors.length; i++) {
+//            int finalI = i;
+//            VertexConsumer fire = DELAYED_RENDER.getBuffer(queueUniformChanges(copy(i, FIRE_TYPE),
+//                    (instance -> instance.safeGetUniform("Speed").set(100f + 300f * finalI))));
+//
+//            float index = colors.length-i;
+//            float size = index*2+(float)Math.exp(i*0.15f);
+//            float width = size * 0.75f;
+//            float length = size * 1.5f;
+//            float alpha = 0.1f + 0.15f * (float) Math.exp(i * 0.5f);
+//            Color color = colors[i];
+//            builder.setColor(color)
+//                    .setAlpha(alpha)
+//                    .renderBeam(fire, poseStack, entity.position(), entity.position().add(0, length, 0), width)
+//                    .setAlpha(alpha*0.75f)
+//                    .renderBeam(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, entity.position(), entity.position().add(0, length, 0), width*0.7f);
+//        }
+
         poseStack.popPose();
     }
 
