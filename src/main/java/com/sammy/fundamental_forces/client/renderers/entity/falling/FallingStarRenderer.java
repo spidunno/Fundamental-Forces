@@ -2,6 +2,7 @@ package com.sammy.fundamental_forces.client.renderers.entity.falling;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Vector4f;
 import com.sammy.fundamental_forces.common.entity.falling.FallingEntity;
 import com.sammy.fundamental_forces.core.helper.DataHelper;
 import com.sammy.fundamental_forces.core.helper.RenderHelper;
@@ -20,6 +21,7 @@ import net.minecraftforge.client.model.renderable.SimpleRenderable;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
 import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_RENDER;
@@ -56,7 +58,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
                 Color.RED, Color.ORANGE, Color.RED, Color.YELLOW, Color.WHITE, Color.WHITE
         };
         VertexBuilder builder = RenderHelper.create().setLight(FULL_BRIGHT);
-        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 4, 20, (long) (entity.level.getGameTime()+partialTicks), 360);
+        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 3, 40, (long) (entity.level.getGameTime()+partialTicks), 1000);
         for (int i = 0; i < colors.length; i++) {
             int finalI = i;
             VertexConsumer fire = DELAYED_RENDER.getBuffer(queueUniformChanges(copy(i, FIRE_TYPE),
@@ -68,10 +70,11 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             float alpha = 0.1f + 0.15f * (float) Math.exp(i * 0.5f);
             Color color = colors[i];
             builder.setColor(color)
-                    .setAlpha(alpha)
-                    .renderTrail(fire, poseStack, width, positions)
                     .setAlpha(alpha * 0.75f)
-                    .renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, width * 0.7f, positions);
+                    .renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, packedLight, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width)
+                    .setAlpha(alpha)
+                    .setUV(0, 0, 1, 8)
+                    .renderTrail(fire, poseStack, packedLight, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width);
         }
 //        for (Vec3 position : positions) {
 //            builder.setColor(Color.RED)

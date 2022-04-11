@@ -43,7 +43,7 @@ public class MeteoriteFeature extends SimpleFeature {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
             }
         });
-        craterSphere = DataHelper.reverseOrder(ArrayList::new, BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.8f, b -> !level.getBlockState(b).isAir()));
+        craterSphere = DataHelper.reverseOrder(new ArrayList<>(), BlockHelper.getSphereOfBlocks(pos.above(2), meteorSize * 1.5f, meteorSize * 0.8f, b -> !level.getBlockState(b).isAir()));
         craterSphere.forEach(b -> {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
         });
