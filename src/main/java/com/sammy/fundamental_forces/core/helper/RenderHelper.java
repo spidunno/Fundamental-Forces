@@ -9,10 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -213,6 +215,36 @@ public class RenderHelper {
             return this;
         }
 
+        public VertexBuilder renderTrail(VertexConsumer vertexConsumer, PoseStack stack, float width, List<Vec3> trailSegments) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (trailSegments.size() < 2) {
+                return this;
+            }
+            Vec3[] lastPositions = null;
+            for (int i = 0; i < trailSegments.size() - 1; i++) {
+                Vec3 start = trailSegments.get(i);
+                Vec3 end = trailSegments.get(i + 1);
+                start.add(xOffset, yOffset, zOffset);
+                end.add(xOffset, yOffset, zOffset);
+                Vec3 cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPosition();
+                Vec3 delta = end.subtract(start);
+                Vec3 normal = start.subtract(cameraPosition).cross(delta).normalize().multiply(width / 2f, width / 2f, width / 2f);
+                Matrix4f last = stack.last().pose();
+                Vec3[] positions = new Vec3[]{start.subtract(normal), start.add(normal), end.add(normal), end.subtract(normal)};
+                if (lastPositions != null)
+                {
+                    positions[0] = lastPositions[0];
+                    positions[1] = lastPositions[1];
+                }
+                vertexPosColorUVLight(vertexConsumer, last, (float) positions[0].x, (float) positions[0].y, (float) positions[0].z, r, g, b, a, u0, v1, light);
+                vertexPosColorUVLight(vertexConsumer, last, (float) positions[1].x, (float) positions[1].y, (float) positions[1].z, r, g, b, a, u1, v1, light);
+                vertexPosColorUVLight(vertexConsumer, last, (float) positions[2].x, (float) positions[2].y, (float) positions[2].z, r, g, b, a, u1, v0, light);
+                vertexPosColorUVLight(vertexConsumer, last, (float) positions[3].x, (float) positions[3].y, (float) positions[3].z, r, g, b, a, u0, v0, light);
+                lastPositions = new Vec3[]{end.subtract(normal), end.add(normal)};
+            }
+            return this;
+        }
+
         public VertexBuilder renderBeam(VertexConsumer vertexConsumer, PoseStack stack, Vec3 start, Vec3 end, float width) {
             Minecraft minecraft = Minecraft.getInstance();
             start.add(xOffset, yOffset, zOffset);
@@ -234,15 +266,23 @@ public class RenderHelper {
         public VertexBuilder renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float size) {
             return renderQuad(vertexConsumer, stack, size, size);
         }
-
         public VertexBuilder renderQuad(VertexConsumer vertexConsumer, PoseStack stack, float width, float height) {
+            Vector3f[] positions = new Vector3f[]{new Vector3f(-width, -height, 0), new Vector3f(width, -height, 0), new Vector3f(width, height, 0), new Vector3f(-width, height, 0)};
+            return renderQuad(vertexConsumer, stack, positions, width, height);
+        }
+        public VertexBuilder renderQuad(VertexConsumer vertexConsumer, PoseStack stack, Vector3f[] positions, float size) {
+            return renderQuad(vertexConsumer, stack, positions, size, size);
+        }
+        public VertexBuilder renderQuad(VertexConsumer vertexConsumer, PoseStack stack, Vector3f[] positions, float width, float height) {
             Matrix4f last = stack.last().pose();
             stack.translate(xOffset, yOffset, zOffset);
-            Vec3[] positions = new Vec3[]{new Vec3(-width, -height, 0), new Vec3(width, -height, 0), new Vec3(width, height, 0), new Vec3(-width, height, 0)};
-            vertexPosColorUVLight(vertexConsumer, last, (float) positions[0].x, (float) positions[0].y, (float) positions[0].z, r, g, b, a, u0, v1, light);
-            vertexPosColorUVLight(vertexConsumer, last, (float) positions[1].x, (float) positions[1].y, (float) positions[1].z, r, g, b, a, u1, v1, light);
-            vertexPosColorUVLight(vertexConsumer, last, (float) positions[2].x, (float) positions[2].y, (float) positions[2].z, r, g, b, a, u1, v0, light);
-            vertexPosColorUVLight(vertexConsumer, last, (float) positions[3].x, (float) positions[3].y, (float) positions[3].z, r, g, b, a, u0, v0, light);
+            for (Vector3f position : positions) {
+                position.mul(width, height, width);
+            }
+            vertexPosColorUVLight(vertexConsumer, last, positions[0].x(), positions[0].y(), positions[0].z(), r, g, b, a, u0, v1, light);
+            vertexPosColorUVLight(vertexConsumer, last, positions[1].x(), positions[1].y(), positions[1].z(), r, g, b, a, u1, v1, light);
+            vertexPosColorUVLight(vertexConsumer, last, positions[2].x(), positions[2].y(), positions[2].z(), r, g, b, a, u1, v0, light);
+            vertexPosColorUVLight(vertexConsumer, last, positions[3].x(), positions[3].y(), positions[3].z(), r, g, b, a, u0, v0, light);
             stack.translate(-xOffset, -yOffset, -zOffset);
             return this;
         }

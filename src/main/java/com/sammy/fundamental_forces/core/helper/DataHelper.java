@@ -126,11 +126,11 @@ public class DataHelper {
         return pos.add(new Vec3(x, 0, z));
     }
 
-    public static Vec3 rotatedCirclePosition(Vec3 pos, float distance, float current, float total, long gameTime, float time) {
-        return rotatedCirclePosition(pos, distance, distance, current, total, gameTime, time);
+    public static Vec3 rotatingCirclePosition(Vec3 pos, float distance, float current, float total, long gameTime, float time) {
+        return rotatingCirclePosition(pos, distance, distance, current, total, gameTime, time);
     }
 
-    public static Vec3 rotatedCirclePosition(Vec3 pos, float distanceX, float distanceZ, float current, float total, long gameTime, float time) {
+    public static Vec3 rotatingCirclePosition(Vec3 pos, float distanceX, float distanceZ, float current, float total, long gameTime, float time) {
         double angle = current / total * (Math.PI * 2);
         angle += ((gameTime % time) / time) * (Math.PI * 2);
         double dx2 = (distanceX * Math.cos(angle));
@@ -140,6 +140,24 @@ public class DataHelper {
         double x = vector2f.x * distanceX;
         double z = vector2f.z * distanceZ;
         return pos.add(x, 0, z);
+    }
+    public static ArrayList<Vec3> rotatingCirclePositions(Vec3 pos, float distance, float total, long gameTime, float time) {
+        return rotatingCirclePositions(pos, distance, distance, total, gameTime, time);
+    }
+    public static ArrayList<Vec3> rotatingCirclePositions(Vec3 pos, float distanceX, float distanceZ, float total, long gameTime, float time) {
+        ArrayList<Vec3> positions = new ArrayList<>();
+        for (int i = 0; i <= total; i++) {
+            double angle = i / total * (Math.PI * 2);
+            angle += ((gameTime % time) / time) * (Math.PI * 2);
+            double dx2 = (distanceX * Math.cos(angle));
+            double dz2 = (distanceZ * Math.sin(angle));
+
+            Vec3 vector2f = new Vec3(dx2, 0, dz2);
+            double x = vector2f.x * distanceX;
+            double z = vector2f.z * distanceZ;
+            positions.add(pos.add(x,0,z));
+        }
+        return positions;
     }
 
     public static ArrayList<Vec3> blockOutlinePositions(Level level, BlockPos pos) {
