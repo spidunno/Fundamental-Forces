@@ -91,7 +91,7 @@ public class PlayerSpellHotbarHandler {
     }
 
     public static class ClientOnly {
-        private static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
+        public static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
         public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();

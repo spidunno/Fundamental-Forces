@@ -3,16 +3,20 @@ package com.sammy.fundamental_forces.client.renderers.entity.falling;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector4f;
+import com.sammy.fundamental_forces.FundamentalForcesMod;
 import com.sammy.fundamental_forces.common.entity.falling.FallingEntity;
 import com.sammy.fundamental_forces.core.helper.DataHelper;
 import com.sammy.fundamental_forces.core.helper.RenderHelper;
 import com.sammy.fundamental_forces.core.helper.RenderHelper.VertexBuilder;
 import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.StandaloneModelConfiguration;
 import net.minecraftforge.client.model.obj.OBJLoader;
@@ -38,7 +42,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     private static final RenderType LIGHT_TYPE = RenderTypes.ADDITIVE_TEXTURE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation FIRE_TRAIL = prefix("textures/vfx/fire_trail.png");
-    private static final RenderType FIRE_TYPE = RenderTypes.ADDITIVE_TEXTURE.apply(FIRE_TRAIL);
+    private static final RenderType FIRE_TYPE = RenderTypes.SCROLLING_TEXTURE.apply(FIRE_TRAIL);
 
     public static final OBJModel METEOR_TEARDROP = OBJLoader.INSTANCE.loadModel(new OBJModel.ModelSettings(prefix("models/obj/meteor.obj"), false, false, true, true, null));
     public static final SimpleRenderable RENDER = METEOR_TEARDROP.bakeRenderable(StandaloneModelConfiguration.INSTANCE);
@@ -54,11 +58,13 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     @Override
     public void render(FallingEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
         poseStack.pushPose();
+        Player player = Minecraft.getInstance().player;
         Color[] colors = new Color[]{
                 Color.RED, Color.ORANGE, Color.RED, Color.YELLOW, Color.WHITE, Color.WHITE
         };
+
         VertexBuilder builder = RenderHelper.create().setLight(FULL_BRIGHT);
-        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 3, 40, (long) (entity.level.getGameTime()+partialTicks), 1000);
+        ArrayList<Vec3> positions = DataHelper.rotatingCirclePositions(Vec3.ZERO, 4,80, 0,1);
         for (int i = 0; i < colors.length; i++) {
             int finalI = i;
             VertexConsumer fire = DELAYED_RENDER.getBuffer(queueUniformChanges(copy(i, FIRE_TYPE),
@@ -71,10 +77,10 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             Color color = colors[i];
             builder.setColor(color)
                     .setAlpha(alpha * 0.75f)
-                    .renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, packedLight, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width)
+                    .renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width)
                     .setAlpha(alpha)
-                    .setUV(0, 0, 1, 8)
-                    .renderTrail(fire, poseStack, packedLight, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width);
+                    .setUV(0, 0, 1, positions.size()/4f)
+                    .renderTrail(fire, poseStack, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width);
         }
 //        for (Vec3 position : positions) {
 //            builder.setColor(Color.RED)

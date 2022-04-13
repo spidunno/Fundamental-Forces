@@ -7,23 +7,22 @@ import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.sammy.fundamental_forces.core.systems.rendering.ShaderHolder;
-import com.sammy.fundamental_forces.core.systems.rendering.TrailNode;
+import com.sammy.fundamental_forces.core.systems.rendering.TrailPoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
-
-import static com.sammy.fundamental_forces.core.helper.MathHelper.invDist;
-import static com.sammy.fundamental_forces.core.systems.rendering.TrailNode.renderTrailNodes;
 
 public class RenderHelper {
     public static final int FULL_BRIGHT = 15728880;
@@ -222,28 +221,44 @@ public class RenderHelper {
             return this;
         }
 
-        public VertexBuilder renderTrail(VertexConsumer vertexConsumer, PoseStack stack, int packedLight, List<Vector4f> poss, Function<Float, Float> widthFunc) {
-            if (poss.size() < 3) {
+        public VertexBuilder renderTrail(VertexConsumer vertexConsumer, PoseStack stack, List<Vector4f> trailSegments, Function<Float, Float> widthFunc) {
+            if (trailSegments.size() < 2) {
                 return this;
             }
-            PoseStack.Pose stackEntry = stack.last();
-            Matrix4f pose = stackEntry.pose();
-            Matrix3f normal = stackEntry.normal();
-
-            for (Vector4f pos : poss) {
+            PoseStack.Pose last = stack.last();
+            Matrix4f pose = last.pose();
+            for (Vector4f pos : trailSegments) {
                 pos.add(xOffset, yOffset, zOffset, 0);
                 pos.transform(pose);
             }
-            int count = poss.size() - 1;
-            TrailNode[] nodes = new TrailNode[count];
+
+            int count = trailSegments.size() - 1;
             float increment = 1.0F / (count - 1);
-            for (int i = 0; i < count; ++i) {
-                Vector4f start = poss.get(i);
-                Vector4f end = poss.get(i + 1);
+            ArrayList<TrailPoint> points = new ArrayList<>();
+            for (int i = 0; i < count; i++) {
                 float width = widthFunc.apply(increment * i);
-                nodes[i] = new TrailNode(mid(start, end), axialPerp(start, end, width), width);
+                Vector4f start = trailSegments.get(i);
+                Vector4f end = trailSegments.get(i + 1);
+                Vector4f mid = midpoint(start, end);
+                Vec2 offset = corners(start, end, width);
+                Vector4f positions = new Vector4f(mid.x() + offset.x, mid.x() - offset.x, mid.y() + offset.y, mid.y() - offset.y);
+                points.add(new TrailPoint(positions.x(), positions.y(), positions.z(), positions.w(), mid.z()));
             }
-            renderTrailNodes(normal, vertexConsumer, packedLight, nodes, r, g, b, a, u0, v0, u1, v1);
+            return renderPoints(vertexConsumer, stack, points, u0, v0, u1, v1);
+        }
+
+        public VertexBuilder renderPoints(VertexConsumer vertexConsumer, PoseStack stack, List<TrailPoint> trailPoints, float u0, float v0, float u1, float v1) {
+            Matrix3f normal = stack.last().normal();
+            int count = trailPoints.size();
+            float increment = 1.0F / count;
+            for (int i = 1; i < count; ++i) {
+                float current = Mth.lerp(i * increment, v0, v1);
+                float next = Mth.lerp((i + 1) * increment, v0, v1);
+                TrailPoint previousPoint = trailPoints.get(i - 1);
+                TrailPoint point = trailPoints.get(i);
+                previousPoint.renderStart(normal, vertexConsumer, light, r, g, b, a, u0, current, u1, next);
+                point.renderEnd(normal, vertexConsumer, light, r, g, b, a, u0, current, u1, next);
+            }
             return this;
         }
 
@@ -354,35 +369,40 @@ public class RenderHelper {
         vertexConsumer.vertex(last, x, y, z).color(r, g, b, a).uv(u, v).uv2(light).endVertex();
     }
 
+    public static void vertexPosColorUVLight(VertexConsumer vertexConsumer, Matrix4f last, Matrix3f normal, float x, float y, float z, float r, float g, float b, float a, float u, float v, int light) {
+        vertexConsumer.vertex(last, x, y, z).color(r, g, b, a).uv(u, v).uv2(light).normal(normal, 0, 1, 0).endVertex();
+    }
+
     public static Vector3f parametricSphere(float u, float v, float r) {
         return new Vector3f(Mth.cos(u) * Mth.sin(v) * r, Mth.cos(v) * r, Mth.sin(u) * Mth.sin(v) * r);
     }
 
-
-    public static Vec2 axialPerp(Vector4f start, Vector4f end, float width) {
-        width *= 0.5F;
-        float ratio = end.z() / start.z();
-        float x = end.x() - start.x() * ratio;
-        float y = end.y() - start.y() * ratio;
-        float normalize = invDist(x, y) * width;
-        x *= normalize;
-        y *= normalize;
+    public static Vec2 corners(Vector4f start, Vector4f end, float width) {
+        float x = -start.x();
+        float y = -start.y();
+        float z = Math.abs(start.z());
+        if (z <= 0) {
+            x += end.x();
+            y += end.y();
+        } else if (z > 0) {
+            float ratio = end.z() / start.z();
+            x = end.x() + x * ratio;
+            y = end.y() + y * ratio;
+        }
+        if (start.z() > 0) {
+            x = -x;
+            y = -y;
+        }
+        float distance = DataHelper.distance(x, y);
+        if (distance > 0F) {
+            float normalize = width * 0.5F / (float) Math.sqrt(distance);
+            x *= normalize;
+            y *= normalize;
+        }
         return new Vec2(-y, x);
     }
 
-    public static Vec2 axialPerp(Vector3f start, Vector3f end, float width) {
-
-        width *= 0.5F;
-        float ratio = end.z() / start.z();
-        float x = end.x() - start.x() * ratio;
-        float y = end.y() - start.y() * ratio;
-        float normalize = invDist(x, y) * width;
-        x *= normalize;
-        y *= normalize;
-        return new Vec2(-y, x);
-    }
-
-    public static Vector4f mid(Vector4f a, Vector4f b) {
+    public static Vector4f midpoint(Vector4f a, Vector4f b) {
         return new Vector4f((a.x() + b.x()) * 0.5F, (a.y() + b.y()) * 0.5F, (a.z() + b.z()) * 0.5F, (a.w() + b.w()) * 0.5F);
     }
 }

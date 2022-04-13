@@ -10,10 +10,10 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.sammy.fundamental_forces.FundamentalForcesMod.MODID;
+import static net.minecraft.util.Mth.sqrt;
 
 public class DataHelper {
 
@@ -38,8 +38,7 @@ public class DataHelper {
 
     public static <T, K extends Collection<T>> K reverseOrder(K newCollection, Collection<T> items) {
         ArrayList<T> original = new ArrayList<>(items);
-        for (int i = items.size()-1; i >= 0 ; i--)
-        {
+        for (int i = items.size() - 1; i >= 0; i--) {
             newCollection.add(original.get(i));
         }
         return newCollection;
@@ -140,9 +139,11 @@ public class DataHelper {
         double z = vector2f.z * distanceZ;
         return pos.add(x, 0, z);
     }
+
     public static ArrayList<Vec3> rotatingCirclePositions(Vec3 pos, float distance, float total, long gameTime, float time) {
         return rotatingCirclePositions(pos, distance, distance, total, gameTime, time);
     }
+
     public static ArrayList<Vec3> rotatingCirclePositions(Vec3 pos, float distanceX, float distanceZ, float total, long gameTime, float time) {
         ArrayList<Vec3> positions = new ArrayList<>();
         for (int i = 0; i <= total; i++) {
@@ -154,7 +155,7 @@ public class DataHelper {
             Vec3 vector2f = new Vec3(dx2, 0, dz2);
             double x = vector2f.x * distanceX;
             double z = vector2f.z * distanceZ;
-            positions.add(pos.add(x,0,z));
+            positions.add(pos.add(x, 0, z));
         }
         return positions;
     }
@@ -174,5 +175,14 @@ public class DataHelper {
             }
         }
         return arrayList;
+    }
+
+
+    public static float distance(float... a) {
+        float d = 0.0F;
+        for (float f : a) {
+            d += f * f;
+        }
+        return d;
     }
 }
