@@ -1,7 +1,7 @@
 # Fundamental Forces
-![Mod loader: Forge](https://img.shields.io/badge/Loader-forge-1976d2?style=flat-square&color=orange&logo=curseforge&labelColor=0d1117)
+![Mod Loader: Forge](https://img.shields.io/badge/loader-forge-1976d2?style=flat-square&color=orange&logo=curseforge&labelColor=0d1117)
 <a href="https://discord.gg/4J2ZM6T8nT">
-  <img alt="Discord" src="https://img.shields.io/discord/950771581787983912?color=informational&label=Discord&logo=discord&style=flat-square&logoColor=white&labelColor=0d1117">
+  <img alt="Discord" src="https://img.shields.io/discord/950771581787983912?color=informational&label=discord&logo=discord&style=flat-square&logoColor=white&labelColor=0d1117">
 </a>
 <br>
 
