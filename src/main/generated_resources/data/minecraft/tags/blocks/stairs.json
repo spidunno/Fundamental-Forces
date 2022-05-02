@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "fundamental_forces:charred_rock_stairs",
-    "fundamental_forces:polished_charred_rock_stairs"
+    "fufo:charred_rock_stairs",
+    "fufo:polished_charred_rock_stairs"
   ]
 }

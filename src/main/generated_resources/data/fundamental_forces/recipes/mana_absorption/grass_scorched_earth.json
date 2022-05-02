@@ -1,9 +1,0 @@
-{
-  "type": "fundamental_forces:mana_absorption",
-  "input": {
-    "item": "minecraft:grass_block"
-  },
-  "output": {
-    "item": "fundamental_forces:scorched_earth"
-  }
-}

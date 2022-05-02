@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "side": "fundamental_forces:block/polished_charred_rock",
-    "bottom": "fundamental_forces:block/polished_charred_rock",
-    "top": "fundamental_forces:block/polished_charred_rock"
-  }
-}

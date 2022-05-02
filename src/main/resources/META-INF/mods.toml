@@ -9,21 +9,21 @@ logoFile="fundamental_forces.png"
 credits="Credits go here"
 authors="Authors go here"
 description=''' '''
-[[dependencies.fundamental_forces]]
+[[dependencies.fufo]]
     modId="pollen"
     mandatory=true
-    versionRange="[FORGE-1.18.1,)"
+    versionRange="[FORGE-1.18.2,)"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.fundamental_forces]]
+[[dependencies.fufo]]
     modId="forge"
     mandatory=true
     versionRange="[39,)"
     ordering="NONE"
     side="BOTH"
-[[dependencies.fundamental_forces]]
+[[dependencies.fufo]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.1,)"
+    versionRange="[1.18.2,)"
     ordering="NONE"
     side="BOTH"

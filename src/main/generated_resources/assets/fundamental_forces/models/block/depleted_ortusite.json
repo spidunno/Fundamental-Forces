@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "fundamental_forces:block/depleted_ortusite"
-  }
-}

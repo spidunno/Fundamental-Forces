@@ -1,9 +1,0 @@
-{
-  "type": "fundamental_forces:mana_absorption",
-  "input": {
-    "tag": "forge:glass"
-  },
-  "output": {
-    "item": "fundamental_forces:volcanic_glass"
-  }
-}

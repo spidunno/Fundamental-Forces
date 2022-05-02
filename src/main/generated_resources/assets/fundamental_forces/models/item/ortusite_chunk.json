@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "fundamental_forces:item/ortusite_chunk"
-  }
-}

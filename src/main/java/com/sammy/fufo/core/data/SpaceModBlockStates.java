@@ -17,12 +17,11 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.sammy.fufo.FufoMod.prefix;
+import static com.sammy.fufo.core.setup.content.block.BlockRegistry.METEOR_FIRE;
 import static com.sammy.ortus.helpers.DataHelper.takeAll;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER;
@@ -42,6 +41,10 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     protected void registerStatesAndModels() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
+        ArrayList<RegistryObject<Block>> customModels = new ArrayList<>(List.of(METEOR_FIRE));
+
+        takeAll(blocks, customModels::contains);
+        
         takeAll(blocks, b -> b.get() instanceof OrbBlock).forEach(this::emptyBlock);
 
         takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(this::grassBlock);

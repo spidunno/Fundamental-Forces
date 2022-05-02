@@ -1,9 +1,0 @@
-{
-  "type": "fundamental_forces:impact_conversion",
-  "input": {
-    "tag": "forge:cobblestone"
-  },
-  "output": {
-    "item": "minecraft:gravel"
-  }
-}

@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "fufo:block/scorched_earth"
+      },
+      {
+        "model": "fufo:block/scorched_earth",
+        "y": 90
+      },
+      {
+        "model": "fufo:block/scorched_earth",
+        "y": 180
+      },
+      {
+        "model": "fufo:block/scorched_earth",
+        "y": 270
+      }
+    ]
+  }
+}

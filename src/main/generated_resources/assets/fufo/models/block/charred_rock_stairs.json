@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "side": "fufo:block/charred_rock",
+    "bottom": "fufo:block/charred_rock",
+    "top": "fufo:block/charred_rock"
+  }
+}
