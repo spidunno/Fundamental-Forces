@@ -1,10 +1,10 @@
 package com.sammy.fundamental_forces.core.data;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockTagRegistry;
-import com.sammy.fundamental_forces.core.systems.block.SimpleBlockProperties;
-import net.minecraft.core.Registry;
+import com.sammy.ortus.systems.block.OrtusBlockProperties;
+import com.sammy.ortus.systems.block.OrtusThrowawayBlockData;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
@@ -21,7 +21,7 @@ import static net.minecraft.tags.BlockTags.*;
 
 public class SpaceModBlockTags extends BlockTagsProvider {
     public SpaceModBlockTags(DataGenerator generatorIn, ExistingFileHelper existingFileHelper) {
-        super(generatorIn, FundamentalForcesMod.MODID, existingFileHelper);
+        super(generatorIn, FufoMod.FUFO, existingFileHelper);
     }
 
     @Override
@@ -53,31 +53,31 @@ public class SpaceModBlockTags extends BlockTagsProvider {
         tag(WOODEN_TRAPDOORS).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_trapdoor")));
         tag(WOODEN_PRESSURE_PLATES).add(getModBlocks(b -> b.getRegistryName().getPath().endsWith("_planks_pressure_plate")));
 
-        for (Block block : getModBlocks(b -> b.properties instanceof SimpleBlockProperties)) {
-            SimpleBlockProperties properties = (SimpleBlockProperties) block.properties;
-            if (properties.needsPickaxe) {
+        for (Block block : getModBlocks(b -> b.properties instanceof OrtusBlockProperties)) {
+            OrtusBlockProperties properties = (OrtusBlockProperties) block.properties;
+            OrtusThrowawayBlockData data = properties.getThrowawayData();
+            if (data.needsPickaxe) {
                 tag(MINEABLE_WITH_PICKAXE).add(block);
             }
-            if (properties.needsShovel) {
+            if (data.needsShovel) {
                 tag(MINEABLE_WITH_SHOVEL).add(block);
             }
-            if (properties.needsAxe) {
+            if (data.needsAxe) {
                 tag(MINEABLE_WITH_AXE).add(block);
             }
-            if (properties.needsHoe) {
+            if (data.needsHoe) {
                 tag(MINEABLE_WITH_HOE).add(block);
             }
-            if (properties.needsStone) {
+            if (data.needsStone) {
                 tag(NEEDS_STONE_TOOL).add(block);
             }
-            if (properties.needsIron) {
+            if (data.needsIron) {
                 tag(NEEDS_IRON_TOOL).add(block);
             }
-            if (properties.needsDiamond) {
+            if (data.needsDiamond) {
                 tag(NEEDS_DIAMOND_TOOL).add(block);
             }
         }
-        tag(BlockTagRegistry.TERRACOTTA).add(Registry.BLOCK.stream().filter(b -> b.getRegistryName().getPath().endsWith("terracotta")).toArray(Block[]::new));
         tag(BlockTagRegistry.STARFALL_ALLOWED).add(Blocks.DIAMOND_BLOCK);
     }
 

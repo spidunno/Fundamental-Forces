@@ -25,7 +25,7 @@ public class BaseFireBlockMixin {
         if (pEntity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (pState.equals(pState.getBlock().defaultBlockState())) {
-                if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem())) {
+                if (stack.is(ItemTagRegistry.METEOR_FLAME_CATALYST)) {
                     pLevel.setBlock(pPos, BlockRegistry.METEOR_FIRE.get().defaultBlockState(), 3);
                     ci.cancel();
                 }

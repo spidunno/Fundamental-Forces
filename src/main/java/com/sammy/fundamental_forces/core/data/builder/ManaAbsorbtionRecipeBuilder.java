@@ -1,7 +1,7 @@
 package com.sammy.fundamental_forces.core.data.builder;
 
 import com.google.gson.JsonObject;
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.RecipeTypeRegistry;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +23,7 @@ public class ManaAbsorbtionRecipeBuilder
     }
     public void build(Consumer<FinishedRecipe> consumerIn, String recipeName)
     {
-        build(consumerIn, DataHelper.prefix("mana_absorption/" + recipeName));
+        build(consumerIn, FufoMod.prefix("mana_absorption/" + recipeName));
     }
     public void build(Consumer<FinishedRecipe> consumerIn)
     {

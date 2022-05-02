@@ -1,16 +1,16 @@
 package com.sammy.fundamental_forces.common.blockentity;
 
 import com.sammy.fundamental_forces.core.setup.content.block.BlockEntityRegistry;
-import com.sammy.fundamental_forces.core.setup.client.ParticleRegistry;
-import com.sammy.fundamental_forces.core.systems.blockentity.SimpleBlockEntity;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
+import com.sammy.ortus.setup.OrtusParticleRegistry;
+import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
+import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.awt.*;
 
-public class OrbBlockEntity extends SimpleBlockEntity {
+public class OrbBlockEntity extends OrtusBlockEntity {
 
     public OrbBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -28,7 +28,7 @@ public class OrbBlockEntity extends SimpleBlockEntity {
             double z = worldPosition.getZ() + 0.5;
             int lifeTime = 3 + level.random.nextInt(9);
             float scale = 0.1f + level.random.nextFloat() * 0.07f;
-            ParticleBuilders.create(ParticleRegistry.WISPY_WISP)
+            ParticleBuilders.create(OrtusParticleRegistry.WISP_PARTICLE)
                     .setScale(scale, 0)
                     .setLifetime(lifeTime)
                     .setAlpha(0.2f)

@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.common.entity.wraith;
 
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.entity.EntityRegistry;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationEffectHandler;
@@ -8,7 +8,6 @@ import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationState;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -21,18 +20,16 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Pillager;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 public class StoneWraith extends Monster implements AnimatedEntity {
 
-    public static final AnimationState VIBING = new AnimationState(80, DataHelper.prefix("stone_wraith.idle"), DataHelper.prefix("stone_wraith.twitchlayer"));
-    public static final AnimationState WALKING = new AnimationState(25, DataHelper.prefix("stone_wraith.walk"), DataHelper.prefix("stone_wraith.twitchlayer"));
+    public static final AnimationState VIBING = new AnimationState(80, FufoMod.prefix("stone_wraith.idle"), FufoMod.prefix("stone_wraith.twitchlayer"));
+    public static final AnimationState WALKING = new AnimationState(25, FufoMod.prefix("stone_wraith.walk"), FufoMod.prefix("stone_wraith.twitchlayer"));
     private static final AnimationState[] ANIMATIONS = Stream.of(VIBING, WALKING).toArray(AnimationState[]::new);
 
     private final AnimationEffectHandler effectHandler;

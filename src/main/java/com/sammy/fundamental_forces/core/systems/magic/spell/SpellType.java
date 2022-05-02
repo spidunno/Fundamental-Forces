@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.core.systems.magic.spell;
 
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.FufoMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,10 +25,10 @@ public class SpellType {
     }
 
     public ResourceLocation getIconLocation() {
-        return DataHelper.prefix("textures/spell/icon/" + id + ".png");
+        return FufoMod.prefix("textures/spell/icon/" + id + ".png");
     }
 
     public ResourceLocation getBackgroundLocation() {
-        return DataHelper.prefix("textures/spell/background/" + id + "_background.png");
+        return FufoMod.prefix("textures/spell/background/" + id + "_background.png");
     }
 }

@@ -1,11 +1,11 @@
 package com.sammy.fundamental_forces.core.data;
 
-import com.sammy.fundamental_forces.core.helper.DataHelper;
-import com.sammy.fundamental_forces.core.setup.content.potion.PotionEffectRegistry;
 import com.sammy.fundamental_forces.core.setup.content.SoundRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.EnchantmentRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemRegistry;
+import com.sammy.fundamental_forces.core.setup.content.potion.PotionEffectRegistry;
+import com.sammy.ortus.helpers.DataHelper;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
@@ -21,11 +21,11 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.sammy.fundamental_forces.FundamentalForcesMod.MODID;
+import static com.sammy.fundamental_forces.FufoMod.FUFO;
 
 public class SpaceModLang extends LanguageProvider {
     public SpaceModLang(DataGenerator gen) {
-        super(gen, MODID, "en_us");
+        super(gen, FUFO, "en_us");
     }
 
     @Override
@@ -45,21 +45,21 @@ public class SpaceModLang extends LanguageProvider {
         Set<RegistryObject<MobEffect>> effects = new HashSet<>(PotionEffectRegistry.EFFECTS.getEntries());
         blocks.forEach(b ->
         {
-            String name = b.get().getDescriptionId().replaceFirst("block." + MODID + ".", "");
+            String name = b.get().getDescriptionId().replaceFirst("block." + FUFO + ".", "");
             name = DataHelper.toTitleCase(replaceCommonWords(name), "_");
             add(b.get().getDescriptionId(), name);
         });
 
         items.forEach(i ->
         {
-            String name = i.get().getDescriptionId().replaceFirst("item." + MODID + ".", "");
+            String name = i.get().getDescriptionId().replaceFirst("item." + FUFO + ".", "");
             name = DataHelper.toTitleCase(replaceCommonWords(name), "_");
             add(i.get().getDescriptionId(), name);
         });
 
         sounds.forEach(s -> {
             String name = DataHelper.toTitleCase(s.getId().getPath(), "_");
-            add(MODID + ".subtitle." + s.getId().getPath(), name);
+            add(FUFO + ".subtitle." + s.getId().getPath(), name);
         });
         enchantments.forEach(e -> {
             String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
@@ -68,11 +68,11 @@ public class SpaceModLang extends LanguageProvider {
 
         effects.forEach(e -> {
             String name = DataHelper.toTitleCase(e.getId().getPath(), "_");
-            add("effect." + MODID + "." + e.get().getRegistryName().getPath(), name);
+            add("effect." + FUFO + "." + e.get().getRegistryName().getPath(), name);
         });
 
 
-        add("itemGroup." + MODID, "Fundamental Forces");
+        add("itemGroup." + FUFO, "Fundamental Forces");
 
         addKey("swapHotbar", "Swap Hotbar");
 
@@ -105,7 +105,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public static String getOption(String option) {
-        return "options." + MODID + "." + option;
+        return "options." + FUFO + "." + option;
     }
 
     public void addKey(String key, String result) {
@@ -113,7 +113,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public static String getKey(String key) {
-        return "key." + MODID + "." + key;
+        return "key." + FUFO + "." + key;
     }
 
     public void addOptionTooltip(String option, String result) {
@@ -121,7 +121,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public static String getOptionTooltip(String option) {
-        return "options." + MODID + "." + option + ".tooltip";
+        return "options." + FUFO + "." + option + ".tooltip";
     }
 
     public void addCommand(String command, String feedback) {
@@ -129,7 +129,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public static String getCommand(String command) {
-        return "command." + MODID + "." + command;
+        return "command." + FUFO + "." + command;
     }
 
     public void addCommandOutput(String output, String feedback) {
@@ -137,7 +137,7 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public static String getCommandOutput(String output) {
-        return "command." + MODID + "." + output;
+        return "command." + FUFO + "." + output;
     }
 
     public String replaceCommonWords(String name) {

@@ -1,7 +1,7 @@
 package com.sammy.fundamental_forces.mixin;
 
 
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,14 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Inventory.class)
 public class InventoryMixin {
-    @Shadow @Final public Player player;
+    @Shadow
+    @Final
+    public Player player;
 
     @Inject(method = "getSelected", at = @At(value = "RETURN"), cancellable = true)
-    private void fundamentalForcesInventoryRemoveSelectedItemMixin(CallbackInfoReturnable<ItemStack> cir)
-    {
-        PlayerDataCapability.getCapability(player).ifPresent(c -> {
-            if (c.hotbarHandler.open || (c.hotbarHandler.updateCachedSlot && player.level.isClientSide))
-            {
+    private void fundamentalForcesInventoryRemoveSelectedItemMixin(CallbackInfoReturnable<ItemStack> cir) {
+        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            if (c.hotbarHandler.open || (c.hotbarHandler.updateCachedSlot && player.level.isClientSide)) {
                 cir.setReturnValue(ItemStack.EMPTY);
             }
         });

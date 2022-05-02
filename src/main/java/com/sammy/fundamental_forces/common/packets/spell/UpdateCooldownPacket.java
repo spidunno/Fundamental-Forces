@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.common.packets.spell;
 
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import com.sammy.fundamental_forces.core.systems.magic.spell.SpellCooldownData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
@@ -51,7 +51,7 @@ public class UpdateCooldownPacket {
     public static class ClientOnly {
         public static void setCooldown(UUID uuid, int slot, SpellCooldownData cooldownData) {
             Player player = Minecraft.getInstance().player.level.getPlayerByUUID(uuid);
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
                 c.hotbarHandler.spellHotbar.spells.get(slot).cooldown = cooldownData;
             });
         }

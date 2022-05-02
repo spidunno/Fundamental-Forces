@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.core.setup.content.block;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.client.renderers.block.OrbRenderer;
 import com.sammy.fundamental_forces.common.block.MeteorFlameBlock;
 import com.sammy.fundamental_forces.common.block.OrbBlock;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class BlockEntityRegistry {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, FundamentalForcesMod.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, FufoMod.FUFO);
     public static final RegistryObject<BlockEntityType<MeteorFlameBlockEntity>> METEOR_FLAME = BLOCK_ENTITY_TYPES.register("meteor_flame", () -> BlockEntityType.Builder.of(MeteorFlameBlockEntity::new, getBlocks(MeteorFlameBlock.class)).build(null));
     public static final RegistryObject<BlockEntityType<OrbBlockEntity>> ORB = BLOCK_ENTITY_TYPES.register("orb", () -> BlockEntityType.Builder.of(OrbBlockEntity::new, getBlocks(OrbBlock.class)).build(null));
 
@@ -46,7 +46,7 @@ public class BlockEntityRegistry {
         }
         return matchingBlocks.toArray(new Block[0]);
     }
-    @Mod.EventBusSubscriber(modid= FundamentalForcesMod.MODID, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid= FufoMod.FUFO, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.MOD)
     public static class ClientOnly {
         @SubscribeEvent
         public static void registerRenderer(EntityRenderersEvent.RegisterRenderers event) {

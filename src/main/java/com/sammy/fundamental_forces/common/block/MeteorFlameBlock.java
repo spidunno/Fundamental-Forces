@@ -1,7 +1,7 @@
 package com.sammy.fundamental_forces.common.block;
 
 import com.sammy.fundamental_forces.common.blockentity.MeteorFlameBlockEntity;
-import com.sammy.fundamental_forces.core.systems.block.SimpleBlock;
+import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.Random;
 
-public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends SimpleBlock<T> {
+public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends OrtusEntityBlock<T> {
     protected static final VoxelShape DOWN_AABB = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 1.0D, 16.0D);
 
     public MeteorFlameBlock(Properties properties) {

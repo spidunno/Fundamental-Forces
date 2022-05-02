@@ -11,13 +11,13 @@ import java.util.Random;
 
 public class AsteroidStarfallActor extends StarfallActor {
     public AsteroidStarfallActor() {
-        super("asteroid", CommonConfig.NATURAL_DEBRIS_COUNTDOWN.get());
+        super("asteroid", CommonConfig.NATURAL_DEBRIS_COUNTDOWN.getConfigValue());
     }
 
     @Override
     public int randomizedCountdown(Random random, int parentCountdown) {
-        double min = CommonConfig.MINIMUM_ASTEROID_TIME_MULTIPLIER.get();
-        double max = CommonConfig.MAXIMUM_ASTEROID_TIME_MULTIPLIER.get();
+        double min = CommonConfig.MINIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
+        double max = CommonConfig.MAXIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
 

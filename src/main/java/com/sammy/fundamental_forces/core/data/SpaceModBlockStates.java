@@ -1,9 +1,8 @@
 package com.sammy.fundamental_forces.core.data;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.common.block.OrbBlock;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
-import com.sammy.fundamental_forces.core.systems.block.SimpleBlockProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
@@ -23,14 +22,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
-import static com.sammy.fundamental_forces.core.helper.DataHelper.takeAll;
+import static com.sammy.fundamental_forces.FufoMod.prefix;
+import static com.sammy.ortus.helpers.DataHelper.takeAll;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER;
 
 public class SpaceModBlockStates extends net.minecraftforge.client.model.generators.BlockStateProvider {
     public SpaceModBlockStates(DataGenerator gen, ExistingFileHelper exFileHelper) {
-        super(gen, FundamentalForcesMod.MODID, exFileHelper);
+        super(gen, FufoMod.FUFO, exFileHelper);
     }
 
     @Nonnull
@@ -42,11 +41,6 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     @Override
     protected void registerStatesAndModels() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
-
-        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.PREDEFINED));
-        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.CUSTOM)).forEach(this::customBlock);
-        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).type.equals(SimpleBlockProperties.StateType.LAYERED)).forEach(this::glowingBlock);
-
 
         takeAll(blocks, b -> b.get() instanceof OrbBlock).forEach(this::emptyBlock);
 

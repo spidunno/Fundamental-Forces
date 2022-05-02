@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.core.data;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
@@ -14,12 +14,12 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
-import static com.sammy.fundamental_forces.core.helper.DataHelper.takeAll;
+import static com.sammy.fundamental_forces.FufoMod.prefix;
+import static com.sammy.ortus.helpers.DataHelper.takeAll;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider {
     public SpaceModItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-        super(generator, FundamentalForcesMod.MODID, existingFileHelper);
+        super(generator, FufoMod.FUFO, existingFileHelper);
     }
 
     @Override

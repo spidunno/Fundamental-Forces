@@ -1,14 +1,12 @@
 package com.sammy.fundamental_forces.common.blockentity;
 
-import com.sammy.fundamental_forces.common.capability.EntityDataCapability;
-import com.sammy.fundamental_forces.common.recipe.ManaAbsorptionRecipe;
 import com.sammy.fundamental_forces.core.setup.content.DamageSourceRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemTagRegistry;
 import com.sammy.fundamental_forces.core.setup.content.magic.FireEffectTypeRegistry;
-import com.sammy.fundamental_forces.core.systems.blockentity.SimpleBlockEntity;
-import com.sammy.fundamental_forces.core.handlers.CustomFireHandler;
-import com.sammy.fundamental_forces.core.systems.meteorfire.FireEffectInstance;
+import com.sammy.ortus.handlers.FireEffectHandler;
+import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
+import com.sammy.ortus.systems.fireeffect.FireEffectInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -19,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 
-public class MeteorFlameBlockEntity extends SimpleBlockEntity {
+public class MeteorFlameBlockEntity extends OrtusBlockEntity {
 
     public final ArrayList<ItemEntity> items = new ArrayList<>();
 
@@ -44,16 +42,16 @@ public class MeteorFlameBlockEntity extends SimpleBlockEntity {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (!items.contains(itemEntity)) {
-                if (ItemTagRegistry.METEOR_FLAME_CATALYST.contains(stack.getItem())) {
+                if (stack.is(ItemTagRegistry.METEOR_FLAME_CATALYST)) {
                     items.add(itemEntity);
                 }
                 return;
             }
         }
         if (!entity.fireImmune() && !items.contains(entity)) {
-            FireEffectInstance instance = CustomFireHandler.getFireEffectInstance(entity);
+            FireEffectInstance instance = FireEffectHandler.getFireEffectInstance(entity);
             if (instance == null) {
-                CustomFireHandler.setCustomFireInstance(entity, new FireEffectInstance(FireEffectTypeRegistry.METEOR_FIRE).setDuration(20));
+                FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FireEffectTypeRegistry.METEOR_FIRE).setDuration(20));
             } else {
                 instance.setDuration(160);
             }

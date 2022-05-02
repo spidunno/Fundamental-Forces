@@ -1,11 +1,11 @@
 package com.sammy.fundamental_forces.common.worldevents.starfall;
 
-import com.sammy.fundamental_forces.common.capability.WorldDataCapability;
 import com.sammy.fundamental_forces.config.CommonConfig;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventTypes;
-import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
-import com.sammy.fundamental_forces.core.handlers.WorldEventHandler;
+import com.sammy.ortus.capability.WorldDataCapability;
+import com.sammy.ortus.handlers.WorldEventHandler;
+import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -106,10 +106,10 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                 timesDelayed++;
                 return;
             }
-            boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.get();
+            boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.getConfigValue();
             if (determined) {
                 int failures = 0;
-                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.get();
+                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.getConfigValue();
                 while (true) {
                     if (failures >= maximumFailures) {
                         break;
@@ -135,7 +135,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     boolean success = disregardOSHARegulations || exactPosition || actor.canFall(serverLevel, target);
                     if (success) {
                         Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                        Vec3 spawnPos = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.get(), Mth.nextDouble(level.random, -150, 150));
+                        Vec3 spawnPos = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.getConfigValue(), Mth.nextDouble(level.random, -150, 150));
                         Vec3 motion = spawnPos.vectorTo(targetVec).normalize();
                         WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(actor, spawnPos, motion, target));
                     }
@@ -208,8 +208,8 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     public static void addNaturalStarfall(ServerLevel level, LivingEntity entity) {
         if (areStarfallsAllowed(level)) {
             ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined());
-            Double chance = CommonConfig.ASTEROID_CHANCE.get();
-            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.get();
+            Double chance = CommonConfig.ASTEROID_CHANCE.getConfigValue();
+            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.getConfigValue();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
                     WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined());
@@ -222,6 +222,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     }
 
     public static boolean areStarfallsAllowed(ServerLevel level) {
-        return CommonConfig.STARFALLS_ENABLED.get() && CommonConfig.STARFALL_ALLOWED_DIMENSIONS.get().contains(level.dimension().location().toString());
+        return CommonConfig.STARFALLS_ENABLED.getConfigValue() && CommonConfig.STARFALL_ALLOWED_DIMENSIONS.getConfigValue().contains(level.dimension().location().toString());
     }
 }

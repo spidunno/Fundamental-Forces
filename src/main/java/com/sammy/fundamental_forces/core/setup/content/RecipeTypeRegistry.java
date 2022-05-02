@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.core.setup.content;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.common.recipe.ImpactConversionRecipe;
 import com.sammy.fundamental_forces.common.recipe.ManaAbsorptionRecipe;
 import com.sammy.fundamental_forces.common.recipe.NBTCarryRecipe;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class RecipeTypeRegistry {
 
-    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, FundamentalForcesMod.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, FufoMod.FUFO);
 
     public static final RegistryObject<RecipeSerializer<NBTCarryRecipe>> NBT_CARRY = RECIPE_TYPES.register(NBTCarryRecipe.NAME, NBTCarryRecipe.Serializer::new);
     public static final RegistryObject<RecipeSerializer<ManaAbsorptionRecipe>> MANA_ABSORPTION = RECIPE_TYPES.register(ManaAbsorptionRecipe.NAME, ManaAbsorptionRecipe.Serializer::new);

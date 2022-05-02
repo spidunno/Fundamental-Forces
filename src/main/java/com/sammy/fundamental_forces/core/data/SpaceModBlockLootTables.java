@@ -3,7 +3,7 @@ package com.sammy.fundamental_forces.core.data;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
-import com.sammy.fundamental_forces.core.systems.block.SimpleBlockProperties;
+import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.DataGenerator;
@@ -37,7 +37,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.sammy.fundamental_forces.core.helper.DataHelper.takeAll;
+import static com.sammy.ortus.helpers.DataHelper.takeAll;
+
 
 public class SpaceModBlockLootTables extends LootTableProvider {
     private static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
@@ -63,7 +64,7 @@ public class SpaceModBlockLootTables extends LootTableProvider {
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
         Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
 
-        takeAll(blocks, b -> b.get().properties instanceof SimpleBlockProperties && ((SimpleBlockProperties) b.get().properties).ignoreLootDatagen);
+        takeAll(blocks, b -> b.get().properties instanceof OrtusBlockProperties && ((OrtusBlockProperties) b.get().properties).getThrowawayData().hasCustomLoot);
 
         takeAll(blocks, b -> b.get() instanceof SaplingBlock).forEach(b -> registerLootTable(b.get(), createSingleItemTable(b.get().asItem())));
         takeAll(blocks, b -> b.get() instanceof DoublePlantBlock).forEach(b -> registerLootTable(b.get(), createSilkTouchOrShearsTable(b.get().asItem())));

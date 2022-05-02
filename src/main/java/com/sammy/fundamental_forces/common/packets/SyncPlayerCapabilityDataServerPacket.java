@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.common.packets;
 
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +32,7 @@ public class SyncPlayerCapabilityDataServerPacket {
         context.get().enqueueWork(() -> {
             Player player = context.get().getSender().level.getPlayerByUUID(uuid);
             if (player != null) {
-                PlayerDataCapability.getCapability(player).ifPresent(c -> c.deserializeNBT(tag));
+                FufoPlayerDataCapability.getCapability(player).ifPresent(c -> c.deserializeNBT(tag));
             }
         });
         context.get().setPacketHandled(true);

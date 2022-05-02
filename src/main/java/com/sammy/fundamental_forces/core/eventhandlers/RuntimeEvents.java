@@ -2,8 +2,7 @@ package com.sammy.fundamental_forces.core.eventhandlers;
 
 import com.sammy.fundamental_forces.common.capability.*;
 import com.sammy.fundamental_forces.core.handlers.PlayerSpellHotbarHandler;
-import com.sammy.fundamental_forces.core.handlers.WorldEventHandler;
-import net.minecraft.server.level.ServerPlayer;
+import com.sammy.fundamental_forces.core.handlers.StarfallEventHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,73 +20,67 @@ import net.minecraftforge.fml.common.Mod;
 public class RuntimeEvents {
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event) {
-        WorldEventHandler.breakBlock(event);
+        StarfallEventHandler.breakBlock(event);
     }
 
     @SubscribeEvent
     public static void placeBlock(BlockEvent.EntityPlaceEvent event) {
-        WorldEventHandler.placeBlock(event);
+        StarfallEventHandler.placeBlock(event);
     }
 
     @SubscribeEvent
     public static void entityJoin(EntityJoinWorldEvent event) {
-        WorldEventHandler.playerJoin(event);
-        PlayerDataCapability.playerJoin(event);
+        StarfallEventHandler.playerJoin(event);
+        FufoPlayerDataCapability.playerJoin(event);
     }
 
     @SubscribeEvent
     public static void playerClone(PlayerEvent.Clone event) {
-        PlayerDataCapability.playerClone(event);
+        FufoPlayerDataCapability.playerClone(event);
     }
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         PlayerSpellHotbarHandler.playerTick(event);
-        PlayerDataCapability.playerTick(event);
     }
 
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         PlayerSpellHotbarHandler.playerInteract(event);
-
     }
 
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
     }
 
-    public static void serverSidePlayerInteract(ServerPlayer player) {
-    }
-
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-        WorldEventHandler.worldTick(event);
     }
 
     @SubscribeEvent
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
-        WorldDataCapability.attachWorldCapability(event);
+        FufoWorldDataCapability.attachWorldCapability(event);
     }
 
     @SubscribeEvent
     public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event) {
-        ChunkDataCapability.attachChunkCapability(event);
+        FufoChunkDataCapability.attachChunkCapability(event);
     }
 
     @SubscribeEvent
     public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
-        PlayerDataCapability.attachPlayerCapability(event);
-        EntityDataCapability.attachEntityCapability(event);
+        FufoPlayerDataCapability.attachPlayerCapability(event);
+        FufoEntityDataCapability.attachEntityCapability(event);
     }
 
     @SubscribeEvent
     public static void attachItemStackCapability(AttachCapabilitiesEvent<ItemStack> event) {
-        ItemStackCapability.attachItemCapability(event);
+        FufoItemStackCapability.attachItemCapability(event);
     }
 
     @SubscribeEvent
     public static void startTracking(PlayerEvent.StartTracking event) {
-        PlayerDataCapability.syncPlayerCapability(event);
-        EntityDataCapability.syncEntityCapability(event);
+        FufoPlayerDataCapability.syncPlayerCapability(event);
+        FufoEntityDataCapability.syncEntityCapability(event);
     }
 }

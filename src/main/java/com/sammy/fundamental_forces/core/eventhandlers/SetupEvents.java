@@ -10,10 +10,10 @@ public class SetupEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        WorldDataCapability.registerCapabilities(event);
-        ChunkDataCapability.registerCapabilities(event);
-        EntityDataCapability.registerCapabilities(event);
-        ItemStackCapability.registerCapabilities(event);
-        PlayerDataCapability.registerCapabilities(event);
+        FufoWorldDataCapability.registerCapabilities(event);
+        FufoChunkDataCapability.registerCapabilities(event);
+        FufoEntityDataCapability.registerCapabilities(event);
+        FufoItemStackCapability.registerCapabilities(event);
+        FufoPlayerDataCapability.registerCapabilities(event);
     }
 }

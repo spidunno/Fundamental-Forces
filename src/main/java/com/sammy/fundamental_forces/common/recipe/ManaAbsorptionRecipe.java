@@ -1,9 +1,9 @@
 package com.sammy.fundamental_forces.common.recipe;
 
 import com.google.gson.JsonObject;
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.RecipeTypeRegistry;
-import com.sammy.fundamental_forces.core.systems.recipe.FundamentalRecipe;
+import com.sammy.ortus.systems.recipe.IOrtusRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -17,13 +17,13 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ManaAbsorptionRecipe extends FundamentalRecipe
+public class ManaAbsorptionRecipe extends IOrtusRecipe
 {
     public static final String NAME = "mana_absorption";
     public static class Type implements RecipeType<ManaAbsorptionRecipe> {
         @Override
         public String toString () {
-            return FundamentalForcesMod.MODID + ":" + NAME;
+            return FufoMod.FUFO + ":" + NAME;
         }
 
         public static final Type INSTANCE = new Type();

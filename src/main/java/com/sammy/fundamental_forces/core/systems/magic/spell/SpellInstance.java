@@ -1,9 +1,9 @@
 package com.sammy.fundamental_forces.core.systems.magic.spell;
 
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import com.sammy.fundamental_forces.common.packets.spell.UpdateCooldownPacket;
 import com.sammy.fundamental_forces.core.setup.content.magic.SpellTypeRegistry;
-import com.sammy.fundamental_forces.core.systems.easing.Easing;
+import com.sammy.ortus.systems.easing.Easing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -69,7 +69,7 @@ public class SpellInstance {
     }
     public void playerTick(ServerPlayer player) {
         if (cooldown != null && !cooldown.equals(oldCooldown)) {
-            PlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
+            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
         }
         oldCooldown = cooldown;
     }

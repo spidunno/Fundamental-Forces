@@ -2,7 +2,7 @@ package com.sammy.fundamental_forces.common.command;
 
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import com.sammy.fundamental_forces.common.command.argument.SpellTypeArgumentType;
 import com.sammy.fundamental_forces.core.data.SpaceModLang;
 import com.sammy.fundamental_forces.core.setup.content.magic.SpellTypeRegistry;
@@ -27,11 +27,11 @@ public class SetSpellCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             Player target = EntityArgument.getPlayer(context, "target");
-                                            PlayerDataCapability.getCapability(target).ifPresent(p -> {
+                                            FufoPlayerDataCapability.getCapability(target).ifPresent(p -> {
                                                 SpellType result = SpellTypeRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
                                                 int slot = context.getArgument("slot", Integer.class)-1;
                                                 p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));
-                                                PlayerDataCapability.syncTrackingAndSelf(target);
+                                                FufoPlayerDataCapability.syncTrackingAndSelf(target);
                                                 source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("set_spell_success")), true);
                                             });
                                             return 1;

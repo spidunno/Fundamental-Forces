@@ -1,16 +1,13 @@
 package com.sammy.fundamental_forces.core.setup.content.item;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.common.item.DevTool;
-import com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler;
-import com.sammy.fundamental_forces.core.helper.DataHelper;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
-import com.sammy.fundamental_forces.core.setup.client.ScreenParticleRegistry;
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.tabs.ContentTab;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleRenderTypes;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.SimpleParticleOptions;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
+import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
+import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
+import com.sammy.ortus.systems.rendering.particle.ParticleRenderTypes;
+import com.sammy.ortus.systems.rendering.particle.SimpleParticleOptions;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -23,10 +20,10 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import static com.sammy.fundamental_forces.core.handlers.ScreenParticleHandler.registerItemParticleEmitter;
+import static com.sammy.ortus.handlers.ScreenParticleHandler.registerItemParticleEmitter;
 
 public class ItemRegistry {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FundamentalForcesMod.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, FufoMod.FUFO);
 
     public static Item.Properties DEFAULT_PROPERTIES() {
         return new Item.Properties().tab(ContentTab.INSTANCE);
@@ -61,15 +58,10 @@ public class ItemRegistry {
 
         public static void registerParticleEmitters(FMLClientSetupEvent event) {
             Set<RegistryObject<Item>> items = new HashSet<>(ITEMS.getEntries());
-            DataHelper.takeAll(items, i -> i.get() instanceof ItemParticleEmitter).forEach(i -> {
-                        ItemParticleEmitter emitter = (ItemParticleEmitter) i.get();
-                        ScreenParticleHandler.registerItemParticleEmitter(i.get(), emitter::particleTick);
-                    }
-            );
             registerItemParticleEmitter((s, x, y, order) -> {
                 Random random = Minecraft.getInstance().level.random;
                 if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
-                    ParticleBuilders.create(ScreenParticleRegistry.STAR)
+                    ParticleBuilders.create(OrtusScreenParticleRegistry.STAR)
                             .setLifetime(15 + random.nextInt(10))
                             .setColor(255, 142, 139, 248, 69, 106)
                             .setAlphaCurveMultiplier(0.5f)
@@ -82,7 +74,7 @@ public class ItemRegistry {
                             .overwriteRenderType(ParticleRenderTypes.TRANSPARENT)
                             .overwriteRenderOrder(order)
                             .overwriteAnimator(SimpleParticleOptions.Animator.LAST_INDEX)
-                            .repeat(x, y-0.25f, 1);
+                            .repeat(x, y - 0.25f, 1);
                 }
             }, CRACK.get(), BLOCK_OF_CRACK.get());
         }

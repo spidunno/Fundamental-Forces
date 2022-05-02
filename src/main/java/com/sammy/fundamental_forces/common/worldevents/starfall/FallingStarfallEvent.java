@@ -2,9 +2,9 @@ package com.sammy.fundamental_forces.common.worldevents.starfall;
 
 import com.sammy.fundamental_forces.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fundamental_forces.core.setup.content.worldevent.WorldEventTypes;
-import com.sammy.fundamental_forces.core.systems.screenshake.PositionedScreenshakeInstance;
-import com.sammy.fundamental_forces.core.handlers.ScreenshakeHandler;
-import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventInstance;
+import com.sammy.ortus.handlers.ScreenshakeHandler;
+import com.sammy.ortus.systems.screenshake.PositionedScreenshakeInstance;
+import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;

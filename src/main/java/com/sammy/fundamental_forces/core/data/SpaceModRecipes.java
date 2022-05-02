@@ -6,8 +6,9 @@ import com.sammy.fundamental_forces.core.data.builder.ManaAbsorbtionRecipeBuilde
 import com.sammy.fundamental_forces.core.setup.content.block.BlockRegistry;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.*;
-import net.minecraft.tags.Tag;
+import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -49,7 +50,7 @@ public class SpaceModRecipes extends RecipeProvider {
         return new EnterBlockTrigger.TriggerInstance(EntityPredicate.Composite.ANY, pBlock, StatePropertiesPredicate.ANY);
     }
 
-    private static InventoryChangeTrigger.TriggerInstance has(MinMaxBounds.Ints pCount, ItemLike pItem) {
+    protected static InventoryChangeTrigger.TriggerInstance has(MinMaxBounds.Ints pCount, ItemLike pItem) {
         return inventoryTrigger(ItemPredicate.Builder.item().of(pItem).withCount(pCount).build());
     }
 
@@ -57,7 +58,7 @@ public class SpaceModRecipes extends RecipeProvider {
         return inventoryTrigger(ItemPredicate.Builder.item().of(pItemLike).build());
     }
 
-    protected static InventoryChangeTrigger.TriggerInstance has(Tag<Item> pTag) {
+    protected static InventoryChangeTrigger.TriggerInstance has(TagKey<Item> pTag) {
         return inventoryTrigger(ItemPredicate.Builder.item().of(pTag).build());
     }
 

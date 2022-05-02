@@ -1,11 +1,10 @@
 package com.sammy.fundamental_forces.core.setup.content.entity;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.client.renderers.entity.falling.FallingStarRenderer;
 import com.sammy.fundamental_forces.client.renderers.entity.wraith.StoneWraithRenderer;
 import com.sammy.fundamental_forces.common.entity.falling.FallingCrashpodEntity;
 import com.sammy.fundamental_forces.common.entity.wraith.StoneWraith;
-import com.sammy.fundamental_forces.core.helper.DataHelper;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemRegistry;
 import gg.moonflower.pollen.api.item.SpawnEggItemBase;
 import net.minecraft.world.entity.*;
@@ -22,7 +21,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class EntityRegistry {
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, FundamentalForcesMod.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, FufoMod.FUFO);
 
     public static final RegistryObject<EntityType<FallingCrashpodEntity>> FALLING_CRASHPOD = register("falling_crashpod", EntityType.Builder.<FallingCrashpodEntity>of((t, l)->new FallingCrashpodEntity(l), MobCategory.MISC).sized(0.5f, 0.5f));
 

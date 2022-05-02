@@ -1,7 +1,7 @@
 package com.sammy.fundamental_forces.core.setup.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.data.SpaceModLang;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.ClientRegistry;
@@ -12,7 +12,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBindingRegistry {
 
-    private static final String CATEGORY = "key.category." + FundamentalForcesMod.MODID;
+    private static final String CATEGORY = "key.category." + FufoMod.FUFO;
 
     public static KeyMapping swapHotbar;
 

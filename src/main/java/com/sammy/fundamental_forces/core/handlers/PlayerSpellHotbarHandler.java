@@ -1,14 +1,14 @@
 package com.sammy.fundamental_forces.core.handlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.*;
-import com.sammy.fundamental_forces.common.capability.PlayerDataCapability;
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.sammy.fundamental_forces.FufoMod;
+import com.sammy.fundamental_forces.common.capability.FufoPlayerDataCapability;
 import com.sammy.fundamental_forces.core.setup.client.KeyBindingRegistry;
 import com.sammy.fundamental_forces.core.systems.magic.spell.SpellCooldownData;
 import com.sammy.fundamental_forces.core.systems.magic.spell.SpellInstance;
 import com.sammy.fundamental_forces.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.sammy.fundamental_forces.core.helper.RenderHelper;
+import com.sammy.ortus.helpers.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.nbt.CompoundTag;
@@ -37,7 +37,7 @@ public class PlayerSpellHotbarHandler {
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
             if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
-                PlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
                         selectedSpell.castBlock(serverPlayer, event.getPos(), event.getHitVec());
@@ -50,7 +50,7 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        PlayerDataCapability.getCapability(player).ifPresent(c -> {
+        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
             PlayerSpellHotbarHandler handler = c.hotbarHandler;
             for (int i = 0; i < handler.spellHotbar.spells.size(); i++) {
                 int selected = handler.spellHotbar.getSelectedSpellIndex(player);
@@ -91,12 +91,12 @@ public class PlayerSpellHotbarHandler {
     }
 
     public static class ClientOnly {
-        public static final ResourceLocation ICONS_TEXTURE = DataHelper.prefix("textures/spell/hotbar.png");
+        public static final ResourceLocation ICONS_TEXTURE = FufoMod.prefix("textures/spell/hotbar.png");
         public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
-                PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+                FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
                 float progress = Math.max(0, capability.hotbarHandler.animationProgress - 0.5f) * 2f;
                 float offset = progress * 4;
 
@@ -107,7 +107,7 @@ public class PlayerSpellHotbarHandler {
 
         public static void clientTick(TickEvent.ClientTickEvent event) {
             Player player = Minecraft.getInstance().player;
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
@@ -127,18 +127,18 @@ public class PlayerSpellHotbarHandler {
 
         public static void swapHotbar() {
             Player player = Minecraft.getInstance().player;
-            PlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
                 handler.updateCachedSlot = true;
-                PlayerDataCapability.syncServer(player);
+                FufoPlayerDataCapability.syncServer(player);
             });
         }
 
         public static float itemHotbarOffset() {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
             float progress = (capability.hotbarHandler.animationProgress) * 2f;
             return progress * 45;
         }
@@ -146,7 +146,7 @@ public class PlayerSpellHotbarHandler {
         public static boolean moveVanillaUI(boolean reverse, PoseStack poseStack) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            PlayerDataCapability capability = PlayerDataCapability.getCapability(player).orElse(new PlayerDataCapability());
+            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
             boolean visible = capability.hotbarHandler.animationProgress >= 0.5f;
             if (!visible) {
                 poseStack.translate(0, itemHotbarOffset() * (reverse ? -1 : 1), 0);
@@ -158,7 +158,7 @@ public class PlayerSpellHotbarHandler {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
-                PlayerDataCapability.getCapability(player).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         PoseStack poseStack = event.getMatrixStack();
                         poseStack.pushPose();

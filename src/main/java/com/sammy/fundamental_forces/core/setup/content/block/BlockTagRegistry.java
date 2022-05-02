@@ -1,15 +1,23 @@
 package com.sammy.fundamental_forces.core.setup.content.block;
 
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.FufoMod;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 
 public class BlockTagRegistry {
-    public static Tag.Named<Block> TERRACOTTA = makeWrapperTag("terracotta");
-    public static Tag.Named<Block> STARFALL_ALLOWED = makeWrapperTag("starfall_avoided");
+    public static TagKey<Block> STARFALL_ALLOWED = fufoTag("starfall_avoided");
 
-    public static Tag.Named<Block> makeWrapperTag(String id) {
-        return BlockTags.createOptional(DataHelper.prefix(id));
+    public static TagKey<Block> fufoTag(String path) {
+        return TagKey.create(Registry.BLOCK_REGISTRY, FufoMod.prefix(path));
+    }
+    public static TagKey<Block> modTag(String path) {
+        return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(path));
+    }
+
+    public static TagKey<Block> forgeTag(String name) {
+        return BlockTags.create(new ResourceLocation("forge", name));
     }
 }

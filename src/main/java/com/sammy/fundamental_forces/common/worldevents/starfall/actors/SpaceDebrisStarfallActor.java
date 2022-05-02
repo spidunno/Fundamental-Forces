@@ -15,13 +15,13 @@ public class SpaceDebrisStarfallActor extends StarfallActor {
     }
 
     public SpaceDebrisStarfallActor() {
-        super("space_debris", CommonConfig.NATURAL_DEBRIS_COUNTDOWN.get());
+        super("space_debris", CommonConfig.NATURAL_DEBRIS_COUNTDOWN.getConfigValue());
     }
 
     @Override
     public int randomizedCountdown(Random random, int parentCountdown) {
-        double min = CommonConfig.MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.get();
-        double max = CommonConfig.MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.get();
+        double min = CommonConfig.MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.getConfigValue();
+        double max = CommonConfig.MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.getConfigValue();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);
     }
 

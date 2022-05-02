@@ -1,24 +1,14 @@
 package com.sammy.fundamental_forces.client.renderers.block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fundamental_forces.common.blockentity.OrbBlockEntity;
-import com.sammy.fundamental_forces.core.setup.client.ShaderRegistry;
-import com.sammy.fundamental_forces.core.helper.RenderHelper;
-import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
-
-import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
-import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_RENDER;
 
 
 public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {

@@ -1,14 +1,23 @@
 package com.sammy.fundamental_forces.core.setup.content.item;
 
-import com.sammy.fundamental_forces.core.helper.DataHelper;
+import com.sammy.fundamental_forces.FufoMod;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public class ItemTagRegistry {
-    public static Tag.Named<Item> METEOR_FLAME_CATALYST = makeWrapperTag("meteor_flame_catalyst");
+    public static TagKey<Item> METEOR_FLAME_CATALYST = fufoTag("meteor_flame_catalyst");
 
-    public static Tag.Named<Item> makeWrapperTag(String id) {
-        return ItemTags.createOptional(DataHelper.prefix(id));
+    public static TagKey<Item> fufoTag(String path) {
+        return TagKey.create(Registry.ITEM_REGISTRY, FufoMod.prefix(path));
+    }
+    public static TagKey<Item> modTag(String path) {
+        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(path));
+    }
+
+    public static TagKey<Item> forgeTag(String name) {
+        return ItemTags.create(new ResourceLocation("forge", name));
     }
 }

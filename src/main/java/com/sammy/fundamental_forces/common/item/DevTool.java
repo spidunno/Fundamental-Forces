@@ -1,11 +1,10 @@
 package com.sammy.fundamental_forces.common.item;
 
 import com.sammy.fundamental_forces.common.worldgen.MeteoriteFeature;
-import com.sammy.fundamental_forces.core.setup.client.ScreenParticleRegistry;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.ParticleBuilders;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.base.ScreenParticle;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
-import com.sammy.fundamental_forces.core.systems.rendering.particle.screen.emitter.ParticleEmitter;
+import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
+import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
+import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
+import com.sammy.ortus.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -46,7 +45,7 @@ public class DevTool extends Item implements ItemParticleEmitter {
     }
     public static void testFunnyTestFromMalum(Color color, Color endColor, ItemStack stack, float pXPosition, float pYPosition, ScreenParticle.RenderOrder renderOrder) {
         Random rand = Minecraft.getInstance().level.getRandom();
-        ParticleBuilders.create(ScreenParticleRegistry.WISPY_TWINKLE)
+        ParticleBuilders.create(OrtusScreenParticleRegistry.TWINKLE)
                 .setAlpha(0.07f, 0f)
                 .setLifetime(10 + rand.nextInt(10))
                 .setScale(0.4f + rand.nextFloat(), 0)
@@ -58,7 +57,7 @@ public class DevTool extends Item implements ItemParticleEmitter {
                 .centerOnStack(stack)
                 .repeat(pXPosition, pYPosition, 1);
 
-        ParticleBuilders.create(ScreenParticleRegistry.WISPY_SMOKE)
+        ParticleBuilders.create(OrtusScreenParticleRegistry.SMOKE)
                 .setAlpha(0.01f, 0f)
                 .setLifetime(20 + rand.nextInt(8))
                 .setSpin(nextFloat(rand, 0.2f, 0.4f))

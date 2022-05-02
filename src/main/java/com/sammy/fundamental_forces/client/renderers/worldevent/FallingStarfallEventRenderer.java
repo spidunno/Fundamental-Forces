@@ -4,11 +4,10 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fundamental_forces.common.worldevents.starfall.FallingStarfallEvent;
-import com.sammy.fundamental_forces.core.handlers.RenderHandler;
-import com.sammy.fundamental_forces.core.helper.RenderHelper;
-import com.sammy.fundamental_forces.core.systems.rendering.RenderTypes;
-import com.sammy.fundamental_forces.core.systems.rendering.StateShards;
-import com.sammy.fundamental_forces.core.systems.worldevent.WorldEventRenderer;
+import com.sammy.ortus.handlers.RenderHandler;
+import com.sammy.ortus.helpers.RenderHelper;
+import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,18 +16,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import java.awt.*;
-
-import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
-import static com.sammy.fundamental_forces.core.handlers.RenderHandler.DELAYED_RENDER;
+import static com.sammy.fundamental_forces.FufoMod.prefix;
+import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
     private static final ResourceLocation LIGHT_TRAIL = prefix("textures/vfx/light_trail.png");
-    public static final RenderType LIGHT_TYPE = RenderTypes.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
+    public static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation STAR = prefix("textures/vfx/star.png");
-    public static final RenderType STAR_TYPE = RenderTypes.ADDITIVE_TEXTURE.apply(STAR);
+    public static final RenderType STAR_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(STAR);
 
     public FallingStarfallEventRenderer() {
     }

@@ -1,6 +1,6 @@
 package com.sammy.fundamental_forces.core.data;
 
-import com.sammy.fundamental_forces.FundamentalForcesMod;
+import com.sammy.fundamental_forces.FufoMod;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemRegistry;
 import com.sammy.fundamental_forces.core.setup.content.item.ItemTagRegistry;
 import net.minecraft.data.DataGenerator;
@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class SpaceModItemTags extends ItemTagsProvider {
     public SpaceModItemTags(DataGenerator dataGenerator, BlockTagsProvider blockTagProvider, ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, blockTagProvider, FundamentalForcesMod.MODID, existingFileHelper);
+        super(dataGenerator, blockTagProvider, FufoMod.FUFO, existingFileHelper);
     }
 
     @Override

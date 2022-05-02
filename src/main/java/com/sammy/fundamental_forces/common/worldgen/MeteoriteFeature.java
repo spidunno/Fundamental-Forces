@@ -1,14 +1,14 @@
 package com.sammy.fundamental_forces.common.worldgen;
 
 import com.google.common.math.StatsAccumulator;
-import com.sammy.fundamental_forces.core.helper.BlockHelper;
-import com.sammy.fundamental_forces.core.helper.DataHelper;
-import com.sammy.fundamental_forces.core.systems.worldgen.SimpleFeature;
+import com.sammy.ortus.helpers.BlockHelper;
+import com.sammy.ortus.helpers.DataHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.Vec3;
@@ -19,7 +19,11 @@ import java.util.Random;
 import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
 @SuppressWarnings("all")
-public class MeteoriteFeature extends SimpleFeature {
+public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
+    public MeteoriteFeature() {
+        super(NoneFeatureConfiguration.CODEC);
+    }
+
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         return generateMeteorite(context.level(), context.chunkGenerator(), context.origin(), context.random());

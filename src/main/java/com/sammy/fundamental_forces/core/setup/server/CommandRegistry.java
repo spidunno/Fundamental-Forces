@@ -15,8 +15,8 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-import static com.sammy.fundamental_forces.FundamentalForcesMod.MODID;
-import static com.sammy.fundamental_forces.core.helper.DataHelper.prefix;
+import static com.sammy.fundamental_forces.FufoMod.FUFO;
+import static com.sammy.fundamental_forces.FufoMod.prefix;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommandRegistry {
@@ -24,13 +24,11 @@ public class CommandRegistry {
     public static void registerCommands(RegisterCommandsEvent event) {
         CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
         LiteralCommandNode<CommandSourceStack> cmd = dispatcher.register(Commands.literal("es")
-                .then(DevWorldSetupCommand.register())
                 .then(IssueStarfallCommand.register())
-                .then(ScreenshakeCommand.register())
                 .then(SetSpellCommand.register())
                 .then(StarfallAreaCheckCommand.register())
         );
-        dispatcher.register(Commands.literal(MODID)
+        dispatcher.register(Commands.literal(FUFO)
                 .redirect(cmd));
     }
 

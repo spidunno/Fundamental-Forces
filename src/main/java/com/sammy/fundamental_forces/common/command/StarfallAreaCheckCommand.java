@@ -1,8 +1,8 @@
 package com.sammy.fundamental_forces.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.sammy.fundamental_forces.common.worldevents.starfall.StarfallActor;
 import com.sammy.fundamental_forces.core.data.SpaceModLang;
-import com.sammy.fundamental_forces.core.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
@@ -21,8 +21,8 @@ public class StarfallAreaCheckCommand {
                     CommandSourceStack source = context.getSource();
                     if (source.getEntity() instanceof ServerPlayer player) {
                         ServerLevel level = context.getSource().getLevel();
-                        boolean heightmap = WorldEventHandler.heightmapCheck(level, player.blockPosition(), 1);
-                        boolean blocks = WorldEventHandler.blockCheck(level, WorldEventHandler.nearbyBlockList(level, player.blockPosition()));
+                        boolean heightmap = StarfallActor.heightmapCheck(level, player.blockPosition(), 1);
+                        boolean blocks = StarfallActor.blockCheck(level, StarfallActor.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
                             source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.success")), true);
