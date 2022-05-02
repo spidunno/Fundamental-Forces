@@ -98,6 +98,13 @@ repositories {
         name "Moonflower Maven"
         url "https://repo.moonflower.gg/releases"
     }
+    maven {
+        name = "Curse Maven"
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
@@ -106,17 +113,16 @@ dependencies {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     }
 
-    implementation fg.deobf('gg.moonflower:pollen-forge:1.2.0+1.18.1') {
+    implementation fg.deobf('gg.moonflower:pollen-forge:1.4.0+1.18.2') {
         transitive = false
     }
 
     implementation fg.deobf("com.sammy.ortus:ortus:${project.ortusLibVersion}")
 
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4:api")
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.18-5.0.2.4")
+    implementation fg.deobf("curse.maven:curios-309927:3748873")
 
-    compileOnly fg.deobf('mezz.jei:jei-1.18.1:9.1.0.46:api')
-    runtimeOnly fg.deobf('mezz.jei:jei-1.18.1:9.1.0.46')
+    compileOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193:api')
+    runtimeOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193')
 
 //    runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC1.16.1-1.1.1.5")
 

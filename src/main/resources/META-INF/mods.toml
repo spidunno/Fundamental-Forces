@@ -2,7 +2,7 @@ modLoader="javafml"
 loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
-modId="fundamental_forces"
+modId="fufo"
 version="${file.jarVersion}"
 displayName="Fundamental Forces"
 logoFile="fundamental_forces.png"
