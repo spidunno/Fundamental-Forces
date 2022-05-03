@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/template_fire_floor",
   "textures": {
-    "fire": "fundamental_forces:block/fire_1"
+    "fire": "fufo:block/fire_1"
   }
 }

@@ -3,6 +3,7 @@ package com.sammy.fufo;
 import com.sammy.fufo.config.ClientConfig;
 import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.data.*;
+import com.sammy.fufo.core.setup.client.FufoParticleRegistry;
 import com.sammy.fufo.core.setup.content.SoundRegistry;
 import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fufo.core.setup.content.block.BlockRegistry;
@@ -52,6 +53,7 @@ public class FufoMod {
         SoundRegistry.SOUNDS.register(modBus);
         FeatureRegistry.FEATURE_TYPES.register(modBus);
         RecipeTypeRegistry.RECIPE_TYPES.register(modBus);
+        FufoParticleRegistry.PARTICLES.register(modBus);
         modBus.addListener(this::gatherData);
 
         if (FMLEnvironment.dist == Dist.CLIENT) {

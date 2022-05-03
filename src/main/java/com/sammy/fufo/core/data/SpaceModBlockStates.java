@@ -44,7 +44,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         ArrayList<RegistryObject<Block>> customModels = new ArrayList<>(List.of(METEOR_FIRE));
 
         takeAll(blocks, customModels::contains);
-        
+
         takeAll(blocks, b -> b.get() instanceof OrbBlock).forEach(this::emptyBlock);
 
         takeAll(blocks, b -> b.get() instanceof GrassBlock).forEach(this::grassBlock);
