@@ -17,7 +17,7 @@ public class BlockPropertiesRegistry {
         return new OrtusBlockProperties(Material.STONE, MaterialColor.STONE).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(1.25F, 9.0F);
     }
     public static OrtusBlockProperties METEOR_FIRE_PROPERTIES() {
-        return new OrtusBlockProperties(Material.FIRE, MaterialColor.FIRE).noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15);
+        return new OrtusBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15);
     }
     public static OrtusBlockProperties CHARRED_ROCK_PROPERTIES() {
         return new OrtusBlockProperties(Material.STONE, MaterialColor.STONE).needsPickaxe().sound(SoundType.BASALT).requiresCorrectToolForDrops().strength(1.5F, 9.0F);

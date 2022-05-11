@@ -35,7 +35,7 @@ public class OrbBlockEntity extends OrtusBlockEntity {
                     .randomMotion(0.02f)
                     .randomOffset(0.05f)
                     .setColor(Color.CYAN, Color.YELLOW)
-                    .setColorCurveMultiplier(1.25f)
+                    .setMotionCoefficient(1.25f)
                     .spawn(level, x, y, z);
 //            if (level.getGameTime() % 2L == 0) {
 //                RenderHelper.create(ParticleRegistry.SQUARE)
@@ -46,7 +46,7 @@ public class OrbBlockEntity extends OrtusBlockEntity {
 //                        .randomVelocity(0.02f)
 //                        .randomOffset(0.1f)
 //                        .setColor(Color.CYAN, Color.YELLOW)
-//                        .setColorCurveMultiplier(1.25f)
+//                        .setMotionCoefficient(1.25f)
 //                        .spawn(level, x, y, z);
 //            }
 //            RenderHelper.create(ParticleRegistry.CIRCLE)
@@ -56,7 +56,7 @@ public class OrbBlockEntity extends OrtusBlockEntity {
 //                    .randomVelocity(0.02f)
 //                    .randomOffset(0.1f)
 //                    .setColor(Color.CYAN, Color.YELLOW)
-//                    .setColorCurveMultiplier(1.5f)
+//                    .setMotionCoefficient(1.5f)
 //                    .spawn(level, x, y+0.025f, z);
 
         }

@@ -41,7 +41,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         LocalPlayer player = Minecraft.getInstance().player;
         float beamLength = 20f;
         float beamWidth = 4f;
-        float flareSize = 1f;
+        float flareSize = 2f;
         RenderHelper.VertexBuilder builder = RenderHelper.create();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
@@ -53,7 +53,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         builder.renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        builder.renderQuad(starConsumer, poseStack, flareSize, flareSize);
+        builder.renderQuad(starConsumer, poseStack, flareSize);
         poseStack.popPose();
     }
 }

@@ -1,10 +1,12 @@
 package com.sammy.fufo.common.blockentity;
 
+import com.sammy.fufo.common.entity.wisp.WispEntity;
 import com.sammy.fufo.core.setup.content.DamageSourceRegistry;
 import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
 import com.sammy.ortus.handlers.FireEffectHandler;
+import com.sammy.ortus.helpers.DataHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.sammy.ortus.systems.fireeffect.FireEffectInstance;
 import net.minecraft.core.BlockPos;
@@ -14,7 +16,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class MeteorFlameBlockEntity extends OrtusBlockEntity {
@@ -32,6 +36,17 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
     @Override
     public void tick() {
         if (!level.isClientSide) {
+            if (level.random.nextFloat() < 0.01f) {
+                float lerp = (0.8f + level.random.nextFloat() * 0.2f) / 255f;
+                Color startingColor = new Color(253 * lerp, 255 * lerp, 234 * lerp);
+                Color midColor = new Color(255 * lerp, 0, 186 * lerp);
+                Color endingColor = new Color(223 * lerp, 0, 255 * lerp);
+
+                Vec3 randPos = DataHelper.randPos(worldPosition, level.random, 0, 1);
+                WispEntity wispEntity = new WispEntity(level, randPos.x, randPos.y, randPos.z, 0, 0.14f, 0);
+                wispEntity.setColor(startingColor, midColor, endingColor);
+                level.addFreshEntity(wispEntity);
+            }
             items.removeIf(e -> !e.isAlive());
         }
     }
@@ -48,12 +63,15 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
                 return;
             }
         }
-        if (!entity.fireImmune() && !items.contains(entity)) {
+        if (!(entity instanceof WispEntity) && !entity.fireImmune() && !items.contains(entity)) {
             FireEffectInstance instance = FireEffectHandler.getFireEffectInstance(entity);
             if (instance == null) {
                 FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FireEffectTypeRegistry.METEOR_FIRE).setDuration(20));
             } else {
                 instance.setDuration(160);
+                if (!level.isClientSide) {
+                    instance.sync(entity);
+                }
             }
             entity.hurt(DamageSourceRegistry.METEOR_FIRE, 1);
         }
