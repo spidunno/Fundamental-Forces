@@ -41,7 +41,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         LocalPlayer player = Minecraft.getInstance().player;
         float beamLength = 20f;
         float beamWidth = 4f;
-        float flareSize = 2f;
+        float flareSize = 3f;
         RenderHelper.VertexBuilder builder = RenderHelper.create();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);

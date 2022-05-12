@@ -30,8 +30,8 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void entityJoin(EntityJoinWorldEvent event) {
-        StarfallEventHandler.playerJoin(event);
         FufoPlayerDataCapability.playerJoin(event);
+        StarfallEventHandler.playerJoin(event);
     }
 
     @SubscribeEvent

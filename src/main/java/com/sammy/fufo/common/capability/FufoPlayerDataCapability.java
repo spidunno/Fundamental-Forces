@@ -31,7 +31,6 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     public static Capability<FufoPlayerDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public boolean hasJoinedBefore;
     public boolean rightClickHeld;
 
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
@@ -51,11 +50,8 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     }
 
     public static void playerJoin(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            FufoPlayerDataCapability.getCapability(player).ifPresent(capability -> capability.hasJoinedBefore = true);
-            if (player instanceof ServerPlayer serverPlayer) {
-                syncSelf(serverPlayer);
-            }
+        if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+            syncSelf(serverPlayer);
         }
     }
 

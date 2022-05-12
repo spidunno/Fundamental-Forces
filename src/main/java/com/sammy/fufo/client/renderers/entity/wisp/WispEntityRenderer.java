@@ -35,7 +35,10 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
 
     @Override
     public void render(WispEntity entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
-        poseStack.pushPose();
+//        poseStack.pushPose();
+        if (true) {
+            return;
+        }
         RenderHelper.VertexBuilder builder = RenderHelper.create();
         DataHelper.trackPastPositions(entity.pastPositions, entity.position(), 0f);
         ArrayList<Vec3> positions = Stream.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).map(i -> entity.position().add(0, i, 0)).collect(Collectors.toCollection(ArrayList::new));
@@ -48,7 +51,7 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
         builder.setColor(color).setOffset((float) -entity.getX(), (float) -entity.getY(), (float) -entity.getZ())
                 .renderTrail(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, positions.stream().map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList()), f -> f);
 
-        poseStack.popPose();
+//        poseStack.popPose();
     }
 
     @Override

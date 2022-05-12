@@ -4,6 +4,7 @@ import com.sammy.fufo.common.capability.FufoChunkDataCapability;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
+import com.sammy.ortus.capability.PlayerDataCapability;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -43,7 +44,7 @@ public class StarfallEventHandler {
             if (player.level instanceof ServerLevel level) {
                 FufoPlayerDataCapability.getCapability(player).ifPresent(capability -> {
                     if (ScheduledStarfallEvent.areStarfallsAllowed(level)) {
-                        if (!capability.hasJoinedBefore) {
+                        if (!PlayerDataCapability.getHasJoinedBefore(player)) {
                             addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
                         } else {
                             ScheduledStarfallEvent.addMissingStarfall(level, player);
