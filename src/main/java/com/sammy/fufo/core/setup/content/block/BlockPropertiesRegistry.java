@@ -31,4 +31,8 @@ public class BlockPropertiesRegistry {
     public static OrtusBlockProperties ORB_PROPERTIES() {
         return new OrtusBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14);
     }
+
+    public static OrtusBlockProperties ANCHOR_PROPERTIES() {
+        return new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().instabreak().isCutoutLayer();
+    }
 }
