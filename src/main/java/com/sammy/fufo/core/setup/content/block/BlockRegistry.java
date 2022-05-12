@@ -1,10 +1,7 @@
 package com.sammy.fufo.core.setup.content.block;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.block.FlammableMeteoriteBlock;
-import com.sammy.fufo.common.block.MeteorFlameBlock;
-import com.sammy.fufo.common.block.OrbBlock;
-import com.sammy.fufo.common.block.ScorchedEarthBlock;
+import com.sammy.fufo.common.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -21,6 +18,7 @@ public class BlockRegistry {
     public static final RegistryObject<Block> BLOCK_OF_CRACK = BLOCKS.register("block_of_crack", () -> new Block(CRACK_PROPERTIES()));
 
     public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock<>(ORB_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ORB));
+    public static final RegistryObject<Block> ANCHOR = BLOCKS.register("anchor", () -> new AnchorBlock<>(ANCHOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ANCHOR));
 
     public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock<>(METEOR_FIRE_PROPERTIES()).setBlockEntity(BlockEntityRegistry.METEOR_FLAME));
     public static final RegistryObject<Block> ORTUSITE = BLOCKS.register("ortusite", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p) -> METEOR_FIRE.get().defaultBlockState()));

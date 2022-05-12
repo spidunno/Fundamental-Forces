@@ -1,0 +1,36 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "fufo:block/copper_logistics",
+		"particle": "fufo:block/copper_logistics"
+	},
+	"elements": [
+		{
+			"name": "anchor",
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"faces": {
+				"north": {"uv": [14.5, 4.5, 16, 6], "texture": "#0"},
+				"east": {"uv": [14.5, 4.5, 16, 6], "texture": "#0"},
+				"south": {"uv": [14.5, 4.5, 16, 6], "texture": "#0"},
+				"west": {"uv": [14.5, 4.5, 16, 6], "texture": "#0"},
+				"up": {"uv": [14.5, 3, 16, 4.5], "texture": "#0"},
+				"down": {"uv": [14.5, 6, 16, 7.5], "texture": "#0"}
+			}
+		},
+		{
+			"name": "mask",
+			"from": [4.7, 4.7, 4.7],
+			"to": [11.3, 11.3, 11.3],
+			"faces": {
+				"north": {"uv": [14.5, 12, 16, 13.5], "texture": "#0"},
+				"east": {"uv": [14.5, 12, 16, 13.5], "texture": "#0"},
+				"south": {"uv": [14.5, 12, 16, 13.5], "texture": "#0"},
+				"west": {"uv": [14.5, 12, 16, 13.5], "texture": "#0"},
+				"up": {"uv": [14.5, 10.5, 16, 12], "texture": "#0"},
+				"down": {"uv": [14.5, 13.5, 16, 15], "texture": "#0"}
+			}
+		}
+	]
+}
