@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Function;
 
-import static com.sammy.fufo.FufoMod.prefix;
+import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.fufo.core.setup.content.block.BlockRegistry.METEOR_FIRE;
 import static com.sammy.ortus.helpers.DataHelper.takeAll;
 import static net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER;
@@ -81,26 +81,26 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String particleName = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath().replaceFirst("_wall", "").replaceFirst("_sign", "") + "_planks";
 
-        ModelFile sign = models().withExistingParent(name, prefix("block/template_sign")).texture("particle", prefix("block/" + particleName));
+        ModelFile sign = models().withExistingParent(name, fufoPath("block/template_sign")).texture("particle", fufoPath("block/" + particleName));
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(sign).build());
     }
 
     public void customBlock(RegistryObject<Block> blockRegistryObject)
     {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile model = models().withExistingParent(name+"_child", prefix("block/"+name));
+        ModelFile model = models().withExistingParent(name+"_child", fufoPath("block/"+name));
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(model).build());
     }
     public void glowingBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String glow = name + "_glow";
-        ModelFile farmland = models().withExistingParent(name, prefix("block/template_glowing_block")).texture("all", prefix("block/" + name)).texture("particle", prefix("block/" + name)).texture("glow", prefix("block/" + glow));
+        ModelFile farmland = models().withExistingParent(name, fufoPath("block/template_glowing_block")).texture("all", fufoPath("block/" + name)).texture("particle", fufoPath("block/" + name)).texture("glow", fufoPath("block/" + glow));
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(farmland).build());
     }
 
     public void rotatedBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile file = models().cubeAll(name, prefix("block/" + name));
+        ModelFile file = models().cubeAll(name, fufoPath("block/" + name));
 
         getVariantBuilder(blockRegistryObject.get()).partialState().modelForState()
                 .modelFile(file)
@@ -112,14 +112,14 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
 
     public void torchBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile torch = models().torchWall(blockRegistryObject.get().getRegistryName().getPath(), prefix("block/" + name));
+        ModelFile torch = models().torchWall(blockRegistryObject.get().getRegistryName().getPath(), fufoPath("block/" + name));
 
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(torch).build());
     }
 
     public void wallTorchBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile torch = models().torchWall(blockRegistryObject.get().getRegistryName().getPath(), prefix("block/" + name.substring(5)));
+        ModelFile torch = models().torchWall(blockRegistryObject.get().getRegistryName().getPath(), fufoPath("block/" + name.substring(5)));
 
         getVariantBuilder(blockRegistryObject.get())
                 .partialState().with(WallTorchBlock.FACING, Direction.NORTH)
@@ -134,7 +134,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
 
     public void grassBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile file = models().cubeBottomTop(name, prefix("block/" + name + "_side"), new ResourceLocation("block/dirt"), prefix("block/" + name + "_top"));
+        ModelFile file = models().cubeBottomTop(name, fufoPath("block/" + name + "_side"), new ResourceLocation("block/dirt"), fufoPath("block/" + name + "_top"));
 
         getVariantBuilder(blockRegistryObject.get()).partialState().modelForState()
                 .modelFile(file)
@@ -150,46 +150,46 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
 
     public void doorBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        doorBlock((DoorBlock) blockRegistryObject.get(), prefix("block/" + name + "_bottom"), prefix("block/" + name + "_top"));
+        doorBlock((DoorBlock) blockRegistryObject.get(), fufoPath("block/" + name + "_bottom"), fufoPath("block/" + name + "_top"));
     }
 
     public void fenceGateBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 11);
-        fenceGateBlock((FenceGateBlock) blockRegistryObject.get(), prefix("block/" + baseName));
+        fenceGateBlock((FenceGateBlock) blockRegistryObject.get(), fufoPath("block/" + baseName));
     }
 
     public void fenceBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 6);
-        fenceBlock((FenceBlock) blockRegistryObject.get(), prefix("block/" + baseName));
+        fenceBlock((FenceBlock) blockRegistryObject.get(), fufoPath("block/" + baseName));
     }
 
     public void wallBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 5);
-        wallBlock((WallBlock) blockRegistryObject.get(), prefix("block/" + baseName));
+        wallBlock((WallBlock) blockRegistryObject.get(), fufoPath("block/" + baseName));
     }
 
     public void stairsBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 7);
-        stairsBlock((StairBlock) blockRegistryObject.get(), prefix("block/" + baseName));
+        stairsBlock((StairBlock) blockRegistryObject.get(), fufoPath("block/" + baseName));
     }
 
     public void pressurePlateBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 15);
-        ModelFile pressurePlateDown = models().withExistingParent(name + "_down", new ResourceLocation("block/pressure_plate_down")).texture("texture", prefix("block/" + baseName));
-        ModelFile pressurePlateUp = models().withExistingParent(name + "_up", new ResourceLocation("block/pressure_plate_up")).texture("texture", prefix("block/" + baseName));
+        ModelFile pressurePlateDown = models().withExistingParent(name + "_down", new ResourceLocation("block/pressure_plate_down")).texture("texture", fufoPath("block/" + baseName));
+        ModelFile pressurePlateUp = models().withExistingParent(name + "_up", new ResourceLocation("block/pressure_plate_up")).texture("texture", fufoPath("block/" + baseName));
 
         getVariantBuilder(blockRegistryObject.get()).partialState().with(PressurePlateBlock.POWERED, true).modelForState().modelFile(pressurePlateDown).addModel().partialState().with(PressurePlateBlock.POWERED, false).modelForState().modelFile(pressurePlateUp).addModel();
     }
 
     public void lanternBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile lantern = models().withExistingParent(name, new ResourceLocation("block/template_lantern")).texture("lantern", prefix("block/" + name));
-        ModelFile hangingLantern = models().withExistingParent(name + "_hanging", new ResourceLocation("block/template_hanging_lantern")).texture("lantern", prefix("block/" + name));
+        ModelFile lantern = models().withExistingParent(name, new ResourceLocation("block/template_lantern")).texture("lantern", fufoPath("block/" + name));
+        ModelFile hangingLantern = models().withExistingParent(name + "_hanging", new ResourceLocation("block/template_hanging_lantern")).texture("lantern", fufoPath("block/" + name));
 
         getVariantBuilder(blockRegistryObject.get()).partialState().with(LanternBlock.HANGING, true).modelForState().modelFile(hangingLantern).addModel().partialState().with(LanternBlock.HANGING, false).modelForState().modelFile(lantern).addModel();
     }
@@ -197,26 +197,26 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     public void buttonBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 7);
-        ModelFile buttom = models().withExistingParent(name, new ResourceLocation("block/button")).texture("texture", prefix("block/" + baseName));
-        ModelFile buttonPressed = models().withExistingParent(name + "_pressed", new ResourceLocation("block/button_pressed")).texture("texture", prefix("block/" + baseName));
+        ModelFile buttom = models().withExistingParent(name, new ResourceLocation("block/button")).texture("texture", fufoPath("block/" + baseName));
+        ModelFile buttonPressed = models().withExistingParent(name + "_pressed", new ResourceLocation("block/button_pressed")).texture("texture", fufoPath("block/" + baseName));
         Function<BlockState, ModelFile> modelFunc = $ -> buttom;
         Function<BlockState, ModelFile> pressedModelFunc = $ -> buttonPressed;
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(s.getValue(BlockStateProperties.POWERED) ? pressedModelFunc.apply(s) : modelFunc.apply(s)).uvLock(s.getValue(BlockStateProperties.ATTACH_FACE).equals(AttachFace.WALL)).rotationX(s.getValue(BlockStateProperties.ATTACH_FACE).ordinal() * 90).rotationY(((s.getValue(BlockStateProperties.HORIZONTAL_FACING).get2DDataValue() + 180) + (s.getValue(BlockStateProperties.ATTACH_FACE) == AttachFace.CEILING ? 180 : 0)) % 360).build());
-        models().withExistingParent(name + "_inventory", new ResourceLocation("block/button_inventory")).texture("texture", prefix("block/" + baseName));
+        models().withExistingParent(name + "_inventory", new ResourceLocation("block/button_inventory")).texture("texture", fufoPath("block/" + baseName));
 
     }
 
     public void tallPlantBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile bottom = models().withExistingParent(name + "_bottom", new ResourceLocation("block/cross")).texture("cross", prefix("block/" + name + "_bottom"));
-        ModelFile top = models().withExistingParent(name + "_top", new ResourceLocation("block/cross")).texture("cross", prefix("block/" + name + "_top"));
+        ModelFile bottom = models().withExistingParent(name + "_bottom", new ResourceLocation("block/cross")).texture("cross", fufoPath("block/" + name + "_bottom"));
+        ModelFile top = models().withExistingParent(name + "_top", new ResourceLocation("block/cross")).texture("cross", fufoPath("block/" + name + "_top"));
 
         getVariantBuilder(blockRegistryObject.get()).partialState().with(DoublePlantBlock.HALF, LOWER).modelForState().modelFile(bottom).addModel().partialState().with(DoublePlantBlock.HALF, UPPER).modelForState().modelFile(top).addModel();
     }
 
     public void plantBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
-        ModelFile cross = models().withExistingParent(name, new ResourceLocation("block/cross")).texture("cross", prefix("block/" + name));
+        ModelFile cross = models().withExistingParent(name, new ResourceLocation("block/cross")).texture("cross", fufoPath("block/" + name));
 
         getVariantBuilder(blockRegistryObject.get()).forAllStates(s -> ConfiguredModel.builder().modelFile(cross).build());
     }
@@ -224,7 +224,7 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     public void slabBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name.substring(0, name.length() - 5);
-        slabBlock((SlabBlock) blockRegistryObject.get(), prefix(baseName), prefix("block/" + baseName));
+        slabBlock((SlabBlock) blockRegistryObject.get(), fufoPath(baseName), fufoPath("block/" + baseName));
     }
 
     public void logBlock(RegistryObject<Block> blockRegistryObject) {
@@ -239,6 +239,6 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
     public void woodBlock(RegistryObject<Block> blockRegistryObject) {
         String name = Registry.BLOCK.getKey(blockRegistryObject.get()).getPath();
         String baseName = name + "_log";
-        axisBlock((RotatedPillarBlock) blockRegistryObject.get(), prefix("block/" + baseName), prefix("block/" + baseName));
+        axisBlock((RotatedPillarBlock) blockRegistryObject.get(), fufoPath("block/" + baseName), fufoPath("block/" + baseName));
     }
 }

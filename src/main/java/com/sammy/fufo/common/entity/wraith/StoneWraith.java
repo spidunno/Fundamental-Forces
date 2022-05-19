@@ -28,8 +28,8 @@ import java.util.stream.Stream;
 
 public class StoneWraith extends Monster implements AnimatedEntity {
 
-    public static final AnimationState VIBING = new AnimationState(80, FufoMod.prefix("stone_wraith.idle"), FufoMod.prefix("stone_wraith.twitchlayer"));
-    public static final AnimationState WALKING = new AnimationState(25, FufoMod.prefix("stone_wraith.walk"), FufoMod.prefix("stone_wraith.twitchlayer"));
+    public static final AnimationState VIBING = new AnimationState(80, FufoMod.fufoPath("stone_wraith.idle"), FufoMod.fufoPath("stone_wraith.twitchlayer"));
+    public static final AnimationState WALKING = new AnimationState(25, FufoMod.fufoPath("stone_wraith.walk"), FufoMod.fufoPath("stone_wraith.twitchlayer"));
     private static final AnimationState[] ANIMATIONS = Stream.of(VIBING, WALKING).toArray(AnimationState[]::new);
 
     private final AnimationEffectHandler effectHandler;

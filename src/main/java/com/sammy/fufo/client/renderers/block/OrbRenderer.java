@@ -15,7 +15,7 @@ public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
     public OrbRenderer(BlockEntityRendererProvider.Context context) {
     }
 
-//    private static final RenderHelper.VertexBuilder BUILDER = RenderHelper.create();
+//    private static final VFXBuilders.WorldVFXBuilder BUILDER = VFXBuilders.createWorld()();
 //    private static final ResourceLocation ORB_NOISE = prefix("textures/vfx/noise/orb_noise.png");
 //    public static final RenderType ORB_NOISE_TYPE = RenderTypes.withShaderHandler(RenderTypes.createRadialNoiseQuadRenderType(ORB_NOISE), () -> {
 //        ShaderInstance instance = ShaderRegistry.radialNoise.getInstance().get();

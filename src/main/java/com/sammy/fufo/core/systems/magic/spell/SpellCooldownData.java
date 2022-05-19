@@ -34,7 +34,7 @@ public class SpellCooldownData {
         return tag;
     }
 
-    public static boolean isOnCooldown(SpellCooldownData cooldown) {
+    public static boolean isValid(SpellCooldownData cooldown) {
         return cooldown != null && !cooldown.discarded;
     }
 

@@ -1,7 +1,7 @@
 {
   "texture": {
     "type": "location",
-    "texture": "fundamental_forces:entity/stone_wraith",
+    "texture": "fufo:entity/stone_wraith",
     "layer": "cutout"
   }
 }

@@ -1,8 +1,8 @@
 {
   "textures": [
-    "fundamental_forces:star_00",
-    "fundamental_forces:star_01",
-    "fundamental_forces:star_02",
-    "fundamental_forces:star_03"
+    "fufo:star_00",
+    "fufo:star_01",
+    "fufo:star_02",
+    "fufo:star_03"
   ]
 }

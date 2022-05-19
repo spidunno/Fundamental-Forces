@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.Material;
 
 public class MeteorFireEffectRenderer extends FireEffectRenderer<FireEffectInstance> {
-    public static final Material FIRST_FLAME = new Material(TextureAtlas.LOCATION_BLOCKS, FufoMod.prefix("block/fire_0"));
-    public static final Material SECOND_FLAME = new Material(TextureAtlas.LOCATION_BLOCKS, FufoMod.prefix("block/fire_1"));
+    public static final Material FIRST_FLAME = new Material(TextureAtlas.LOCATION_BLOCKS, FufoMod.fufoPath("block/fire_0"));
+    public static final Material SECOND_FLAME = new Material(TextureAtlas.LOCATION_BLOCKS, FufoMod.fufoPath("block/fire_1"));
     @Override
     public Material getFirstFlame() {
         return FIRST_FLAME;

@@ -4,8 +4,8 @@
   ],
   "passes": [
     {
-      "name": "fundamental_forces:blur",
-      "intarget": "fundamental_forces:additive_texture",
+      "name": "fufo:blur",
+      "intarget": "fufo:additive_texture",
       "outtarget": "swap"
     }
   ]

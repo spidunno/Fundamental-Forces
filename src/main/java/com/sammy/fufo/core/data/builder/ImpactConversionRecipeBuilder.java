@@ -23,7 +23,7 @@ public class ImpactConversionRecipeBuilder
     }
     public void build(Consumer<FinishedRecipe> consumerIn, String recipeName)
     {
-        build(consumerIn, FufoMod.prefix("impact_conversion/" + recipeName));
+        build(consumerIn, FufoMod.fufoPath("impact_conversion/" + recipeName));
     }
     public void build(Consumer<FinishedRecipe> consumerIn)
     {

@@ -34,7 +34,7 @@ public class FufoEntityDataCapability implements OrtusCapability {
 
     public static void attachEntityCapability(AttachCapabilitiesEvent<Entity> event) {
         final FufoEntityDataCapability capability = new FufoEntityDataCapability();
-        event.addCapability(FufoMod.prefix("entity_data"), new OrtusCapabilityProvider<>(FufoEntityDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(FufoMod.fufoPath("entity_data"), new OrtusCapabilityProvider<>(FufoEntityDataCapability.CAPABILITY, () -> capability));
     }
 
     public static void syncEntityCapability(PlayerEvent.StartTracking event) {

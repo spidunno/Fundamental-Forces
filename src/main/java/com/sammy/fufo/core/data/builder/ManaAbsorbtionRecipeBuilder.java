@@ -23,7 +23,7 @@ public class ManaAbsorbtionRecipeBuilder
     }
     public void build(Consumer<FinishedRecipe> consumerIn, String recipeName)
     {
-        build(consumerIn, FufoMod.prefix("mana_absorption/" + recipeName));
+        build(consumerIn, FufoMod.fufoPath("mana_absorption/" + recipeName));
     }
     public void build(Consumer<FinishedRecipe> consumerIn)
     {

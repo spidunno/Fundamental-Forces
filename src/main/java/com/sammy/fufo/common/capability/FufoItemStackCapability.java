@@ -26,7 +26,7 @@ public class FufoItemStackCapability implements OrtusCapability {
 
     public static void attachItemCapability(AttachCapabilitiesEvent<ItemStack> event) {
         final FufoItemStackCapability capability = new FufoItemStackCapability();
-        event.addCapability(FufoMod.prefix("item_data"), new OrtusCapabilityProvider<>(FufoItemStackCapability.CAPABILITY, () -> capability));
+        event.addCapability(FufoMod.fufoPath("item_data"), new OrtusCapabilityProvider<>(FufoItemStackCapability.CAPABILITY, () -> capability));
     }
 
     @Override

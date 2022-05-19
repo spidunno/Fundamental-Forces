@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashSet;
 import java.util.Set;
 
-import static com.sammy.fufo.FufoMod.prefix;
+import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.ortus.helpers.DataHelper.takeAll;
 
 public class SpaceModItemModels extends net.minecraftforge.client.model.generators.ItemModelProvider {
@@ -55,48 +55,48 @@ public class SpaceModItemModels extends net.minecraftforge.client.model.generato
 
     private void handheldItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, HANDHELD).texture("layer0", prefix("item/" + name));
+        withExistingParent(name, HANDHELD).texture("layer0", fufoPath("item/" + name));
     }
 
     private void generatedItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("item/" + name));
+        withExistingParent(name, GENERATED).texture("layer0", fufoPath("item/" + name));
     }
 
     private void blockGeneratedItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        withExistingParent(name, GENERATED).texture("layer0", prefix("block/" + name));
+        withExistingParent(name, GENERATED).texture("layer0", fufoPath("block/" + name));
     }
 
     private void blockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        getBuilder(name).parent(new ModelFile.UncheckedModelFile(prefix("block/" + name)));
+        getBuilder(name).parent(new ModelFile.UncheckedModelFile(fufoPath("block/" + name)));
     }
 
     private void trapdoorBlockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        getBuilder(name).parent(new ModelFile.UncheckedModelFile(prefix("block/" + name + "_bottom")));
+        getBuilder(name).parent(new ModelFile.UncheckedModelFile(fufoPath("block/" + name + "_bottom")));
     }
 
     private void fenceBlockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
         String baseName = name.substring(0, name.length() - 6);
-        fenceInventory(name, prefix("block/" + baseName));
+        fenceInventory(name, fufoPath("block/" + baseName));
     }
 
     private void wallBlockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
         String baseName = name.substring(0, name.length() - 5);
-        wallInventory(name, prefix("block/" + baseName));
+        wallInventory(name, fufoPath("block/" + baseName));
     }
 
     private void pressurePlateBlockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        getBuilder(name).parent(new ModelFile.UncheckedModelFile(prefix("block/" + name + "_up")));
+        getBuilder(name).parent(new ModelFile.UncheckedModelFile(fufoPath("block/" + name + "_up")));
     }
 
     private void buttonBlockItem(RegistryObject<Item> i) {
         String name = Registry.ITEM.getKey(i.get()).getPath();
-        getBuilder(name).parent(new ModelFile.UncheckedModelFile(prefix("block/" + name + "_inventory")));
+        getBuilder(name).parent(new ModelFile.UncheckedModelFile(fufoPath("block/" + name + "_inventory")));
     }
 }

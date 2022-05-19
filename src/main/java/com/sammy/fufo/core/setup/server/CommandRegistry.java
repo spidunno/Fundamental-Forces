@@ -16,7 +16,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 import static com.sammy.fufo.FufoMod.FUFO;
-import static com.sammy.fufo.FufoMod.prefix;
+import static com.sammy.fufo.FufoMod.fufoPath;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommandRegistry {
@@ -33,7 +33,7 @@ public class CommandRegistry {
     }
 
     public static void registerArgumentTypes() {
-        registerArgumentType(prefix("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
+        registerArgumentType(fufoPath("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
     }
 
     private static <T extends ArgumentType<?>> void registerArgumentType(ResourceLocation key, Class<T> argumentClass, ArgumentSerializer<T> serializer) {

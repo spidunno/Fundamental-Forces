@@ -11,7 +11,7 @@ public class ItemTagRegistry {
     public static TagKey<Item> METEOR_FLAME_CATALYST = fufoTag("meteor_flame_catalyst");
 
     public static TagKey<Item> fufoTag(String path) {
-        return TagKey.create(Registry.ITEM_REGISTRY, FufoMod.prefix(path));
+        return TagKey.create(Registry.ITEM_REGISTRY, FufoMod.fufoPath(path));
     }
     public static TagKey<Item> modTag(String path) {
         return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(path));

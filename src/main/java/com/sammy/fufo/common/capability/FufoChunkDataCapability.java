@@ -31,7 +31,7 @@ public class FufoChunkDataCapability implements OrtusCapability {
 
     public static void attachChunkCapability(AttachCapabilitiesEvent<LevelChunk> event) {
         final FufoChunkDataCapability capability = new FufoChunkDataCapability();
-        event.addCapability(FufoMod.prefix("chunk_data"), new OrtusCapabilityProvider<>(FufoChunkDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(FufoMod.fufoPath("chunk_data"), new OrtusCapabilityProvider<>(FufoChunkDataCapability.CAPABILITY, () -> capability));
     }
 
     @Override

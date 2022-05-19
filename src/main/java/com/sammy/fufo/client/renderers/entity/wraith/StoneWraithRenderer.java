@@ -7,10 +7,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class StoneWraithRenderer extends AnimatedEntityRenderer<StoneWraith> {
-    private static final ResourceLocation WRAITH_LOCATION = FufoMod.prefix("stone_wraith");
+    private static final ResourceLocation WRAITH_LOCATION = FufoMod.fufoPath("stone_wraith");
 
     public StoneWraithRenderer(EntityRendererProvider.Context context) {
-        super(context, FufoMod.prefix("stone_wraith"), 0.5F);
+        super(context, FufoMod.fufoPath("stone_wraith"), 0.5F);
     }
 
     @Override

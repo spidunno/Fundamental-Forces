@@ -45,7 +45,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     public static void attachPlayerCapability(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
             final FufoPlayerDataCapability capability = new FufoPlayerDataCapability();
-            event.addCapability(FufoMod.prefix("player_data"), new OrtusCapabilityProvider<>(FufoPlayerDataCapability.CAPABILITY, () -> capability));
+            event.addCapability(FufoMod.fufoPath("player_data"), new OrtusCapabilityProvider<>(FufoPlayerDataCapability.CAPABILITY, () -> capability));
         }
     }
 

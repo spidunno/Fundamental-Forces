@@ -11,7 +11,7 @@ public class BlockTagRegistry {
     public static TagKey<Block> STARFALL_ALLOWED = fufoTag("starfall_avoided");
 
     public static TagKey<Block> fufoTag(String path) {
-        return TagKey.create(Registry.BLOCK_REGISTRY, FufoMod.prefix(path));
+        return TagKey.create(Registry.BLOCK_REGISTRY, FufoMod.fufoPath(path));
     }
     public static TagKey<Block> modTag(String path) {
         return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(path));

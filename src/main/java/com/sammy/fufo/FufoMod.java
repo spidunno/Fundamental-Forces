@@ -60,7 +60,7 @@ public class FufoMod {
             FufoTextureGrabber.setup();
         }
     }
-    public static ResourceLocation prefix(String path) {
+    public static ResourceLocation fufoPath(String path) {
         return new ResourceLocation(FUFO, path);
     }
 

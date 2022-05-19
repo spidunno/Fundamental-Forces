@@ -25,10 +25,10 @@ public class SpellType {
     }
 
     public ResourceLocation getIconLocation() {
-        return FufoMod.prefix("textures/spell/icon/" + id + ".png");
+        return FufoMod.fufoPath("textures/spell/icon/" + id + ".png");
     }
 
     public ResourceLocation getBackgroundLocation() {
-        return FufoMod.prefix("textures/spell/background/" + id + "_background.png");
+        return FufoMod.fufoPath("textures/spell/background/" + id + "_background.png");
     }
 }

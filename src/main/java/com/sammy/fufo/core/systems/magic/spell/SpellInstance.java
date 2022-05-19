@@ -34,17 +34,19 @@ public class SpellInstance {
     }
 
     public void castBlock(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
-        if (!SpellCooldownData.isOnCooldown(cooldown)) {
+        if (!isOnCooldown()) {
             type.castBlock(this, player, pos, hitVec);
         }
     }
+
     public void cast(ServerPlayer player) {
-        if (!SpellCooldownData.isOnCooldown(cooldown)) {
+        if (!isOnCooldown()) {
             type.cast(this, player);
         }
     }
+
     public void castCommon(ServerPlayer player) {
-        if (!SpellCooldownData.isOnCooldown(cooldown)) {
+        if (!isOnCooldown()) {
             type.castCommon(this, player);
         }
     }
@@ -53,20 +55,18 @@ public class SpellInstance {
     }
 
     public void baseTick(Level level) {
-        if (SpellCooldownData.isOnCooldown(cooldown)) {
+        if (isOnCooldown()) {
             cooldown.tick();
         }
-        selectedTime = selected ? selectedTime+1 : 0;
-        if (selected && selectedFadeAnimation < 20)
-        {
+        selectedTime = selected ? selectedTime + 1 : 0;
+        if (selected && selectedFadeAnimation < 20) {
             selectedFadeAnimation++;
-        }
-        else if (selectedFadeAnimation > 0)
-        {
+        } else if (selectedFadeAnimation > 0) {
             selectedFadeAnimation -= 0.5f;
         }
         tick(level);
     }
+
     public void playerTick(ServerPlayer player) {
         if (cooldown != null && !cooldown.equals(oldCooldown)) {
             FufoPlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
@@ -74,23 +74,24 @@ public class SpellInstance {
         oldCooldown = cooldown;
     }
 
-    public float getFade()
-    {
+    public float getIconFadeout() {
         Easing easing = Easing.EXPO_IN;
-        if (selected)
-        {
+        if (selected) {
             easing = Easing.EXPO_OUT;
         }
-        return 0.5f- easing.ease(selectedFadeAnimation, 0, 0.5f, 20);
+        return 0.5f - easing.ease(selectedFadeAnimation, 0, 0.5f, 20);
     }
 
+    public boolean isOnCooldown() {
+        return SpellCooldownData.isValid(cooldown);
+    }
     public boolean isEmpty() {
-        return this.type == null || this.type.equals(SpellTypeRegistry.EMPTY);
+        return type == null || type.equals(SpellTypeRegistry.EMPTY);
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
         tag.putString("typeId", type.id);
-        if (SpellCooldownData.isOnCooldown(cooldown)) {
+        if (isOnCooldown()) {
             CompoundTag cooldownTag = new CompoundTag();
             tag.put("spellCooldown", cooldown.serializeNBT(cooldownTag));
         }

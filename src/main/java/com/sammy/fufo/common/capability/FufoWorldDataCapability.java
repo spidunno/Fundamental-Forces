@@ -28,7 +28,7 @@ public class FufoWorldDataCapability implements OrtusCapability {
 
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final FufoWorldDataCapability capability = new FufoWorldDataCapability();
-        event.addCapability(FufoMod.prefix("world_data"), new OrtusCapabilityProvider<>(FufoWorldDataCapability.CAPABILITY, () -> capability));
+        event.addCapability(FufoMod.fufoPath("world_data"), new OrtusCapabilityProvider<>(FufoWorldDataCapability.CAPABILITY, () -> capability));
     }
 
     @Override

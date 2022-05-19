@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "fundamental_forces:blur",
-  "fragment": "fundamental_forces:blur",
+  "vertex": "fufo:blur",
+  "fragment": "fufo:blur",
   "attributes": [
     "Position",
     "Color",

@@ -2,6 +2,7 @@ package com.sammy.fufo.core.handlers;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
@@ -9,8 +10,10 @@ import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.sammy.ortus.helpers.RenderHelper;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -91,7 +94,8 @@ public class PlayerSpellHotbarHandler {
     }
 
     public static class ClientOnly {
-        public static final ResourceLocation ICONS_TEXTURE = FufoMod.prefix("textures/spell/hotbar.png");
+        public static final ResourceLocation ICONS_TEXTURE = FufoMod.fufoPath("textures/spell/hotbar.png");
+
         public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
@@ -154,45 +158,51 @@ public class PlayerSpellHotbarHandler {
             return visible;
         }
 
+        public static Tesselator spellTesselator = new Tesselator();
+
         public static void renderSpellHotbar(RenderGameOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
                 FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
-                        PoseStack poseStack = event.getMatrixStack();
-                        poseStack.pushPose();
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
                         float offset = (1 - progress) * 45;
                         int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
                         int top = event.getWindow().getGuiScaledHeight() - 31;
                         int slot = player.getInventory().selected;
+                        PoseStack poseStack = event.getMatrixStack();
+                        poseStack.pushPose();
                         poseStack.translate(0, offset, 0);
                         RenderSystem.enableBlend();
-                        RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
-                        RenderHelper.blit(poseStack, left, top, 218, 28, 0, 0, 256f);
 
-                        RenderHelper.blit(poseStack, left + slot * 24 - 1, top - 1, 28, 30, 0, 28, 256f);
+                        VFXBuilders.ScreenVFXBuilder barBuilder = VFXBuilders.createScreen().setPosColorTexDefaultFormat().setShader(GameRenderer::getPositionColorTexShader).setShaderTexture(ICONS_TEXTURE);
+                        VFXBuilders.ScreenVFXBuilder spellBuilder = VFXBuilders.createScreen().setPosTexDefaultFormat().overrideBufferBuilder(spellTesselator.getBuilder());
+                        barBuilder.setUVWithWidth(0, 0, 218, 28, 256f).setPositionWithWidth(left, top, 218, 28).draw(poseStack);
+                        barBuilder.setUVWithWidth(0, 28, 28, 30, 256f).setPositionWithWidth(left + slot * 24 - 1, top - 1, 28, 30).draw(poseStack);
+
+                        barBuilder.setUVWithWidth(28, 28, 20, 21, 256f);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
                                 ResourceLocation background = instance.type.getBackgroundLocation();
                                 ResourceLocation icon = instance.type.getIconLocation();
-                                RenderSystem.setShaderTexture(0, background);
-                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
-                                RenderSystem.setShaderTexture(0, icon);
-                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 0, 0, 20, 22);
-                            }
-                        }
-                        RenderSystem.setShaderTexture(0, ICONS_TEXTURE);
-                        for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
-                            SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
-                            if (!instance.isEmpty() && instance.getFade() > 0) {
-                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3, 20, 22, 1f, 1f, 1f, instance.getFade(), 28, 28, 256f);
-                            }
-                            if (SpellCooldownData.isOnCooldown(instance.cooldown)) {
-                                int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
-                                RenderHelper.blit(poseStack, left + i * 24 + 3, top + 3+cooldownOffset, 20, 22-cooldownOffset, 1f, 1f, 1f, 0.5f, 28, 28 + cooldownOffset, 256f);
+                                int x = left + i * 24 + 3;
+                                int y =  top + 3;
+
+                                spellBuilder.setPositionWithWidth(x, y, 20, 22);
+                                spellBuilder.setShaderTexture(background).draw(poseStack);
+                                spellBuilder.setShaderTexture(icon).draw(poseStack);
+
+                                barBuilder.setPositionWithWidth(x, y, 20, 22);
+
+                                if (instance.getIconFadeout() > 0) {
+                                    barBuilder.setAlpha(instance.getIconFadeout()).draw(poseStack);
+                                }
+                                if (instance.isOnCooldown()) {
+                                    int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
+                                    barBuilder.setPositionWithWidth(x, y+cooldownOffset, 20, 22-cooldownOffset).setUVWithWidth(28, 28 + cooldownOffset, 20, 22 - cooldownOffset, 256f).setAlpha(0.5f).draw(poseStack);
+                                }
                             }
                         }
                         RenderSystem.disableBlend();

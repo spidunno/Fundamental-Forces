@@ -32,7 +32,6 @@ public class AnchorBlockEntity extends OrtusBlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-
         if (!nearbyAnchorPositions.isEmpty()) {
             CompoundTag compound = new CompoundTag();
             compound.putInt("anchorAmount", nearbyAnchorPositions.size());

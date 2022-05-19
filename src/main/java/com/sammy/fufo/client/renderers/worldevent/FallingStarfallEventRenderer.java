@@ -7,6 +7,7 @@ import com.sammy.fufo.common.worldevents.starfall.FallingStarfallEvent;
 import com.sammy.ortus.handlers.RenderHandler;
 import com.sammy.ortus.helpers.RenderHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import com.sammy.ortus.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -16,15 +17,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-import static com.sammy.fufo.FufoMod.prefix;
+import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
-    private static final ResourceLocation LIGHT_TRAIL = prefix("textures/vfx/light_trail.png");
+    private static final ResourceLocation LIGHT_TRAIL = fufoPath("textures/vfx/light_trail.png");
     public static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
 
-    private static final ResourceLocation STAR = prefix("textures/vfx/star.png");
+    private static final ResourceLocation STAR = fufoPath("textures/vfx/star.png");
     public static final RenderType STAR_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(STAR);
 
     public FallingStarfallEventRenderer() {
@@ -42,7 +43,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamLength = 20f;
         float beamWidth = 4f;
         float flareSize = 3f;
-        RenderHelper.VertexBuilder builder = RenderHelper.create();
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed * partialTicks, instance.speed * partialTicks, instance.speed * partialTicks));
