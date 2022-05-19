@@ -1,4 +1,4 @@
-package com.sammy.fufo.common.binding;
+package com.sammy.fufo.core.systems.weavecrafting.binding;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
