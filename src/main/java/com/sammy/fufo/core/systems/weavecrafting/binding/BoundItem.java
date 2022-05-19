@@ -27,15 +27,6 @@ public class BoundItem {
     public Vec3i getPos(){
         return location;
     }
-    public void offset(String axis, int i){
-        switch (axis.toUpperCase()) {
-            case "X" -> location.offset(i, 0, 0);
-            case "Y" -> location.offset(0, i, 0);
-            case "Z" -> location.offset(0, 0, i);
-            default -> {
-            }
-        }
-    }
     public void offset(Direction dir){
         switch (dir){
             case UP -> location.offset(0,1,0);
