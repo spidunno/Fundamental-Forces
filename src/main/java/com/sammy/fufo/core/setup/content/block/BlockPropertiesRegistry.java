@@ -35,4 +35,8 @@ public class BlockPropertiesRegistry {
     public static OrtusBlockProperties ANCHOR_PROPERTIES() {
         return new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().instabreak().isCutoutLayer();
     }
+
+    public static OrtusBlockProperties BURNER_EXTRACTOR_PROPERTIES() {
+        return new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().isCutoutLayer();
+    }
 }

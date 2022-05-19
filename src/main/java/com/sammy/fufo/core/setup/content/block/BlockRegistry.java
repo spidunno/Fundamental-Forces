@@ -19,6 +19,7 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock<>(ORB_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ORB));
     public static final RegistryObject<Block> ANCHOR = BLOCKS.register("anchor", () -> new AnchorBlock<>(ANCHOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ANCHOR));
+    public static final RegistryObject<Block> BURNER_EXTRACTOR = BLOCKS.register("burner_extractor", () -> new BurnerExtractorBlock<>(BURNER_EXTRACTOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.BURNER_EXTRACTOR));
 
     public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock<>(METEOR_FIRE_PROPERTIES()).setBlockEntity(BlockEntityRegistry.METEOR_FLAME));
     public static final RegistryObject<Block> ORTUSITE = BLOCKS.register("ortusite", () -> new FlammableMeteoriteBlock(ASTEROID_ROCK_PROPERTIES(), (s, p) -> METEOR_FIRE.get().defaultBlockState()));

@@ -35,9 +35,11 @@ public class ItemRegistry {
 
     public static final RegistryObject<Item> CRACK = ITEMS.register("crack", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> BLOCK_OF_CRACK = ITEMS.register("block_of_crack", () -> new BlockItem(BlockRegistry.BLOCK_OF_CRACK.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> WISP_BOTTLE = ITEMS.register("wisp_bottle", () -> new Item(DEFAULT_PROPERTIES()));
 
     public static final RegistryObject<Item> ORTUSITE = ITEMS.register("ortusite", () -> new BlockItem(BlockRegistry.ORTUSITE.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ANCHOR = ITEMS.register("anchor", () -> new BlockItem(BlockRegistry.ANCHOR.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> BURNER_EXTRACTOR = ITEMS.register("burner_extractor", () -> new BlockItem(BlockRegistry.BURNER_EXTRACTOR.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> DEPLETED_ORTUSITE = ITEMS.register("depleted_ortusite", () -> new BlockItem(BlockRegistry.DEPLETED_ORTUSITE.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ORTUSITE_CHUNK = ITEMS.register("ortusite_chunk", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ASTRAL_SHARD = ITEMS.register("astral_shard", () -> new Item(DEFAULT_PROPERTIES()));

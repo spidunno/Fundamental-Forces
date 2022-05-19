@@ -1,6 +1,7 @@
 package com.sammy.fufo.common.entity.wisp;
 
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
+import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.ortus.helpers.ColorHelper;
 import com.sammy.ortus.helpers.DataHelper;
 import com.sammy.ortus.systems.easing.Easing;
@@ -11,8 +12,12 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BottleItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
@@ -108,6 +113,18 @@ public class WispEntity extends Entity {
         startColor = new Color(pCompound.getInt("start"));
         midColor = new Color(pCompound.getInt("mid"));
         endColor = new Color(pCompound.getInt("end"));
+    }
+
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand) {
+        if(!level.isClientSide){
+            if(player.getItemInHand(hand).getItem() instanceof BottleItem){
+                player.setItemInHand(hand, new ItemStack(ItemRegistry.WISP_BOTTLE.get()));
+                this.discard();
+                return InteractionResult.sidedSuccess(false);
+            }
+        }
+        return InteractionResult.sidedSuccess(true);
     }
 
     @Override
