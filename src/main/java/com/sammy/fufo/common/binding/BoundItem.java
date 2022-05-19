@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class BoundItem {
-    public static Vec3i location;
-    public static ItemStack stack;
-    public static HashMap<Direction, String> bindings = new HashMap<>();
+    public Vec3i location;
+    public ItemStack stack;
+    public HashMap<Direction, String> bindings = new HashMap<>();
 
-    public static ItemStack getItem() {
+    public ItemStack getItem() {
         return stack;
     }
 
@@ -24,7 +24,7 @@ public class BoundItem {
         location = pos;
     }
 
-    public static Vec3i getPos(){
+    public Vec3i getPos(){
         return location;
     }
     public void offset(String axis, int i){
@@ -34,6 +34,16 @@ public class BoundItem {
             case "Z" -> location.offset(0, 0, i);
             default -> {
             }
+        }
+    }
+    public void offset(Direction dir){
+        switch (dir){
+            case UP -> location.offset(0,1,0);
+            case DOWN -> location.offset(0,-1,0);
+            case EAST -> location.offset(1,0,0);
+            case WEST -> location.offset(-1, 0, 0);
+            case SOUTH -> location.offset(0,0,1);
+            case NORTH -> location.offset(0,0,-1);
         }
     }
     public void offset(Vec3i offset){
