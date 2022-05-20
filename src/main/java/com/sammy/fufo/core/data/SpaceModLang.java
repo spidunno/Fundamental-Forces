@@ -1,4 +1,4 @@
-package com.sammy.fufo.core.data;
+/*package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.core.setup.content.SoundRegistry;
 import com.sammy.fufo.core.setup.content.item.EnchantmentRegistry;
@@ -100,43 +100,23 @@ public class SpaceModLang extends LanguageProvider {
     }
 
     public void addOption(String option, String result) {
-        add(getOption(option), result);
-    }
-
-    public static String getOption(String option) {
-        return "options." + FUFO + "." + option;
+        add(LangHelpers.getOption(option), result);
     }
 
     public void addKey(String key, String result) {
-        add(getKey(key), result);
-    }
-
-    public static String getKey(String key) {
-        return "key." + FUFO + "." + key;
+        add(LangHelpers.getKey(key), result);
     }
 
     public void addOptionTooltip(String option, String result) {
-        add(getOptionTooltip(option), result);
-    }
-
-    public static String getOptionTooltip(String option) {
-        return "options." + FUFO + "." + option + ".tooltip";
+        add(LangHelpers.getOptionTooltip(option), result);
     }
 
     public void addCommand(String command, String feedback) {
-        add(getCommand(command), feedback);
-    }
-
-    public static String getCommand(String command) {
-        return "command." + FUFO + "." + command;
+        add(LangHelpers.getCommand(command), feedback);
     }
 
     public void addCommandOutput(String output, String feedback) {
-        add(getCommandOutput(output), feedback);
-    }
-
-    public static String getCommandOutput(String output) {
-        return "command." + FUFO + "." + output;
+        add(LangHelpers.getCommandOutput(output), feedback);
     }
 
     public String replaceCommonWords(String name) {
@@ -152,4 +132,4 @@ public class SpaceModLang extends LanguageProvider {
         }
         return name;
     }
-}
+}*/

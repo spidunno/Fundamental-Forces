@@ -1,8 +1,11 @@
 package com.sammy.fufo.common.magic;
 
+import com.sammy.fufo.common.block.OrbBlock;
+import com.sammy.fufo.common.blockentity.OrbBlockEntity;
 import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.SpellType;
+import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -12,9 +15,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import java.util.function.Supplier;
 
 public class BlockSpell extends SpellType {
-    public final Supplier<Block> blockSupplier;
+    public final BlockEntry<?> blockSupplier;
 
-    public BlockSpell(String id, Supplier<Block> blockSupplier) {
+    public BlockSpell(String id, BlockEntry<? extends Block> blockSupplier) {
         super(id);
         this.blockSupplier = blockSupplier;
     }

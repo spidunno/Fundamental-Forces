@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.sammy.fufo.common.command.argument.StarfallResultArgumentType;
 import com.sammy.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
 import com.sammy.fufo.common.worldevents.starfall.StarfallActor;
-import com.sammy.fufo.core.data.SpaceModLang;
+import com.sammy.fufo.core.data.LangHelpers;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.ortus.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
@@ -32,7 +32,7 @@ public class IssueStarfallCommand {
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                     WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined());
-                                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_natural_position")), true);
+                                    source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("starfall_natural_position")), true);
                                     return 1;
                                 }))
                         .then(Commands.argument("target", EntityArgument.player())
@@ -42,7 +42,7 @@ public class IssueStarfallCommand {
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
                                     WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined());
-                                    source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_natural_target")), true);
+                                    source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("starfall_natural_target")), true);
                                     return 1;
                                 })))
 
@@ -56,7 +56,7 @@ public class IssueStarfallCommand {
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                             WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos));
-                                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_artificial_position")), true);
+                                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("starfall_artificial_position")), true);
                                             return 1;
                                         })))
                         .then(Commands.argument("target", EntityArgument.player())
@@ -69,7 +69,7 @@ public class IssueStarfallCommand {
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target));
-                                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("starfall_artificial_target")), true);
+                                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("starfall_artificial_target")), true);
                                             return 1;
                                         }))));
     }
