@@ -6,7 +6,6 @@ import com.sammy.fufo.core.data.*;
 import com.sammy.fufo.core.setup.client.FufoParticleRegistry;
 import com.sammy.fufo.core.setup.content.SoundRegistry;
 import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
 import com.sammy.fufo.core.setup.client.FufoTextureGrabber;
 import com.sammy.fufo.core.setup.content.RecipeTypeRegistry;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
@@ -52,7 +51,6 @@ public class FufoMod {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
         CommandRegistry.registerArgumentTypes();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
-        BlockRegistry.BLOCKS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);
         BlockEntityRegistry.BLOCK_ENTITY_TYPES.register(modBus);
         EntityRegistry.ENTITY_TYPES.register(modBus);

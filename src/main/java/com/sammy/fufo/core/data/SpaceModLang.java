@@ -1,7 +1,6 @@
 package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.core.setup.content.SoundRegistry;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
 import com.sammy.fufo.core.setup.content.item.EnchantmentRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.fufo.core.setup.content.potion.PotionEffectRegistry;
@@ -35,7 +34,7 @@ public class SpaceModLang extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
+        Set<RegistryObject<Block>> blocks = new HashSet<>(AllBlocks.BLOCKS.getEntries());
         DataHelper.takeAll(blocks, i -> i.get() instanceof WallTorchBlock);
         DataHelper.takeAll(blocks, i -> i.get() instanceof WallSignBlock);
         Set<RegistryObject<Item>> items = new HashSet<>(ItemRegistry.ITEMS.getEntries());

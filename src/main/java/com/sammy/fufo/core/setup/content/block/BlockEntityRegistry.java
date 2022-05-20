@@ -28,7 +28,7 @@ public class BlockEntityRegistry {
     public static final RegistryObject<BlockEntityType<UITestBlockEntity>> UI_TEST_BLOCK = BLOCK_ENTITY_TYPES.register("ui_test_block",()-> BlockEntityType.Builder.of(UITestBlockEntity::new, getBlocks(UITestBlock.class)).build(null));
 
     public static Block[] getBlocks(Class<?>... blockClasses) {
-        Collection<RegistryObject<Block>> blocks = BlockRegistry.BLOCKS.getEntries();
+        Collection<RegistryObject<Block>> blocks = AllBlocks.BLOCKS.getEntries();
         ArrayList<Block> matchingBlocks = new ArrayList<>();
         for (RegistryObject<Block> registryObject : blocks) {
             if (Arrays.stream(blockClasses).anyMatch(b -> b.isInstance(registryObject.get()))) {
@@ -39,7 +39,7 @@ public class BlockEntityRegistry {
     }
 
     public static Block[] getBlocksExact(Class<?> clazz) {
-        Collection<RegistryObject<Block>> blocks = BlockRegistry.BLOCKS.getEntries();
+        Collection<RegistryObject<Block>> blocks = AllBlocks.BLOCKS.getEntries();
         ArrayList<Block> matchingBlocks = new ArrayList<>();
         for (RegistryObject<Block> registryObject : blocks) {
             if (clazz.equals(registryObject.get().getClass())) {

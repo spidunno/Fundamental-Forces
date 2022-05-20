@@ -2,7 +2,6 @@ package com.sammy.fufo.core.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.BlockPos;
@@ -62,7 +61,7 @@ public class SpaceModBlockLootTables extends LootTableProvider {
 
     @Override
     protected List<Pair<Supplier<Consumer<BiConsumer<ResourceLocation, LootTable.Builder>>>, LootContextParamSet>> getTables() {
-        Set<RegistryObject<Block>> blocks = new HashSet<>(BlockRegistry.BLOCKS.getEntries());
+        Set<RegistryObject<Block>> blocks = new HashSet<>(AllBlocks.BLOCKS.getEntries());
 
         takeAll(blocks, b -> b.get().properties instanceof OrtusBlockProperties && ((OrtusBlockProperties) b.get().properties).getThrowawayData().hasCustomLoot);
 

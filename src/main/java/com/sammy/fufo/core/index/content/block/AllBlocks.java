@@ -2,10 +2,7 @@ package com.sammy.fufo.core.index.content.block;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.*;
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
-import com.sammy.fufo.common.blockentity.BurnerExtractorBlockEntity;
-import com.sammy.fufo.common.blockentity.MeteorFlameBlockEntity;
-import com.sammy.fufo.common.blockentity.OrbBlockEntity;
+import com.sammy.fufo.common.blockentity.*;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -39,8 +36,8 @@ public class AllBlocks {
                     .properties((properties) -> new OrtusBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14))
                     .register();
 
-    public static final BlockEntry<wellAnchorBlock<AnchorBlockEntity>> ANCHOR =
-            FufoMod.registrate().block("anchor", AnchorBlock::new)
+    public static final BlockEntry<PipeAnchorBlock<AnchorBlockEntity>> ANCHOR =
+            FufoMod.registrate().block("anchor", PipeAnchorBlock::new)
                     .properties((properties) ->  new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().instabreak().isCutoutLayer())
                     .simpleItem()
                     .register();
@@ -50,7 +47,11 @@ public class AllBlocks {
                     .properties((properties) -> new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().isCutoutLayer())
                     .simpleItem()
                     .register();
-
+    public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST_BLOCK =
+            FufoMod.registrate().block("ui_test_block",UITestBlock::new)
+                    .properties((properties -> new OrtusBlockProperties(Material.STONE,MaterialColor.COLOR_GRAY).sound(SoundType.STONE)))
+                    .simpleItem()
+                    .register();
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE =
             FufoMod.registrate().block("meteor_fire", MeteorFlameBlock::new)
                     .simpleItem()
@@ -126,6 +127,7 @@ public class AllBlocks {
                     .properties((x) -> VOLCANIC_GLASS_PROPERTIES())
                     .simpleItem()
                     .register();
+
 
     /** here so java doesnt ignore the class */
     public static void register() {}
