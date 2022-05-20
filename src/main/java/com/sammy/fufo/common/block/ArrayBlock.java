@@ -43,6 +43,7 @@ public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> 
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
+
     @Override
     public BlockState rotate(BlockState pState, Rotation pRotation) {
         return pState.setValue(FACING, pRotation.rotate(pState.getValue(FACING)));

@@ -4,6 +4,9 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.DynamicOps;
+import com.mojang.serialization.JsonOps;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.core.setup.content.RecipeTypeRegistry;
 import com.sammy.fufo.core.systems.magic.weaving.Bindable;
@@ -13,6 +16,8 @@ import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -140,7 +145,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
         public WeaveRecipe fromJson(ResourceLocation recipeId, JsonObject json)
         {
             // TODO: Add error messages here that are actually helpful
-            String weaveType = json.getAsJsonObject("weaveType").getAsString();
+            String weaveType = json.get("weaveType").getAsString();
             JsonArray ingredients = json.getAsJsonObject("input").getAsJsonArray("ingredients");
             JsonObject primers = json.getAsJsonObject("input").getAsJsonObject("primers");
             JsonArray bindings = json.getAsJsonArray("bindings");
@@ -149,7 +154,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
 
             for (JsonElement ingredient : ingredients) {
                 JsonObject jsonIngredient = ingredient.getAsJsonObject();
-                String type = jsonIngredient.getAsJsonObject("type").getAsString();
+                String type = jsonIngredient.get("type").getAsString();
 
                 Vec3i position = readVec3i(jsonIngredient.getAsJsonObject("position"));
                 Vec3i size = readVec3i(jsonIngredient.getAsJsonObject("size"));
@@ -260,6 +265,18 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
             json.add("input", input);
             json.add("bindings", bindings);
             json.add("output", Ingredient.of(recipe.getOutput()).toJson());
+        }
+
+        public WeaveRecipe fromNBT(CompoundTag nbt)
+        {
+            return fromJson(FufoMod.fufoPath("mock"), (JsonObject) Dynamic.convert(NbtOps.INSTANCE, JsonOps.INSTANCE, nbt));
+        }
+
+        public CompoundTag toNBT(WeaveRecipe recipe)
+        {
+            JsonObject json = new JsonObject();
+            toJson(json, recipe);
+            return (CompoundTag) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, json);
         }
 
         @Nullable
