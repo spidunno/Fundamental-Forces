@@ -6,7 +6,7 @@ import com.sammy.fufo.common.entity.falling.FallingEntity;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.setup.OrtusShaderRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
-import com.sammy.ortus.systems.rendering.multipass.FrameBufferBackedDynamicTexture;
+import com.sammy.ortus.systems.rendering.multipass.DynamicTexture;
 import com.sammy.ortus.systems.rendering.multipass.TextureSurgeon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -59,7 +59,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         };
 
         if (entity.level.getGameTime() % 80L == 0) {
-            TextureSurgeon.operate(new FrameBufferBackedDynamicTexture(fufoPath("textures/vfx/light_trail.png"), 256), VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance);
+            TextureSurgeon.operate(new DynamicTexture(fufoPath("textures/vfx/light_trail.png"), 256), VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance);
             test = false;
         }
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
