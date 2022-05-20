@@ -15,6 +15,8 @@ import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.fufo.core.setup.content.potion.PotionEffectRegistry;
 import com.sammy.fufo.core.setup.content.worldgen.FeatureRegistry;
 import com.sammy.fufo.core.setup.server.CommandRegistry;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -37,6 +39,11 @@ public class FufoMod {
     public static final String FUFO = "fufo";
     public static final Logger LOGGER = LogManager.getLogger();
     public static final Random RANDOM = new Random();
+    public static final NonNullSupplier<Registrate> REGISTRATE = NonNullSupplier.lazy(() -> Registrate.create(FUFO));
+
+    public static Registrate registrate(){
+        return REGISTRATE.get();
+    }
 
 
     public FufoMod() {
