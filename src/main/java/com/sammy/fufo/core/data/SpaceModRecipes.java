@@ -1,15 +1,25 @@
 package com.sammy.fufo.core.data;
 
 
+import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.common.recipe.WeaveRecipe;
 import com.sammy.fufo.core.data.builder.ImpactConversionRecipeBuilder;
 import com.sammy.fufo.core.data.builder.ManaAbsorbtionRecipeBuilder;
+import com.sammy.fufo.core.data.builder.WeaveRecipeBuilder;
 import com.sammy.fufo.core.setup.content.block.BlockRegistry;
+import com.sammy.fufo.core.systems.magic.weaving.BindingType;
+import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
+import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import net.minecraft.advancements.critereon.*;
+import net.minecraft.core.Vec3i;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -44,6 +54,26 @@ public class SpaceModRecipes extends RecipeProvider {
         new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.GLASS), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "glass_volcanic_glass");
         new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
         new ManaAbsorbtionRecipeBuilder(Ingredient.of(Items.GRASS_BLOCK), Ingredient.of(BlockRegistry.SCORCHED_EARTH.get())).build(consumer, "grass_scorched_earth");
+
+        new WeaveRecipeBuilder(
+                new WeaveRecipe(new IngredientBindable(Ingredient.of(Items.DIAMOND_SWORD)), FufoMod.fufoPath("glue"),"standard")
+                        .link(
+                                new Vec3i(0, 0, 0),
+                                new Vec3i(0, 1, 0),
+                                new BindingType(FufoMod.fufoPath("ultimate_bingus")),
+                                new EntityTypeBindable(new Vec3i(2, 2, 2), EntityType.HORSE)
+                        )
+                        .link(
+                                new Vec3i(0, 2, 0),
+                                new Vec3i(0, 3, 0),
+                                new BindingType(FufoMod.fufoPath("ultimate_floppe")),
+                                new IngredientBindable(new Vec3i(2, 2, 2), Ingredient.of(Tags.Items.SHEARS))
+                        )
+                        .primersAllowed(Items.DIAMOND_SWORD.getRegistryName(), 1)
+                        .primersAllowed(Items.SHEARS.getRegistryName(), 1)
+                        .primersAllowed(EntityType.HORSE.getRegistryName(), 1)
+                        .setOutput(new ItemStack(Items.SLIME_BALL))
+        ).build(consumer, "glue");
     }
 
     protected static EnterBlockTrigger.TriggerInstance insideOf(Block pBlock) {
