@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents an arra
+ * Represents an array
  */
 public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container> {
 
