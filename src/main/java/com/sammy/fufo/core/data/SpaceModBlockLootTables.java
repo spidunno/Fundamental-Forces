@@ -1,4 +1,4 @@
-package com.sammy.fufo.core.data;
+/*package com.sammy.fufo.core.data;
 
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
@@ -221,4 +221,4 @@ public class SpaceModBlockLootTables extends LootTableProvider {
     protected void addTable(ResourceLocation path, LootTable.Builder lootTable) {
         tables.add(Pair.of(() -> (lootBuilder) -> lootBuilder.accept(path, lootTable), LootContextParamSets.BLOCK));
     }
-}
+}*/

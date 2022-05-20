@@ -2,8 +2,8 @@ package com.sammy.fufo.common.blockentity;
 
 import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
+import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
 import com.sammy.fufo.core.setup.content.DamageSourceRegistry;
-import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
 import com.sammy.ortus.handlers.FireEffectHandler;
@@ -32,7 +32,7 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
     }
 
     public MeteorFlameBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.METEOR_FLAME.get(), pos, state);
+        super(BlockEntityRegistrate.METEOR_FLAME.get(), pos, state);
     }
 
     @Override

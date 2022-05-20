@@ -1,4 +1,4 @@
-package com.sammy.fufo.core.data;
+/*package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.core.setup.content.block.BlockTagRegistry;
@@ -88,4 +88,4 @@ public class SpaceModBlockTags extends BlockTagsProvider {
                 .filter(b -> predicate.test(b.get())).forEach(b -> ret.add(b.get()));
         return ret.toArray(new Block[0]);
     }
-}
+}*/

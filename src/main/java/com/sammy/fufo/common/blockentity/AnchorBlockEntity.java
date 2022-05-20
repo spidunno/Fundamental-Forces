@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
+import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -33,7 +33,7 @@ public class AnchorBlockEntity extends OrtusBlockEntity {
     }
 
     public AnchorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.ANCHOR.get(), pos, state);
+        super(BlockEntityRegistrate.ANCHOR.get(), pos, state);
     }
 
     @Override

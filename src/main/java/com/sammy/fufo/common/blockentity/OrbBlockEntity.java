@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
+import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
 import com.sammy.ortus.setup.OrtusParticleRegistry;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
@@ -17,7 +17,7 @@ public class OrbBlockEntity extends OrtusBlockEntity {
     }
 
     public OrbBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.ORB.get(), pos, state);
+        super(BlockEntityRegistrate.ORB.get(), pos, state);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sammy.fufo.core.data;
+/*package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.OrbBlock;
@@ -240,4 +240,4 @@ public class SpaceModBlockStates extends net.minecraftforge.client.model.generat
         String baseName = name + "_log";
         axisBlock((RotatedPillarBlock) AllBlocksObject.get(), fufoPath("block/" + baseName), fufoPath("block/" + baseName));
     }
-}
+}*/

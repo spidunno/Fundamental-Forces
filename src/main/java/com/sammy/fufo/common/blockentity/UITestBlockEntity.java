@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
+import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import net.minecraft.core.BlockPos;
@@ -17,7 +17,7 @@ public class UITestBlockEntity extends OrtusBlockEntity {
         super(type, pos, state);
     }
     public UITestBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistry.UI_TEST_BLOCK.get(),pos, state);
+        super(BlockEntityRegistrate.UI_TEST_BLOCK.get(),pos, state);
     }
 
     @Override
