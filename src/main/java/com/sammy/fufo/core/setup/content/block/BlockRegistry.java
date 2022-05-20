@@ -18,7 +18,7 @@ public class BlockRegistry {
     public static final RegistryObject<Block> BLOCK_OF_CRACK = BLOCKS.register("block_of_crack", () -> new Block(CRACK_PROPERTIES()));
 
     public static final RegistryObject<Block> FORCE_ORB = BLOCKS.register("force_orb", () -> new OrbBlock<>(ORB_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ORB));
-    public static final RegistryObject<Block> ANCHOR = BLOCKS.register("anchor", () -> new AnchorBlock<>(ANCHOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ANCHOR));
+    public static final RegistryObject<Block> ANCHOR = BLOCKS.register("anchor", () -> new PipeAnchorBlock<>(ANCHOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.ANCHOR));
     public static final RegistryObject<Block> BURNER_EXTRACTOR = BLOCKS.register("burner_extractor", () -> new BurnerExtractorBlock<>(BURNER_EXTRACTOR_PROPERTIES()).setBlockEntity(BlockEntityRegistry.BURNER_EXTRACTOR));
 
     public static final RegistryObject<Block> METEOR_FIRE = BLOCKS.register("meteor_fire", () -> new MeteorFlameBlock<>(METEOR_FIRE_PROPERTIES()).setBlockEntity(BlockEntityRegistry.METEOR_FLAME));
@@ -36,4 +36,6 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> VOLCANIC_GLASS = BLOCKS.register("volcanic_glass", () -> new GlassBlock(VOLCANIC_GLASS_PROPERTIES()));
     public static final RegistryObject<Block> SCORCHED_EARTH = BLOCKS.register("scorched_earth", () -> new ScorchedEarthBlock(SCORCHED_EARTH_PROPERTIES()));
+
+    public static final RegistryObject<Block> UI_TEST_BLOCK = BLOCKS.register("ui_test_block" , () -> new UITestBlock(UI_TEST_BLOCK_PROPERTIES()).setBlockEntity(BlockEntityRegistry.UI_TEST_BLOCK));
 }

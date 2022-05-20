@@ -5,12 +5,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.common.worldevents.starfall.FallingStarfallEvent;
 import com.sammy.ortus.handlers.RenderHandler;
-import com.sammy.ortus.helpers.RenderHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import com.sammy.ortus.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -39,10 +37,9 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
 
     @Override
     public void render(FallingStarfallEvent instance, PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
-        LocalPlayer player = Minecraft.getInstance().player;
         float beamLength = 20f;
         float beamWidth = 4f;
-        float flareSize = 3f;
+        float flareSize = 2f;
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
@@ -50,7 +47,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         Vec3 position = instance.position.add(motion);
 
         poseStack.pushPose();
-        poseStack.translate(position.x - player.getX(), position.y - player.getY(), position.z - player.getZ());
+        poseStack.translate(position.x, position.y, position.z);
         builder.renderBeam(lightTrailConsumer, poseStack, position, position.subtract(instance.motion.multiply(beamLength, beamLength, beamLength)), beamWidth);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));

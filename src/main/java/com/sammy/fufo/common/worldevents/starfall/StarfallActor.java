@@ -4,7 +4,7 @@ import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoChunkDataCapability;
 import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.setup.content.block.BlockTagRegistry;
-import com.sammy.ortus.helpers.DataHelper;
+import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.setup.OrtusBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -152,7 +152,7 @@ public class StarfallActor {
         double distance = targetVec.distanceTo(centerVec) * (Mth.nextDouble(level.random, 0.5f, 5f)); //0.75-2.5x towards the center position
         Vec3 direction = targetVec.vectorTo(centerVec).normalize().yRot(Mth.nextFloat(level.random, -0.26f, 0.26f)).multiply(distance, 1, distance); //rotated direction towards centerPos
         Vec3 spawnVec = centerVec.add(direction);
-        return DataHelper.fromBlockPos(heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, new BlockPos(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_HEIGHT.getConfigValue(), 0);//200 blocks above heightmap level at spawnVec
+        return BlockHelper.fromBlockPos(heightmapPosAt(MOTION_BLOCKING_NO_LEAVES, level, new BlockPos(spawnVec))).add(0, CommonConfig.STARFALL_SPAWN_HEIGHT.getConfigValue(), 0);//200 blocks above heightmap level at spawnVec
     }
 
     public static BlockPos heightmapPosAt(Heightmap.Types type, ServerLevel level, BlockPos pos) {

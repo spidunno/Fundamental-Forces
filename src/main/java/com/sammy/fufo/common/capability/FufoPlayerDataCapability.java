@@ -4,7 +4,7 @@ import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.packets.SyncFufoPlayerCapabilityDataPacket;
 import com.sammy.fufo.common.packets.SyncPlayerCapabilityDataServerPacket;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
-import com.sammy.fufo.core.systems.logistics.PipeBuilderHandler;
+import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.sammy.ortus.systems.capability.OrtusCapability;
 import com.sammy.ortus.systems.capability.OrtusCapabilityProvider;
@@ -35,7 +35,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     public boolean rightClickHeld;
 
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
-    public PipeBuilderHandler pipeHandler = new PipeBuilderHandler();
+    public PipeBuilderAssistant pipeHandler = new PipeBuilderAssistant();
     public FufoPlayerDataCapability() {
     }
 
