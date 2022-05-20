@@ -10,6 +10,7 @@ import com.sammy.fufo.core.setup.content.block.BlockRegistry;
 import com.sammy.fufo.core.systems.magic.weaving.BindingType;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
+import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.DataGenerator;
@@ -74,6 +75,26 @@ public class SpaceModRecipes extends RecipeProvider {
                         .primersAllowed(EntityType.HORSE.getRegistryName(), 1)
                         .setOutput(new ItemStack(Items.SLIME_BALL))
         ).build(consumer, "glue");
+
+        new WeaveRecipeBuilder(
+                new WeaveRecipe(new IngredientBindable(Ingredient.of(Items.DIAMOND_SWORD)), FufoMod.fufoPath("glue_two_electric_boogaloo"),"standard")
+                        .link(
+                                new Vec3i(0, 0, 0),
+                                new Vec3i(0, 1, 0),
+                                new BindingType(FufoMod.fufoPath("ultimate_bingus")),
+                                new ItemStackBindable(new Vec3i(1, 1, 1), Items.HORSE_SPAWN_EGG.getDefaultInstance())
+                        )
+                        .link(
+                                new Vec3i(0, 2, 0),
+                                new Vec3i(0, 3, 0),
+                                new BindingType(FufoMod.fufoPath("ultimate_floppe")),
+                                new IngredientBindable(new Vec3i(1, 1, 1), Ingredient.of(Tags.Items.SHEARS))
+                        )
+                        .primersAllowed(Items.DIAMOND_SWORD.getRegistryName(), 1)
+                        .primersAllowed(Items.SHEARS.getRegistryName(), 1)
+                        .primersAllowed(EntityType.HORSE.getRegistryName(), 1)
+                        .setOutput(new ItemStack(Items.SLIME_BALL))
+        ).build(consumer, "glue_two_electric_boogaloo");
     }
 
     protected static EnterBlockTrigger.TriggerInstance insideOf(Block pBlock) {
