@@ -4,8 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
-import com.sammy.ortus.helpers.DataHelper;
-import com.sammy.ortus.helpers.RenderHelper;
+import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,7 +28,7 @@ public class AnchorRenderer implements BlockEntityRenderer<AnchorBlockEntity> {
         VertexConsumer beamConsumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
         poseStack.pushPose();
         blockEntityIn.nearbyAnchors.forEach(anchor -> {
-            VFXBuilders.createWorld().setOffset(0.5f, 0.5f, 0.5f).renderBeam(beamConsumer, poseStack, DataHelper.fromBlockPos(blockEntityIn.getBlockPos()), DataHelper.fromBlockPos(anchor.getBlockPos()), 0.1f);
+            VFXBuilders.createWorld().setOffset(0.5f, 0.5f, 0.5f).renderBeam(beamConsumer, poseStack, BlockHelper.fromBlockPos(blockEntityIn.getBlockPos()), BlockHelper.fromBlockPos(anchor.getBlockPos()), 0.1f);
         });
         poseStack.popPose();
     }

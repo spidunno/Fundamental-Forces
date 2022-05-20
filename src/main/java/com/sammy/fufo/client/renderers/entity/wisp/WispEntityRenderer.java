@@ -3,8 +3,7 @@ package com.sammy.fufo.client.renderers.entity.wisp;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector4f;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
-import com.sammy.ortus.helpers.DataHelper;
-import com.sammy.ortus.helpers.RenderHelper;
+import com.sammy.ortus.helpers.EntityHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,7 +37,7 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
             return;
         }
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
-        DataHelper.trackPastPositions(entity.pastPositions, entity.position(), 0f);
+        EntityHelper.trackPastPositions(entity.pastPositions, entity.position(), 0f);
         ArrayList<Vec3> positions = Stream.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16).map(i -> entity.position().add(0, i, 0)).collect(Collectors.toCollection(ArrayList::new));
 
         Color color = entity.getColor();

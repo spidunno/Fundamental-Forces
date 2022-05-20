@@ -6,7 +6,7 @@ import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
 import com.sammy.ortus.handlers.FireEffectHandler;
-import com.sammy.ortus.helpers.DataHelper;
+import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.sammy.ortus.systems.fireeffect.FireEffectInstance;
 import net.minecraft.core.BlockPos;
@@ -42,7 +42,7 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
                 Color midColor = new Color(255 * lerp, 0, 186 * lerp);
                 Color endingColor = new Color(223 * lerp, 0, 255 * lerp);
 
-                Vec3 randPos = DataHelper.randPos(worldPosition, level.random, 0, 1);
+                Vec3 randPos = BlockHelper.randPos(worldPosition, 0, 1);
                 WispEntity wispEntity = new WispEntity(level, randPos.x, randPos.y, randPos.z, 0, 0.14f, 0);
                 wispEntity.setColor(startingColor, midColor, endingColor);
                 level.addFreshEntity(wispEntity);

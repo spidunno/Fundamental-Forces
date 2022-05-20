@@ -1,10 +1,7 @@
 package com.sammy.fufo.common.block;
 
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
-import com.sammy.ortus.handlers.GhostBlockHandler;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
-import com.sammy.ortus.systems.placementassistance.IPlacementAssistant;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -24,19 +21,15 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Predicate;
 
-
-public class AnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlock<T> implements IPlacementAssistant {
+public class PipeAnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlock<T> {
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
     public static final VoxelShape SHAPE = Block.box(5, 5, 5, 11, 11, 11);
 
-    public AnchorBlock(Properties properties) {
+    public PipeAnchorBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(AXIS, Direction.Axis.X));
     }
@@ -77,17 +70,5 @@ public class AnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlock<T
 //        if (helper.matchesItem(held))
 //            return helper.getOffset(player, level, state, pos, ray).placeInWorld(level, (BlockItem) held.getItem(), player, hand, ray);
         return InteractionResult.PASS;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public void displayGhost(ClientLevel clientLevel, BlockHitResult blockHitResult, BlockState blockState) {
-        GhostBlockHandler.addGhost(blockState, blockState).at(blockHitResult.getBlockPos().relative(blockHitResult.getDirection().getOpposite()));
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    @Override
-    public Predicate<ItemStack> shouldRenderSimple() {
-        return s -> true;
     }
 }
