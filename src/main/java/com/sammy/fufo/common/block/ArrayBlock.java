@@ -2,9 +2,6 @@ package com.sammy.fufo.common.block;
 
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
 import com.sammy.fufo.common.blockentity.ArrayBlockEntity;
-import com.sammy.ortus.helpers.placement.IPlacementHelper;
-import com.sammy.ortus.helpers.placement.PlacementHelpers;
-import com.sammy.ortus.helpers.placement.util.PoleHelper;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
