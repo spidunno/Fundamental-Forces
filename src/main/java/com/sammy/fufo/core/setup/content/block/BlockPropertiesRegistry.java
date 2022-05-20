@@ -39,4 +39,7 @@ public class BlockPropertiesRegistry {
     public static OrtusBlockProperties BURNER_EXTRACTOR_PROPERTIES() {
         return new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().isCutoutLayer();
     }
+    public static OrtusBlockProperties UI_TEST_BLOCK_PROPERTIES(){
+        return new OrtusBlockProperties(Material.STONE,MaterialColor.COLOR_GRAY).sound(SoundType.STONE);
+    }
 }

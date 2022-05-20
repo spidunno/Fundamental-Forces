@@ -2,9 +2,11 @@ package com.sammy.fufo.core.setup.content.entity;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.entity.falling.FallingStarRenderer;
+import com.sammy.fufo.client.renderers.entity.weave.HologramWeaveEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wisp.WispEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wraith.StoneWraithRenderer;
 import com.sammy.fufo.common.entity.falling.FallingCrashpodEntity;
+import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
 import com.sammy.fufo.common.entity.wraith.StoneWraith;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
@@ -31,6 +33,9 @@ public class EntityRegistry {
 
     public static final RegistryObject<EntityType<StoneWraith>> STONE_WRAITH = register("stone_wraith", EntityType.Builder.<StoneWraith>of((t, l)->new StoneWraith(l), MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(6));
 
+    public static final RegistryObject<EntityType<HologramWeaveEntity>> HOLOGRAM_WEAVE = register("hologram_weave", EntityType.Builder.<HologramWeaveEntity>of((t,l) -> new HologramWeaveEntity(l), MobCategory.MISC).sized(1.0F,1.0F));
+
+
     @SubscribeEvent
     public static void assignAttributes(EntityAttributeCreationEvent event) {
         event.put(STONE_WRAITH.get(), StoneWraith.createAttributes().build());
@@ -54,6 +59,7 @@ public class EntityRegistry {
             event.registerEntityRenderer(EntityRegistry.FALLING_CRASHPOD.get(), FallingStarRenderer::new);
             event.registerEntityRenderer(EntityRegistry.WISP.get(), WispEntityRenderer::new);
             event.registerEntityRenderer(EntityRegistry.STONE_WRAITH.get(), StoneWraithRenderer::new);
+            event.registerEntityRenderer(EntityRegistry.HOLOGRAM_WEAVE.get(), HologramWeaveEntityRenderer::new);
         }
     }
 }

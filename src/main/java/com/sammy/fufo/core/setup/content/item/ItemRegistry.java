@@ -57,6 +57,8 @@ public class ItemRegistry {
     public static final RegistryObject<Item> VOLCANIC_GLASS = ITEMS.register("volcanic_glass", () -> new BlockItem(BlockRegistry.VOLCANIC_GLASS.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> SCORCHED_EARTH = ITEMS.register("scorched_earth", () -> new BlockItem(BlockRegistry.SCORCHED_EARTH.get(), DEFAULT_PROPERTIES()));
 
+    public static final RegistryObject<Item> UI_TEST_BLOCK = ITEMS.register("ui_test_block", () -> new BlockItem(BlockRegistry.UI_TEST_BLOCK.get(), DEFAULT_PROPERTIES()));
+
     public static class ClientOnly {
 
         public static void registerParticleEmitters(FMLClientSetupEvent event) {

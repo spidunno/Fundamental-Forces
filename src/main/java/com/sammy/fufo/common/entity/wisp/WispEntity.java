@@ -115,6 +115,7 @@ public class WispEntity extends Entity {
         endColor = new Color(pCompound.getInt("end"));
     }
 
+    // this doesnt work btw
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
         if(!level.isClientSide){

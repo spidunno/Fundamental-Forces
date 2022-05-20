@@ -36,4 +36,6 @@ public class BlockRegistry {
 
     public static final RegistryObject<Block> VOLCANIC_GLASS = BLOCKS.register("volcanic_glass", () -> new GlassBlock(VOLCANIC_GLASS_PROPERTIES()));
     public static final RegistryObject<Block> SCORCHED_EARTH = BLOCKS.register("scorched_earth", () -> new ScorchedEarthBlock(SCORCHED_EARTH_PROPERTIES()));
+
+    public static final RegistryObject<Block> UI_TEST_BLOCK = BLOCKS.register("ui_test_block" , () -> new UITestBlock(UI_TEST_BLOCK_PROPERTIES()).setBlockEntity(BlockEntityRegistry.UI_TEST_BLOCK));
 }
