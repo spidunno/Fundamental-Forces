@@ -56,7 +56,7 @@ public abstract class Weave<T extends Weave> {
      * @param bindable the {@link Bindable} to add.
      */
     public T add(Bindable base, BindingType binding, Vec3i relativePosition, Bindable bindable) {
-        final Vec3i position = bindable.getLocation().offset(relativePosition);
+        final Vec3i position = base.getLocation().offset(relativePosition);
         bindable.setLocation(position);
         this.bindables.put(position, bindable);
         this.link(base, binding, bindable);
