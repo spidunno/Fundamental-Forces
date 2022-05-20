@@ -30,22 +30,23 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
         super.render(entity, yaw, partialTicks, ps, buffer, packedLight);
         ps.pushPose();
         Weave<?> weave = entity.weave;
+        ps.translate(0,0.3D,0);
         weave.getBindables().forEach(bindable -> {
             if(bindable instanceof ItemStackBindable){
                 Vec3i offset = bindable.getLocation();
                 ps.translate(offset.getX(), offset.getY(), offset.getZ());
                 if (!((ItemStackBindable) bindable).getItemStack().isEmpty()) {
-                    this.itemRenderer.renderStatic(((ItemStackBindable) bindable).getItemStack(), ItemTransforms.TransformType.FIXED, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
+                    this.itemRenderer.renderStatic(((ItemStackBindable) bindable).getItemStack(), ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
                 }
                 ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
-            } else if (bindable instanceof IngredientBindable){
+            }/* else if (bindable instanceof IngredientBindable){
                 Vec3i offset = bindable.getLocation();
                 ps.translate(offset.getX(), offset.getY(), offset.getZ());
                 ItemStack[] items = ((IngredientBindable) bindable).getIngredient().getItems();
                 if(items.length != 0){
                     // do something based on tick time
                 }
-            }
+            }*/
         });
         ps.popPose();
     }
