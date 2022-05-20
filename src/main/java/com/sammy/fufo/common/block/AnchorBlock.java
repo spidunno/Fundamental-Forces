@@ -5,7 +5,6 @@ import com.sammy.ortus.helpers.placement.IPlacementHelper;
 import com.sammy.ortus.helpers.placement.PlacementHelpers;
 import com.sammy.ortus.helpers.placement.util.PoleHelper;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
-import com.sammy.ortus.util.Iterate;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
