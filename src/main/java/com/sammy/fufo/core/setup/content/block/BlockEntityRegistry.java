@@ -3,6 +3,7 @@ package com.sammy.fufo.core.setup.content.block;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.block.AnchorRenderer;
 import com.sammy.fufo.client.renderers.block.OrbRenderer;
+import com.sammy.fufo.client.renderers.block.UIRenderer;
 import com.sammy.fufo.common.block.*;
 import com.sammy.fufo.common.blockentity.*;
 import net.minecraft.world.level.block.Block;
@@ -54,6 +55,7 @@ public class BlockEntityRegistry {
         public static void registerRenderer(EntityRenderersEvent.RegisterRenderers event) {
             event.registerBlockEntityRenderer(ORB.get(), OrbRenderer::new);
             event.registerBlockEntityRenderer(ANCHOR.get(), AnchorRenderer::new);
+            event.registerBlockEntityRenderer(UI_TEST_BLOCK.get(), UIRenderer::new);
         }
     }
 }

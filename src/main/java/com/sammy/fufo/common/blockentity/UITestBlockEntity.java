@@ -4,6 +4,7 @@ import com.sammy.fufo.core.setup.content.block.BlockEntityRegistry;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class UITestBlockEntity extends OrtusBlockEntity {
+    public boolean toggle = false;
     public UITestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -22,7 +24,7 @@ public class UITestBlockEntity extends OrtusBlockEntity {
 
     @Override
     public InteractionResult onUse(Player player, InteractionHand hand) {
-
-        return super.onUse(player, hand);
+        toggle = !toggle;
+        return InteractionResult.SUCCESS;
     }
 }
