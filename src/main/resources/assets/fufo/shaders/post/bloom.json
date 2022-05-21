@@ -1,0 +1,17 @@
+{
+  "targets": [
+    "minecraft:main"
+  ],
+  "passes": [
+    {
+      "name": "fufo:vertical_bloom",
+      "intarget": "minecraft:main",
+      "outtarget": "fufo:vertical_bloom"
+    },
+    {
+      "name": "fufo:horizontal_bloom",
+      "intarget": "fufo:vertical_bloom",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}
