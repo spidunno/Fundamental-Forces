@@ -1,5 +1,6 @@
 package com.sammy.fufo.common.entity.wisp;
 
+import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.ortus.helpers.ColorHelper;
@@ -120,7 +121,7 @@ public class WispEntity extends Entity {
     public InteractionResult interact(Player player, InteractionHand hand) {
         if(!level.isClientSide){
             if(player.getItemInHand(hand).getItem() instanceof BottleItem){
-                player.setItemInHand(hand, new ItemStack(ItemRegistry.WISP_BOTTLE.get()));
+                player.setItemInHand(hand, new ItemStack(ItemRegistrate.WISP_BOTTLE.get()));
                 this.discard();
                 return InteractionResult.sidedSuccess(false);
             }

@@ -1,7 +1,7 @@
 package com.sammy.fufo.mixin;
 
 import com.sammy.fufo.common.block.FlammableMeteoriteBlock;
-import com.sammy.fufo.core.index.content.block.BlockRegistrate;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

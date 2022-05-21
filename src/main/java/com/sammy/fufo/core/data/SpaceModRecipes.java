@@ -6,7 +6,7 @@ import com.sammy.fufo.common.recipe.WeaveRecipe;
 import com.sammy.fufo.core.data.builder.ImpactConversionRecipeBuilder;
 import com.sammy.fufo.core.data.builder.ManaAbsorbtionRecipeBuilder;
 import com.sammy.fufo.core.data.builder.WeaveRecipeBuilder;
-import com.sammy.fufo.core.index.content.block.BlockRegistrate;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.fufo.core.systems.magic.weaving.BindingType;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;

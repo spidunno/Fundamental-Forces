@@ -1,4 +1,4 @@
-package com.sammy.fufo.core.index.content.block;
+package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.blockentity.*;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;

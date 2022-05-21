@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
+import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.setup.OrtusParticleRegistry;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;

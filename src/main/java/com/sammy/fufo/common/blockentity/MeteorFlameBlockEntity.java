@@ -1,8 +1,7 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
-import com.sammy.fufo.core.index.content.block.BlockEntityRegistrate;
+import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.setup.content.DamageSourceRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
@@ -14,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;

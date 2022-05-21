@@ -2,12 +2,13 @@ package com.sammy.fufo.core.setup.content.item;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.item.DevTool;
+import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import com.sammy.ortus.systems.rendering.particle.ParticleRenderTypes;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleOptions;
-import com.sammy.fufo.core.index.content.block.BlockRegistrate;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -32,7 +33,7 @@ public class ItemRegistry {
     public static Item.Properties GEAR_PROPERTIES() {
         return new Item.Properties().tab(ContentTab.INSTANCE).stacksTo(1);
     }
-
+    /*
     public static final RegistryObject<Item> CRACK = ITEMS.register("crack", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> BLOCK_OF_CRACK = ITEMS.register("block_of_crack", () -> new BlockItem(BlockRegistrate.BLOCK_OF_CRACK.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> WISP_BOTTLE = ITEMS.register("wisp_bottle", () -> new Item(DEFAULT_PROPERTIES()));
@@ -58,11 +59,10 @@ public class ItemRegistry {
     public static final RegistryObject<Item> SCORCHED_EARTH = ITEMS.register("scorched_earth", () -> new BlockItem(BlockRegistrate.SCORCHED_EARTH.get(), DEFAULT_PROPERTIES()));
 
     public static final RegistryObject<Item> UI_TEST_BLOCK = ITEMS.register("ui_test_block", () -> new BlockItem(BlockRegistrate.UI_TEST_BLOCK.get(), DEFAULT_PROPERTIES()));
-
+    */
     public static class ClientOnly {
 
         public static void registerParticleEmitters(FMLClientSetupEvent event) {
-            Set<RegistryObject<Item>> items = new HashSet<>(ITEMS.getEntries());
             registerItemParticleEmitter((s, x, y, order) -> {
                 Random random = Minecraft.getInstance().level.random;
                 if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
@@ -81,7 +81,7 @@ public class ItemRegistry {
                             .overwriteAnimator(SimpleParticleOptions.Animator.LAST_INDEX)
                             .repeat(x, y - 0.25f, 1);
                 }
-            }, CRACK.get(), BLOCK_OF_CRACK.get());
+            }, ItemRegistrate.CRACK.get(), BlockRegistrate.BLOCK_OF_CRACK.get().asItem());
         }
     }
 }
