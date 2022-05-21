@@ -28,7 +28,7 @@ public class AnchorRenderer implements BlockEntityRenderer<AnchorBlockEntity> {
         VertexConsumer beamConsumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
         poseStack.pushPose();
         blockEntityIn.nearbyAnchors.forEach(anchor -> {
-            VFXBuilders.createWorld().setOffset(0.5f, 0.5f, 0.5f).renderBeam(beamConsumer, poseStack, BlockHelper.fromBlockPos(blockEntityIn.getBlockPos()), BlockHelper.fromBlockPos(anchor.getBlockPos()), 0.1f);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setOffset(0.5f, 0.5f, 0.5f).renderBeam(beamConsumer, poseStack, BlockHelper.fromBlockPos(blockEntityIn.getBlockPos()), BlockHelper.fromBlockPos(anchor.getBlockPos()), 0.1f);
         });
         poseStack.popPose();
     }

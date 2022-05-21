@@ -3,15 +3,22 @@ package com.sammy.fufo.client.renderers.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.common.blockentity.OrbBlockEntity;
+import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
 import java.awt.*;
 
+import static com.sammy.fufo.FufoMod.fufoPath;
+import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
-public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
+
+public class OrbRenderer<T extends OrbBlockEntity> implements BlockEntityRenderer<T> {
     public OrbRenderer(BlockEntityRendererProvider.Context context) {
     }
 
@@ -41,25 +48,19 @@ public class OrbRenderer implements BlockEntityRenderer<OrbBlockEntity> {
 //    });
 
     @Override
-    public void render(OrbBlockEntity blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         poseStack.pushPose();
         poseStack.translate(0.5f, 0.5f, 0.5f);
         renderOrb(poseStack, Color.YELLOW, Color.CYAN, Color.YELLOW);
         poseStack.popPose();
     }
 
+    private static final ResourceLocation TEST = fufoPath("textures/vfx/uv_test.png");
+    public static final RenderType TEST_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(TEST);
+
     public static void renderOrb(PoseStack poseStack, Color primaryColor, Color secondaryColor, Color trinaryColor) {
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-
-//        float scale = 0.4f;
-//        VertexConsumer primary = DELAYED_RENDER.getBuffer(ORB_NOISE_TYPE);
-//        BUILDER.setColor(primaryColor.getRed(), primaryColor.getGreen(), primaryColor.getBlue(), 200).renderQuad(primary, poseStack, scale, scale);
-//        scale = 0.5f;
-//        VertexConsumer secondary = DELAYED_RENDER.getBuffer(SECONDARY_ORB_NOISE_TYPE);
-//        BUILDER.setColor(secondaryColor.getRed(), secondaryColor.getGreen(), secondaryColor.getBlue(), 140).renderQuad(secondary, poseStack, scale, scale);
-//        scale = 0.6f;
-//        VertexConsumer trinary = DELAYED_RENDER.getBuffer(TRINARY_ORB_NOISE_TYPE);
-//        BUILDER.setColor(trinaryColor.getRed(), trinaryColor.getGreen(), trinaryColor.getBlue(), 80).renderQuad(trinary, poseStack, scale, scale);
+        VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setAlpha(0.5f).renderQuad(DELAYED_RENDER.getBuffer(TEST_TYPE), poseStack, 1);
     }
 }
