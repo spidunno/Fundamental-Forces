@@ -4,11 +4,11 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
+  "vertex": "sobel",
   "fragment": "fufo:vertical_bloom",
+  "attributes": [ "Position" ],
   "samplers": [
-    { "name": "texture0" },
-    { "name": "texture1" },
-    { "name": "texture2" }
+    { "name": "DiffuseSampler" }
   ],
   "uniforms": [
     { "name": "Brightness", "type":  "float", "count":  1, "values": [0.65]},

@@ -1,30 +1,30 @@
 #version 330
 
-uniform sampler2D texture0;
+uniform sampler2D DiffuseSampler;
 
-uniform vec2 ScreenSize;
+in vec2 texCoord;
+in vec2 oneTexel;
 
-out vec4 outColor;
+uniform vec2 InSize;
+
+uniform float Brightness; // the higher the brighter the glow
+uniform int KernelSize; // the higher the taller the blur (and thus glow)
+uniform float BlurDeviation; // standard deviation of blur. higher, blurrier
+
+out vec4 fragColor;
 
 float gaussian(float x)
 {
-	float s = 2 * 3.5 * 3.5;
-	return 1.0 / sqrt(s * radians(180)) * exp(-x * x / s);
+    float s = 2 * BlurDeviation * BlurDeviation;
+    return 1.0 / sqrt(s * 3.14) * exp(-(x * x / s));
 }
 
 void main()
 {
-    vec2 uv = gl_FragCoord.xy / ScreenSize;
-    vec2 dUV = 1.0 / ScreenSize;
-    vec4 col = texture(texture0, uv) * gaussian(0);
-    
-    for (int i = 1; i < 32; i++)
-    {
-    	vec2 offset = vec2(dUV.x * i, 0.0);
-    	float weight = gaussian(i);
-    	col += texture(texture0, uv + offset) * weight;
-    	col += texture(texture0, uv - offset) * weight;
-    }
-    
-    outColor = col;
+    vec4 total;
+
+    for (int i = -KernelSize; i <= KernelSize; i++)
+    total += texture(DiffuseSampler, texCoord + vec2(oneTexel.x * i, 0.0)) * gaussian(i);
+
+    outColor = total * Brightness;
 }
