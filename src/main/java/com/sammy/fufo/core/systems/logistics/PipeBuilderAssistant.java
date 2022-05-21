@@ -2,6 +2,7 @@ package com.sammy.fufo.core.systems.logistics;
 
 import com.sammy.fufo.common.block.PipeAnchorBlock;
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.magic.BlockSpell;
 import com.sammy.ortus.handlers.GhostBlockHandler;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;

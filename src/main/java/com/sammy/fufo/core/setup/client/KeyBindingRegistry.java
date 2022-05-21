@@ -2,7 +2,7 @@ package com.sammy.fufo.core.setup.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.core.data.SpaceModLang;
+import com.sammy.fufo.core.data.LangHelpers;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.settings.KeyConflictContext;
@@ -17,7 +17,7 @@ public class KeyBindingRegistry {
     public static KeyMapping swapHotbar;
 
     public static void registerKeyBinding(FMLClientSetupEvent event) {
-        swapHotbar = registerKeyBinding(new KeyMapping(SpaceModLang.getKey("swapHotbar"), KeyConflictContext.IN_GAME, KeyModifier.NONE, getKey(GLFW.GLFW_KEY_Z), CATEGORY));
+        swapHotbar = registerKeyBinding(new KeyMapping(LangHelpers.getKey("swapHotbar"), KeyConflictContext.IN_GAME, KeyModifier.NONE, getKey(GLFW.GLFW_KEY_Z), CATEGORY));
     }
 
     public static KeyMapping registerKeyBinding(KeyMapping key) {

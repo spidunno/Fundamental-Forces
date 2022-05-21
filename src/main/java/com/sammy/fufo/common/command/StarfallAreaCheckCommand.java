@@ -2,7 +2,7 @@ package com.sammy.fufo.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.sammy.fufo.common.worldevents.starfall.StarfallActor;
-import com.sammy.fufo.core.data.SpaceModLang;
+import com.sammy.fufo.core.data.LangHelpers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;
@@ -25,23 +25,23 @@ public class StarfallAreaCheckCommand {
                         boolean blocks = StarfallActor.blockCheck(level, StarfallActor.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.success")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.report.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.report.failure")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.report.failure")), true);
 
                         }
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);
                         if (heightmap) {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.heightmap.success")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.heightmap.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.heightmap.failure")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.heightmap.failure")), true);
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);
                         if (blocks) {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.blocktag.success")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.blocktag.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(SpaceModLang.getCommand("checkarea.blocktag.failure")), true);
+                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.blocktag.failure")), true);
                         }
 
                         source.sendSuccess(new TextComponent("--------------------------------------------"), true);

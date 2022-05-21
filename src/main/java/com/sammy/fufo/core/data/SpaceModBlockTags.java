@@ -1,7 +1,6 @@
-package com.sammy.fufo.core.data;
+/*package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
 import com.sammy.fufo.core.setup.content.block.BlockTagRegistry;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import com.sammy.ortus.systems.block.OrtusThrowawayBlockData;
@@ -85,8 +84,8 @@ public class SpaceModBlockTags extends BlockTagsProvider {
     private Block[] getModBlocks(Predicate<Block> predicate)
     {
         List<Block> ret = new ArrayList<>(Collections.emptyList());
-        BlockRegistry.BLOCKS.getEntries().stream()
+        AllBlocks.BLOCKS.getEntries().stream()
                 .filter(b -> predicate.test(b.get())).forEach(b -> ret.add(b.get()));
         return ret.toArray(new Block[0]);
     }
-}
+}*/

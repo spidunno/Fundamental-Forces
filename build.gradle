@@ -10,12 +10,17 @@ buildscript {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
         classpath 'org.parchmentmc:librarian:1.+'
     }
+
+}
+plugins {
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
+
 
 version = "${project.minecraftVersion}-${project.modVersion}"
 group = "com.${project.groupId}.${project.modId}"
@@ -105,9 +110,32 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven { // Registrate
+        url "https://maven.tterrag.com/"
+    }
+    mavenLocal()
 }
+
+
+configurations {
+    shade
+}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+    relocate 'com.tterrag.registrate', 'com.sammy.fufo.repack.registrate'
+}
+
+reobf {
+    shadowJar {}
+}
+
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
+
+    def registrate = "com.tterrag.registrate:Registrate:${registrateVersion}"
+    implementation fg.deobf(registrate)
+    shade registrate
 
     if (System.getProperty("idea.sync.active") != "true") {
         annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
@@ -157,3 +185,5 @@ publishing {
         }
     }
 }
+
+
