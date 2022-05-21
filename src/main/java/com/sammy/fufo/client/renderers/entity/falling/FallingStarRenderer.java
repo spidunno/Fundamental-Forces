@@ -62,7 +62,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             TextureSurgeon.operate(new DynamicTexture(fufoPath("textures/vfx/light_trail.png"), 256), VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance);
             test = false;
         }
-        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
 //        ArrayList<Vec3> positions =  DataHelper.rotatingRadialOffsets(Vec3.ZERO, 4,80, 0,1);
 //        for (int i = 0; i < colors.length; i++) {
 //            int finalI = i;

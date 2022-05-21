@@ -40,7 +40,7 @@ public class UIRenderer implements BlockEntityRenderer<UITestBlockEntity> {
             Quaternion Q = new Quaternion(cross.x(), cross.y(), cross.z(), 1.0f+(float)pos.dot(player));
             Q.normalize();
             pPoseStack.mulPose(Q);
-            VFXBuilders.createWorld().setOffset(0.5f,1.5f,0.5f).renderQuad(consumer, pPoseStack, 0.75f, 0.4f).setColor(Color.WHITE).setAlpha(1);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setOffset(0.5f,1.5f,0.5f).renderQuad(consumer, pPoseStack, 0.75f, 0.4f).setColor(Color.WHITE).setAlpha(1);
         }
         pPoseStack.popPose();
     }

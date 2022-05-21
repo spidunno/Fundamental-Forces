@@ -40,7 +40,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float beamLength = 20f;
         float beamWidth = 4f;
         float flareSize = 2f;
-        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld();
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
         Vec3 motion = instance.motion.add(instance.motion.multiply(instance.speed * partialTicks, instance.speed * partialTicks, instance.speed * partialTicks));

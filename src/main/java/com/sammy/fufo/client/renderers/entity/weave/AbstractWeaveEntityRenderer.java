@@ -76,7 +76,7 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             Vec3 start = Vec3.atCenterOf(p.getFirst());
             ps.translate(0, -0.85, 0);
             Vec3 end = Vec3.atCenterOf(p.getSecond());
-            VFXBuilders.createWorld().renderBeam(consumer, ps, start, end, 0.04f).setColor(Color.YELLOW);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().renderBeam(consumer, ps, start, end, 0.04f).setColor(Color.YELLOW);
             ps.translate(0, 0.85, 0);
         });
         ps.popPose();

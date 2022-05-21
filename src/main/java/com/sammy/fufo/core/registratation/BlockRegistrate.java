@@ -19,17 +19,19 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
 public class BlockRegistrate {
-    private static Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(ContentTab::get);
+    private static final Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(ContentTab::get);
+
+    @SuppressWarnings("unchecked")
     public static <T extends SlabBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> slab(RegistryEntry<? extends Block> parent) {
         return (ctx, p) -> p.slabBlock(ctx.getEntry(), p.blockTexture(parent.get()), p.blockTexture(parent.get()));
     }
+    @SuppressWarnings("unchecked")
     public static <T extends StairBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> stairs(RegistryEntry<? extends Block> parent) {
         return (ctx, p) -> p.stairsBlock(ctx.getEntry(), p.blockTexture(parent.get()));
     }
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = simpleBlock("block_of_crack",Block::new,
             new OrtusBlockProperties(Material.METAL, MaterialColor.FIRE).needsPickaxe().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).isRedstoneConductor(Blocks::never));
-
 
     public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = simpleBlock("force_orb",OrbBlock::new,
             new OrtusBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14));
@@ -54,7 +56,6 @@ public class BlockRegistrate {
 
     public static final BlockEntry<Block> DEPLETED_ORTUSITE = simpleBlock("depleted_ortusite",Block::new,
             new OrtusBlockProperties(Material.STONE, MaterialColor.STONE).sound(SoundType.DRIPSTONE_BLOCK).requiresCorrectToolForDrops().strength(1.25F, 9.0F));
-
 
     private static final OrtusBlockProperties CHARRED_ROCK_PROPERTIES = new OrtusBlockProperties(Material.STONE, MaterialColor.STONE).needsPickaxe().sound(SoundType.BASALT).requiresCorrectToolForDrops().strength(1.5F, 9.0F);
     private static final NonNullUnaryOperator<BlockBehaviour.Properties> SHAPE_CHARRED_ROCK_PROPERTIES = (properties) -> CHARRED_ROCK_PROPERTIES;
