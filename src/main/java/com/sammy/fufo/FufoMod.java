@@ -53,8 +53,8 @@ public class FufoMod {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
         BlockRegistrate.register();
-        BlockEntityRegistrate.register();
         ItemRegistrate.register();
+        BlockEntityRegistrate.register();
         CommandRegistry.registerArgumentTypes();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);

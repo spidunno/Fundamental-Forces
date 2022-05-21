@@ -1,5 +1,6 @@
 package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.client.renderers.block.ArrayRenderer;
 import com.sammy.fufo.common.blockentity.*;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,6 +16,8 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().blockEntity("orb", OrbBlockEntity::new).register();
     public static final BlockEntityEntry<BlockEntity> METEOR_FLAME =
             FufoMod.registrate().blockEntity("meteor_flame", MeteorFlameBlockEntity::new).register();
+    public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
+            FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
 
     public static void register() {}
 }

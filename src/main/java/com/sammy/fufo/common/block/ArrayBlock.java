@@ -2,6 +2,7 @@ package com.sammy.fufo.common.block;
 
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
 import com.sammy.fufo.common.blockentity.ArrayBlockEntity;
+import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
@@ -35,13 +36,14 @@ import java.util.function.Predicate;
 
 public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> {
 
-    public static final VoxelShape SHAPE = Block.box(5, 0, 0, 11, 11, 5);
+    public static final VoxelShape SHAPE = Block.box(5, 5, 5, 11, 11, 11);
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public ArrayBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
+
 
 
     @Override

@@ -5,6 +5,8 @@ import com.sammy.fufo.common.block.*;
 import com.sammy.fufo.common.blockentity.*;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
+import com.sammy.ortus.systems.block.OrtusEntityBlock;
+import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -14,9 +16,12 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+
+import java.util.function.Supplier;
 
 public class BlockRegistrate {
     private static Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(ContentTab::get);
@@ -42,6 +47,8 @@ public class BlockRegistrate {
 
     public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST_BLOCK = simpleBlock("ui_test_block",UITestBlock::new,
             new OrtusBlockProperties(Material.STONE,MaterialColor.COLOR_GRAY).sound(SoundType.STONE));
+
+    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = simpleBlock("crude_array", (props) -> (ArrayBlock) new ArrayBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), new OrtusBlockProperties(Material.HEAVY_METAL,MaterialColor.COLOR_BROWN).sound(SoundType.LODESTONE).isCutoutLayer());
 
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = simpleBlock("meteor_fire",MeteorFlameBlock::new,
             new OrtusBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15));
@@ -104,6 +111,7 @@ public class BlockRegistrate {
                 .simpleItem()
                 .register();
     }
+
 
     /** here so java doesnt ignore the class */
     public static void register() {}

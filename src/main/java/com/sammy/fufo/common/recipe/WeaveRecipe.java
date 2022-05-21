@@ -248,13 +248,13 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
                 start.addProperty("y", entry.getKey().getFirst().getY());
                 start.addProperty("z", entry.getKey().getFirst().getZ());
 
-                bindingObject.add("start", start);
 
                 JsonObject end = new JsonObject();
                 end.addProperty("x", entry.getKey().getSecond().getX());
                 end.addProperty("y", entry.getKey().getSecond().getY());
                 end.addProperty("z", entry.getKey().getSecond().getZ());
 
+                bindingObject.add("start", start);
                 bindingObject.add("end", end);
 
                 bindings.add(bindingObject);
