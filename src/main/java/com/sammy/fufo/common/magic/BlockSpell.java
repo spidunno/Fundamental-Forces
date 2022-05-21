@@ -16,6 +16,7 @@ public class BlockSpell extends SpellType {
 
     public BlockSpell(String id, Supplier<Block> blockSupplier) {
         super(id);
+        System.out.println(blockSupplier.toString());
         this.blockSupplier = blockSupplier;
     }
 

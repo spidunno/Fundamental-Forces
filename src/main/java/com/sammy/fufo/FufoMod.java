@@ -3,6 +3,9 @@ package com.sammy.fufo;
 import com.sammy.fufo.config.ClientConfig;
 import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.data.*;
+import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
+import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.client.FufoParticleRegistry;
 import com.sammy.fufo.core.setup.content.SoundRegistry;
 import com.sammy.fufo.core.setup.client.FufoTextureGrabber;
@@ -48,6 +51,10 @@ public class FufoMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+
+        BlockRegistrate.register();
+        BlockEntityRegistrate.register();
+        ItemRegistrate.register();
         CommandRegistry.registerArgumentTypes();
         EnchantmentRegistry.ENCHANTMENTS.register(modBus);
         ItemRegistry.ITEMS.register(modBus);

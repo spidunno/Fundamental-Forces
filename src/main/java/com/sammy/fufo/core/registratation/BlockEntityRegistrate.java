@@ -15,4 +15,6 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().blockEntity("orb", OrbBlockEntity::new).register();
     public static final BlockEntityEntry<BlockEntity> METEOR_FLAME =
             FufoMod.registrate().blockEntity("meteor_flame", MeteorFlameBlockEntity::new).register();
+
+    public static void register() {}
 }

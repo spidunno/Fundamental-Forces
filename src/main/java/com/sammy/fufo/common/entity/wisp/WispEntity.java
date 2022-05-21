@@ -2,9 +2,7 @@ package com.sammy.fufo.common.entity.wisp;
 
 import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
-import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.ortus.helpers.ColorHelper;
-import com.sammy.ortus.helpers.DataHelper;
 import com.sammy.ortus.systems.easing.Easing;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -28,7 +26,6 @@ import net.minecraftforge.network.NetworkHooks;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class WispEntity extends Entity {
 

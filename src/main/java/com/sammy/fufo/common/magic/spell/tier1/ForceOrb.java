@@ -7,4 +7,4 @@ public class ForceOrb extends BlockSpell {
     public ForceOrb() {
         super("force_orb", BlockRegistrate.FORCE_ORB::get);
     }
-};
+}

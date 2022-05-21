@@ -17,8 +17,7 @@ public class ClientSetupEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         WorldEventRenderers.registerRenderers(event);
         KeyBindingRegistry.registerKeyBinding(event);
-        //TODO remove this temp commenting
-        //ItemRegistry.ClientOnly.registerParticleEmitters(event);
+        ItemRegistry.ClientOnly.registerParticleEmitters(event);
         FireEffectTypeRegistry.ClientOnly.clientSetup(event);
     }
     @SubscribeEvent
