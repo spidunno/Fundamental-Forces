@@ -43,7 +43,7 @@ public class ArrayRenderer implements BlockEntityRenderer<ArrayBlockEntity> {
         Vec3 d = player.subtract(center);
 
         // Find angle between start & end in yaw
-        float yaw = (float) Math.toDegrees(Math.atan2(endYaw.x - startYaw.x, endYaw.z - startYaw.z));
+        float yaw = (float) Math.toDegrees(Math.atan2(endYaw.x - startYaw.x, endYaw.z - startYaw.z)) + 90;
 
         // Find angle between start & end in pitch
         float pitch = (float) Math.toDegrees(Math.atan2(Math.sqrt(d.z * d.z + d.x * d.x), d.y) + Math.PI);
@@ -52,13 +52,13 @@ public class ArrayRenderer implements BlockEntityRenderer<ArrayBlockEntity> {
 
         // doubling to account for how quats work
         Q.mul(new Quaternion(new Vector3f(0.0f, 1.0f, 0.0f), yaw * 2, true));
-        Q.mul(new Quaternion(new Vector3f(1.0f, 0.0f, 0.0f), -pitch + 90, true));
+        Q.mul(new Quaternion(new Vector3f(1.0f, 0.0f, 0.0f), pitch + 90, true));
 
 //        pPoseStack.translate(-pBlockEntity.pos);
         pPoseStack.translate(0.5, 1.5, 0.5);
         pPoseStack.mulPose(Q);
         pPoseStack.scale(0.5f, 0.5f, 0.5f);
-        VFXBuilders.createWorld().setColor(Color.ORANGE).setAlpha(1).renderQuad(consumer, pPoseStack, 1.0f, 1.0f);
+        VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(Color.ORANGE).setAlpha(0.9f).renderQuad(consumer, pPoseStack, 1.0f, 1.0f);
         pPoseStack.popPose();
     }
 }
