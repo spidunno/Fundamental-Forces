@@ -28,6 +28,7 @@ import static com.sammy.fufo.core.setup.server.PacketRegistry.INSTANCE;
 public class FufoPlayerDataCapability implements OrtusCapability {
 
     //shove all player data here, use PlayerDataCapability.getCapability(player) to access data.
+    //TODO implement system to store progression unlocks (including runes)
 
     public static Capability<FufoPlayerDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });

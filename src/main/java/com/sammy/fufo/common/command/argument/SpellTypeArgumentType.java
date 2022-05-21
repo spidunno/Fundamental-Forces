@@ -7,7 +7,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import com.sammy.fufo.core.data.SpaceModLang;
+import com.sammy.fufo.core.data.LangHelpers;
 import com.sammy.fufo.core.setup.content.magic.SpellTypeRegistry;
 import net.minecraft.network.chat.TranslatableComponent;
 
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class SpellTypeArgumentType implements ArgumentType<String> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(SpaceModLang.getCommandOutput("error.spell.type.result")));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(LangHelpers.getCommandOutput("error.spell.type.result")));
 
     public SpellTypeArgumentType() {
     }

@@ -2,12 +2,13 @@ package com.sammy.fufo.core.setup.content.item;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.item.DevTool;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
+import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import com.sammy.ortus.systems.rendering.particle.ParticleRenderTypes;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleOptions;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -32,37 +33,36 @@ public class ItemRegistry {
     public static Item.Properties GEAR_PROPERTIES() {
         return new Item.Properties().tab(ContentTab.INSTANCE).stacksTo(1);
     }
-
+    /*
     public static final RegistryObject<Item> CRACK = ITEMS.register("crack", () -> new Item(DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> BLOCK_OF_CRACK = ITEMS.register("block_of_crack", () -> new BlockItem(BlockRegistry.BLOCK_OF_CRACK.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> BLOCK_OF_CRACK = ITEMS.register("block_of_crack", () -> new BlockItem(BlockRegistrate.BLOCK_OF_CRACK.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> WISP_BOTTLE = ITEMS.register("wisp_bottle", () -> new Item(DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> ORTUSITE = ITEMS.register("ortusite", () -> new BlockItem(BlockRegistry.ORTUSITE.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> ANCHOR = ITEMS.register("anchor", () -> new BlockItem(BlockRegistry.ANCHOR.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> BURNER_EXTRACTOR = ITEMS.register("burner_extractor", () -> new BlockItem(BlockRegistry.BURNER_EXTRACTOR.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> DEPLETED_ORTUSITE = ITEMS.register("depleted_ortusite", () -> new BlockItem(BlockRegistry.DEPLETED_ORTUSITE.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> ORTUSITE = ITEMS.register("ortusite", () -> new BlockItem(BlockRegistrate.ORTUSITE.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> ANCHOR = ITEMS.register("anchor", () -> new BlockItem(BlockRegistrate.ANCHOR.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> BURNER_EXTRACTOR = ITEMS.register("burner_extractor", () -> new BlockItem(BlockRegistrate.BURNER_EXTRACTOR.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> DEPLETED_ORTUSITE = ITEMS.register("depleted_ortusite", () -> new BlockItem(BlockRegistrate.DEPLETED_ORTUSITE.get(), DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ORTUSITE_CHUNK = ITEMS.register("ortusite_chunk", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> ASTRAL_SHARD = ITEMS.register("astral_shard", () -> new Item(DEFAULT_PROPERTIES()));
     public static final RegistryObject<Item> DEV_TOOL = ITEMS.register("dev_tool", () -> new DevTool(GEAR_PROPERTIES()));
 
-    public static final RegistryObject<Item> CHARRED_ROCK = ITEMS.register("charred_rock", () -> new BlockItem(BlockRegistry.CHARRED_ROCK.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK = ITEMS.register("polished_charred_rock", () -> new BlockItem(BlockRegistry.POLISHED_CHARRED_ROCK.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> CHARRED_ROCK = ITEMS.register("charred_rock", () -> new BlockItem(BlockRegistrate.CHARRED_ROCK.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK = ITEMS.register("polished_charred_rock", () -> new BlockItem(BlockRegistrate.POLISHED_CHARRED_ROCK.get(), DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> CHARRED_ROCK_SLAB = ITEMS.register("charred_rock_slab", () -> new BlockItem(BlockRegistry.CHARRED_ROCK_SLAB.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK_SLAB = ITEMS.register("polished_charred_rock_slab", () -> new BlockItem(BlockRegistry.POLISHED_CHARRED_ROCK_SLAB.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> CHARRED_ROCK_SLAB = ITEMS.register("charred_rock_slab", () -> new BlockItem(BlockRegistrate.CHARRED_ROCK_SLAB.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK_SLAB = ITEMS.register("polished_charred_rock_slab", () -> new BlockItem(BlockRegistrate.POLISHED_CHARRED_ROCK_SLAB.get(), DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> CHARRED_ROCK_STAIRS = ITEMS.register("charred_rock_stairs", () -> new BlockItem(BlockRegistry.CHARRED_ROCK_STAIRS.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK_STAIRS = ITEMS.register("polished_charred_rock_stairs", () -> new BlockItem(BlockRegistry.POLISHED_CHARRED_ROCK_STAIRS.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> CHARRED_ROCK_STAIRS = ITEMS.register("charred_rock_stairs", () -> new BlockItem(BlockRegistrate.CHARRED_ROCK_STAIRS.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> POLISHED_CHARRED_ROCK_STAIRS = ITEMS.register("polished_charred_rock_stairs", () -> new BlockItem(BlockRegistrate.POLISHED_CHARRED_ROCK_STAIRS.get(), DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> VOLCANIC_GLASS = ITEMS.register("volcanic_glass", () -> new BlockItem(BlockRegistry.VOLCANIC_GLASS.get(), DEFAULT_PROPERTIES()));
-    public static final RegistryObject<Item> SCORCHED_EARTH = ITEMS.register("scorched_earth", () -> new BlockItem(BlockRegistry.SCORCHED_EARTH.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> VOLCANIC_GLASS = ITEMS.register("volcanic_glass", () -> new BlockItem(BlockRegistrate.VOLCANIC_GLASS.get(), DEFAULT_PROPERTIES()));
+    public static final RegistryObject<Item> SCORCHED_EARTH = ITEMS.register("scorched_earth", () -> new BlockItem(BlockRegistrate.SCORCHED_EARTH.get(), DEFAULT_PROPERTIES()));
 
-    public static final RegistryObject<Item> UI_TEST_BLOCK = ITEMS.register("ui_test_block", () -> new BlockItem(BlockRegistry.UI_TEST_BLOCK.get(), DEFAULT_PROPERTIES()));
-
+    public static final RegistryObject<Item> UI_TEST_BLOCK = ITEMS.register("ui_test_block", () -> new BlockItem(BlockRegistrate.UI_TEST_BLOCK.get(), DEFAULT_PROPERTIES()));
+    */
     public static class ClientOnly {
 
         public static void registerParticleEmitters(FMLClientSetupEvent event) {
-            Set<RegistryObject<Item>> items = new HashSet<>(ITEMS.getEntries());
             registerItemParticleEmitter((s, x, y, order) -> {
                 Random random = Minecraft.getInstance().level.random;
                 if (Minecraft.getInstance().level.getGameTime() % 6L == 0) {
@@ -81,7 +81,7 @@ public class ItemRegistry {
                             .overwriteAnimator(SimpleParticleOptions.Animator.LAST_INDEX)
                             .repeat(x, y - 0.25f, 1);
                 }
-            }, CRACK.get(), BLOCK_OF_CRACK.get());
+            }, ItemRegistrate.CRACK.get(), BlockRegistrate.BLOCK_OF_CRACK.get().asItem());
         }
     }
 }

@@ -6,7 +6,7 @@ import com.sammy.fufo.common.recipe.WeaveRecipe;
 import com.sammy.fufo.core.data.builder.ImpactConversionRecipeBuilder;
 import com.sammy.fufo.core.data.builder.ManaAbsorbtionRecipeBuilder;
 import com.sammy.fufo.core.data.builder.WeaveRecipeBuilder;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.fufo.core.systems.magic.weaving.BindingType;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
@@ -18,7 +18,6 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -43,18 +42,18 @@ public class SpaceModRecipes extends RecipeProvider {
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
 
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
+        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistrate.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
         new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "cobblestone_gravel");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "stone_charred_rock");
+        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(BlockRegistrate.CHARRED_ROCK.get())).build(consumer, "stone_charred_rock");
         new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(Blocks.GRAVEL)).build(consumer, "stone_gravel");
         new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.STONE), Ingredient.of(Blocks.COBBLESTONE)).build(consumer, "stone_cobblestone");
-        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
+        new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistrate.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
         new ImpactConversionRecipeBuilder(Ingredient.of(Tags.Items.NETHERRACK), Ingredient.of(Blocks.MAGMA_BLOCK)).build(consumer, "netherrack_magma_block");
 
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistry.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.GLASS), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "glass_volcanic_glass");
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistry.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
-        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Items.GRASS_BLOCK), Ingredient.of(BlockRegistry.SCORCHED_EARTH.get())).build(consumer, "grass_scorched_earth");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.COBBLESTONE), Ingredient.of(BlockRegistrate.CHARRED_ROCK.get())).build(consumer, "cobblestone_charred_rock");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.GLASS), Ingredient.of(BlockRegistrate.VOLCANIC_GLASS.get())).build(consumer, "glass_volcanic_glass");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Tags.Items.SAND), Ingredient.of(BlockRegistrate.VOLCANIC_GLASS.get())).build(consumer, "sand_volcanic_glass");
+        new ManaAbsorbtionRecipeBuilder(Ingredient.of(Items.GRASS_BLOCK), Ingredient.of(BlockRegistrate.SCORCHED_EARTH.get())).build(consumer, "grass_scorched_earth");
 
         new WeaveRecipeBuilder(
                 new WeaveRecipe(new IngredientBindable(Ingredient.of(Items.DIAMOND_SWORD)), FufoMod.fufoPath("glue"),"standard")

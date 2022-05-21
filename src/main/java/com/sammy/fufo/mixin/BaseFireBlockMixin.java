@@ -1,7 +1,7 @@
 package com.sammy.fufo.mixin;
 
 import com.sammy.fufo.common.block.FlammableMeteoriteBlock;
-import com.sammy.fufo.core.setup.content.block.BlockRegistry;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -26,7 +26,7 @@ public class BaseFireBlockMixin {
             ItemStack stack = itemEntity.getItem();
             if (pState.equals(pState.getBlock().defaultBlockState())) {
                 if (stack.is(ItemTagRegistry.METEOR_FLAME_CATALYST)) {
-                    pLevel.setBlock(pPos, BlockRegistry.METEOR_FIRE.get().defaultBlockState(), 3);
+                    pLevel.setBlock(pPos, BlockRegistrate.METEOR_FIRE.get().defaultBlockState(), 3);
                     ci.cancel();
                 }
             }

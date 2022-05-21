@@ -1,6 +1,7 @@
 package com.sammy.fufo.core.data;
 
 import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
 import net.minecraft.data.DataGenerator;
@@ -21,6 +22,6 @@ public class SpaceModItemTags extends ItemTagsProvider {
 
     @Override
     protected void addTags() {
-        tag(ItemTagRegistry.METEOR_FLAME_CATALYST).add(ItemRegistry.ORTUSITE_CHUNK.get());
+        tag(ItemTagRegistry.METEOR_FLAME_CATALYST).add(ItemRegistrate.ORTUSITE_CHUNK.get());
     }
 }

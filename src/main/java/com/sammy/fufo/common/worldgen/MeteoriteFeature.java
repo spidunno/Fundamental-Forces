@@ -56,7 +56,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
 //        ArrayList<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
 //        meteoriteSphere.forEach(b -> {
-//            level.setBlock(b, BlockRegistry.ASTEROID_ROCK.get().defaultBlockState(), 3);
+//            level.setBlock(b, AllBlocks.ASTEROID_ROCK.get().defaultBlockState(), 3);
 //        });
         return true;
     }
