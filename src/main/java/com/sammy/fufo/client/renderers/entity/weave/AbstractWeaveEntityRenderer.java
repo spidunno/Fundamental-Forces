@@ -1,6 +1,7 @@
 package com.sammy.fufo.client.renderers.entity.weave;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
@@ -9,6 +10,7 @@ import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,6 +23,11 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+
+import java.awt.*;
+
+import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEntity> {
 
@@ -62,6 +69,15 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
                 // idk what im doing here, something lol
             }
             ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
+        });
+        // render lines
+        weave.getLinks().forEach((p, t) -> {
+            VertexConsumer consumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
+            Vec3 start = Vec3.atCenterOf(p.getFirst());
+            ps.translate(0, -0.85, 0);
+            Vec3 end = Vec3.atCenterOf(p.getSecond());
+            VFXBuilders.createWorld().renderBeam(consumer, ps, start, end, 0.04f).setColor(Color.YELLOW);
+            ps.translate(0, 0.85, 0);
         });
         ps.popPose();
     }

@@ -85,6 +85,9 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
                             .randomMotion(0.005f, 0.005f)
                             .repeat(level, position().x()+offset.getX(), position().y()+offset.getY()+0.45f, position().z()+offset.getZ(), 1);
                 });
+                weave.getLinks().forEach((p, t) -> {
+
+                });
             }
         }
         super.tick();
