@@ -1,12 +1,23 @@
 package com.sammy.fufo.core.systems.magic.weaving;
 
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Dynamic;
+import com.mojang.serialization.JsonOps;
 import com.sammy.fufo.common.recipe.WeaveRecipe;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
+import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
+import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a weave of {@link Bindable}s, as part of a {@link WeaveRecipe}.
@@ -188,6 +199,123 @@ public abstract class Weave<T extends Weave> {
         final Weave other = (Weave) obj;
 
         return this.bindables.equals(other.bindables) && this.binds.equals(other.binds);
+    }
+
+    /**
+     * Writes this Weave to NBT
+     * @returns a {@link CompoundTag} containing the Weave's data
+     */
+    public CompoundTag serialize() {
+        CompoundTag tag = new CompoundTag();
+
+        ListTag bindablesTag = new ListTag();
+        for (Bindable bindable : bindables.values()) {
+            CompoundTag bindableTag = new CompoundTag();
+            CompoundTag sizeTag = new CompoundTag();
+            sizeTag.putInt("x", bindable.size().getX());
+            sizeTag.putInt("y", bindable.size().getY());
+            sizeTag.putInt("z", bindable.size().getZ());
+            CompoundTag locationTag = new CompoundTag();
+            locationTag.putInt("x", bindable.getLocation().getX());
+            locationTag.putInt("y", bindable.getLocation().getY());
+            locationTag.putInt("z", bindable.getLocation().getZ());
+            bindableTag.put("size", sizeTag);
+            bindableTag.put("location", locationTag);
+
+            if(bindable instanceof IngredientBindable) {
+                bindableTag.putString("type", "ingredient");
+                bindableTag.put("value", (CompoundTag) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, ((IngredientBindable) bindable).getIngredient().toJson()));
+            } else if(bindable instanceof EntityTypeBindable) {
+                bindableTag.putString("type", "entity_type");
+                CompoundTag valueTag = new CompoundTag();
+                valueTag.putString("entity", ((EntityTypeBindable) bindable).get().getRegistryName().toString());
+                bindableTag.put("value", valueTag);
+            } else if (bindable instanceof ItemStackBindable) {
+                bindableTag.putString("type", "item");
+                bindableTag.put("value", (CompoundTag) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, Ingredient.of(((ItemStackBindable) bindable).getItemStack()).toJson()));
+            }
+
+            bindablesTag.add(bindableTag);
+        }
+
+        tag.put("bindables", bindablesTag);
+
+        ListTag bindsTag = new ListTag();
+        for (Map.Entry<Pair<Vec3i, Vec3i>, BindingType> entry : getLinks().entrySet()) {
+            CompoundTag bindTag = new CompoundTag();
+
+            CompoundTag startTag = new CompoundTag();
+            startTag.putInt("x", entry.getKey().getFirst().getX());
+            startTag.putInt("y", entry.getKey().getFirst().getY());
+            startTag.putInt("z", entry.getKey().getFirst().getZ());
+
+            CompoundTag endTag = new CompoundTag();
+            endTag.putInt("x", entry.getKey().getSecond().getX());
+            endTag.putInt("y", entry.getKey().getSecond().getY());
+            endTag.putInt("z", entry.getKey().getSecond().getZ());
+
+            bindTag.put("start", startTag);
+            bindTag.put("end", endTag);
+            bindTag.putString("type", entry.getValue().id.toString());
+
+            bindsTag.add(bindTag);
+        }
+
+        tag.put("binds", bindsTag);
+
+        return tag;
+    }
+
+    /**
+     * Deserializes a Weave from NBT
+     */
+    public static Weave deserialize(CompoundTag tag) {
+        StandardWeave weave = null;
+
+        for (Tag bindableGeneralTag : tag.getList("bindables", Tag.TAG_COMPOUND)) {
+
+            Bindable bindable = null;
+
+            CompoundTag bindableTag = (CompoundTag) bindableGeneralTag;
+            CompoundTag sizeTag = bindableTag.getCompound("size");
+            CompoundTag locationTag = bindableTag.getCompound("location");
+
+            Vec3i size = new Vec3i(sizeTag.getInt("x"), sizeTag.getInt("y"), sizeTag.getInt("z"));
+            Vec3i location = new Vec3i(locationTag.getInt("x"), locationTag.getInt("y"), locationTag.getInt("z"));
+
+            if (bindableTag.getString("type").equals("ingredient")) {
+                Ingredient ingredient = Ingredient.fromJson(Dynamic.convert(NbtOps.INSTANCE, JsonOps.INSTANCE, bindableTag.getCompound("value")));
+                bindable = new IngredientBindable(size, ingredient);
+            } else if (bindableTag.getString("type").equals("entity")) {
+                EntityType<?> entityType = Registry.ENTITY_TYPE.get(new ResourceLocation(bindableTag.getCompound("value").getString("entity")));
+                bindable = new EntityTypeBindable(size, entityType);
+            } else if (bindableTag.getString("type").equals("item")) {
+                ItemStack ingredient = Ingredient.fromJson(Dynamic.convert(NbtOps.INSTANCE, JsonOps.INSTANCE, bindableTag.getCompound("value"))).getItems()[0];
+                bindable = new ItemStackBindable(size, ingredient);
+            }
+
+            if (weave == null) {
+                weave = new StandardWeave(bindable);
+            } else {
+                weave.add(location, bindable);
+            }
+        }
+
+        for (Tag bindTag : tag.getList("binds", Tag.TAG_COMPOUND)) {
+            CompoundTag bindTagCompound = (CompoundTag) bindTag;
+
+            CompoundTag startTag = bindTagCompound.getCompound("start");
+            CompoundTag endTag = bindTagCompound.getCompound("end");
+
+            Vec3i start = new Vec3i(startTag.getInt("x"), startTag.getInt("y"), startTag.getInt("z"));
+            Vec3i end = new Vec3i(endTag.getInt("x"), endTag.getInt("y"), endTag.getInt("z"));
+
+            ResourceLocation bindType = new ResourceLocation(bindTagCompound.getString("type"));
+
+            weave.link(start, end, new BindingType(bindType));
+        }
+
+        return weave;
     }
 
 }
