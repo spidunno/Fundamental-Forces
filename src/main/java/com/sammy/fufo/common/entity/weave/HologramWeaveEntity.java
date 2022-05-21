@@ -45,7 +45,7 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
         Bindable cob5 = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
         Bindable cob6 = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
         Bindable cob7 = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
-        Bindable cob8 = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
+        Bindable cob8 = new IngredientBindable(Ingredient.of(Tags.Items.INGOTS));
         Bindable wool = new IngredientBindable(Ingredient.of(ItemTags.WOOL));
         Bindable sword = new IngredientBindable(Ingredient.of(Items.DIAMOND_SWORD.getDefaultInstance()));
         BindingType type = new BindingType(new ResourceLocation("ortus:bingus"));

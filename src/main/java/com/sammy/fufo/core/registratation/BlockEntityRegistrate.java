@@ -1,5 +1,6 @@
 package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.client.renderers.block.UIRenderer;
 import com.sammy.fufo.common.blockentity.*;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import net.minecraft.world.level.block.entity.BlockEntity;
