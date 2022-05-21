@@ -51,8 +51,7 @@ public abstract class Bindable {
      */
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Bindable) {
-            Bindable bindable = (Bindable) other;
+        if (other instanceof Bindable bindable) {
             return bindable.getLocation().equals(location) && bindable.size().equals(size());
         }
         return false;
