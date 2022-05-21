@@ -30,7 +30,6 @@ import java.util.Map;
 
 public abstract class AbstractWeaveEntity extends Entity {
     public Weave<?> weave = new StandardWeave(new ItemStackBindable(Items.AIR.getDefaultInstance()));
-    public BlockPos pos;
 
     public AbstractWeaveEntity(EntityType<?> entity, Level level){
         super(entity, level);
@@ -47,18 +46,6 @@ public abstract class AbstractWeaveEntity extends Entity {
         return false;
     }
 
-    @Override
-    public CompoundTag serializeNBT() {
-        WeaveRecipe recipe = (WeaveRecipe) weave;
-        WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) RecipeTypeRegistry.WEAVE.get();
-        return serializer.toNBT(recipe);
-    }
-
-    @Override
-    public void deserializeNBT(CompoundTag nbt) {
-        WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) RecipeTypeRegistry.WEAVE.get();
-        this.weave = serializer.fromNBT((CompoundTag) nbt.get("Weave"));
-    }
 
     /**
      * (abstract) Protected helper method to read subclass entity data from NBT.
@@ -67,12 +54,12 @@ public abstract class AbstractWeaveEntity extends Entity {
      */
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
-
+        this.weave = Weave.deserialize(pCompound.getCompound("Weave"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
-
+        pCompound.put("Weave", weave.serialize());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
+import com.sammy.fufo.core.systems.magic.weaving.Bindable;
 import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
@@ -40,21 +41,28 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
         ps.pushPose();
         Weave<?> weave = entity.weave;
         ps.translate(0, 0.3D, 0);
-        weave.getBindables().forEach(b -> {
+        int i = 0;
+        for (Bindable b : weave.getBindables()) {
             Vec3i offset = b.getLocation();
             ps.translate(offset.getX(), offset.getY(), offset.getZ());
+            float fac = entity.tickCount + partialTicks + (5 * i);
             if (b instanceof ItemStackBindable itemStackBindable) {
                 if (!itemStackBindable.getItemStack().isEmpty()) {
                     ps.pushPose();
                     ps.scale(0.9f, 0.9f, 0.9f);
-                    ps.mulPose(Vector3f.YP.rotationDegrees((entity.level.getGameTime() + partialTicks) * 3));
+                    ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
+
                     this.itemRenderer.renderStatic(((ItemStackBindable) b).getItemStack(), ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
                     ps.popPose();
                 }
             } else if (b instanceof IngredientBindable ingredientBindable) {
                 ItemStack[] items = ingredientBindable.getIngredient().getItems();
                 if (items.length != 0) {
-                    // do something based on tick time
+                    ps.pushPose();
+                    ps.scale(0.9f, 0.9f, 0.9f);
+                    ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
+                    this.itemRenderer.renderStatic(items[(entity.tickCount / 20) % items.length], ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
+                    ps.popPose();
                 }
             } else if (b instanceof EntityTypeBindable entityTypeBindable) {
                 EntityType<?> entityType = entityTypeBindable.get();
@@ -62,7 +70,8 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
                 // idk what im doing here, something lol
             }
             ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
-        });
+            i++;
+        }
         ps.popPose();
     }
 
