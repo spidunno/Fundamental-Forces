@@ -13,12 +13,17 @@ import java.util.function.Supplier;
 
 public class FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
     private final UUID uuid;
+    public static final String STRING_ID ="SyncEnterCapabilityPacket";
+    public FufoPlayerCapabilitySyncPacket(CompoundTag tag) {
+        super(tag);
+        this.uuid = tag.getUUID(STRING_ID);
+    }
     public FufoPlayerCapabilitySyncPacket(UUID uuid, CompoundTag tag) {
         super(handleTag(uuid,tag));
         this.uuid = uuid;
     }
     public static CompoundTag handleTag(UUID id,CompoundTag tag){
-        tag.putUUID("SyncPlayerCapabilityPacket",id);
+        tag.putUUID(STRING_ID,id);
         return tag;
     }
 
