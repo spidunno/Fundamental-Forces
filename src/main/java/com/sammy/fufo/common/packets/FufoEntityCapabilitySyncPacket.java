@@ -1,16 +1,12 @@
 package com.sammy.fufo.common.packets;
 
 import com.sammy.fufo.common.capability.FufoEntityDataCapability;
-import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.ortus.network.packet.OrtusSyncPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 public class FufoEntityCapabilitySyncPacket extends OrtusSyncPacket {
