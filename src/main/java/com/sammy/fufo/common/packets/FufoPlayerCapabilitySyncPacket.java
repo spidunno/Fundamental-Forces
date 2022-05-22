@@ -1,7 +1,6 @@
 package com.sammy.fufo.common.packets;
 
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
-import com.sammy.ortus.capability.PlayerDataCapability;
 import com.sammy.ortus.network.packet.OrtusSyncPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;

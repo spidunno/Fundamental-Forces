@@ -1,5 +1,6 @@
 package com.sammy.fufo.core.setup.server;
 
+import com.sammy.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
 import com.sammy.fufo.common.packets.SyncFufoEntityCapabilityDataPacket;
 import com.sammy.fufo.common.packets.SyncFufoPlayerCapabilityDataPacket;
 import com.sammy.fufo.common.packets.SyncPlayerCapabilityDataServerPacket;
@@ -23,8 +24,9 @@ public class PacketRegistry {
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
         int index = 0;
-        SyncFufoPlayerCapabilityDataPacket.register(INSTANCE, index++);
-        SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
+        FufoPlayerCapabilitySyncPacket.register(INSTANCE,index++);
+        //SyncFufoPlayerCapabilityDataPacket.register(INSTANCE, index++);
+        //SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
         SyncFufoEntityCapabilityDataPacket.register(INSTANCE, index++);
         UpdateCooldownPacket.register(INSTANCE, index++);
     }
