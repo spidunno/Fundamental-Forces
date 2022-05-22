@@ -5,8 +5,8 @@ import net.minecraft.nbt.CompoundTag;
 import java.util.ArrayList;
 
 public class ProgressionHandler {
-    public ArrayList<String> unlockedProgress;
-    public ArrayList<String> unlockedRunes;
+    private final ArrayList<String> unlockedProgress;
+    private final ArrayList<String> unlockedRunes;
     public ProgressionHandler(){
         unlockedProgress = new ArrayList<>();
         unlockedRunes = new ArrayList<>();
@@ -34,5 +34,11 @@ public class ProgressionHandler {
 
         unlockedProgress.addAll(progressTag.getAllKeys());
         unlockedRunes.addAll(runeTag.getAllKeys());
+    }
+    public void unlockRune(String rune){
+        unlockedRunes.add(rune);
+    }
+    public void unlockProg(String prog){
+        unlockedProgress.add(prog);
     }
 }
