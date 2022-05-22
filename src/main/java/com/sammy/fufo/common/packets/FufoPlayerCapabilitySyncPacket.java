@@ -11,7 +11,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-public class FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
+public class
+FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
     private final UUID uuid;
     public static final String STRING_ID ="SyncPlayerCapabilityPacket";
     public FufoPlayerCapabilitySyncPacket(CompoundTag tag) {
