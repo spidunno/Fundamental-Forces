@@ -14,7 +14,7 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 public class FufoEntityCapabilitySyncPacket extends OrtusSyncPacket {
-    public static final String STRING_ID ="SyncEnterCapabilityPacket";
+    public static final String STRING_ID ="SyncEntityCapabilityPacket";
     private final int entityID;
     public FufoEntityCapabilitySyncPacket(CompoundTag tag) {
         super(tag);
