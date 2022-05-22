@@ -1,6 +1,7 @@
 package com.sammy.fufo.client.renderers.entity.weave;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
@@ -10,6 +11,7 @@ import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,10 +23,9 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.core.pattern.TextRenderer;
+import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEntity> {
 
@@ -63,6 +64,7 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
                 ItemStack[] items = ingredientBindable.getIngredient().getItems();
                 if (items.length != 0) {
                     ps.pushPose();
+                    ps.translate(0,-0.05D,0);
                     ps.scale(0.9f, 0.9f, 0.9f);
                     ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
                     this.itemRenderer.renderStatic(items[(entity.tickCount / 20) % items.length], ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
@@ -82,6 +84,14 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
             i++;
         }
+        weave.getLinks().forEach((link, type) -> {
+            ps.pushPose();
+            ps.translate(link.getFirst().getX(), link.getFirst().getY() + 0.1, link.getFirst().getZ());
+            VertexConsumer consumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().renderBeam(consumer, ps, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
+            ps.translate(-link.getFirst().getX(), -link.getFirst().getY() - 0.1, -link.getFirst().getZ());
+            ps.popPose();
+        });
         ps.popPose();
     }
 
