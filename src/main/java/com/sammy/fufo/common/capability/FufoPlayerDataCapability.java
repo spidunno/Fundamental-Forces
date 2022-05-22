@@ -3,6 +3,7 @@ package com.sammy.fufo.common.capability;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
+import com.sammy.fufo.core.handlers.ProgressionHandler;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.sammy.ortus.systems.capability.OrtusCapability;
@@ -36,6 +37,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
 
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
     public PipeBuilderAssistant pipeHandler = new PipeBuilderAssistant();
+    public ProgressionHandler progressHandler = new ProgressionHandler();
     public FufoPlayerDataCapability() {
     }
 
@@ -66,21 +68,21 @@ public class FufoPlayerDataCapability implements OrtusCapability {
 
     public static void playerClone(PlayerEvent.Clone event) {
         event.getOriginal().revive();
-        FufoPlayerDataCapability.getCapability(event.getOriginal()).ifPresent(o -> FufoPlayerDataCapability.getCapability(event.getPlayer()).ifPresent(c -> {
-            c.deserializeNBT(o.serializeNBT());
-        }));
+        FufoPlayerDataCapability.getCapability(event.getOriginal()).ifPresent(o -> FufoPlayerDataCapability.getCapability(event.getPlayer()).ifPresent(c -> c.deserializeNBT(o.serializeNBT())));
     }
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         hotbarHandler.serializeNBT(tag);
+        progressHandler.serializeNBT(tag);
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         hotbarHandler.deserializeNBT(tag);
+        progressHandler.deserializeNBT(tag);
     }
 
     public static void syncSelf(ServerPlayer player) {
