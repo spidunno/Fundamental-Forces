@@ -1,8 +1,7 @@
 package com.sammy.fufo.common.capability;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.packets.SyncFufoPlayerCapabilityDataPacket;
-import com.sammy.fufo.common.packets.SyncPlayerCapabilityDataServerPacket;
+import com.sammy.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
@@ -97,11 +96,11 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     }
 
     public static void sync(Player player, PacketDistributor.PacketTarget target) {
-        getCapability(player).ifPresent(c -> INSTANCE.send(target, new SyncFufoPlayerCapabilityDataPacket(player.getUUID(), c.serializeNBT())));
+        getCapability(player).ifPresent(c -> INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
     }
 
     public static void syncServer(Player player) {
-        getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.SERVER.noArg(), new SyncPlayerCapabilityDataServerPacket(player.getUUID(), c.serializeNBT())));
+        getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.SERVER.noArg(), new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
     }
 
     public static LazyOptional<FufoPlayerDataCapability> getCapability(Player player) {
