@@ -49,6 +49,19 @@ public class PlayerSpellHotbarHandler {
         }
     }
 
+    public static void playerInteractAir(PlayerInteractEvent.RightClickEmpty event) {
+        if(event.getHand().equals(InteractionHand.MAIN_HAND)) {
+            if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
+                FufoPlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
+                    if (c.hotbarHandler.open) {
+                        SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
+                        selectedSpell.castCommon(serverPlayer);
+                    }
+                });
+            }
+        }
+    }
+
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
