@@ -8,6 +8,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.phys.Vec3;
 
 import java.awt.*;
 import java.util.Random;
@@ -17,8 +18,8 @@ public class ProjectileSpell extends ElementAugmentedSpellType {
     public float baseDamage = new Random().nextFloat() * 10;
     public float baseSpeed = new Random().nextFloat() * 0.5f + 0.5f;
     public float baseRange = new Random().nextFloat();
-    public Color firstColor;
-    public Color secondColor;
+    public Color firstColor = new Color(16777215);
+    public Color secondColor = new Color(16777215);
     public int duration;
     public MagicElement element;
 
@@ -36,11 +37,19 @@ public class ProjectileSpell extends ElementAugmentedSpellType {
                 .setSecondColor(secondColor)
                 .setDuration(duration)
                 .setElement(element);
-        projectile.setPos(player.position().add(0, 1, 0));
+        projectile.setPos(player.getEyePosition());
+        projectile.fireImmune();
         //projectile.shootFromRotation(projectile, player.xRotO, player.yRotO, 0, -1, 0);
-        projectile.shoot(player.getLookAngle().x, player.getLookAngle().y, player.getLookAngle().z, -1, 0);
+        projectile.shoot(player.getLookAngle().x, player.getLookAngle().y, player.getLookAngle().z, 0, 0);
         player.level.addFreshEntity(projectile);
         player.swing(InteractionHand.MAIN_HAND, true);
+    }
+
+    public void setFirstColor(Color color) {
+        this.firstColor = color;
+    }
+    public void setSecondColor(Color color) {
+        this.secondColor = color;
     }
 
     public EntityType<SpellMissile> getSpellMissile() {

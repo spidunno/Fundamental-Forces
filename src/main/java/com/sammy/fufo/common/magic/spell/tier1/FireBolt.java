@@ -9,9 +9,9 @@ import java.awt.*;
 public class FireBolt extends ProjectileSpell {
     public FireBolt() {
         super("fire_bolt", ElementTypeRegistry.FIRE, EntityRegistry.SPELL_MISSILE.get());
+        setFirstColor(new Color(15427360));
+        setSecondColor(new Color(15575607));
         this.element = ElementTypeRegistry.FIRE;
         this.duration = 200;
-        this.firstColor = new Color(235,103,32);
-        this.secondColor = new Color(237,170,55);
     }
 }
