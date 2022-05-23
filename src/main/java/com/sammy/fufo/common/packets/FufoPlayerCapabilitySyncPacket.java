@@ -1,9 +1,11 @@
 package com.sammy.fufo.common.packets;
 
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
+import com.sammy.ortus.network.IPacketRegisterable;
 import com.sammy.ortus.network.packet.OrtusSyncPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -27,6 +29,10 @@ FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
         tag.putUUID(STRING_ID,id);
         return tag;
     }
+    public static FufoPlayerCapabilitySyncPacket decoder(FriendlyByteBuf buf){
+        return new FufoPlayerCapabilitySyncPacket(buf.readNbt());
+    }
+
 
     @Override
     public CompoundTag getClientTag(Supplier<NetworkEvent.Context> context) {

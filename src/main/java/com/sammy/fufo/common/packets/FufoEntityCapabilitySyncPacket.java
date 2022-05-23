@@ -4,6 +4,7 @@ import com.sammy.fufo.common.capability.FufoEntityDataCapability;
 import com.sammy.ortus.network.packet.OrtusSyncPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -23,6 +24,10 @@ public class FufoEntityCapabilitySyncPacket extends OrtusSyncPacket {
     public static CompoundTag handleTag(int id,CompoundTag tag){
         tag.putInt(STRING_ID,id);
         return tag;
+    }
+
+    public static FufoEntityCapabilitySyncPacket decoder(FriendlyByteBuf buf){
+       return new FufoEntityCapabilitySyncPacket(buf.readNbt());
     }
 
     @Override

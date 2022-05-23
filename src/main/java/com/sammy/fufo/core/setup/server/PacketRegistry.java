@@ -21,11 +21,11 @@ public class PacketRegistry {
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
         int index = 0;
-        FufoPlayerCapabilitySyncPacket.register(INSTANCE,index++);
+        FufoPlayerCapabilitySyncPacket.register(FufoPlayerCapabilitySyncPacket.class,FufoPlayerCapabilitySyncPacket::decoder,INSTANCE,index++);
         //SyncFufoPlayerCapabilityDataPacket.register(INSTANCE, index++);
         //SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
         //SyncFufoEntityCapabilityDataPacket.register(INSTANCE, index++);
-        FufoEntityCapabilitySyncPacket.register(INSTANCE,index++);
+        FufoEntityCapabilitySyncPacket.register(FufoEntityCapabilitySyncPacket.class,FufoEntityCapabilitySyncPacket::decoder,INSTANCE,index++);
         UpdateCooldownPacket.register(INSTANCE, index++);
     }
 }
