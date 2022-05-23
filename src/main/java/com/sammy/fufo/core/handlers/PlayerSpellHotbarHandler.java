@@ -6,10 +6,8 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.sammy.ortus.helpers.RenderHelper;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -76,20 +74,23 @@ public class PlayerSpellHotbarHandler {
 
 
     public CompoundTag serializeNBT(CompoundTag tag) {
+        CompoundTag spellTag = new CompoundTag();
         if (unlockedSpellHotbar) {
-            tag.putBoolean("unlockedSpellHotbar", true);
-            tag.putBoolean("spellHotbarOpen", open);
-            spellHotbar.serializeNBT(tag);
+            spellTag.putBoolean("unlockedSpellHotbar", true);
+            spellTag.putBoolean("spellHotbarOpen", open);
+            spellHotbar.serializeNBT(spellTag);
         }
+        tag.put("spellData", spellTag);
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
-        if (tag.contains("unlockedSpellHotbar")) {
+        CompoundTag spellTag = tag.getCompound("spellData");
+
+        if (spellTag.contains("unlockedSpellHotbar")) {
             unlockedSpellHotbar = true;
-            open = tag.getBoolean("spellHotbarOpen");
-            animationProgress = open ? 1 : 0;
-            spellHotbar.deserializeNBT(tag);
+            open = spellTag.getBoolean("spellHotbarOpen");
+            spellHotbar.deserializeNBT(spellTag);
         }
     }
 
@@ -181,7 +182,7 @@ public class PlayerSpellHotbarHandler {
                         barBuilder.setUVWithWidth(0, 0, 218, 28, 256f).setPositionWithWidth(left, top, 218, 28).draw(poseStack);
                         barBuilder.setUVWithWidth(0, 28, 28, 30, 256f).setPositionWithWidth(left + slot * 24 - 1, top - 1, 28, 30).draw(poseStack);
 
-                        barBuilder.setUVWithWidth(28, 28, 20, 21, 256f);
+                        barBuilder.setUVWithWidth(28, 28, 20, 22, 256f);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {

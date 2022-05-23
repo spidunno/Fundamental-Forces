@@ -38,6 +38,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
     public PipeBuilderAssistant pipeHandler = new PipeBuilderAssistant();
     public ProgressionHandler progressHandler = new ProgressionHandler();
+
     public FufoPlayerDataCapability() {
     }
 

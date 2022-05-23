@@ -1,5 +1,6 @@
 package com.sammy.fufo.core.eventhandlers;
 
+import com.sammy.fufo.client.renderers.entity.falling.FallingStarRenderer;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,6 +29,7 @@ public class ClientRuntimeEvents {
 
     @SubscribeEvent
     public static void renderTick(TickEvent.RenderTickEvent event) {
+        FallingStarRenderer.TextureSurgeon.renderTick(event);
     }
 
     @SubscribeEvent
