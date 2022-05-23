@@ -2,6 +2,7 @@ package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.block.ArrayRenderer;
 import com.sammy.fufo.client.renderers.block.OrbRenderer;
+import com.sammy.fufo.client.renderers.block.UIRenderer;
 import com.sammy.fufo.common.blockentity.*;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -11,7 +12,7 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();
 
     public static final BlockEntityEntry<UITestBlockEntity> UI_TEST_BLOCK =
-            FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).register();
+            FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST_BLOCK).register();
 
     public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =
             FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).register();
