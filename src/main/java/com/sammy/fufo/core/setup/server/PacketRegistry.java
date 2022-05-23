@@ -20,6 +20,7 @@ public class PacketRegistry {
     @SuppressWarnings("UnusedAssignment")
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
+        //update you gatdamn github!
         int index = 0;
         FufoPlayerCapabilitySyncPacket.register(FufoPlayerCapabilitySyncPacket.class,FufoPlayerCapabilitySyncPacket::decoder,INSTANCE,index++);
         //SyncFufoPlayerCapabilityDataPacket.register(INSTANCE, index++);
