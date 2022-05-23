@@ -51,6 +51,7 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
+        PlayerSpellHotbarHandler.playerInteractAir(event);
     }
 
     @SubscribeEvent

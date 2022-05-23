@@ -2,10 +2,12 @@ package com.sammy.fufo.core.setup.content.entity;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.entity.falling.FallingStarRenderer;
+import com.sammy.fufo.client.renderers.entity.magic.spell.tier0.MissileProjectileRenderer;
 import com.sammy.fufo.client.renderers.entity.weave.HologramWeaveEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wisp.WispEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wraith.StoneWraithRenderer;
 import com.sammy.fufo.common.entity.falling.FallingCrashpodEntity;
+import com.sammy.fufo.common.entity.magic.spell.tier0.SpellMissile;
 import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
 import com.sammy.fufo.common.entity.wraith.StoneWraith;
@@ -35,6 +37,9 @@ public class EntityRegistry {
 
     public static final RegistryObject<EntityType<HologramWeaveEntity>> HOLOGRAM_WEAVE = register("hologram_weave", EntityType.Builder.<HologramWeaveEntity>of((t,l) -> new HologramWeaveEntity(l), MobCategory.MISC).sized(1.0F,1.0F));
 
+    // SPELLS
+    public static final RegistryObject<EntityType<SpellMissile>> SPELL_MISSILE = register("force_missile", EntityType.Builder.<SpellMissile>of((t, l) -> new SpellMissile(l), MobCategory.MISC).sized(0.1F,0.1F));
+
 
     @SubscribeEvent
     public static void assignAttributes(EntityAttributeCreationEvent event) {
@@ -60,6 +65,7 @@ public class EntityRegistry {
             event.registerEntityRenderer(EntityRegistry.WISP.get(), WispEntityRenderer::new);
             event.registerEntityRenderer(EntityRegistry.STONE_WRAITH.get(), StoneWraithRenderer::new);
             event.registerEntityRenderer(EntityRegistry.HOLOGRAM_WEAVE.get(), HologramWeaveEntityRenderer::new);
+            event.registerEntityRenderer(EntityRegistry.SPELL_MISSILE.get(), MissileProjectileRenderer::new);
         }
     }
 }
