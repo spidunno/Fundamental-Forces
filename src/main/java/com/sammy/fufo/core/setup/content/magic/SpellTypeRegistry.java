@@ -2,7 +2,7 @@ package com.sammy.fufo.core.setup.content.magic;
 
 import com.sammy.fufo.common.magic.BlockSpell;
 import com.sammy.fufo.common.magic.spell.tier1.FireBolt;
-import com.sammy.fufo.common.magic.spell.tier1.ForceMissile;
+import com.sammy.fufo.common.magic.spell.tier1.ForceBolt;
 import com.sammy.fufo.common.magic.spell.tier1.ForceOrb;
 import com.sammy.fufo.core.systems.magic.spell.SpellType;
 import net.minecraft.world.level.block.Blocks;
@@ -21,7 +21,7 @@ public class SpellTypeRegistry {
     public static final SpellType FORCE_WAVE = registerSpellType(new SpellType("force_wave"));
     public static final SpellType PERSONAL_SHIELD = registerSpellType(new SpellType("personal_shield"));
     public static final SpellType FORCE_SHRAPNEL = registerSpellType(new SpellType("force_shrapnel"));
-    public static final SpellType FORCE_MISSILE = registerSpellType(new ForceMissile());
+    public static final SpellType FORCE_MISSILE = registerSpellType(new ForceBolt());
     public static final SpellType REPULSION = registerSpellType(new SpellType("repulsion"));
     public static final SpellType REPULSION_AURA = registerSpellType(new SpellType("repulsion_aura"));
     public static final SpellType FORCE_BEAM = registerSpellType(new SpellType("force_beam"));

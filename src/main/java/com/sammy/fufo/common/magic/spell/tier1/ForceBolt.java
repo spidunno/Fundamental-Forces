@@ -6,9 +6,9 @@ import com.sammy.fufo.core.setup.content.magic.ElementTypeRegistry;
 
 import java.awt.*;
 
-public class ForceMissile extends ProjectileSpell {
-    public ForceMissile() {
-        super("force_missile", ElementTypeRegistry.FORCE, EntityRegistry.SPELL_MISSILE.get());
+public class ForceBolt extends ProjectileSpell {
+    public ForceBolt() {
+        super("force_missile", ElementTypeRegistry.FORCE, EntityRegistry.SPELL_BOLT.get());
         this.firstColor = new Color(6220753);
         this.secondColor = new Color(11270133);
         this.duration = 100;

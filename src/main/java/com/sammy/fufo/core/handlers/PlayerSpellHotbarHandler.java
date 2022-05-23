@@ -8,6 +8,7 @@ import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
+import com.sammy.ortus.events.types.RightClickEmptyServer;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -49,8 +50,8 @@ public class PlayerSpellHotbarHandler {
         }
     }
 
-    public static void playerInteractAir(PlayerInteractEvent.RightClickEmpty event) {
-        if(event.getHand().equals(InteractionHand.MAIN_HAND)) {
+    public static void playerInteractAir(RightClickEmptyServer event) {
+        if(event.getPlayer().getUsedItemHand().equals(InteractionHand.MAIN_HAND)) {
             if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
                 FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
