@@ -3,7 +3,7 @@ package com.sammy.fufo.common.worldevents.starfall;
 import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventTypes;
-import com.sammy.ortus.capability.WorldDataCapability;
+import com.sammy.ortus.capability.OrtusWorldDataCapability;
 import com.sammy.ortus.handlers.WorldEventHandler;
 import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
@@ -188,7 +188,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     }
 
     public static void addMissingStarfall(ServerLevel level, Player player) {
-        WorldDataCapability.getCapability(level).ifPresent(capability -> {
+        OrtusWorldDataCapability.getCapabilityOptional(level).ifPresent(capability -> {
             boolean isMissingStarfall = true;
             for (WorldEventInstance instance : capability.activeWorldEvents) {
                 if (instance instanceof ScheduledStarfallEvent scheduledStarfallEvent) {

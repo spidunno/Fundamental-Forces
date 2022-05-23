@@ -69,7 +69,7 @@ public class SpellInstance {
 
     public void playerTick(ServerPlayer player) {
         if (cooldown != null && !cooldown.equals(oldCooldown)) {
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
         }
         oldCooldown = cooldown;
     }

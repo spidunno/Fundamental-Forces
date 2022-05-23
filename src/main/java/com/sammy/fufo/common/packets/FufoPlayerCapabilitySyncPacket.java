@@ -38,12 +38,12 @@ public class FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
     @Override
     public void modifyClient(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
         Player player = Minecraft.getInstance().level.getPlayerByUUID(uuid);
-        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> c.deserializeNBT(tag));
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> c.deserializeNBT(tag));
     }
 
     @Override
     public void modifyServer(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
         Player player = context.get().getSender().level.getPlayerByUUID(uuid);
-        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> c.deserializeNBT(tag));
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> c.deserializeNBT(tag));
     }
 }

@@ -27,7 +27,7 @@ public class SetSpellCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             Player target = EntityArgument.getPlayer(context, "target");
-                                            FufoPlayerDataCapability.getCapability(target).ifPresent(p -> {
+                                            FufoPlayerDataCapability.getCapabilityOptional(target).ifPresent(p -> {
                                                 SpellType result = SpellTypeRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
                                                 int slot = context.getArgument("slot", Integer.class)-1;
                                                 p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));

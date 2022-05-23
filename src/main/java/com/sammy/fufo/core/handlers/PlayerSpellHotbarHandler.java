@@ -38,7 +38,7 @@ public class PlayerSpellHotbarHandler {
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
             if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
-                FufoPlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
                         selectedSpell.castBlock(serverPlayer, event.getPos(), event.getHitVec());
@@ -51,7 +51,7 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
             PlayerSpellHotbarHandler handler = c.hotbarHandler;
             for (int i = 0; i < handler.spellHotbar.spells.size(); i++) {
                 int selected = handler.spellHotbar.getSelectedSpellIndex(player);
@@ -101,7 +101,7 @@ public class PlayerSpellHotbarHandler {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
-                FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
+                FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
                 float progress = Math.max(0, capability.hotbarHandler.animationProgress - 0.5f) * 2f;
                 float offset = progress * 4;
 
@@ -112,7 +112,7 @@ public class PlayerSpellHotbarHandler {
 
         public static void clientTick(TickEvent.ClientTickEvent event) {
             Player player = Minecraft.getInstance().player;
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
@@ -132,7 +132,7 @@ public class PlayerSpellHotbarHandler {
 
         public static void swapHotbar() {
             Player player = Minecraft.getInstance().player;
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
                 handler.updateCachedSlot = true;
@@ -143,15 +143,14 @@ public class PlayerSpellHotbarHandler {
         public static float itemHotbarOffset() {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
-            float progress = (capability.hotbarHandler.animationProgress) * 2f;
+            float progress = (FufoPlayerDataCapability.getCapability(player).hotbarHandler.animationProgress) * 2f;
             return progress * 45;
         }
 
         public static boolean moveVanillaUI(boolean reverse, PoseStack poseStack) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
+            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
             boolean visible = capability.hotbarHandler.animationProgress >= 0.5f;
             if (!visible) {
                 poseStack.translate(0, itemHotbarOffset() * (reverse ? -1 : 1), 0);
@@ -165,7 +164,7 @@ public class PlayerSpellHotbarHandler {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
-                FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
                         float offset = (1 - progress) * 45;

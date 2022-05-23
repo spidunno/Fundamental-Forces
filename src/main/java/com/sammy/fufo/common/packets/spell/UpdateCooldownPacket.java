@@ -51,7 +51,7 @@ public class UpdateCooldownPacket {
     public static class ClientOnly {
         public static void setCooldown(UUID uuid, int slot, SpellCooldownData cooldownData) {
             Player player = Minecraft.getInstance().player.level.getPlayerByUUID(uuid);
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 c.hotbarHandler.spellHotbar.spells.get(slot).cooldown = cooldownData;
             });
         }
