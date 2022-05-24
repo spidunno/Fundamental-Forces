@@ -43,6 +43,7 @@ public class SpellCooldown {
     }
 
     public static SpellCooldown deserializeNBT(CompoundTag tag) {
+
         return new SpellCooldown(tag.getInt("duration"), tag.getInt("timer"));
     }
 }

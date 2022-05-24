@@ -106,6 +106,8 @@ public class SpellInstance {
     public CompoundTag serializeNBT() {
         CompoundTag spellTag = new CompoundTag();
         spellTag.putString("type", holder.id.toString());
+        spellTag.putString("elementType", element.id.toString());
+        spellTag.put("castMode", castMode.serializeNBT());
         if (isOnCooldown()) {
             spellTag.put("spellCooldown", cooldown.serializeNBT());
         }
@@ -113,9 +115,12 @@ public class SpellInstance {
     }
 
     public static SpellInstance deserializeNBT(CompoundTag tag) {
-        return new SpellInstance(SpellRegistry.SPELL_TYPES.get(new ResourceLocation(tag.getString("type"))),
+        SpellInstance spellInstance = new SpellInstance(SpellRegistry.SPELL_TYPES.get(new ResourceLocation(tag.getString("type"))),
                 SpellCastMode.deserializeNBT(tag.getCompound("castMode")),
-                SpellRegistry.ELEMENTS.get(new ResourceLocation(tag.getString("elementType"))))
-                .setCooldown(SpellCooldown.deserializeNBT(tag.getCompound("spellCooldown")));
+                SpellRegistry.ELEMENTS.get(new ResourceLocation(tag.getString("elementType"))));
+        if (tag.contains("spellCooldown")) {
+            spellInstance.setCooldown(SpellCooldown.deserializeNBT(tag.getCompound("spellCooldown")));
+        }
+        return spellInstance;
     }
 }
