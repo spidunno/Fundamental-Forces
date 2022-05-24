@@ -19,9 +19,6 @@ public class FufoPlayerCapabilitySyncPacket extends OrtusSyncPacket {
 
     public FufoPlayerCapabilitySyncPacket(CompoundTag tag) {
         super(tag);
-        if (!tag.contains(PLAYER_UUID)) {
-            throw new RuntimeException("Created a packet instance without a target player.");
-        }
         this.uuid = tag.getUUID(PLAYER_UUID);
     }
 

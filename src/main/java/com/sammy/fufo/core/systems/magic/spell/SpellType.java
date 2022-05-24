@@ -17,9 +17,11 @@ public class SpellType {
     public void castBlock(SpellInstance instance, ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
 
     }
+
     public void cast(SpellInstance instance, ServerPlayer player) {
 
     }
+
     public void castCommon(SpellInstance instance, ServerPlayer player) {
 
     }
