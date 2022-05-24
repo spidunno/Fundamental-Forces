@@ -4,10 +4,10 @@ import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fufo.core.handlers.ProgressionHandler;
+import com.sammy.fufo.core.setup.server.PacketRegistry;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.sammy.ortus.helpers.NBTHelper;
-import com.sammy.ortus.setup.OrtusPacketRegistry;
 import com.sammy.ortus.systems.capability.OrtusCapability;
 import com.sammy.ortus.systems.capability.OrtusCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -103,7 +103,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     }
 
     public static void sync(Player player, PacketDistributor.PacketTarget target, NBTHelper.TagFilter filter) {
-        getCapabilityOptional(player).ifPresent(c -> OrtusPacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), NBTHelper.filterTag(c.serializeNBT(), filter))));
+        getCapabilityOptional(player).ifPresent(c -> PacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), NBTHelper.filterTag(c.serializeNBT(), filter))));
     }
 
     public static void syncServer(Player player) {
@@ -123,7 +123,7 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     }
 
     public static void sync(Player player, PacketDistributor.PacketTarget target) {
-        getCapabilityOptional(player).ifPresent(c -> OrtusPacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
+        getCapabilityOptional(player).ifPresent(c -> PacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
     }
 
     public static LazyOptional<FufoPlayerDataCapability> getCapabilityOptional(Player player) {
