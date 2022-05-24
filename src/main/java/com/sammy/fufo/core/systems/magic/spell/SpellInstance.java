@@ -23,6 +23,7 @@ public class SpellInstance {
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
     public static final SpellInstance EMPTY = new SpellInstance(SpellHolderRegistry.EMPTY);
     // type = old SpellType
+    public SpellHolder holder;
     public SpellCooldownData oldCooldown;
     public SpellCooldownData cooldown;
     public Supplier<SpellCooldownData> cooldownSupplier;
@@ -33,34 +34,42 @@ public class SpellInstance {
     public SpellEffect effect;
     public SpellElement element;
 
-    public SpellInstance(SpellCastMode castMode, SpellEffect effect, SpellElement element, Supplier<SpellCooldownData> cooldownSupplier) {
+    public SpellInstance(SpellHolder holder, SpellCastMode castMode, SpellEffect effect, SpellElement element, Supplier<SpellCooldownData> cooldownSupplier) {
         this.castMode = castMode;
         this.effect = effect;
         this.element = element;
         this.cooldownSupplier = cooldownSupplier;
+        this.holder = holder;
     }
 
-    public SpellInstance(SpellCastMode castMode, SpellEffect effect, Supplier<SpellCooldownData> cooldownSupplier) {
+    public SpellInstance(SpellHolder holder, SpellCastMode castMode, SpellEffect effect, Supplier<SpellCooldownData> cooldownSupplier) {
         this.castMode = castMode;
         this.effect = effect;
         this.cooldownSupplier = cooldownSupplier;
+        this.holder = holder;
     }
 
-    public SpellInstance(SpellCastMode castMode) {
+    public SpellInstance(SpellHolder holder, SpellCastMode castMode) {
         this.castMode = castMode;
+        this.holder = holder;
     }
-
     public SpellInstance(SpellHolder type) {
     }
     public void cast(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
         if(!isOnCooldown()) {
-            castMode.cast(this);
+            boolean success = castMode.canCast(this, player, pos, hitVec);
+            if(success) {
+                effect.cast(this, player, pos, hitVec);
+            }
         }
     }
 
     public void cast(ServerPlayer player) {
         if (!isOnCooldown()) {
-            castMode.cast(this);
+            boolean success = castMode.canCast(this, player);
+            if (success) {
+                effect.cast(this, player);
+            }
         }
     }
 
@@ -99,11 +108,11 @@ public class SpellInstance {
         return SpellCooldownData.isValid(cooldown);
     }
     public boolean isEmpty() {
-        return type == null || type.equals(SpellHolderRegistry.EMPTY);
+        return holder == null || holder.equals(SpellHolderRegistry.EMPTY);
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
-        tag.putString("typeId", type.id);
+        tag.putString("typeId", holder.id.toString());
         if (isOnCooldown()) {
             CompoundTag cooldownTag = new CompoundTag();
             tag.put("spellCooldown", cooldown.serializeNBT(cooldownTag));

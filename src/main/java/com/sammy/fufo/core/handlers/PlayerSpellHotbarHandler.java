@@ -42,21 +42,7 @@ public class PlayerSpellHotbarHandler {
                 FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
-                        selectedSpell.castBlock(serverPlayer, event.getPos(), event.getHitVec());
-                        selectedSpell.castCommon(serverPlayer);
-                    }
-                });
-            }
-        }
-    }
-
-    public static void playerInteractAir(RightClickEmptyServer event) {
-        if(event.getPlayer().getUsedItemHand().equals(InteractionHand.MAIN_HAND)) {
-            if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
-                FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
-                    if (c.hotbarHandler.open) {
-                        SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
-                        selectedSpell.castCommon(serverPlayer);
+                        selectedSpell.cast(serverPlayer, event.getPos(), event.getHitVec());
                     }
                 });
             }
@@ -80,7 +66,6 @@ public class PlayerSpellHotbarHandler {
                 if (handler.open && c.rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
                     selectedSpell.cast(serverPlayer);
-                    selectedSpell.castCommon(serverPlayer);
                 }
             }
         });
@@ -199,8 +184,8 @@ public class PlayerSpellHotbarHandler {
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
-                                ResourceLocation background = instance.type.getBackgroundLocation();
-                                ResourceLocation icon = instance.type.getIconLocation();
+                                ResourceLocation background = instance.holder.getBackgroundLocation();
+                                ResourceLocation icon = instance.holder.getIconLocation();
                                 int x = left + i * 24 + 3;
                                 int y =  top + 3;
 

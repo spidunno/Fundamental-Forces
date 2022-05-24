@@ -14,6 +14,7 @@ public class SpellEffect {
 
     public SpellEffect() {
     }
+
     public void cast(SpellInstance instance, ServerPlayer player) {
 
     }
