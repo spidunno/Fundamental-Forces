@@ -37,21 +37,10 @@ public class SpellBolt extends AbstractSpellProjectile {
         super(EntityRegistry.SPELL_BOLT.get(), level);
     }
 
-
-    public SpellBolt setDuration(int duration) {
-        this.duration = duration;
-        return this;
+    public SpellBolt() {
+        super(EntityRegistry.SPELL_BOLT.get(), null);
     }
 
-    public SpellBolt setFirstColor(Color color) {
-        this.firstColor = color;
-        return this;
-    }
-
-    public SpellBolt setSecondColor(Color color) {
-        this.secondColor = color;
-        return this;
-    }
 
     public SpellBolt setElement(MagicElement element) {
         this.element = element;

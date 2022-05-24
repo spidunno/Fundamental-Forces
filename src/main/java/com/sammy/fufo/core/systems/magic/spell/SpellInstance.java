@@ -2,7 +2,10 @@ package com.sammy.fufo.core.systems.magic.spell;
 
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.common.packets.spell.UpdateCooldownPacket;
-import com.sammy.fufo.core.setup.content.magic.SpellTypeRegistry;
+import com.sammy.fufo.core.setup.content.magic.SpellHolderRegistry;
+import com.sammy.fufo.core.systems.magic.spell.attributes.cast.SpellCastMode;
+import com.sammy.fufo.core.systems.magic.spell.attributes.effect.SpellEffect;
+import com.sammy.fufo.core.systems.magic.spell.attributes.element.SpellElement;
 import com.sammy.ortus.systems.easing.Easing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,43 +14,53 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.PacketDistributor;
 
+import java.util.function.Supplier;
+
 import static com.sammy.fufo.core.setup.server.PacketRegistry.INSTANCE;
 
 public class SpellInstance {
 
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
-    public static final SpellInstance EMPTY = new SpellInstance(SpellTypeRegistry.EMPTY);
-    public final SpellType type;
+    public static final SpellInstance EMPTY = new SpellInstance(SpellHolderRegistry.EMPTY);
+    // type = old SpellType
     public SpellCooldownData oldCooldown;
     public SpellCooldownData cooldown;
+    public Supplier<SpellCooldownData> cooldownSupplier;
     public boolean selected;
     public int selectedTime;
     public float selectedFadeAnimation;
+    public SpellCastMode castMode;
+    public SpellEffect effect;
+    public SpellElement element;
 
-    public SpellInstance(SpellType type) {
-        this.type = type;
+    public SpellInstance(SpellCastMode castMode, SpellEffect effect, SpellElement element, Supplier<SpellCooldownData> cooldownSupplier) {
+        this.castMode = castMode;
+        this.effect = effect;
+        this.element = element;
+        this.cooldownSupplier = cooldownSupplier;
     }
 
-    public SpellInstance(SpellType type, SpellCooldownData cooldown) {
-        this.type = type;
-        this.cooldown = cooldown;
+    public SpellInstance(SpellCastMode castMode, SpellEffect effect, Supplier<SpellCooldownData> cooldownSupplier) {
+        this.castMode = castMode;
+        this.effect = effect;
+        this.cooldownSupplier = cooldownSupplier;
     }
 
-    public void castBlock(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
-        if (!isOnCooldown()) {
-            type.castBlock(this, player, pos, hitVec);
+    public SpellInstance(SpellCastMode castMode) {
+        this.castMode = castMode;
+    }
+
+    public SpellInstance(SpellHolder type) {
+    }
+    public void cast(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
+        if(!isOnCooldown()) {
+            castMode.cast(this);
         }
     }
 
     public void cast(ServerPlayer player) {
         if (!isOnCooldown()) {
-            type.cast(this, player);
-        }
-    }
-
-    public void castCommon(ServerPlayer player) {
-        if (!isOnCooldown()) {
-            type.castCommon(this, player);
+            castMode.cast(this);
         }
     }
 
@@ -86,7 +99,7 @@ public class SpellInstance {
         return SpellCooldownData.isValid(cooldown);
     }
     public boolean isEmpty() {
-        return type == null || type.equals(SpellTypeRegistry.EMPTY);
+        return type == null || type.equals(SpellHolderRegistry.EMPTY);
     }
 
     public CompoundTag serializeNBT(CompoundTag tag) {
@@ -98,8 +111,7 @@ public class SpellInstance {
         return tag;
     }
 
-
     public static SpellInstance deserializeNBT(CompoundTag tag) {
-        return new SpellInstance(SpellTypeRegistry.SPELL_TYPES.get(tag.getString("typeId")), SpellCooldownData.deserializeNBT(tag.getCompound("spellCooldown")));
+        return new SpellInstance(SpellHolderRegistry.SPELL_TYPES.get(tag.getString("typeId")), SpellCooldownData.deserializeNBT(tag.getCompound("spellCooldown")));
     }
 }

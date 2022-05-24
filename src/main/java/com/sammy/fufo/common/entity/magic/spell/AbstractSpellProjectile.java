@@ -1,5 +1,6 @@
 package com.sammy.fufo.common.entity.magic.spell;
 
+import com.sammy.fufo.common.entity.magic.spell.tier1.SpellBolt;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -14,10 +15,15 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
+
 public class AbstractSpellProjectile extends Projectile {
     public double xPower;
     public double yPower;
     public double zPower;
+    public Color firstColor = new Color(16777215);
+    public Color secondColor = new Color(16777215);
+    public int lifetime;
 
     public AbstractSpellProjectile(EntityType<? extends Projectile> entity, Level level) {
         super(entity, level);
@@ -36,6 +42,9 @@ public class AbstractSpellProjectile extends Projectile {
 
     @Override
     public void tick() {
+        if (this.tickCount > this.lifetime) {
+            this.discard();
+        }
         Entity entity = this.getOwner();
         if (this.level.isClientSide || (entity == null || !entity.isRemoved()) && this.level.hasChunkAt(this.blockPosition())) {
             super.tick();
@@ -118,7 +127,20 @@ public class AbstractSpellProjectile extends Projectile {
         }
 
     }
+    public AbstractSpellProjectile setFirstColor(Color color) {
+        this.firstColor = color;
+        return this;
+    }
 
+    public AbstractSpellProjectile setSecondColor(Color color) {
+        this.secondColor = color;
+        return this;
+    }
+
+    public AbstractSpellProjectile setLifetime(int duration) {
+        this.lifetime = duration;
+        return this;
+    }
 
     @Override
     protected void defineSynchedData() {
