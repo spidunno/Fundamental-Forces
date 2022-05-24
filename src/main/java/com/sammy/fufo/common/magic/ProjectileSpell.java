@@ -1,8 +1,8 @@
 package com.sammy.fufo.common.magic;
 
-import com.sammy.fufo.common.entity.magic.spell.tier1.SpellBolt;
+import com.sammy.fufo.common.entity.magic.spell.AbstractSpellProjectile;
 import com.sammy.fufo.core.systems.magic.element.MagicElement;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
+import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -10,25 +10,26 @@ import net.minecraft.world.entity.EntityType;
 
 import java.awt.*;
 
-public class ProjectileSpell extends ElementAugmentedSpellType {
-    public final EntityType<SpellBolt> projectileType;
+public class ProjectileSpell<T extends AbstractSpellProjectile> extends ElementAugmentedSpellType {
+    public final EntityType<T> projectileType;
     public Color firstColor = new Color(16777215);
     public Color secondColor = new Color(16777215);
     public int duration;
     public MagicElement element;
 
-    public ProjectileSpell(String id, MagicElement element, EntityType<SpellBolt> projectileSupplier) {
+    public ProjectileSpell(String id, MagicElement element, EntityType<T> projectileSupplier) {
         super(id, element);
         this.projectileType = projectileSupplier;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void castCommon(SpellInstance instance, ServerPlayer player) {
-        instance.cooldown = new SpellCooldownData(duration);
-        SpellBolt projectile = projectileType.create(player.level)
+        instance.cooldown = new SpellCooldown(duration);
+        T projectile = (T) projectileType.create(player.level)
                 .setFirstColor(firstColor)
                 .setSecondColor(secondColor)
-                .setDuration(duration)
+                .setLifetime(duration)
                 .setElement(element);
         projectile.setPos(player.getEyePosition());
         projectile.fireImmune();

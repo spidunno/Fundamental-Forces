@@ -1,7 +1,7 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
 import com.sammy.fufo.common.entity.magic.spell.AbstractSpellProjectile;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
+import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +20,7 @@ public class ProjectileEffect extends SpellEffect {
     }
     @Override
     public void cast(SpellInstance instance, ServerPlayer player) {
-        instance.cooldown = new SpellCooldownData(duration);
+        instance.cooldown = new SpellCooldown(duration);
         AbstractSpellProjectile projectile = projectileSupplier.apply(player.level)
                 .setFirstColor(firstColor)
                 .setSecondColor(secondColor)

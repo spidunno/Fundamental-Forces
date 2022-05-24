@@ -1,30 +1,8 @@
 package com.sammy.fufo.core.setup.content.magic;
 
-import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.entity.magic.spell.tier1.SpellBolt;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
-import com.sammy.fufo.core.systems.magic.spell.SpellHolder;
-import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
-import com.sammy.fufo.core.systems.magic.spell.attributes.SpellTags;
-import com.sammy.fufo.core.systems.magic.spell.attributes.effect.ProjectileEffect;
-import net.minecraft.resources.ResourceLocation;
-
-import java.util.HashMap;
-
 public class SpellHolderRegistry {
 
-    public static final HashMap<ResourceLocation, SpellHolder> SPELL_TYPES = new HashMap<>();
-
-    public static final SpellHolder EMPTY = registerSpellHolder(new SpellHolder(FufoMod.fufoPath("empty"), SpellInstance::new));
-
-    /**
-     * new SpellInstance(CastModes.Charge, new FireProjectileEffect(ProjectileToFire)).setElement(FORCE);
-     * new SpellInstance(CastModes.Charge, new ConflagAuraEffect());
-     */
-    //public static final SpellHolder FORCE_BOLT = registerSpellHolder(new SpellHolder(FufoMod.fufoPath("force_bolt"), () -> new SpellInstance(SpellTags.CastModes.INSTANT, SpellTags.EffectModes.BOLT, SpellTags.Elements.FORCE, new List<SpellModifier> = Arrays.asList(SpellModifier.SPEED, SpellModifier.DAMAGE))));
-    //public static final SpellHolder FORCE_ORB = registerSpellHolder(new ForceOrb()););
-    public static final SpellHolder FORCE_BOLT = registerSpellHolder(new SpellHolder(FufoMod.fufoPath("force_bolt"), (h) -> new SpellInstance(h, SpellTags.CastModes.INSTANT, new ProjectileEffect(SpellBolt::new), () -> new SpellCooldownData(100))));
-//    public static final SpellHolder FORCE_WALL = registerSpellHolder(new SpellHolder(FufoMod.fufoPath("force_wall"), (h) -> new SpellInstance(SpellTags.CastModes.INSTANT, SpellTags.EffectModes.WALL, )));
+    //    public static final SpellHolder FORCE_WALL = registerSpellHolder(new SpellHolder(FufoMod.fufoPath("force_wall"), (h) -> new SpellInstance(SpellTags.CastModes.INSTANT, SpellTags.EffectModes.WALL, )));
 //    public static final SpellHolder FORCE_WAVE = registerSpellHolder(new SpellHolder("force_wave"));
 //    public static final SpellHolder PERSONAL_SHIELD = registerSpellHolder(new SpellHolder("personal_shield"));
 //    public static final SpellHolder FORCE_SHRAPNEL = registerSpellHolder(new SpellHolder("force_shrapnel"));
@@ -65,8 +43,4 @@ public class SpellHolderRegistry {
 //    public static final SpellHolder AIR_WALL = registerSpellHolder(new SpellHolder("air_wall"));
 //    public static final SpellHolder PRESSURE_WAVE = registerSpellHolder(new SpellHolder("pressure_wave"));
 
-    private static SpellHolder registerSpellHolder(SpellHolder SpellHolder) {
-        SPELL_TYPES.put(SpellHolder.id, SpellHolder);
-        return SpellHolder;
-    }
 }

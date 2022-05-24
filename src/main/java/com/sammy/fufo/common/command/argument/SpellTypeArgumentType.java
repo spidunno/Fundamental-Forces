@@ -8,11 +8,13 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.sammy.fufo.core.data.LangHelpers;
-import com.sammy.fufo.core.setup.content.magic.SpellHolderRegistry;
+import com.sammy.fufo.core.setup.content.magic.SpellRegistry;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 public class SpellTypeArgumentType implements ArgumentType<String> {
 
@@ -24,7 +26,7 @@ public class SpellTypeArgumentType implements ArgumentType<String> {
     @Override
     public String parse(final StringReader reader) throws CommandSyntaxException {
         String read = reader.readUnquotedString();
-        if (SpellHolderRegistry.SPELL_TYPES.containsKey(read)) {
+        if (SpellRegistry.SPELL_TYPES.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -45,7 +47,7 @@ public class SpellTypeArgumentType implements ArgumentType<String> {
 
     @Override
     public Collection<String> getExamples() {
-        return SpellHolderRegistry.SPELL_TYPES.keySet();
+        return SpellRegistry.SPELL_TYPES.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList());
     }
 
     private static String escape(final String input) {

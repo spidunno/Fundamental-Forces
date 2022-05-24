@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.entity.magic.spell;
 
-import com.sammy.fufo.common.entity.magic.spell.tier1.SpellBolt;
+import com.sammy.fufo.core.systems.magic.element.MagicElement;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.*;
 
 public class AbstractSpellProjectile extends Projectile {
+
+    public MagicElement element;
     public double xPower;
     public double yPower;
     public double zPower;
@@ -139,6 +141,11 @@ public class AbstractSpellProjectile extends Projectile {
 
     public AbstractSpellProjectile setLifetime(int duration) {
         this.lifetime = duration;
+        return this;
+    }
+
+    public AbstractSpellProjectile setElement(MagicElement element) {
+        this.element = element;
         return this;
     }
 

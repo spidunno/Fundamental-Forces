@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.magic;
 
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
+import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.SpellType;
 import net.minecraft.core.BlockPos;
@@ -22,7 +22,7 @@ public class BlockSpell extends SpellType {
 
     @Override
     public void castBlock(SpellInstance instance, ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
-        instance.cooldown = new SpellCooldownData(100);
+        instance.cooldown = new SpellCooldown(100);
 //        PlayerDataCapability.getCapability(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new  ResetRightClickDelayPacket()));
         player.level.setBlockAndUpdate(pos.relative(hitVec.getDirection()), blockSupplier.get().defaultBlockState());
         player.swing(InteractionHand.MAIN_HAND, true);

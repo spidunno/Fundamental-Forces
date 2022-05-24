@@ -26,8 +26,7 @@ public class SpellHotbar {
         for (int i = 0; i < spells.size(); i++) {
             SpellInstance instance = spells.get(i);
             if (!instance.isEmpty()) {
-                CompoundTag spellTag = new CompoundTag();
-                tag.put("spell_" + i, spells.get(i).serializeNBT(spellTag));
+                tag.put("spell_" + i, spells.get(i).serializeNBT());
             }
         }
         return tag;

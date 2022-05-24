@@ -5,7 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.common.command.argument.SpellTypeArgumentType;
 import com.sammy.fufo.core.data.LangHelpers;
-import com.sammy.fufo.core.setup.content.magic.SpellHolderRegistry;
+import com.sammy.fufo.core.setup.content.magic.SpellRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellHolder;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.commands.CommandSourceStack;
@@ -28,7 +28,7 @@ public class SetSpellCommand {
                                             CommandSourceStack source = context.getSource();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             FufoPlayerDataCapability.getCapabilityOptional(target).ifPresent(p -> {
-                                                SpellHolder result = SpellHolderRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
+                                                SpellHolder result = SpellRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
                                                 int slot = context.getArgument("slot", Integer.class)-1;
                                                 p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));
                                                 FufoPlayerDataCapability.syncTrackingAndSelf(target);

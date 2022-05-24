@@ -1,13 +1,13 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
+import com.sammy.fufo.core.systems.magic.element.MagicElement;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
-import com.sammy.fufo.core.systems.magic.spell.attributes.element.SpellElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class SpellEffect {
-    public SpellElement element;
+    public MagicElement element;
     public int range;
     public int duration;
     public int power;
@@ -25,7 +25,7 @@ public class SpellEffect {
         this.range = range;
         return this;
     }
-    public SpellEffect setElement(SpellElement element) {
+    public SpellEffect setElement(MagicElement element) {
         this.element = element;
         return this;
     }

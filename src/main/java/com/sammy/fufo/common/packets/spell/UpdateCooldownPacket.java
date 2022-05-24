@@ -1,9 +1,8 @@
 package com.sammy.fufo.common.packets.spell;
 
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
+import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,22 +16,22 @@ import java.util.function.Supplier;
 public class UpdateCooldownPacket {
     private final UUID uuid;
     private final int slot;
-    private final SpellCooldownData cooldownData;
+    private final SpellCooldown cooldownData;
 
-    public UpdateCooldownPacket(UUID uuid, int slot, SpellCooldownData data) {
+    public UpdateCooldownPacket(UUID uuid, int slot, SpellCooldown data) {
         this.uuid = uuid;
         this.slot = slot;
         this.cooldownData = data;
     }
 
     public static UpdateCooldownPacket decode(FriendlyByteBuf buf) {
-        return new UpdateCooldownPacket(buf.readUUID(), buf.readInt(), SpellCooldownData.deserializeNBT(buf.readNbt()));
+        return new UpdateCooldownPacket(buf.readUUID(), buf.readInt(), SpellCooldown.deserializeNBT(buf.readNbt()));
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeUUID(uuid);
         buf.writeInt(slot);
-        buf.writeNbt(cooldownData.serializeNBT(new CompoundTag()));
+        buf.writeNbt(cooldownData.serializeNBT());
     }
 
     public void execute(Supplier<NetworkEvent.Context> context) {
@@ -49,7 +48,7 @@ public class UpdateCooldownPacket {
     }
 
     public static class ClientOnly {
-        public static void setCooldown(UUID uuid, int slot, SpellCooldownData cooldownData) {
+        public static void setCooldown(UUID uuid, int slot, SpellCooldown cooldownData) {
             Player player = Minecraft.getInstance().player.level.getPlayerByUUID(uuid);
             FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 c.hotbarHandler.spellHotbar.spells.get(slot).cooldown = cooldownData;

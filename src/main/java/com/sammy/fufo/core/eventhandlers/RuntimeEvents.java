@@ -57,7 +57,6 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void onRightClickEmptyServer(RightClickEmptyServer event){
-        PlayerSpellHotbarHandler.playerInteractAir(event);
     }
 
     @SubscribeEvent
