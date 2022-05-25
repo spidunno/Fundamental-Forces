@@ -25,6 +25,7 @@ public class ProjectileEffect extends SpellEffect {
                 .setElement(element)
                 .setColor(firstColor, secondColor)
                 .setLifetime(duration);
+        projectile.setOwner(player);
         projectile.setPos(player.getEyePosition());
         projectile.fireImmune();
         projectile.shoot(player.getLookAngle().x, player.getLookAngle().y, player.getLookAngle().z, 1, 0);

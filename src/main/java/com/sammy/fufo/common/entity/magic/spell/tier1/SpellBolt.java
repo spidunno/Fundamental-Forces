@@ -6,6 +6,7 @@ import com.sammy.ortus.setup.OrtusParticleRegistry;
 import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -26,7 +27,8 @@ public class SpellBolt extends AbstractSpellProjectile {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
-        pResult.getEntity().hurt(DamageSource.MAGIC, damage);
+        EntityDamageSource playerDamageSource = new EntityDamageSource("player", this.getOwner());
+        pResult.getEntity().hurt(playerDamageSource.setMagic(), damage);
         this.discard();
     }
 

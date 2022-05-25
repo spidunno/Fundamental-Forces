@@ -16,10 +16,8 @@ public class SpellEffect {
     }
 
     public void cast(SpellInstance instance, ServerPlayer player) {
-
     }
     public void cast(SpellInstance spell, ServerPlayer player, BlockPos pos, BlockHitResult hitVec){
-
     }
     public SpellEffect setRange(int range) {
         this.range = range;
