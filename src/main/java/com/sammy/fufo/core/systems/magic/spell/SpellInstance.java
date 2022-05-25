@@ -49,20 +49,14 @@ public class SpellInstance {
     }
 
     public void cast(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
-        if (!isOnCooldown()) {
-            boolean success = castMode.canCast(this, player, pos, hitVec);
-            if (success) {
+            if (castMode.canCast(this, player, pos, hitVec)) {
                 effect.cast(this, player, hitVec);
             }
-        }
     }
 
     public void cast(ServerPlayer player) {
-        if (!isOnCooldown()) {
-            boolean success = castMode.canCast(this, player);
-            if (success) {
-                effect.cast(this, player);
-            }
+        if (castMode.canCast(this, player)) {
+            effect.cast(this, player);
         }
     }
 

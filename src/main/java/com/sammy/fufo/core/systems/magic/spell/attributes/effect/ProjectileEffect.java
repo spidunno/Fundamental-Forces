@@ -21,7 +21,6 @@ public class ProjectileEffect extends SpellEffect {
     }
     @Override
     public void effect(SpellInstance spell, ServerPlayer player) {
-        spell.cooldown = new SpellCooldown(duration);
         AbstractSpellProjectile projectile = projectileSupplier.apply(player.level)
                 .setElement(element)
                 .setColor(firstColor, secondColor)
