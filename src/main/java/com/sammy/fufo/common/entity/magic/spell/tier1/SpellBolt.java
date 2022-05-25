@@ -7,6 +7,8 @@ import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -18,6 +20,7 @@ public class SpellBolt extends AbstractSpellProjectile {
     public final ArrayList<Vec3> pastPositions = new ArrayList<>();
 
     public float damage = 5;
+    public double knockback = 0.4;
 
     public SpellBolt(Level level) {
         super(EntityRegistry.SPELL_BOLT.get(), level);
@@ -28,8 +31,16 @@ public class SpellBolt extends AbstractSpellProjectile {
     protected void onHitEntity(EntityHitResult pResult) {
         super.onHitEntity(pResult);
         EntityDamageSource playerDamageSource = new EntityDamageSource("player", this.getOwner());
-        pResult.getEntity().hurt(playerDamageSource.setMagic(), damage);
+        Entity entity = pResult.getEntity();
+        entity.hurt(playerDamageSource.setMagic(), damage);
+        if(entity instanceof LivingEntity){
+            calculateKnockBack((LivingEntity) entity,knockback);
+        }
         this.discard();
+    }
+    protected void calculateKnockBack(LivingEntity entity,double strength){
+        Vec3 movement = this.getDeltaMovement();
+        entity.knockback(strength,-movement.x,-movement.z);
     }
 
     @Override
