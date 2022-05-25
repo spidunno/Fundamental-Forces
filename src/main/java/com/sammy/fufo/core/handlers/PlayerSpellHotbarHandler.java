@@ -24,6 +24,7 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
+//Whoever programmed this class must really like cock and balls like a lot 
 public class PlayerSpellHotbarHandler {
     public final SpellHotbar spellHotbar;
     public boolean open;
