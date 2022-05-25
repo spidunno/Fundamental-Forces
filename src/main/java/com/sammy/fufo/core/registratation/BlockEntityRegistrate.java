@@ -1,6 +1,7 @@
 package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.block.ArrayRenderer;
+import com.sammy.fufo.client.renderers.block.CrudePrimerRenderer;
 import com.sammy.fufo.client.renderers.block.OrbRenderer;
 import com.sammy.fufo.client.renderers.block.UIRenderer;
 import com.sammy.fufo.common.blockentity.*;
@@ -25,6 +26,12 @@ public class BlockEntityRegistrate {
 
     public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
             FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
+
+    public static final BlockEntityEntry<CrudePrimerBlockEntity> CRUDE_PRIMER =
+            FufoMod.registrate().<CrudePrimerBlockEntity>blockEntity("crude_primer", CrudePrimerBlockEntity::new).renderer(() -> CrudePrimerRenderer::new).validBlocks(BlockRegistrate.CRUDE_PRIMER).register();
+
+    public static final BlockEntityEntry<CrudeNeedleBlockEntity> CRUDE_NEEDLE =
+            FufoMod.registrate().<CrudeNeedleBlockEntity>blockEntity("crude_needle", CrudeNeedleBlockEntity::new).validBlocks(BlockRegistrate.CRUDE_NEEDLE).register();
 
     public static void register() {
     }

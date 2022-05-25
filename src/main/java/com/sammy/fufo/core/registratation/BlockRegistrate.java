@@ -38,6 +38,8 @@ public class BlockRegistrate {
             new OrtusBlockProperties(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE));
 
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = simpleBlock("crude_array", (props) -> (ArrayBlock) new ArrayBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), new OrtusBlockProperties(Material.HEAVY_METAL, MaterialColor.COLOR_BROWN).sound(SoundType.LODESTONE).isCutoutLayer());
+    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = simpleBlock("crude_primer", (props) -> (CrudePrimerBlock) new CrudePrimerBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), new OrtusBlockProperties(Material.HEAVY_METAL, MaterialColor.COLOR_BROWN).sound(SoundType.METAL).isCutoutLayer());
+    public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = simpleBlock("crude_needle", (props) -> (CrudeNeedleBlock) new CrudeNeedleBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), new OrtusBlockProperties(Material.HEAVY_METAL, MaterialColor.COLOR_BROWN).sound(SoundType.METAL).isCutoutLayer());
 
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = simpleBlock("meteor_fire", p -> (MeteorFlameBlock) new MeteorFlameBlock<>(p).setBlockEntity(() -> BlockEntityRegistrate.METEOR_FLAME.get()),
             new OrtusBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b -> 15));

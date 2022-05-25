@@ -25,12 +25,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
+
+import java.awt.*;
+
 import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEntity> {
 
     private static final ResourceLocation TEST_BEAM = FufoMod.fufoPath("textures/vfx/light_trail.png");
     private static final RenderType TEST_BEAM_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(TEST_BEAM);
+    public Color beamColor = new Color(0xFF0000);
     private final ItemRenderer itemRenderer;
 
     public AbstractWeaveEntityRenderer(EntityRendererProvider.Context context) {
@@ -88,7 +92,7 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             ps.pushPose();
             ps.translate(link.getFirst().getX(), link.getFirst().getY() + 0.1, link.getFirst().getZ());
             VertexConsumer consumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
-            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().renderBeam(consumer, ps, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(beamColor).renderBeam(consumer, ps, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
             ps.translate(-link.getFirst().getX(), -link.getFirst().getY() - 0.1, -link.getFirst().getZ());
             ps.popPose();
         });
