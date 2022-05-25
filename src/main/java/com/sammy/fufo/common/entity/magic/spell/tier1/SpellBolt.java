@@ -24,7 +24,6 @@ public class SpellBolt extends AbstractSpellProjectile {
 
     public final ArrayList<Vec3> pastPositions = new ArrayList<>();
 
-    public float duration = 100;
     public float damage = 5;
     /**
      *     TODO: these need to sync, for some reason when they try to sync they are null {@link #defineSynchedData()}
@@ -35,12 +34,8 @@ public class SpellBolt extends AbstractSpellProjectile {
 
     public SpellBolt(Level level) {
         super(EntityRegistry.SPELL_BOLT.get(), level);
+        lifetime = 100;
     }
-
-    public SpellBolt() {
-        super(EntityRegistry.SPELL_BOLT.get(), null);
-    }
-
 
     public SpellBolt setElement(MagicElement element) {
         this.element = element;
@@ -58,9 +53,6 @@ public class SpellBolt extends AbstractSpellProjectile {
     public void tick() {
         super.tick();
         super.baseTick();
-        if (this.tickCount > this.duration) {
-            this.discard();
-        }
 
         if (level.isClientSide) {
             double x = this.getX();

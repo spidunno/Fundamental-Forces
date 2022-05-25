@@ -8,6 +8,7 @@ import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
+import com.sammy.ortus.capability.OrtusPlayerDataCapability;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -62,7 +63,7 @@ public class PlayerSpellHotbarHandler {
                 }
             }
             if (event.player instanceof ServerPlayer serverPlayer) {
-                if (handler.open && c.rightClickHeld) {
+                if (handler.open && OrtusPlayerDataCapability.getCapability(player).rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
                     selectedSpell.cast(serverPlayer);
                 }

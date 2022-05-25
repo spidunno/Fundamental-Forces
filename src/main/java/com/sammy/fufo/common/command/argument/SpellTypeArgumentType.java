@@ -31,6 +31,7 @@ public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
         }
         throw INCORRECT_RESULT.createWithContext(reader);
     }
+
     @Override
     public String toString() {
         return "string()";

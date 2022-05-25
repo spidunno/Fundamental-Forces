@@ -33,7 +33,6 @@ public class FufoPlayerDataCapability implements OrtusCapability {
     public static Capability<FufoPlayerDataCapability> CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public boolean rightClickHeld;
 
     public PlayerSpellHotbarHandler hotbarHandler = new PlayerSpellHotbarHandler(new SpellHotbar(9));
     public PipeBuilderAssistant pipeHandler = new PipeBuilderAssistant();
