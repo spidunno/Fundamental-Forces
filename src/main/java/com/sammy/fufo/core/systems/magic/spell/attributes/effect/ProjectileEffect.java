@@ -6,6 +6,7 @@ import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 
 import java.awt.*;
 import java.util.function.Function;
@@ -19,8 +20,8 @@ public class ProjectileEffect extends SpellEffect {
         this.projectileSupplier = projectileSupplier;
     }
     @Override
-    public void cast(SpellInstance instance, ServerPlayer player) {
-        instance.cooldown = new SpellCooldown(duration);
+    public void effect(SpellInstance spell, ServerPlayer player) {
+        spell.cooldown = new SpellCooldown(duration);
         AbstractSpellProjectile projectile = projectileSupplier.apply(player.level)
                 .setElement(element)
                 .setColor(firstColor, secondColor)
@@ -32,4 +33,7 @@ public class ProjectileEffect extends SpellEffect {
         player.level.addFreshEntity(projectile);
         player.swing(InteractionHand.MAIN_HAND, true);
     }
+
+    @Override
+    public void effect(SpellInstance spell, ServerPlayer player, BlockHitResult result) {}
 }

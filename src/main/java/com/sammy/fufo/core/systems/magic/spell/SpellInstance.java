@@ -52,7 +52,7 @@ public class SpellInstance {
         if (!isOnCooldown()) {
             boolean success = castMode.canCast(this, player, pos, hitVec);
             if (success) {
-                effect.cast(this, player, pos, hitVec);
+                effect.cast(this, player, hitVec);
             }
         }
     }

@@ -1,12 +1,12 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
 import com.sammy.fufo.core.systems.magic.element.MagicElement;
+import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 
-public class SpellEffect {
+public abstract class SpellEffect {
     public MagicElement element;
     public int range;
     public int duration;
@@ -15,23 +15,39 @@ public class SpellEffect {
     public SpellEffect() {
     }
 
-    public void cast(SpellInstance instance, ServerPlayer player) {
+    public void cast(SpellInstance spell, ServerPlayer player){
+        if(castLogic(spell)){
+            effect(spell,player);
+        }
+    };
+    public void cast(SpellInstance spell, ServerPlayer player, BlockHitResult result){
+        if(castLogic(spell)){
+            effect(spell,player,result);
+        }
+    };
+    public abstract void effect(SpellInstance spell,ServerPlayer player, BlockHitResult result);
+    public abstract void effect(SpellInstance spell,ServerPlayer player);
+
+    public boolean castLogic(SpellInstance spell){
+        if(spell.cooldown==null){
+            spell.setCooldown(new SpellCooldown(duration));
+        }
+        return spell.isOnCooldown();
     }
-    public void cast(SpellInstance spell, ServerPlayer player, BlockPos pos, BlockHitResult hitVec){
-    }
-    public SpellEffect setRange(int range) {
+
+    public SpellEffect range(int range) {
         this.range = range;
         return this;
     }
-    public SpellEffect setElement(MagicElement element) {
+    public SpellEffect element(MagicElement element) {
         this.element = element;
         return this;
     }
-    public SpellEffect setDuration(int duration) {
+    public SpellEffect duration(int duration) {
         this.duration = duration;
         return this;
     }
-    public SpellEffect setPower(int power) {
+    public SpellEffect power(int power) {
         this.power = power;
         return this;
     }
