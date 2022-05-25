@@ -21,7 +21,7 @@ public class SpellInstance {
 
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
     public static final SpellInstance EMPTY = new SpellInstance(SpellRegistry.EMPTY);
-    public SpellHolder holder;
+    public SpellType spellType;
     public SpellCooldown oldCooldown;
     public SpellCooldown cooldown;
     public boolean selected;
@@ -31,14 +31,16 @@ public class SpellInstance {
     public SpellEffect effect;
     public MagicElement element;
 
-    public SpellInstance(SpellHolder holder, SpellCastMode castMode, MagicElement element) {
-        this.holder = holder;
+    public SpellInstance(SpellType spellType, SpellCastMode castMode, MagicElement element) {
+        this.spellType = spellType;
         this.castMode = castMode;
+        this.effect = spellType.effect;
+        this.effect.element = element;
         this.element = element;
     }
 
-    public SpellInstance(SpellHolder holder) {
-        this.holder = holder;
+    public SpellInstance(SpellType spellType) {
+        this.spellType = spellType;
     }
 
     public SpellInstance setCooldown(SpellCooldown cooldown) {
@@ -100,14 +102,18 @@ public class SpellInstance {
     }
 
     public boolean isEmpty() {
-        return holder == null || holder.equals(SpellRegistry.EMPTY);
+        return spellType == null || spellType.equals(SpellRegistry.EMPTY);
     }
 
     public CompoundTag serializeNBT() {
         CompoundTag spellTag = new CompoundTag();
-        spellTag.putString("type", holder.id.toString());
-        spellTag.putString("elementType", element.id.toString());
-        spellTag.put("castMode", castMode.serializeNBT());
+        spellTag.putString("type", spellType.id.toString());
+        if (element != null) {
+            spellTag.putString("elementType", element.id.toString());
+        }
+        if (castMode != null) {
+            spellTag.put("castMode", castMode.serializeNBT());
+        }
         if (isOnCooldown()) {
             spellTag.put("spellCooldown", cooldown.serializeNBT());
         }

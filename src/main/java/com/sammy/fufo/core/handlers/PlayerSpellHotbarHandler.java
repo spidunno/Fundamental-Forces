@@ -8,7 +8,6 @@ import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.sammy.ortus.events.types.RightClickEmptyServer;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -184,8 +183,8 @@ public class PlayerSpellHotbarHandler {
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
-                                ResourceLocation background = instance.holder.getBackgroundLocation();
-                                ResourceLocation icon = instance.holder.getIconLocation();
+                                ResourceLocation background = instance.spellType.getBackgroundLocation();
+                                ResourceLocation icon = instance.spellType.getIconLocation();
                                 int x = left + i * 24 + 3;
                                 int y =  top + 3;
 

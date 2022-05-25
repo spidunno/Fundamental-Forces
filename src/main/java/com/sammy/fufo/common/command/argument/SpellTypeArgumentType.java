@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class SpellTypeArgumentType implements ArgumentType<String> {
+public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
 
     public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(LangHelpers.getCommandOutput("error.spell.type.result")));
 
@@ -24,14 +24,13 @@ public class SpellTypeArgumentType implements ArgumentType<String> {
     }
 
     @Override
-    public String parse(final StringReader reader) throws CommandSyntaxException {
-        String read = reader.readUnquotedString();
+    public ResourceLocation parse(final StringReader reader) throws CommandSyntaxException {
+        ResourceLocation read = ResourceLocation.read(reader);
         if (SpellRegistry.SPELL_TYPES.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
     }
-
     @Override
     public String toString() {
         return "string()";

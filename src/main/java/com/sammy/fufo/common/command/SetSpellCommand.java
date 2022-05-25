@@ -6,12 +6,12 @@ import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.common.command.argument.SpellTypeArgumentType;
 import com.sammy.fufo.core.data.LangHelpers;
 import com.sammy.fufo.core.setup.content.magic.SpellRegistry;
-import com.sammy.fufo.core.systems.magic.spell.SpellHolder;
-import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
+import com.sammy.fufo.core.systems.magic.spell.SpellType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 public class SetSpellCommand {
@@ -28,9 +28,9 @@ public class SetSpellCommand {
                                             CommandSourceStack source = context.getSource();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             FufoPlayerDataCapability.getCapabilityOptional(target).ifPresent(p -> {
-                                                SpellHolder result = SpellRegistry.SPELL_TYPES.get(context.getArgument("type", String.class));
+                                                SpellType result = SpellRegistry.SPELL_TYPES.get(context.getArgument("type", ResourceLocation.class));
                                                 int slot = context.getArgument("slot", Integer.class)-1;
-                                                p.hotbarHandler.spellHotbar.spells.set(slot, new SpellInstance(result));
+                                                p.hotbarHandler.spellHotbar.spells.set(slot, result.instanceFunction.apply(result));
                                                 FufoPlayerDataCapability.syncTrackingAndSelf(target);
                                                 source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("set_spell_success")), true);
                                             });

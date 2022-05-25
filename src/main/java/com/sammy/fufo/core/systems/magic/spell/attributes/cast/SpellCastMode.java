@@ -1,7 +1,7 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.cast;
 
+import com.sammy.fufo.core.setup.content.magic.SpellRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
-import com.sammy.fufo.core.systems.magic.spell.attributes.SpellTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -26,6 +26,9 @@ public abstract class SpellCastMode {
     }
 
     public static SpellCastMode deserializeNBT(CompoundTag tag) {
-        return SpellTags.CastModes.CAST_MODES.get(new ResourceLocation(tag.getString("id")));
+        if (!tag.contains("id")) {
+            return null;
+        }
+        return SpellRegistry.CAST_MODES.get(new ResourceLocation(tag.getString("id")));
     }
 }
