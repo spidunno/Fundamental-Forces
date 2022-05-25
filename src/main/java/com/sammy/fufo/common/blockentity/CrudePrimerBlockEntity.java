@@ -1,8 +1,10 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.common.entity.weave.PrimedBindableEntity;
-import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
+import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
+import com.sammy.fufo.common.entity.weave.WeaveEntity;
+import com.sammy.fufo.common.recipe.WeaveRecipe;
 import com.sammy.fufo.core.systems.magic.weaving.Bindable;
+import com.sammy.fufo.core.systems.magic.weaving.StandardWeave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.ItemHolderBlockEntity;
@@ -32,10 +34,9 @@ public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
     public void tick() {
         super.tick();
         if(!this.inventory.isEmpty()){
-            PrimedBindableEntity item = new PrimedBindableEntity(level);
-            Bindable bindable = new ItemStackBindable(this.inventory.extractItem(0, 1, false));
-            item.setBindable(bindable);
-            item.setPos(this.getBlockPos().getX() + 0.5, this.getBlockPos().getY() + 1.5, this.getBlockPos().getZ() + 0.5);
+            WeaveEntity item = new WeaveEntity(level);
+            item.weave = new StandardWeave(new ItemStackBindable(this.inventory.extractItem(0,1,false)));
+            item.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1.5, worldPosition.getZ() + 0.5);
             level.addFreshEntity(item);
         }
     }
