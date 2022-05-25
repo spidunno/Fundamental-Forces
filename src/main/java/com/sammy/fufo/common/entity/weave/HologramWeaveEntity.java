@@ -1,42 +1,33 @@
 package com.sammy.fufo.common.entity.weave;
 
-import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.recipe.WeaveRecipe;
-import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.RecipeTypeRegistry;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
-import com.sammy.fufo.core.setup.content.item.ItemRegistry;
-import com.sammy.fufo.core.systems.magic.weaving.Bindable;
-import com.sammy.fufo.core.systems.magic.weaving.BindingType;
-import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
-import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
-import com.sammy.ortus.setup.OrtusParticleRegistry;
-import com.sammy.ortus.systems.easing.Easing;
-import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.Tags;
 
 import java.awt.*;
-import java.util.Random;
-
-import static net.minecraft.util.Mth.nextFloat;
 
 public class HologramWeaveEntity extends AbstractWeaveEntity {
     public HologramWeaveEntity(EntityType<?> entity, Level level) {
         super(entity, level);
         this.noPhysics = true;
+        this.mainColors = new Color[]{new Color(3, 165, 252), new Color(3, 252, 215)};
+        this.secondaryColors = new Color[]{new Color(3, 86, 252), new Color(3, 211, 252)};
     }
 
     public HologramWeaveEntity(Level level) {
         super(EntityRegistry.HOLOGRAM_WEAVE.get(), level);
         this.noPhysics = true;
+        ItemStack item = level.random.nextInt(2) < 1 ? Items.DIAMOND.getDefaultInstance() : Items.STONE.getDefaultInstance();
+        this.weave.add(Vec3i.ZERO, new ItemStackBindable(item));
+        this.mainColors = new Color[]{new Color(250,226,0), new Color(2235, 219, 120)};
+        this.secondaryColors = new Color[]{new Color(252, 175, 50), new Color(247, 210, 151)};
     }
 
     @Override
@@ -54,44 +45,5 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
         pCompound.put("Weave", serializer.toNBT(recipe));
     }
 
-    @Override
-    public void tick() {
-        if (level.isClientSide) {
-            if (weave != null) {
-                weave.getBindables().forEach(b -> {
-                    Vec3i offset = b.getLocation();
-                    Random rand = level.getRandom();
-                    ParticleBuilders.create(OrtusParticleRegistry.STAR_PARTICLE)
-                            .setAlpha(0.05f, 0.15f, 0f)
-                            .setAlphaEasing(Easing.QUINTIC_IN, Easing.QUINTIC_OUT)
-                            .setLifetime(15 + rand.nextInt(4))
-                            .setSpin(nextFloat(rand, 0.01f, 0.05f), 0.02f)
-                            .setScale(0.05f, 0.35f + rand.nextFloat() * 0.15f, 0.2f)
-                            .setScaleEasing(Easing.SINE_IN, Easing.SINE_OUT)
-                            .setColor(new Color(250, 215, 100), new Color(169, 14, 92))
-                            .setColorCoefficient(0.5f)
-                            .enableNoClip()
-                            .repeat(level, position().x() + offset.getX(), position().y() + offset.getY() + 0.45f, position().z() + offset.getZ(), 1);
 
-                    ParticleBuilders.create(OrtusParticleRegistry.SMOKE_PARTICLE)
-                            .setAlpha(0.01f, 0.08f, 0f)
-                            .setAlphaEasing(Easing.QUINTIC_IN, Easing.QUINTIC_OUT)
-                            .setLifetime(15 + rand.nextInt(4))
-                            .setSpin(nextFloat(rand, 0.05f, 0.1f), 0.2f)
-                            .setScale(0.05f, 0.15f + rand.nextFloat() * 0.1f, 0)
-                            .setScaleEasing(Easing.SINE_IN, Easing.SINE_OUT)
-                            .setColor(new Color(255, 187, 132), new Color(84, 40, 215))
-                            .setColorCoefficient(0.5f)
-                            .randomOffset(0.04f)
-                            .enableNoClip()
-                            .randomMotion(0.005f, 0.005f)
-                            .repeat(level, position().x() + offset.getX(), position().y() + offset.getY() + 0.45f, position().z() + offset.getZ(), 1);
-                });
-                weave.getLinks().forEach((p, t) -> {
-
-                });
-            }
-        }
-        super.tick();
-    }
 }

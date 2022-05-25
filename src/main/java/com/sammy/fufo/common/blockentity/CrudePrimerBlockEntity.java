@@ -11,12 +11,15 @@ import com.sammy.ortus.systems.blockentity.ItemHolderBlockEntity;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntityInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.*;
 
 public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
     public CrudePrimerBlockEntity(BlockEntityType<? extends CrudePrimerBlockEntity> type, BlockPos pos, BlockState state) {
@@ -33,12 +36,18 @@ public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
     @Override
     public void tick() {
         super.tick();
-        if(!this.inventory.isEmpty()){
-            WeaveEntity item = new WeaveEntity(level);
-            item.weave = new StandardWeave(new ItemStackBindable(this.inventory.extractItem(0,1,false)));
-            item.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1.5, worldPosition.getZ() + 0.5);
-            level.addFreshEntity(item);
+        if(!level.isClientSide){
+            if(!this.inventory.isEmpty()){
+                WeaveEntity item = new WeaveEntity(level);
+                item.weave = new StandardWeave(new ItemStackBindable(ItemStack.EMPTY));
+                item.setBaseItemBindable(new ItemStackBindable(this.inventory.extractItem(0,1,false)));
+                item.setPos(worldPosition.getX() + 0.5, worldPosition.getY() + 1.5, worldPosition.getZ() + 0.5);
+                item.mainColors = new Color[]{new Color(250,226,0), new Color(223, 219, 120)};
+                item.secondaryColors = new Color[]{new Color(252, 175, 50), new Color(247, 210, 151)};
+                level.addFreshEntity(item);
+            }
         }
+
     }
 
     @NotNull

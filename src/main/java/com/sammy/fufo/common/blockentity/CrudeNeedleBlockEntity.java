@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,9 +31,9 @@ public class CrudeNeedleBlockEntity extends OrtusBlockEntity {
     @Override
     public InteractionResult onUse(Player player, InteractionHand hand) {
         if(!level.isClientSide) {
-            level.getEntities(new WeaveEntity(level), AABB.ofSize(Vec3.atCenterOf(this.getBlockPos()), 2, 2, 2)).forEach(entity -> {
-                if(entity instanceof WeaveEntity) {
-                    bindableEntities.add((WeaveEntity) entity);
+            level.getEntitiesOfClass(WeaveEntity.class, AABB.ofSize(Vec3.atCenterOf(this.getBlockPos()), 2, 2, 2)).forEach(entity -> {
+                if(entity != null) {
+                    bindableEntities.add(entity);
                     entity.kill();
                 }
             });
