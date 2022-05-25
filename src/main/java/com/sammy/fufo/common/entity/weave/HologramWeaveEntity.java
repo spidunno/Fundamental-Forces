@@ -37,30 +37,6 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
     public HologramWeaveEntity(Level level) {
         super(EntityRegistry.HOLOGRAM_WEAVE.get(), level);
         this.noPhysics = true;
-        this.weave = new WeaveRecipe(new IngredientBindable(Ingredient.EMPTY), FufoMod.fufoPath("asd"), "ewq").setOutput(Items.HORSE_SPAWN_EGG.getDefaultInstance());
-        Bindable a = new IngredientBindable(Ingredient.of(Items.ACACIA_DOOR.getDefaultInstance()));
-        Bindable b = new ItemStackBindable(ItemRegistrate.ASTRAL_SHARD.get().getDefaultInstance());
-        Bindable c = new EntityTypeBindable(EntityType.DROWNED);
-        Bindable d = new IngredientBindable(Ingredient.of(Tags.Items.GEMS));
-        Bindable e = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
-        Bindable f = new EntityTypeBindable(EntityType.AXOLOTL);
-        Bindable g = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
-        Bindable h = new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE));
-        Bindable i = new IngredientBindable(Ingredient.of(Tags.Items.INGOTS));
-        Bindable j = new IngredientBindable(Ingredient.of(Tags.Items.DUSTS));
-        Bindable k = new EntityTypeBindable(EntityType.WITHER_SKELETON);
-        BindingType l = new BindingType(new ResourceLocation("ortus:bingus"));
-        this.weave.add(new Vec3i(0, -1, 0), a);
-        this.weave.add(a, l, new Vec3i(-1, 0, 0), b);
-        this.weave.add(a, l, new Vec3i(1, 0, 0), c);
-        this.weave.add(a, l, new Vec3i(0, 0, -1), e);
-        this.weave.add(b, l, new Vec3i(0, 0, 1), f);
-        this.weave.add(f, l, new Vec3i(0, 1, 0), d);
-        this.weave.add(d, l, new Vec3i(1, 0, -1), g);
-        this.weave.add(g, l, new Vec3i(-1, 0, 0), h);
-        this.weave.add(a, l, new Vec3i(1, 0, 1), i);
-        this.weave.add(a, l, new Vec3i(0, 1, 0), j);
-        this.weave.add(j, l, new Vec3i(0, 1, 0), k);
     }
 
     @Override
