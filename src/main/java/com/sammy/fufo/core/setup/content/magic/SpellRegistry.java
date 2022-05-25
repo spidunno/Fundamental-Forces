@@ -33,7 +33,7 @@ public class SpellRegistry {
 
     public static final SpellCastMode INSTANT = registerCastMode(FufoMod.fufoPath("instant"), InstantCastMode::new);
 
-    public static final SpellType FORCE_BOLT = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_bolt"), (h) -> new SpellInstance(h, INSTANT, FORCE), (h) -> new SpellCooldown(100), new ProjectileEffect(SpellBolt::new)));
+    public static final SpellType FORCE_BOLT = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_bolt"), (h) -> new SpellInstance(h, INSTANT, FORCE), (h) -> new SpellCooldown(100), new ProjectileEffect(SpellBolt::new).setDuration(100)));
 
     protected static MagicElement registerElement(MagicElement element) {
         ELEMENTS.put(element.id, element);

@@ -22,8 +22,8 @@ public class ProjectileEffect extends SpellEffect {
     public void cast(SpellInstance instance, ServerPlayer player) {
         instance.cooldown = new SpellCooldown(duration);
         AbstractSpellProjectile projectile = projectileSupplier.apply(player.level)
-                .setFirstColor(firstColor)
-                .setSecondColor(secondColor)
+                .setElement(element)
+                .setColor(firstColor, secondColor)
                 .setLifetime(duration);
         projectile.setPos(player.getEyePosition());
         projectile.fireImmune();
