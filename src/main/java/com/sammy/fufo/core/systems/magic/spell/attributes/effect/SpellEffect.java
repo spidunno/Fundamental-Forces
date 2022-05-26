@@ -29,7 +29,8 @@ public abstract class SpellEffect {
 
     public boolean castLogic(SpellInstance spell){
         if(spell.cooldown==null){
-            spell.setCooldown(spell.spellType.cooldownFunction.apply(spell));
+            spell.setCooldown();
+            return true;
         }
         return spell.isOnCooldown();
     }
