@@ -18,14 +18,15 @@ public class BlockEntityRegistrate {
     public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =
             FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).register();
 
+    public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
+            FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
+
     public static final BlockEntityEntry<OrbBlockEntity> ORB =
-            FufoMod.registrate().<OrbBlockEntity>blockEntity("orb", OrbBlockEntity::new).validBlocks(BlockRegistrate.FORCE_ORB).renderer(() -> OrbRenderer::new).register();
+            FufoMod.registrate().<OrbBlockEntity>blockEntity("orb", OrbBlockEntity::new).renderer(() -> OrbRenderer::new).validBlocks(BlockRegistrate.FORCE_ORB).register();
 
     public static final BlockEntityEntry<MeteorFlameBlockEntity> METEOR_FLAME =
             FufoMod.registrate().<MeteorFlameBlockEntity>blockEntity("meteor_flame", MeteorFlameBlockEntity::new).validBlocks(BlockRegistrate.METEOR_FIRE).register();
 
-    public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
-            FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
 
     public static final BlockEntityEntry<CrudePrimerBlockEntity> CRUDE_PRIMER =
             FufoMod.registrate().<CrudePrimerBlockEntity>blockEntity("crude_primer", CrudePrimerBlockEntity::new).renderer(() -> CrudePrimerRenderer::new).validBlocks(BlockRegistrate.CRUDE_PRIMER).register();
