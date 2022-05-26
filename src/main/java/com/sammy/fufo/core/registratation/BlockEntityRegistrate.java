@@ -13,7 +13,7 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();
 
     public static final BlockEntityEntry<UITestBlockEntity> UI_TEST_BLOCK =
-            FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST_BLOCK).register();
+            FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST).register();
 
     public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =
             FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).register();
