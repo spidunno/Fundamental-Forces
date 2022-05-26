@@ -38,17 +38,14 @@ public class BlockRegistrate {
     public static final BlockEntry<Block> BLOCK_OF_CRACK = simpleBlock("block_of_crack", Block::new,
             new OrtusBlockProperties(Material.METAL, MaterialColor.FIRE).needsPickaxe().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).isRedstoneConductor(Blocks::never));
 
-    public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = simpleBlock("force_orb", OrbBlock::new,
-            new OrtusBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14));
+    //public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = simpleBlock("force_orb", OrbBlock::new,
+    //        new OrtusBlockProperties(Material.WOOL, MaterialColor.COLOR_BLUE).sound(SoundType.WOOL).noCollission().instabreak().lightLevel((b) -> 14));
 
     public static final BlockEntry<PipeAnchorBlock<AnchorBlockEntity>> ANCHOR = simpleBlock("anchor", PipeAnchorBlock::new,
             new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().instabreak().isCutoutLayer());
 
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = simpleBlock("burner_extractor", BurnerExtractorBlock::new,
             new OrtusBlockProperties(Material.METAL, MaterialColor.METAL).sound(SoundType.METAL).dynamicShape().isCutoutLayer());
-
-    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = simpleBlock("crude_array",
-            (props) -> (ArrayBlock) new ArrayBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), new OrtusBlockProperties(Material.HEAVY_METAL, MaterialColor.COLOR_BROWN).sound(SoundType.LODESTONE).isCutoutLayer());
 
     public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST_BLOCK = simpleBlock("ui_test_block", UITestBlock::new,
             new OrtusBlockProperties(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE));
