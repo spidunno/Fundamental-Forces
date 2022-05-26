@@ -19,8 +19,8 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
 public class BlockRegistrate {
-
     private static final Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(ContentTab::get);
+
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = simpleBlock("block_of_crack", Block::new,
             new OrtusBlockProperties(Material.METAL, MaterialColor.FIRE).needsPickaxe().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).isRedstoneConductor(Blocks::never));

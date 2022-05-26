@@ -47,11 +47,15 @@ public class SpellInstance {
         this.cooldown = cooldown;
         return this;
     }
+    public SpellInstance setCooldown() {
+        this.cooldown = spellType.cooldownFunction.apply(this);
+        return this;
+    }
 
     public void cast(ServerPlayer player, BlockPos pos, BlockHitResult hitVec) {
-            if (castMode.canCast(this, player, pos, hitVec)) {
-                effect.cast(this, player, hitVec);
-            }
+        if (castMode.canCast(this, player, pos, hitVec)) {
+            effect.cast(this, player, hitVec);
+        }
     }
 
     public void cast(ServerPlayer player) {

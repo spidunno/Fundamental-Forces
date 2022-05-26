@@ -1,7 +1,6 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
 import com.sammy.fufo.core.systems.magic.element.MagicElement;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
@@ -19,18 +18,19 @@ public abstract class SpellEffect {
         if(castLogic(spell)){
             effect(spell,player);
         }
-    };
+    }
     public void cast(SpellInstance spell, ServerPlayer player, BlockHitResult result){
         if(castLogic(spell)){
             effect(spell,player,result);
         }
-    };
+    }
     public abstract void effect(SpellInstance spell,ServerPlayer player, BlockHitResult result);
     public abstract void effect(SpellInstance spell,ServerPlayer player);
 
     public boolean castLogic(SpellInstance spell){
         if(spell.cooldown==null){
-            spell.setCooldown(new SpellCooldown(duration));
+            spell.setCooldown();
+            return true;
         }
         return spell.isOnCooldown();
     }
