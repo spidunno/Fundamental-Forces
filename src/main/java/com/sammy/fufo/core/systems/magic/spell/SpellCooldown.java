@@ -30,8 +30,12 @@ public class SpellCooldown {
             discarded = true;
         }
     }
+    public void reset(){
+        timer = 0;
+        discarded = false;
+    }
 
-    public static boolean isValid(SpellCooldown cooldown) {
+    public static boolean shouldTick(SpellCooldown cooldown) {
         return cooldown != null && !cooldown.discarded;
     }
 

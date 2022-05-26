@@ -96,7 +96,12 @@ public class SpellInstance {
     }
 
     public boolean isOnCooldown() {
-        return SpellCooldown.isValid(cooldown);
+        return SpellCooldown.shouldTick(cooldown);
+    }
+    public boolean isReady(){
+        if(cooldown==null){setCooldown();return true;}
+        if(!isOnCooldown()){cooldown.reset();return true;}
+        return false;
     }
 
     public boolean isEmpty() {

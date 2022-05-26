@@ -32,7 +32,7 @@ public abstract class SpellEffect {
             spell.setCooldown();
             return true;
         }
-        return spell.isOnCooldown();
+        return spell.isReady();
     }
 
     public SpellEffect range(int range) {
