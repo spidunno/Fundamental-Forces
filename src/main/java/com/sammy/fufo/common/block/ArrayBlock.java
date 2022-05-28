@@ -2,6 +2,8 @@ package com.sammy.fufo.common.block;
 
 import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
 import com.sammy.fufo.common.blockentity.ArrayBlockEntity;
+import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
+import com.sammy.fufo.common.entity.weave.WeaveEntity;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.MethodsReturnNonnullByDefault;
@@ -38,6 +40,7 @@ import java.util.stream.Stream;
 
 
 public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> {
+    private boolean toggled = false;
 
     public final VoxelShape SHAPE = Stream.of(
             Shapes.join(Block.box(5, 5, 12, 11, 11, 16), Shapes.join(Block.box(4, 4, 4, 12, 13, 12), Shapes.join(Block.box(5, 7, 3, 7, 14, 3), Block.box(9, 7, 3, 11, 14, 3), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR),
@@ -51,7 +54,29 @@ public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> 
         this.registerDefaultState(this.defaultBlockState().setValue(FACING, Direction.NORTH));
     }
 
-
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
+        if(!level.isClientSide && !toggled){
+            HologramWeaveEntity hologram = new HologramWeaveEntity(level);
+            hologram.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
+            WeaveEntity weave1 = new WeaveEntity(level);
+            level.addFreshEntity(hologram);
+            weave1.setPos(pos.getX() + 1.5, pos.getY() + 2, pos.getZ() + 0.5);
+            WeaveEntity weave2 = new WeaveEntity(level);
+            weave2.setPos(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 1.5);
+            level.addFreshEntity(weave1);
+            level.addFreshEntity(weave2);
+            toggled = true;
+            return InteractionResult.SUCCESS;
+        }
+        if(!level.isClientSide && toggled){
+            if(player.isShiftKeyDown()){
+                toggled = false;
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.SUCCESS;
+    }
 
     @Override
     public BlockState rotate(BlockState pState, Rotation pRotation) {
