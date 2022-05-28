@@ -1,11 +1,13 @@
 package com.sammy.fufo.common.entity.weave;
 
+import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
 import com.sammy.fufo.core.systems.magic.weaving.StandardWeave;
 import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusParticleRegistry;
 import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
+import com.sammy.ortus.systems.rendering.particle.world.WorldParticleOptions;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -113,6 +115,7 @@ public abstract class AbstractWeaveEntity extends Entity {
                             .enableNoClip()
                             .randomMotion(0.005f, 0.005f)
                             .repeat(level, position().x() + offset.getX(), position().y() + offset.getY() + 0.45f, position().z() + offset.getZ(), 1);
+
                 });
                 weave.getLinks().forEach((p, t) -> {
 
