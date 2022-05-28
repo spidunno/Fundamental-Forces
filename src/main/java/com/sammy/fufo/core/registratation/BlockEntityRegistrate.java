@@ -10,9 +10,9 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 public class BlockEntityRegistrate {
 
     public static final BlockEntityEntry<BurnerExtractorBlockEntity> BURNER_EXTRACTOR =
-            FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).validBlocks(BlockRegistrate.BURNER_EXTRACTOR).register();
+            FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();
 
-    public static final BlockEntityEntry<UITestBlockEntity> UI_TEST =
+    public static final BlockEntityEntry<UITestBlockEntity> UI_TEST_BLOCK =
             FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST).register();
 
     public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =

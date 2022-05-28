@@ -39,7 +39,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
     public void render(FallingStarfallEvent instance, PoseStack poseStack, MultiBufferSource bufferSource, float partialTicks) {
         float beamLength = 20f;
         float beamWidth = 4f;
-        float flareSize = 5f;
+        float flareSize = 2f;
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
         VertexConsumer lightTrailConsumer = DELAYED_RENDER.getBuffer(LIGHT_TYPE);
         VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
