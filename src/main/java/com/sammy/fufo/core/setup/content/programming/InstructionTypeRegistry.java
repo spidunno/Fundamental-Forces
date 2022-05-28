@@ -1,9 +1,6 @@
 package com.sammy.fufo.core.setup.content.programming;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.magic.ProjectileSpell;
-import com.sammy.fufo.core.setup.content.magic.ElementTypeRegistry;
-import com.sammy.fufo.core.systems.magic.spell.SpellType;
 import com.sammy.fufo.core.systems.programming.InstructionType;
 import net.minecraft.resources.ResourceLocation;
 
