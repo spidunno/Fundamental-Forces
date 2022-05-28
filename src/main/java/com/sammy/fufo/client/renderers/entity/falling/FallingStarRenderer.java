@@ -27,6 +27,7 @@ import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.client.model.renderable.SimpleRenderable;
 import net.minecraftforge.event.TickEvent;
+import org.antlr.v4.runtime.misc.Triple;
 
 import java.awt.*;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
@@ -43,7 +45,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     private static final ResourceLocation COMA = fufoPath("textures/vfx/uv_test.png");
     private static final RenderType COMA_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(COMA);
 
-    private static final ResourceLocation LIGHT_TRAIL = TextureSurgeon.PATIENT_TEXTURE;
+    private static final ResourceLocation LIGHT_TRAIL = AncientTextureSurgeon.PATIENT_TEXTURE;
     private static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation FIRE_TRAIL = fufoPath("textures/vfx/fire_trail.png");
@@ -125,6 +127,84 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 
 
     public static class TextureSurgeon {
+        public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> TEXTURES = new ConcurrentHashMap<>();
+        public static ResourceLocation DEFAULT_PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
+
+        boolean dumpTexture;
+        ResourceLocation drawToLocation = DEFAULT_PATIENT_TEXTURE;
+        DynamicTexture sourceTexture;
+        DynamicTexture drawToTexture;
+        Matrix4f oldProjection;
+
+        public TextureSurgeon dumpTextures() {
+            this.dumpTexture = true;
+            return this;
+        }
+        public TextureSurgeon setSourceTexture(DynamicTexture sourceTexture) {
+            this.sourceTexture = sourceTexture;
+            return this;
+        }
+
+        public TextureSurgeon updateRenderTarget() {
+            drawToTexture = TEXTURES.computeIfAbsent(new Triple<>(drawToLocation, sourceTexture.getWidth(), sourceTexture.getHeight()), p -> new DynamicTexture(drawToLocation, p.b, p.c));
+            RenderTarget frameBuffer = drawToTexture.getFrameBuffer();
+            frameBuffer.clear(Minecraft.ON_OSX);
+            frameBuffer.bindWrite(true);
+            return this;
+        }
+
+        public TextureSurgeon begin() {
+            updateRenderTarget();
+
+            oldProjection = RenderSystem.getProjectionMatrix();
+            Matrix4f matrix4f = Matrix4f.orthographic(0.0F, 16, 0, 16, 1000.0F, ForgeHooksClient.getGuiFarPlane());
+            RenderSystem.setProjectionMatrix(matrix4f);
+
+            PoseStack posestack = RenderSystem.getModelViewStack();
+            posestack.pushPose();
+            posestack.setIdentity();
+            posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
+            return this;
+        }
+
+        public TextureSurgeon draw(VFXBuilders.ScreenVFXBuilder builder, ShaderInstance... shaders) {
+            return draw(() -> {
+                PoseStack posestack = RenderSystem.getModelViewStack();
+
+                for (ShaderInstance shader : shaders) {
+                    builder.setShaderTexture(sourceTexture.getTextureLocation()).setShader(shader).setPositionWithWidth(0, 0, 16, 16).draw(posestack);
+                }
+            });
+        }
+
+        public TextureSurgeon draw(Runnable drawCall) {
+            drawCall.run();
+            return this;
+        }
+
+        public TextureSurgeon end() {
+            Minecraft mc = Minecraft.getInstance();
+            PoseStack posestack = RenderSystem.getModelViewStack();
+            posestack.popPose();
+            RenderSystem.applyModelViewMatrix();
+
+            RenderSystem.setProjectionMatrix(oldProjection);
+            RenderSystem.clear(256, Minecraft.ON_OSX);
+
+            if (dumpTexture) {
+                try {
+                    Path outputFolder = Paths.get("texture_dump");
+                    outputFolder = Files.createDirectories(outputFolder);
+                    drawToTexture.saveTextureToFile(outputFolder);
+                } catch (IOException e) {
+                    OrtusLib.LOGGER.error("Failed to dump texture maps with error.", e);
+                }
+            }
+            mc.getMainRenderTarget().bindWrite(true);
+            return this;
+        }
+    }
+    public static class AncientTextureSurgeon {
         private static boolean dumpTextures = false;
 
         public static ResourceLocation PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
@@ -134,8 +214,9 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             if (event.phase.equals(TickEvent.Phase.START)) {
                 if (Minecraft.getInstance().level != null) {
                     if (Minecraft.getInstance().level.getGameTime() % 200L == 0) {
-                        TextureSurgeon.enableTextureDump();
-                        TextureSurgeon.operate(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 512), VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
+                        TextureSurgeon textureSurgeon = new TextureSurgeon();
+                        textureSurgeon.dumpTextures();
+                        textureSurgeon.setSourceTexture(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 32)).begin().draw(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
                         operated = true;
 
                     }

@@ -29,7 +29,7 @@ public class ClientRuntimeEvents {
 
     @SubscribeEvent
     public static void renderTick(TickEvent.RenderTickEvent event) {
-        FallingStarRenderer.TextureSurgeon.renderTick(event);
+        FallingStarRenderer.AncientTextureSurgeon.renderTick(event);
     }
 
     @SubscribeEvent
