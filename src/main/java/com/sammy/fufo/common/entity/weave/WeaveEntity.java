@@ -2,20 +2,17 @@ package com.sammy.fufo.common.entity.weave;
 
 import com.sammy.fufo.common.blockentity.CrudePrimerBlockEntity;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
-import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -28,38 +25,32 @@ public class WeaveEntity extends AbstractWeaveEntity {
 
     public WeaveEntity(Level level) {
         super(EntityRegistry.BASIC_WEAVE.get(), level);
-        this.mainColors = new Color[]{new Color(250, 226, 0), new Color(223, 219, 120)};
-        this.secondaryColors = new Color[]{new Color(252, 175, 50), new Color(247, 210, 151)};
+        this.mainColors = new Color[]{new Color(254, 120, 0), new Color(254, 190, 66)};
+        this.secondaryColors = new Color[]{new Color(255, 190, 0), new Color(155, 210, 122)};
     }
 
     @Override
-    public InteractionResult interact(Player pPlayer, InteractionHand pHand) {
+    public @NotNull InteractionResult interact(Player pPlayer, InteractionHand pHand) {
         if (!level.isClientSide) {
             if (!filled) {
-                if (pPlayer.isShiftKeyDown()) {
-                    for (BlockPos pos : BlockPos.spiralAround(blockPosition(), 1, Direction.NORTH, Direction.EAST)) {
+                if (pPlayer.isShiftKeyDown() && !(level.getBlockEntity(blockPosition().below()) instanceof CrudePrimerBlockEntity)) {
+                    for (BlockPos pos : BlockPos.betweenClosed(this.blockPosition().offset(-5,-5,-5), this.blockPosition().offset(5,5,5))) {
                         if (level.getBlockEntity(pos) instanceof CrudePrimerBlockEntity && level.getEntities(pPlayer, new AABB(pos.offset(0, 1, 0)), entity -> entity instanceof WeaveEntity).isEmpty()) {
-                            move(MoverType.PISTON, new Vec3(pos.getX(), pos.getY() + 1, pos.getZ()));
+                            setPos(new Vec3(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5));
                             return InteractionResult.SUCCESS;
                         }
                     }
                 }
             }
         }
-        return InteractionResult.FAIL;
+        return super.interact(pPlayer, pHand);
     }
 
-    public void setBaseItemBindable(ItemStackBindable item) {
-        this.weave.add(Vec3i.ZERO, item);
-    }
 
-    protected void readAdditionalSaveData(CompoundTag pCompound) {
-        this.weave = Weave.deserialize(pCompound.getCompound("Weave"));
-    }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag pCompound) {
-        pCompound.put("Weave", weave.serialize());
+    public boolean isPickable() {
+        return true;
     }
 
 }

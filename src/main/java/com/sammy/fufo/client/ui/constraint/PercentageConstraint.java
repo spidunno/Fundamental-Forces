@@ -17,7 +17,7 @@ public class PercentageConstraint extends DimensionConstraint {
 
     @Override
     public double apply(double parentDimensions) {
-        return parentDimensions * (percentage / 100.0);
+        return parentDimensions * percentage;
     }
 
 }

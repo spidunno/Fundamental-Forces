@@ -224,7 +224,7 @@ public abstract class Weave<T extends Weave> {
 
             if(bindable instanceof IngredientBindable) {
                 bindableTag.putString("type", "ingredient");
-                bindableTag.put("value", (CompoundTag) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, ((IngredientBindable) bindable).getIngredient().toJson()));
+                bindableTag.put("value", Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, ((IngredientBindable) bindable).getIngredient().toJson()));
             } else if(bindable instanceof EntityTypeBindable) {
                 bindableTag.putString("type", "entity_type");
                 CompoundTag valueTag = new CompoundTag();
@@ -232,7 +232,7 @@ public abstract class Weave<T extends Weave> {
                 bindableTag.put("value", valueTag);
             } else if (bindable instanceof ItemStackBindable) {
                 bindableTag.putString("type", "item");
-                bindableTag.put("value", (CompoundTag) Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, Ingredient.of(((ItemStackBindable) bindable).getItemStack()).toJson()));
+                bindableTag.put("value", Dynamic.convert(JsonOps.INSTANCE, NbtOps.INSTANCE, Ingredient.of(((ItemStackBindable) bindable).getItemStack()).toJson()));
             }
 
             bindablesTag.add(bindableTag);

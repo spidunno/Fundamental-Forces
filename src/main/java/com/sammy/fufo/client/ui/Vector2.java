@@ -5,23 +5,23 @@ package com.sammy.fufo.client.ui;
  * Non-mutable.
  */
 public class Vector2 {
-    private final double x;
-    private final double y;
+    public final double x;
+    public final double y;
 
     /**
      * Vector at the origin, (0, 0).
      */
-    private static final Vector2 ZERO = new Vector2(0.0D, 0.0D);
+    public static final Vector2 ZERO = new Vector2(0.0D, 0.0D);
 
     /**
      * Vector at (1, 1).
      */
-    private static final Vector2 ONE = new Vector2(1.0D, 1.0D);
+    public static final Vector2 ONE = new Vector2(1.0D, 1.0D);
 
     /**
      * Undefined vector.
      */
-    private static final Vector2 NaN = new Vector2(Double.NaN, Double.NaN);
+    public static final Vector2 NaN = new Vector2(Double.NaN, Double.NaN);
 
     /**
      * Constructs a new Vector2 with the given x and y coordinates.
@@ -31,22 +31,6 @@ public class Vector2 {
     public Vector2(double x, double y) {
         this.x = x;
         this.y = y;
-    }
-
-    /**
-     * Obtains the X component of this vector.
-     * @return the X component
-     */
-    public double getX() {
-        return x;
-    }
-
-    /**
-     * Obtains the Y component of this vector.
-     * @return the Y component
-     */
-    public double getY() {
-        return y;
     }
 
     /**

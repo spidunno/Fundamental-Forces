@@ -1,14 +1,21 @@
 package com.sammy.fufo.common.entity.weave;
 
+import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
 import com.sammy.fufo.core.systems.magic.weaving.StandardWeave;
 import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusParticleRegistry;
 import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
+import com.sammy.ortus.systems.rendering.particle.world.WorldParticleOptions;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializer;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,12 +24,19 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 import static net.minecraft.util.Mth.nextFloat;
 
 
 public abstract class AbstractWeaveEntity extends Entity {
+
+    private static final EntityDataAccessor<CompoundTag> DATA_COMPOUND_TAG = SynchedEntityData.defineId(AbstractWeaveEntity.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<Integer> DATA_COLOR_M1 = SynchedEntityData.defineId(AbstractWeaveEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COLOR_M2 = SynchedEntityData.defineId(AbstractWeaveEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COLOR_S1 = SynchedEntityData.defineId(AbstractWeaveEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DATA_COLOR_S2 = SynchedEntityData.defineId(AbstractWeaveEntity.class, EntityDataSerializers.INT);
 
     public Weave<?> weave = new StandardWeave(new ItemStackBindable(Items.AIR.getDefaultInstance()));
     public Color[] mainColors;
@@ -32,10 +46,43 @@ public abstract class AbstractWeaveEntity extends Entity {
         this.noPhysics = true;
     }
 
+    public void setBaseItemBindable(ItemStackBindable item) {
+        this.weave.add(Vec3i.ZERO, item);
+        getEntityData().set(DATA_COMPOUND_TAG, weave.serialize());
+        this.mainColors = new Color[]{new Color(254, 210, 0), new Color(254, 254, 190)};
+        getEntityData().set(DATA_COLOR_M1, mainColors[0].getRGB());
+        getEntityData().set(DATA_COLOR_M2, mainColors[1].getRGB());
+        this.secondaryColors = new Color[]{new Color(255, 210, 0), new Color(255, 255, 190)};
+        getEntityData().set(DATA_COLOR_S1, secondaryColors[0].getRGB());
+        getEntityData().set(DATA_COLOR_S2, secondaryColors[1].getRGB());
+    }
+
     @Override
     protected void defineSynchedData() {
-
+        this.getEntityData().define(DATA_COMPOUND_TAG, new StandardWeave(new ItemStackBindable(Items.AIR.getDefaultInstance())).serialize());
+        this.getEntityData().define(DATA_COLOR_M1, 16579836);
+        this.getEntityData().define(DATA_COLOR_M2, 16579836);
+        this.getEntityData().define(DATA_COLOR_S1, 16579836);
+        this.getEntityData().define(DATA_COLOR_S2, 16579836);
     }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
+        if(pKey == DATA_COMPOUND_TAG){
+            weave = StandardWeave.deserialize(this.getEntityData().get(DATA_COMPOUND_TAG));
+        } else if (pKey == DATA_COLOR_M1){
+            mainColors[0] = new Color(this.getEntityData().get(DATA_COLOR_M1));
+        } else if (pKey == DATA_COLOR_M2){
+            mainColors[1] = new Color(this.getEntityData().get(DATA_COLOR_M2));
+        } else if (pKey == DATA_COLOR_S1){
+            secondaryColors[0] = new Color(this.getEntityData().get(DATA_COLOR_S1));
+        } else if (pKey == DATA_COLOR_S2){
+            secondaryColors[1] = new Color(this.getEntityData().get(DATA_COLOR_S2));
+        }
+        super.onSyncedDataUpdated(pKey);
+    }
+
+
     @Override
     public void tick() {
         if (level.isClientSide) {
@@ -68,6 +115,7 @@ public abstract class AbstractWeaveEntity extends Entity {
                             .enableNoClip()
                             .randomMotion(0.005f, 0.005f)
                             .repeat(level, position().x() + offset.getX(), position().y() + offset.getY() + 0.45f, position().z() + offset.getZ(), 1);
+
                 });
                 weave.getLinks().forEach((p, t) -> {
 
@@ -91,22 +139,18 @@ public abstract class AbstractWeaveEntity extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         this.weave = Weave.deserialize(pCompound.getCompound("Weave"));
-    }
-
-    @Override
-    public void load(CompoundTag pCompound) {
-        super.load(pCompound);
-        this.weave = Weave.deserialize(pCompound.getCompound("Weave"));
-    }
-
-    @Override
-    public boolean save(CompoundTag pCompound) {
-        pCompound.put("Weave", weave.serialize());
-        return super.save(pCompound);
+        this.mainColors[0] = new Color(pCompound.getInt("MainColor1"));
+        this.mainColors[1] = new Color(pCompound.getInt("MainColor2"));
+        this.secondaryColors[0] = new Color(pCompound.getInt("SecondaryColor1"));
+        this.secondaryColors[1] = new Color(pCompound.getInt("SecondaryColor2"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
+        pCompound.putInt("MainColor1", Arrays.stream(mainColors).findFirst().get().getRGB());
+        pCompound.putInt("MainColor2", Arrays.stream(mainColors).skip(1).findFirst().get().getRGB());
+        pCompound.putInt("SecondaryColor1", Arrays.stream(secondaryColors).findFirst().get().getRGB());
+        pCompound.putInt("SecondaryColor2", Arrays.stream(secondaryColors).skip(1).findFirst().get().getRGB());
         pCompound.put("Weave", weave.serialize());
     }
 
