@@ -1,9 +1,11 @@
 package com.sammy.fufo.core.systems.magic.element;
 
-public class MagicBinding {
-    public final String id;
+import net.minecraft.resources.ResourceLocation;
 
-    public MagicBinding(String id) {
+public class MagicBinding {
+    public final ResourceLocation id;
+
+    public MagicBinding(ResourceLocation id) {
         this.id = id;
     }
 

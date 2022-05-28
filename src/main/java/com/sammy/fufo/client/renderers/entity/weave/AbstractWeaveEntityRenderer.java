@@ -1,6 +1,7 @@
 package com.sammy.fufo.client.renderers.entity.weave;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.weave.AbstractWeaveEntity;
@@ -10,6 +11,7 @@ import com.sammy.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -22,11 +24,17 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+
+import java.awt.*;
+
+import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEntity> {
 
     private static final ResourceLocation TEST_BEAM = FufoMod.fufoPath("textures/vfx/light_trail.png");
     private static final RenderType TEST_BEAM_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(TEST_BEAM);
+    public Color beamColor = new Color(0xFF0000);
     private final ItemRenderer itemRenderer;
 
     public AbstractWeaveEntityRenderer(EntityRendererProvider.Context context) {
@@ -34,7 +42,7 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
         this.itemRenderer = context.getItemRenderer();
     }
 
-    // TODO: make this deserialise the weave from the entity, render items at their respective positions
+    // TODO: add lines between items, constraints for all bindables to be within the 3x3x3 cube
     public void render(AbstractWeaveEntity entity, float yaw, float partialTicks, PoseStack ps, MultiBufferSource buffer, int packedLight) {
         Minecraft mc = Minecraft.getInstance();
         super.render(entity, yaw, partialTicks, ps, buffer, packedLight);
@@ -46,32 +54,48 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             Vec3i offset = b.getLocation();
             ps.translate(offset.getX(), offset.getY(), offset.getZ());
             float fac = entity.tickCount + partialTicks + (5 * i);
+            // TODO: scale & offset these based on the size of the bindable
             if (b instanceof ItemStackBindable itemStackBindable) {
                 if (!itemStackBindable.getItemStack().isEmpty()) {
                     ps.pushPose();
                     ps.scale(0.9f, 0.9f, 0.9f);
                     ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
-
                     this.itemRenderer.renderStatic(((ItemStackBindable) b).getItemStack(), ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
                     ps.popPose();
                 }
+                // TODO: scale & offset these based on the size of the bindable
             } else if (b instanceof IngredientBindable ingredientBindable) {
                 ItemStack[] items = ingredientBindable.getIngredient().getItems();
                 if (items.length != 0) {
                     ps.pushPose();
+                    ps.translate(0,-0.05D,0);
                     ps.scale(0.9f, 0.9f, 0.9f);
                     ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
                     this.itemRenderer.renderStatic(items[(entity.tickCount / 20) % items.length], ItemTransforms.TransformType.GROUND, packedLight, OverlayTexture.NO_OVERLAY, ps, buffer, entity.getId());
                     ps.popPose();
                 }
             } else if (b instanceof EntityTypeBindable entityTypeBindable) {
+                ps.pushPose();
                 EntityType<?> entityType = entityTypeBindable.get();
-                EntityRenderer<?> renderer = mc.getEntityRenderDispatcher().renderers.get(entityType);
-                // idk what im doing here, something lol
+                Vec3 size = new Vec3(b.size().getX() == 1 ? 0 : b.size().getX(), b.size().getY() == 1 ? 0 : b.size().getY(), b.size().getZ() == 1 ? 0 : b.size().getZ());
+                ps.scale(0.3f * b.size().getX(),0.3f * b.size().getY(),0.3f* b.size().getZ());
+                ps.translate((float)size.x()/2, (float)size.y()/2, (float)size.z()/2);
+                ps.translate(0, -(entityType.getHeight() > 1 ? entityType.getHeight()/3 : 0),0);
+                ps.mulPose(Vector3f.YP.rotationDegrees(fac * 3));
+                mc.getEntityRenderDispatcher().render(entityType.create(entity.level), 0, 0, 0, 0, 0, ps, buffer, packedLight);
+                ps.popPose();
             }
             ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
             i++;
         }
+        weave.getLinks().forEach((link, type) -> {
+            ps.pushPose();
+            ps.translate(link.getFirst().getX(), link.getFirst().getY() + 0.1, link.getFirst().getZ());
+            VertexConsumer consumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(beamColor).renderBeam(consumer, ps, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
+            ps.translate(-link.getFirst().getX(), -link.getFirst().getY() - 0.1, -link.getFirst().getZ());
+            ps.popPose();
+        });
         ps.popPose();
     }
 

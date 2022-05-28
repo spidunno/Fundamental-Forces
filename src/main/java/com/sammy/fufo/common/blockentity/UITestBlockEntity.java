@@ -3,7 +3,6 @@ package com.sammy.fufo.common.blockentity;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +15,7 @@ public class UITestBlockEntity extends OrtusBlockEntity {
         super(type, pos, state);
     }
     public UITestBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.UI_TEST_BLOCK.get(),pos, state);
+        super(BlockEntityRegistrate.UI_TEST.get(),pos, state);
     }
 
     @Override

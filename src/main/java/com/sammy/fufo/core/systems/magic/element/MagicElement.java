@@ -1,9 +1,11 @@
 package com.sammy.fufo.core.systems.magic.element;
 
-public class MagicElement {
-    public final String id;
+import net.minecraft.resources.ResourceLocation;
 
-    public MagicElement(String id) {
+public class MagicElement {
+    public final ResourceLocation id;
+
+    public MagicElement(ResourceLocation id) {
         this.id = id;
     }
 }

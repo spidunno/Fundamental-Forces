@@ -1,9 +1,8 @@
 package com.sammy.fufo.core.setup.server;
 
-import com.sammy.fufo.common.packets.SyncFufoEntityCapabilityDataPacket;
-import com.sammy.fufo.common.packets.SyncFufoPlayerCapabilityDataPacket;
-import com.sammy.fufo.common.packets.SyncPlayerCapabilityDataServerPacket;
+import com.sammy.fufo.common.packets.*;
 import com.sammy.fufo.common.packets.spell.UpdateCooldownPacket;
+import com.sammy.ortus.setup.OrtusPacketRegistry;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -23,9 +22,8 @@ public class PacketRegistry {
     @SubscribeEvent
     public static void registerPackets(FMLCommonSetupEvent event) {
         int index = 0;
-        SyncFufoPlayerCapabilityDataPacket.register(INSTANCE, index++);
-        SyncPlayerCapabilityDataServerPacket.register(INSTANCE, index++);
-        SyncFufoEntityCapabilityDataPacket.register(INSTANCE, index++);
+        FufoPlayerCapabilitySyncPacket.register(FufoPlayerCapabilitySyncPacket.class, b -> new FufoPlayerCapabilitySyncPacket(b.readNbt()), INSTANCE, index++);
+        FufoEntityCapabilitySyncPacket.register(FufoEntityCapabilitySyncPacket.class, b -> new FufoEntityCapabilitySyncPacket(b.readNbt()), INSTANCE, index++);
         UpdateCooldownPacket.register(INSTANCE, index++);
     }
 }

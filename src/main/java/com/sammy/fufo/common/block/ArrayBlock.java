@@ -27,16 +27,23 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 
 public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> {
 
-    public static final VoxelShape SHAPE = Block.box(5, 5, 5, 11, 11, 11);
+    public final VoxelShape SHAPE = Stream.of(
+            Shapes.join(Block.box(5, 5, 12, 11, 11, 16), Shapes.join(Block.box(4, 4, 4, 12, 13, 12), Shapes.join(Block.box(5, 7, 3, 7, 14, 3), Block.box(9, 7, 3, 11, 14, 3), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR),
+            Shapes.join(Shapes.join(Block.box(4, 13, 0, 12, 16, 4), Shapes.join(Block.box(4, 16.2, 1, 12, 16.2, 3), Shapes.join(Block.box(0, 13, 4, 16, 16, 12), Block.box(4, 13, 12, 12, 16, 16), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), Shapes.join(Block.box(4, 12.75, 4, 12, 12.75, 12), Shapes.join(Block.box(12, 12, 12, 16, 16, 16), Shapes.join(Block.box(0, 12, 12, 4, 16, 16), Shapes.join(Block.box(-0.3, 10.7, -0.3, 4.3, 16.3, 4.3), Block.box(11.7, 10.7, -0.3, 16.3, 16.3, 4.3), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR),
+            Shapes.join(Block.box(13, 0, 1, 15, 2, 15), Shapes.join(Block.box(1, 0, 1, 3, 2, 15), Shapes.join(Block.box(14, 2, 1, 14, 13, 15), Shapes.join(Block.box(13, 2, 1, 13, 13, 15), Shapes.join(Block.box(2, 2, 1, 2, 13, 15), Shapes.join(Block.box(3, 2, 1, 3, 13, 15), Shapes.join(Block.box(3, 0, 14, 13, 2, 14), Block.box(3, 0, 2, 13, 2, 2), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR)
+    ).reduce((v1, v2) -> Shapes.join(v1, v2, BooleanOp.OR)).get();
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
 
     public ArrayBlock(Properties properties) {

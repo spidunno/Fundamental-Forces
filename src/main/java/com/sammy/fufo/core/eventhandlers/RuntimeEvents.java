@@ -3,6 +3,7 @@ package com.sammy.fufo.core.eventhandlers;
 import com.sammy.fufo.common.capability.*;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fufo.core.handlers.StarfallEventHandler;
+import com.sammy.ortus.events.types.RightClickEmptyServer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -51,6 +52,11 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickEmpty event) {
+
+    }
+
+    @SubscribeEvent
+    public static void onRightClickEmptyServer(RightClickEmptyServer event){
     }
 
     @SubscribeEvent

@@ -20,7 +20,7 @@ public class InventoryMixin {
 
     @Inject(method = "getSelected", at = @At(value = "RETURN"), cancellable = true)
     private void fundamentalForcesInventoryRemoveSelectedItemMixin(CallbackInfoReturnable<ItemStack> cir) {
-        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
             if (c.hotbarHandler.open || (c.hotbarHandler.updateCachedSlot && player.level.isClientSide)) {
                 cir.setReturnValue(ItemStack.EMPTY);
             }

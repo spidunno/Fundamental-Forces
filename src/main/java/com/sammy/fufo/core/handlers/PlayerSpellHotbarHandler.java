@@ -6,10 +6,9 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldownData;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
-import com.sammy.ortus.helpers.RenderHelper;
+import com.sammy.ortus.capability.OrtusPlayerDataCapability;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -25,6 +24,7 @@ import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
+//Whoever programmed this class must really like cock and balls like a lot
 public class PlayerSpellHotbarHandler {
     public final SpellHotbar spellHotbar;
     public boolean open;
@@ -40,11 +40,10 @@ public class PlayerSpellHotbarHandler {
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
             if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
-                FufoPlayerDataCapability.getCapability(serverPlayer).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
-                        selectedSpell.castBlock(serverPlayer, event.getPos(), event.getHitVec());
-                        selectedSpell.castCommon(serverPlayer);
+                        selectedSpell.cast(serverPlayer, event.getPos(), event.getHitVec());
                     }
                 });
             }
@@ -53,7 +52,7 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
             PlayerSpellHotbarHandler handler = c.hotbarHandler;
             for (int i = 0; i < handler.spellHotbar.spells.size(); i++) {
                 int selected = handler.spellHotbar.getSelectedSpellIndex(player);
@@ -65,10 +64,9 @@ public class PlayerSpellHotbarHandler {
                 }
             }
             if (event.player instanceof ServerPlayer serverPlayer) {
-                if (handler.open && c.rightClickHeld) {
+                if (handler.open && OrtusPlayerDataCapability.getCapability(player).rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
                     selectedSpell.cast(serverPlayer);
-                    selectedSpell.castCommon(serverPlayer);
                 }
             }
         });
@@ -76,20 +74,23 @@ public class PlayerSpellHotbarHandler {
 
 
     public CompoundTag serializeNBT(CompoundTag tag) {
+        CompoundTag spellTag = new CompoundTag();
         if (unlockedSpellHotbar) {
-            tag.putBoolean("unlockedSpellHotbar", true);
-            tag.putBoolean("spellHotbarOpen", open);
-            spellHotbar.serializeNBT(tag);
+            spellTag.putBoolean("unlockedSpellHotbar", true);
+            spellTag.putBoolean("spellHotbarOpen", open);
+            spellHotbar.serializeNBT(spellTag);
         }
+        tag.put("spellData", spellTag);
         return tag;
     }
 
     public void deserializeNBT(CompoundTag tag) {
-        if (tag.contains("unlockedSpellHotbar")) {
+        CompoundTag spellTag = tag.getCompound("spellData");
+
+        if (spellTag.contains("unlockedSpellHotbar")) {
             unlockedSpellHotbar = true;
-            open = tag.getBoolean("spellHotbarOpen");
-            animationProgress = open ? 1 : 0;
-            spellHotbar.deserializeNBT(tag);
+            open = spellTag.getBoolean("spellHotbarOpen");
+            spellHotbar.deserializeNBT(spellTag);
         }
     }
 
@@ -100,7 +101,7 @@ public class PlayerSpellHotbarHandler {
             if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
-                FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
+                FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
                 float progress = Math.max(0, capability.hotbarHandler.animationProgress - 0.5f) * 2f;
                 float offset = progress * 4;
 
@@ -111,7 +112,7 @@ public class PlayerSpellHotbarHandler {
 
         public static void clientTick(TickEvent.ClientTickEvent event) {
             Player player = Minecraft.getInstance().player;
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 float desired = handler.open ? 1 : 0;
                 handler.animationProgress = Mth.lerp(0.2f, handler.animationProgress, desired);
@@ -131,7 +132,7 @@ public class PlayerSpellHotbarHandler {
 
         public static void swapHotbar() {
             Player player = Minecraft.getInstance().player;
-            FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 PlayerSpellHotbarHandler handler = c.hotbarHandler;
                 handler.open = !handler.open;
                 handler.updateCachedSlot = true;
@@ -142,15 +143,14 @@ public class PlayerSpellHotbarHandler {
         public static float itemHotbarOffset() {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
-            float progress = (capability.hotbarHandler.animationProgress) * 2f;
+            float progress = (FufoPlayerDataCapability.getCapability(player).hotbarHandler.animationProgress) * 2f;
             return progress * 45;
         }
 
         public static boolean moveVanillaUI(boolean reverse, PoseStack poseStack) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player).orElse(new FufoPlayerDataCapability());
+            FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
             boolean visible = capability.hotbarHandler.animationProgress >= 0.5f;
             if (!visible) {
                 poseStack.translate(0, itemHotbarOffset() * (reverse ? -1 : 1), 0);
@@ -164,7 +164,7 @@ public class PlayerSpellHotbarHandler {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
             if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
-                FufoPlayerDataCapability.getCapability(player).ifPresent(c -> {
+                FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
                         float offset = (1 - progress) * 45;
@@ -181,12 +181,12 @@ public class PlayerSpellHotbarHandler {
                         barBuilder.setUVWithWidth(0, 0, 218, 28, 256f).setPositionWithWidth(left, top, 218, 28).draw(poseStack);
                         barBuilder.setUVWithWidth(0, 28, 28, 30, 256f).setPositionWithWidth(left + slot * 24 - 1, top - 1, 28, 30).draw(poseStack);
 
-                        barBuilder.setUVWithWidth(28, 28, 20, 21, 256f);
+                        barBuilder.setUVWithWidth(28, 28, 20, 22, 256f);
                         for (int i = 0; i < c.hotbarHandler.spellHotbar.size; i++) {
                             SpellInstance instance = c.hotbarHandler.spellHotbar.spells.get(i);
                             if (!instance.isEmpty()) {
-                                ResourceLocation background = instance.type.getBackgroundLocation();
-                                ResourceLocation icon = instance.type.getIconLocation();
+                                ResourceLocation background = instance.spellType.getBackgroundLocation();
+                                ResourceLocation icon = instance.spellType.getIconLocation();
                                 int x = left + i * 24 + 3;
                                 int y =  top + 3;
 

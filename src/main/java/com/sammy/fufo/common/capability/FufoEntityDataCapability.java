@@ -1,7 +1,7 @@
 package com.sammy.fufo.common.capability;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.packets.SyncFufoEntityCapabilityDataPacket;
+import com.sammy.fufo.common.packets.FufoEntityCapabilitySyncPacket;
 import com.sammy.ortus.systems.capability.OrtusCapability;
 import com.sammy.ortus.systems.capability.OrtusCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -63,7 +63,7 @@ public class FufoEntityDataCapability implements OrtusCapability {
     }
 
     public static void sync(Entity entity, PacketDistributor.PacketTarget target) {
-        getCapability(entity).ifPresent(c -> INSTANCE.send(target, new SyncFufoEntityCapabilityDataPacket(entity.getId(), c.serializeNBT())));
+        getCapability(entity).ifPresent(c -> INSTANCE.send(target, new FufoEntityCapabilitySyncPacket(entity.getId(), c.serializeNBT())));
     }
 
     public static LazyOptional<FufoEntityDataCapability> getCapability(Entity entity) {
