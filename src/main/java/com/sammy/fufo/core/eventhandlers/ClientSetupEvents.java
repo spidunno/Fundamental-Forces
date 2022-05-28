@@ -5,6 +5,7 @@ import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventRenderers;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -19,6 +20,10 @@ public class ClientSetupEvents {
         KeyBindingRegistry.registerKeyBinding(event);
         ItemRegistry.ClientOnly.registerParticleEmitters(event);
         FireEffectTypeRegistry.ClientOnly.clientSetup(event);
+
+        event.enqueueWork(() -> Minecraft.getInstance().getMainRenderTarget().enableStencil());
+        //Minecraft.getInstance().getMainRenderTarget().enableStencil();
+
     }
     @SubscribeEvent
     public static void registerParticleFactories(ParticleFactoryRegisterEvent event) {

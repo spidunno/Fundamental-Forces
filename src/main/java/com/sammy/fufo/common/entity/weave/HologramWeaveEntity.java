@@ -117,4 +117,6 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
         }
         super.tick();
     }
+
+
 }

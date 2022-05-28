@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BlockRegistrate {
@@ -51,6 +52,13 @@ public class BlockRegistrate {
             new OrtusBlockProperties(Material.STONE,MaterialColor.COLOR_GRAY).sound(SoundType.STONE));
 
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = simpleBlock("crude_array", (props) -> (ArrayBlock) new ArrayBlock(props).setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), new OrtusBlockProperties(Material.HEAVY_METAL,MaterialColor.COLOR_BROWN).sound(SoundType.LODESTONE).isCutoutLayer());
+
+    static  {
+        example(OrbBlock::new);
+    }
+    public static void example(Function<BlockBehaviour.Properties, ? extends OrtusEntityBlock<?>> func) {
+
+    }
 
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = simpleBlock("meteor_fire",MeteorFlameBlock::new,
             new OrtusBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b-> 15));
