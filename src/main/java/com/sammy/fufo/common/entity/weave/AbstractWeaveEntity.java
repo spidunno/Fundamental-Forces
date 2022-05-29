@@ -5,6 +5,7 @@ import com.sammy.fufo.core.systems.magic.weaving.StandardWeave;
 import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
 import com.sammy.ortus.setup.OrtusParticleRegistry;
+import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import com.sammy.ortus.systems.rendering.particle.world.WorldParticleOptions;
