@@ -29,7 +29,8 @@ public class BlockRegistrate {
     //region logistics
 
     //pipes
-    public static final BlockEntry<PipeAnchorBlock<AnchorBlockEntity>> PIPE_ANCHOR = setupSimpleBlock("anchor", PipeAnchorBlock::new, CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<PipeAnchorBlock<AnchorBlockEntity>> PIPE_ANCHOR = setupSimpleBlock("anchor",
+            (p) -> new PipeAnchorBlock<>(p).<PipeAnchorBlock<AnchorBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).register();
 
     //machines
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupSimpleBlock("burner_extractor",
@@ -51,7 +52,7 @@ public class BlockRegistrate {
             (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(BlockEntityRegistrate.METEOR_FLAME), METEOR_FIRE_PROPERTIES()).register();
 
     public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE =
-            setupSimpleBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), METEOR_FIRE_PROPERTIES()).register();
+            setupSimpleBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), ASTEROID_PROPERTIES()).register();
     public static final BlockEntry<Block> DEPLETED_ORTUSITE = setupSimpleBlock("depleted_ortusite", Block::new, ASTEROID_PROPERTIES()).register();
 
     public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb",

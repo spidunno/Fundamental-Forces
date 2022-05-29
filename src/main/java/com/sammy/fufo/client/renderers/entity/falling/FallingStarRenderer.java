@@ -7,12 +7,10 @@ import com.mojang.math.Matrix4f;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.falling.FallingEntity;
 import com.sammy.ortus.OrtusLib;
-import com.sammy.ortus.helpers.util.Pair;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.setup.OrtusShaderRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import com.sammy.ortus.systems.rendering.multipass.DynamicTexture;
-import com.sammy.ortus.systems.textureloader.OrtusTextureLoader;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -34,7 +32,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.sammy.fufo.FufoMod.fufoPath;
@@ -45,7 +42,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     private static final ResourceLocation COMA = fufoPath("textures/vfx/uv_test.png");
     private static final RenderType COMA_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(COMA);
 
-    private static final ResourceLocation LIGHT_TRAIL = AncientTextureSurgeon.PATIENT_TEXTURE;
+    private static final ResourceLocation LIGHT_TRAIL = TextureSurgeon.DEFAULT_PATIENT_TEXTURE;
     private static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation FIRE_TRAIL = fufoPath("textures/vfx/fire_trail.png");
@@ -95,8 +92,9 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
 //                    .renderTrail(fire, poseStack, positions.stream().map(p -> new Vector4f((float)p.x, (float)p.y, (float)p.z, 1)).collect(Collectors.toList()), f-> f*width);
 //        }
 //        for (Vec3 position : positions) {
-            builder
-                    .renderQuad(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, 2);
+        RenderSystem.enableBlend();
+        builder
+                .renderQuad(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, 2);
 //        }
 //
 //          for (int i = 0; i < colors.length; i++) {
@@ -125,36 +123,54 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
         return LIGHT_TRAIL;
     }
 
-
+    public static void renderTick(TickEvent.RenderTickEvent event) {
+        if (event.phase.equals(TickEvent.Phase.START)) {
+            if (Minecraft.getInstance().level != null) {
+                if (Minecraft.getInstance().level.getGameTime() % 2L == 0) {
+                    TextureSurgeon textureSurgeon = new TextureSurgeon();
+                    textureSurgeon
+                            .shouldDumpTextures()
+                            .setSourceTexture(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 32))
+                            .operateWithShaders(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.ADDITIVE_TEXTURE.instance, OrtusShaderRegistry.ADDITIVE_TEXTURE.instance);
+                }
+            }
+        }
+    }
     public static class TextureSurgeon {
         public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> TEXTURES = new ConcurrentHashMap<>();
         public static ResourceLocation DEFAULT_PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
 
-        boolean dumpTexture;
+        boolean shouldDumpTextures;
         ResourceLocation drawToLocation = DEFAULT_PATIENT_TEXTURE;
-        DynamicTexture sourceTexture;
         DynamicTexture drawToTexture;
+        DynamicTexture sourceTexture;
         Matrix4f oldProjection;
 
-        public TextureSurgeon dumpTextures() {
-            this.dumpTexture = true;
+        public TextureSurgeon shouldDumpTextures() {
+            this.shouldDumpTextures = true;
             return this;
         }
+
         public TextureSurgeon setSourceTexture(DynamicTexture sourceTexture) {
             this.sourceTexture = sourceTexture;
             return this;
         }
 
-        public TextureSurgeon updateRenderTarget() {
+        public TextureSurgeon updateRenderTarget(boolean clearBuffer) {
+            return updateRenderTarget(drawToLocation, sourceTexture, clearBuffer);
+        }
+        public TextureSurgeon updateRenderTarget(ResourceLocation drawToLocation, DynamicTexture sourceTexture, boolean clearBuffer) {
             drawToTexture = TEXTURES.computeIfAbsent(new Triple<>(drawToLocation, sourceTexture.getWidth(), sourceTexture.getHeight()), p -> new DynamicTexture(drawToLocation, p.b, p.c));
             RenderTarget frameBuffer = drawToTexture.getFrameBuffer();
-            frameBuffer.clear(Minecraft.ON_OSX);
+            if (clearBuffer) {
+                frameBuffer.clear(Minecraft.ON_OSX);
+            }
             frameBuffer.bindWrite(true);
             return this;
         }
 
-        public TextureSurgeon begin() {
-            updateRenderTarget();
+        public TextureSurgeon begin(boolean clearBuffer) {
+            updateRenderTarget(clearBuffer);
 
             oldProjection = RenderSystem.getProjectionMatrix();
             Matrix4f matrix4f = Matrix4f.orthographic(0.0F, 16, 0, 16, 1000.0F, ForgeHooksClient.getGuiFarPlane());
@@ -167,153 +183,56 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             return this;
         }
 
-        public TextureSurgeon draw(VFXBuilders.ScreenVFXBuilder builder, ShaderInstance... shaders) {
-            return draw(() -> {
-                PoseStack posestack = RenderSystem.getModelViewStack();
-
-                for (ShaderInstance shader : shaders) {
-                    builder.setShaderTexture(sourceTexture.getTextureLocation()).setShader(shader).setPositionWithWidth(0, 0, 16, 16).draw(posestack);
+        public TextureSurgeon operateWithShaders(VFXBuilders.ScreenVFXBuilder builder, ShaderInstance... shaders) {
+            PoseStack posestack = RenderSystem.getModelViewStack();
+            builder.setPositionWithWidth(0, 0, 16, 16);
+            RenderSystem.enableBlend();
+            return operate(() -> {
+                for (int i = 0; i < shaders.length; i++) {
+                    begin(i == 0);
+                    ShaderInstance shader = shaders[i];
+                    builder.setShaderTexture(sourceTexture.getTextureLocation()).setShader(shader).draw(posestack);
+                    end(i == shaders.length-1);
+                    if (i == 0) {
+                        dumpTexture();
+                        setSourceTexture(drawToTexture);
+                    }
                 }
             });
         }
 
-        public TextureSurgeon draw(Runnable drawCall) {
+        public TextureSurgeon operate(Runnable drawCall) {
             drawCall.run();
             return this;
         }
 
-        public TextureSurgeon end() {
+        public TextureSurgeon end(boolean clearBuffer) {
             Minecraft mc = Minecraft.getInstance();
             PoseStack posestack = RenderSystem.getModelViewStack();
             posestack.popPose();
-            RenderSystem.applyModelViewMatrix();
+            if (clearBuffer) {
+                RenderSystem.applyModelViewMatrix();
 
-            RenderSystem.setProjectionMatrix(oldProjection);
-            RenderSystem.clear(256, Minecraft.ON_OSX);
+                RenderSystem.setProjectionMatrix(oldProjection);
+                RenderSystem.clear(256, Minecraft.ON_OSX);
 
-            if (dumpTexture) {
-                try {
-                    Path outputFolder = Paths.get("texture_dump");
-                    outputFolder = Files.createDirectories(outputFolder);
-                    drawToTexture.saveTextureToFile(outputFolder);
-                } catch (IOException e) {
-                    OrtusLib.LOGGER.error("Failed to dump texture maps with error.", e);
+                if (shouldDumpTextures) {
+                    dumpTexture();
                 }
+                mc.getMainRenderTarget().bindWrite(true);
             }
-            mc.getMainRenderTarget().bindWrite(true);
             return this;
         }
-    }
-    public static class AncientTextureSurgeon {
-        private static boolean dumpTextures = false;
 
-        public static ResourceLocation PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
-
-        public static boolean operated = false;
-        public static void renderTick(TickEvent.RenderTickEvent event) {
-            if (event.phase.equals(TickEvent.Phase.START)) {
-                if (Minecraft.getInstance().level != null) {
-                    if (Minecraft.getInstance().level.getGameTime() % 200L == 0) {
-                        TextureSurgeon textureSurgeon = new TextureSurgeon();
-                        textureSurgeon.dumpTextures();
-                        textureSurgeon.setSourceTexture(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 32)).begin().draw(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
-                        operated = true;
-
-                    }
-                }
+        protected void dumpTexture() {
+            try {
+                Path outputFolder = Paths.get("texture_dump");
+                outputFolder = Files.createDirectories(outputFolder);
+                drawToTexture.saveTextureToFile(outputFolder);
+            } catch (IOException e) {
+                OrtusLib.LOGGER.error("Failed to dump texture maps with error.", e);
             }
-        }
-        public static final HashMap<Pair<Integer,Integer>, DynamicTexture> TEXTURES = new HashMap<>();
-        public static void operate(DynamicTexture tex, VFXBuilders.ScreenVFXBuilder builder, ShaderInstance... shaders) {
-            Minecraft mc = Minecraft.getInstance();
-
-            DynamicTexture drawTo = TEXTURES.computeIfAbsent(Pair.of(tex.getWidth(), tex.getHeight()), p -> new DynamicTexture(PATIENT_TEXTURE, p.getFirst(), p.getSecond()));
-            RenderTarget frameBuffer = drawTo.getFrameBuffer();
-            frameBuffer.clear(Minecraft.ON_OSX);
-            frameBuffer.bindWrite(true);
-
-            int size = 16;
-            Matrix4f oldProjection = RenderSystem.getProjectionMatrix();
-            Matrix4f matrix4f = Matrix4f.orthographic(0.0F,
-                    size, 0, size, 1000.0F, ForgeHooksClient.getGuiFarPlane());
-            RenderSystem.setProjectionMatrix(matrix4f);
-
-            PoseStack posestack = RenderSystem.getModelViewStack();
-            posestack.pushPose();
-            posestack.setIdentity();
-            posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
-            for (ShaderInstance shader : shaders) {
-                builder.setShaderTexture(new ResourceLocation("textures/gui/container/villager2.png")).setShader(shader).setPositionWithWidth(0, 0, size, size).draw(posestack);
-            }
-            posestack.popPose();
-            RenderSystem.applyModelViewMatrix();
-
-            RenderSystem.setProjectionMatrix(oldProjection);
-            RenderSystem.clear(256, Minecraft.ON_OSX);
-
-            drawTo.download();
-            OrtusTextureLoader.applyGrayscale(drawTo.getPixels());
-            drawTo.upload();
-            if (dumpTextures) {
-                try {
-                    Path outputFolder = Paths.get("texture_dump");
-                    outputFolder = Files.createDirectories(outputFolder);
-                    drawTo.saveTextureToFile(outputFolder);
-                } catch (IOException e) {
-                    OrtusLib.LOGGER.error("Failed to dump texture maps with error.", e);
-                }
-            }
-            mc.getMainRenderTarget().bindWrite(true);
-
-//            PoseStack posestack = RenderSystem.getModelViewStack();
-//            Minecraft mc = Minecraft.getInstance();
-//            DynamicTexture drawTo = new DynamicTexture(PATIENT_TEXTURE, tex.getWidth(), tex.getHeight());
-//            RenderTarget frameBuffer = drawTo.getFrameBuffer();
-//
-//            posestack.pushPose();
-//            posestack.setIdentity();
-//            posestack.translate(0.0D, 0.0D, 1000F - ForgeHooksClient.getGuiFarPlane());
-//            frameBuffer.clear(Minecraft.ON_OSX);
-//            frameBuffer.bindWrite(true);
-//
-//            RenderSystem.applyModelViewMatrix();
-//            Lighting.setupFor3DItems();
-//
-//            int size = 16;
-////            builder.setUVWithWidth(0, 0, 1, 1);
-////            for (ShaderInstance shader : shaders) {
-//                RenderSystem.setShaderTexture(0,
-//                        new ResourceLocation("textures/gui/container/villager2.png")
-//                );
-//                Gui.blit(posestack,0,0,1000,0,0,
-//                        256,256,16,16);
-////                builder.setShaderTexture(tex.getTextureLocation()).setShader(shader).setPositionWithWidth(0, 0, size, size).draw(posestack);
-////            }
-//            posestack.popPose();
-//
-//            drawTo.download();
-//            OrtusTextureLoader.applyGrayscale(drawTo.getPixels());
-//            drawTo.upload();
-//
-//            if (dumpTextures) {
-//                try {
-//                    Path outputFolder = Paths.get("texture_dump");
-//                    outputFolder = Files.createDirectories(outputFolder);
-//                    drawTo.saveTextureToFile(outputFolder);
-//                } catch (IOException e) {
-//                    OrtusLib.LOGGER.error("Failed to dump texture maps with error.", e);
-//                }
-//            }
-//
-//            mc.getMainRenderTarget().bindWrite(true);
-        }
-
-        public static void enableTextureDump() {
-            dumpTextures = true;
-        }
-
-        public static void disableTextureDump() {
-            dumpTextures = false;
         }
     }
+
 }

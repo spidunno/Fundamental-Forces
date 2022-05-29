@@ -1,9 +1,7 @@
 package com.sammy.fufo.core.registratation;
+
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.client.renderers.block.ArrayRenderer;
-import com.sammy.fufo.client.renderers.block.CrudePrimerRenderer;
-import com.sammy.fufo.client.renderers.block.OrbRenderer;
-import com.sammy.fufo.client.renderers.block.UIRenderer;
+import com.sammy.fufo.client.renderers.block.*;
 import com.sammy.fufo.common.blockentity.*;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -16,7 +14,7 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST).register();
 
     public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =
-            FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).register();
+            FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).validBlocks(BlockRegistrate.PIPE_ANCHOR).renderer(() -> AnchorRenderer::new).register();
 
     public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
             FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
