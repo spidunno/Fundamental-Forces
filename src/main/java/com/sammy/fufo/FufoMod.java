@@ -48,6 +48,7 @@ public class FufoMod {
 
 
     public FufoMod() {
+    	LOGGER.info("Hello World! This is ProfessorLucario!");
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
