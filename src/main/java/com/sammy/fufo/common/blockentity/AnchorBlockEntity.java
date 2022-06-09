@@ -5,16 +5,10 @@ import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 public class AnchorBlockEntity extends OrtusBlockEntity {
 
@@ -58,26 +52,4 @@ public class AnchorBlockEntity extends OrtusBlockEntity {
             }
         }
     }
-
-    @Override
-    public void onPlace(LivingEntity placer, ItemStack stack) {
-        if (!level.isClientSide) {
-            nearbyAnchors = BlockHelper.getBlockEntities(AnchorBlockEntity.class, level, this.getBlockPos(), 10);
-            nearbyAnchors.remove(this);
-            nearbyAnchorPositions = nearbyAnchors.stream().map(BlockEntity::getBlockPos).collect(Collectors.toCollection(ArrayList::new));
-            BlockHelper.updateState(level, getBlockPos());
-            placer.sendMessage(Component.nullToEmpty("Found " + nearbyAnchors.size() + " anchors"), placer.getUUID());
-            for(AnchorBlockEntity anchor : nearbyAnchors) {
-                ArrayList<BlockPos> path = BlockHelper.getPath(this.getBlockPos(), anchor.getBlockPos(), 4, true, level);
-                for (BlockPos pos : path) {
-                    System.out.println(pos);
-                    if (level.getBlockState(pos).getBlock() == Blocks.AIR || level.getBlockState(pos).getMaterial().isReplaceable()) {
-                        level.destroyBlock(pos, true);
-                        level.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
-                    }
-                }
-            }
-        }
-    }
-
 }
