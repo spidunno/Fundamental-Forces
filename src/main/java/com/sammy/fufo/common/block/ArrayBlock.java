@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.block;
 
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.common.blockentity.ArrayBlockEntity;
 import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
 import com.sammy.fufo.common.entity.weave.WeaveEntity;

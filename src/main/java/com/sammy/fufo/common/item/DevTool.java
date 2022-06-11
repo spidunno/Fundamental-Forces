@@ -1,5 +1,6 @@
 package com.sammy.fufo.common.item;
 
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.common.worldgen.MeteoriteFeature;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
@@ -7,14 +8,18 @@ import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.ortus.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.awt.*;
 import java.util.Random;
@@ -30,6 +35,15 @@ public class DevTool extends Item implements ItemParticleEmitter {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
+        BlockEntity te = level.getBlockEntity(context.getClickedPos());
+        if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
+        	if (context.getPlayer().isShiftKeyDown()) {
+        		CompoundTag tag = node.getTileData();
+        		node.load(tag);
+        	}
+        	else node.addFluid(new FluidStack(Fluids.WATER, 1000));
+        	return InteractionResult.SUCCESS;
+        }
         if (level instanceof ServerLevel serverLevel) {
             BlockPos pos = context.getClickedPos();
             MeteoriteFeature.generateMeteorite(serverLevel, serverLevel.getChunkSource().getGenerator(), pos, level.random);

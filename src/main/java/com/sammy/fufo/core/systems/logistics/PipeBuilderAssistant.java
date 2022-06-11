@@ -1,7 +1,7 @@
 package com.sammy.fufo.core.systems.logistics;
 
-import com.sammy.fufo.common.block.PipeAnchorBlock;
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.block.PipeNodeBlock;
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.ortus.handlers.GhostBlockHandler;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
@@ -32,7 +32,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
 
     public BlockPos pastTarget;
 
-    public AnchorBlockEntity recentAnchor;
+    public PipeNodeBlockEntity recentAnchor;
     public BlockPos recentAnchorPos;
 
     public static void registerPlacementAssistant(FMLCommonSetupEvent event) {
@@ -87,6 +87,6 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
 
     @Override
     public Predicate<ItemStack> canAssist() {
-        return s -> s.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PipeAnchorBlock;
+        return s -> s.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof PipeNodeBlock;
     }
 }

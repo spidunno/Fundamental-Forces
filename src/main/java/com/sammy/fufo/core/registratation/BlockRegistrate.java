@@ -29,8 +29,8 @@ public class BlockRegistrate {
     //region logistics
 
     //pipes
-    public static final BlockEntry<PipeAnchorBlock<AnchorBlockEntity>> PIPE_ANCHOR = setupSimpleBlock("anchor",
-            (p) -> new PipeAnchorBlock<>(p).<PipeAnchorBlock<AnchorBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupSimpleBlock("anchor",
+            (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).register();
 
     //machines
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupSimpleBlock("burner_extractor",

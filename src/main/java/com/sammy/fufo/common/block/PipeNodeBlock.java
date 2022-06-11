@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.block;
 
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,13 +23,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-
-public class PipeAnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlock<T> {
+@SuppressWarnings("unused")
+public class PipeNodeBlock<T extends PipeNodeBlockEntity> extends OrtusEntityBlock<T> {
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
     public static final VoxelShape SHAPE = Block.box(5, 5, 5, 11, 11, 11);
 
-    public PipeAnchorBlock(Properties properties) {
+    public PipeNodeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(AXIS, Direction.Axis.X));
     }

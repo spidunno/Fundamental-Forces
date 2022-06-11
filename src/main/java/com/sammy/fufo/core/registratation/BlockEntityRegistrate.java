@@ -13,8 +13,8 @@ public class BlockEntityRegistrate {
     public static final BlockEntityEntry<UITestBlockEntity> UI_TEST_BLOCK =
             FufoMod.registrate().<UITestBlockEntity>blockEntity("ui_test_block", UITestBlockEntity::new).renderer(() -> UIRenderer::new).validBlocks(BlockRegistrate.UI_TEST).register();
 
-    public static final BlockEntityEntry<AnchorBlockEntity> ANCHOR =
-            FufoMod.registrate().<AnchorBlockEntity>blockEntity("anchor", AnchorBlockEntity::new).validBlocks(BlockRegistrate.PIPE_ANCHOR).renderer(() -> AnchorRenderer::new).register();
+    public static final BlockEntityEntry<PipeNodeBlockEntity> ANCHOR =
+            FufoMod.registrate().<PipeNodeBlockEntity>blockEntity("anchor", PipeNodeBlockEntity::new).validBlocks(BlockRegistrate.PIPE_ANCHOR).renderer(() -> AnchorRenderer::new).register();
 
     public static final BlockEntityEntry<ArrayBlockEntity> CRUDE_ARRAY =
             FufoMod.registrate().<ArrayBlockEntity>blockEntity("crude_array", ArrayBlockEntity::new).renderer(() -> ArrayRenderer::new).validBlocks(BlockRegistrate.CRUDE_ARRAY).register();
