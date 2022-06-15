@@ -1,7 +1,7 @@
 package com.sammy.fufo.common.item;
 
 import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
-import com.sammy.fufo.common.worldgen.MeteoriteFeature;
+import com.sammy.fufo.common.world.gen.MeteoriteFeature;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
@@ -37,11 +37,7 @@ public class DevTool extends Item implements ItemParticleEmitter {
         Level level = context.getLevel();
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
         if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
-        	if (context.getPlayer().isShiftKeyDown()) {
-        		CompoundTag tag = node.getTileData();
-        		node.load(tag);
-        	}
-        	else node.addFluid(new FluidStack(Fluids.WATER, 1000));
+        	node.addFluid(new FluidStack(Fluids.WATER, 100));
         	return InteractionResult.SUCCESS;
         }
         if (level instanceof ServerLevel serverLevel) {

@@ -10,6 +10,7 @@ import net.minecraft.world.level.material.Fluids;
 public class FluidStats {
 	private FluidStats() {}
 	
+	public static final double R = 8.314; // J/(mol*K)
 	private static final Map<Fluid, FluidInfo> map = new HashMap<>();
 	
 	public static FluidInfo getInfo(Fluid fluid) {
@@ -20,12 +21,12 @@ public class FluidStats {
 		map.put(fluid, new FluidInfo(mu, rho, fp, bp));
 	}
 	
+	// Put physical properties of mod fluids here
 	static {
 		addInfo(Fluids.WATER, 1000, 8.9e-4, 273.15, 373.15);
-		addInfo(Fluids.LAVA, 2850, 28.14, 1273.15, Double.POSITIVE_INFINITY); // lava stats taken from wikipedia
+		addInfo(Fluids.LAVA, 2850, 28.14, 1273.15, 2000); // lava stats taken from wikipedia
 	}
 	
-//	public static record FluidInfo(double mu, double rho, double freezingPoint, double boilingPoint) {}
 	public static class FluidInfo {
 		final double mu; // viscosity (kg/(m*s))
 		final double rho; // density (kg/m^3)

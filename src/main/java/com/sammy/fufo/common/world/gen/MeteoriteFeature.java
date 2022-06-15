@@ -1,4 +1,4 @@
-package com.sammy.fufo.common.worldgen;
+package com.sammy.fufo.common.world.gen;
 
 import com.google.common.math.StatsAccumulator;
 import com.sammy.ortus.helpers.BlockHelper;

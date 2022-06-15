@@ -1,5 +1,6 @@
 package com.sammy.fufo.core.systems.logistics;
 
+import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.PipeNodeBlock;
 import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.ortus.handlers.GhostBlockHandler;
@@ -21,23 +22,30 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.function.Predicate;
 
 import static com.sammy.ortus.handlers.PlacementAssistantHandler.ASSISTANTS;
 
 public class PipeBuilderAssistant implements IPlacementAssistant {
+	
+	public static final PipeBuilderAssistant INSTANCE = new PipeBuilderAssistant();
 
     public ArrayList<BlockPos> cachedPath = new ArrayList<>();
     public final HashMap<BlockPos, BlockState> states = new HashMap<>();
 
     public BlockPos pastTarget;
 
-    public PipeNodeBlockEntity recentAnchor;
+    public PipeNode recentAnchor;
+    public BlockPos prevAnchorPos;
     public BlockPos recentAnchorPos;
 
+    // Temporary, for debugging only
+//    private final LinkedList<BlockPos> positions = new LinkedList<BlockPos>();
+    
     public static void registerPlacementAssistant(FMLCommonSetupEvent event) {
         event.enqueueWork(() ->
-                ASSISTANTS.add(new PipeBuilderAssistant())
+                ASSISTANTS.add(INSTANCE)
         );
     }
 
@@ -50,22 +58,20 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
             cachedPath = BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
         }
     }
-
+ 
     @Override
     public void onPlace(Level level, BlockHitResult blockHitResult, BlockState blockState) {
-        if (level.getBlockEntity(recentAnchorPos) instanceof AnchorBlockEntity anchorBlockEntity) {
-            for (BlockPos pos : cachedPath) {
-                System.out.println(pos);
-                if (level.getBlockState(pos).getBlock() == Blocks.AIR || level.getBlockState(pos).getMaterial().isReplaceable()) {
-                    level.destroyBlock(pos, true);
-                    level.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
-                }
-            }
-        }
-        recentAnchorPos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
-        if (level.getBlockEntity(recentAnchorPos) instanceof AnchorBlockEntity anchorBlockEntity) {
-            recentAnchor = anchorBlockEntity;
-        }
+    	if (!level.isClientSide) {
+	    	BlockPos newAnchorPos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
+//	    	positions.addFirst(newAnchorPos);
+//	    	if (positions.size() >= 8) positions.removeLast();
+	    	prevAnchorPos = recentAnchorPos;
+	        recentAnchorPos = newAnchorPos;
+	        if (level.getBlockEntity(recentAnchorPos) instanceof PipeNode anchorBlockEntity) {
+	            recentAnchor = anchorBlockEntity;
+	        }
+//	        FufoMod.LOGGER.info(positions);
+    	}
     }
 
     @Override

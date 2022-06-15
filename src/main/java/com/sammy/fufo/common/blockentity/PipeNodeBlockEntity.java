@@ -1,13 +1,20 @@
 package com.sammy.fufo.common.blockentity;
 
+import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
+import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
+import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +34,6 @@ import javax.annotation.Nullable;
 @SuppressWarnings("unused")
 public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 
-	/*
-	 * Transfer rate per tick = difference in volume times this
-	 */
-
 	private static final int RANGE = 10;
 
     public ArrayList<BlockPos> nearbyAnchorPositions = new ArrayList<>();
@@ -40,6 +43,8 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     private double pressure = 0; // Pressure at this node (Pa)
     private boolean isOpen = false;
     private FluidPipeNetwork network;
+    private int networkID;
+    private BlockPos target;
 
     public PipeNodeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -49,9 +54,17 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
         super(BlockEntityRegistrate.ANCHOR.get(), pos, state);
     }
 
-    public void addFluid(FluidStack fs) { // yes yes this ignores if the fluid types don't match, it's in dev, ok?
-    	if (fluid.isEmpty()) fluid = fs.copy();
-    	else fluid.grow(fs.getAmount());
+    public FluidStack addFluid(FluidStack fs) {
+    	if (fluid.isEmpty()) {
+    		fluid = new FluidStack(fs.getFluid(), Math.min(getCapacity(), fs.getAmount()));
+    		fs.shrink(fluid.getAmount());
+    	}
+    	else if (fluid.isFluidEqual(fs)) {
+    		int transfer = Math.min(getCapacity() - fluid.getAmount(), fs.getAmount());
+    		fluid.grow(transfer);
+    		fs.shrink(transfer);
+    	}
+    	return fs; // return fluid stack unchanged if it doesn't match
     }
     
     public double getPressure() {
@@ -65,6 +78,8 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
+        pTag.putInt("network", networkID);
+        pTag.put("fluid", fluid.writeToNBT(new CompoundTag()));
         if (!nearbyAnchorPositions.isEmpty()) {
             CompoundTag compound = new CompoundTag();
             compound.putInt("anchorAmount", nearbyAnchorPositions.size());
@@ -73,56 +88,72 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
             }
             pTag.put("anchorData", compound);
         }
-    	System.out.println("Saved " + pTag);
     }
 
+    // When this method is called, check the ID against the FluidPipeNetworkRegistry.
+    // If the ID exists in registry, add it to the corresponding network.
+    // Otherwise, load the network from NBT into the registry and then add this node to it
+    // Probably also check to make sure that this node is supposed to be in the network
+    // If the network is not in NBT, create an entry for it
+    // Note: level is still null at the time of this method's calling
+    // Need to move the network-setting code somewhere else
+    // probably to the data capability loading
     @Override
     public void load(CompoundTag pTag) {
-    	System.out.println("Loading " + pTag);
+//    	Minecraft.getInstance().mouseHandler.releaseMouse();
         super.load(pTag);
-        System.out.println(this.getTileData());
+        fluid = FluidStack.loadFluidStackFromNBT(pTag.getCompound("fluid"));
         nearbyAnchorPositions.clear();
-//        nearbyAnchors.clear();
         CompoundTag compound = pTag.getCompound("anchorData");
         int amount = compound.getInt("anchorAmount");
         for (int i = 0; i < amount; i++) {
             BlockPos pos = BlockHelper.loadBlockPos(compound, "" + i);
             nearbyAnchorPositions.add(pos);
         }
-        System.out.println("Anchors loaded:" + nearbyAnchorPositions.size());
+        networkID = pTag.getInt("network");
+//    	int id = pTag.getInt("network");
+//    	FufoMod.LOGGER.info("Loading network " + id);
+//    	if (level != null) {
+//	    	FluidPipeNetworkRegistry registry = FluidPipeNetworkRegistry.getRegistry(level);
+//	    	setNetwork(registry.getOrLoadNetwork(pTag.getInt("network")), true);
+//    	}
+//    	else FufoMod.LOGGER.error("Null world, not loading");
     }
+    
     @Override
     public void onPlace(LivingEntity placer, ItemStack stack) {
-        if (!level.isClientSide) {
-        	List<PipeNode> nearbyAnchors = BlockHelper.getBlockEntities(PipeNode.class, level, this.getBlockPos(), RANGE);
-//            List<PipeNode> nearbyAnchors = BlockHelper.getBlockEntities(PipeNode.class, level, this.getBlockPos(), RANGE);
-            nearbyAnchors.remove(this);
-            nearbyAnchors.stream().map(PipeNode::getPos).forEach(pos -> addConnection(pos));
-//            nearbyAnchorPositions = nearbyAnchors.stream().map(PipeNode::getPos).collect(Collectors.toCollection(ArrayList::new));
-            BlockHelper.updateState(level, getBlockPos());
-            placer.sendMessage(Component.nullToEmpty("Found " + nearbyAnchors.size() + " anchors"), placer.getUUID());
-            for(PipeNode anchor : nearbyAnchors) {
-                ArrayList<BlockPos> path = BlockHelper.getPath(this.getBlockPos(), anchor.getPos(), 4, true, level);
-                for (BlockPos pos : path) {
-//                    System.out.println(pos);
-                    if (level.getBlockState(pos).getBlock() == Blocks.AIR || level.getBlockState(pos).getMaterial().isReplaceable()) {
-                        level.destroyBlock(pos, true);
-                        level.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
-                    }
-                }
-                anchor.addConnection(getBlockPos());
-            }
-        }
+//    	System.out.printf("Pos %s, prevPos %s\n", PipeBuilderAssistant.INSTANCE.recentAnchorPos, PipeBuilderAssistant.INSTANCE.prevAnchorPos);
+//    	FufoMod.LOGGER.info("Running onPlace");
+    	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.prevAnchorPos;
+    	if (prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
+    		addConnection(prevPos);
+    		prev.addConnection(getPos());
+    		setNetwork(prev.getNetwork(), true);
+    	}
+    	else setNetwork(new FluidPipeNetwork(getLevel()), true);
+    }
+    
+    @Override
+    public void onLoad() {
+    	super.onLoad();
+//    	FufoMod.LOGGER.info("Running onLoad");
+    	if (networkID != 0) { // load was run and NBT data was loaded
+    		FluidPipeNetwork net = FluidPipeNetworkRegistry.getRegistry(level).getOrLoadNetwork(networkID);
+    		if (network != null) this.setNetwork(net, true);
+    	}
     }
     
     @Override
     public void onBreak(@Nullable Player player) {
     	super.onBreak(player);
+    	List<PipeNode> nodes = new ArrayList<>();
     	for (BlockPos bp : nearbyAnchorPositions) {
-    		PipeNodeBlockEntity te = (PipeNodeBlockEntity) getLevel().getBlockEntity(bp);
-    		te.nearbyAnchorPositions.remove(this.getBlockPos());
+    		PipeNode node = (PipeNodeBlockEntity) getLevel().getBlockEntity(bp);
+    		nodes.add(node);
+    		node.removeConnection(this.getBlockPos());
     		BlockHelper.updateState(getLevel(), bp);
     	}
+    	if (!level.isClientSide && network != null) network.splitNetwork(nodes);
 //    	nearbyAnchorPositions.stream().map(p -> this.getLevel().getBlockEntity(p)).forEach(te -> ((PipeNodeBlockEntity)te).nearbyAnchorPositions.remove(this.getBlockPos()));
     }
 
@@ -133,20 +164,14 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	@Override
 	public FluidStack getStoredFluid() {
 		// TODO Auto-generated method stub
-		return null;
+		return fluid;
 	}
-
-	public void transferFluid() {
-//		for (PipeNode node : getConnectedNodes()) {
-//			double dP = this.getPressure() - node.getPressure();
-//			if (dP > 0) {
-//				this.getStoredFluid().shrink((int)(dP * PRESSURE_TRANSFER_COEFF));
-//				node.getStoredFluid().grow((int)(dP * PRESSURE_TRANSFER_COEFF));
-//			}
-//		}
-//		if (isOpen) {
-//			fluid.shrink((int)(fluid.getAmount() * DRAIN_COEFF));
-//		}
+	
+	public void transferFluid(int amount, PipeNode dest) {
+		this.getStoredFluid().shrink(amount);
+		dest.addFluid(new FluidStack(getStoredFluid().getFluid(), amount));
+		BlockHelper.updateAndNotifyState(level, getPos());
+		this.setChanged();
 	}
 
 	@Override
@@ -157,7 +182,11 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 
 	@Override
 	public void addConnection(BlockPos bp) {
-		nearbyAnchorPositions.add(bp);
+		if (level.getBlockEntity(bp) instanceof PipeNode other) {
+			nearbyAnchorPositions.add(bp);
+			if (network == null) network = other.getNetwork();
+			else network.mergeWith(other.getNetwork());
+		}
 	}
 
 	@Override
@@ -171,19 +200,25 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	}
 
 	@Override
-	public void transferFluid(int amount, PipeNode dest) {
-		this.fluid.shrink(amount);
-		dest.getStoredFluid().grow(amount);
-	}
-
-	@Override
-	public void setNetwork(FluidPipeNetwork network) {
+	public void setNetwork(FluidPipeNetwork network, boolean reciprocate) {
 		this.network = network;
+		this.networkID = network.getID();
+		if (reciprocate) network.addNode(this, false);
 	}
 
 	@Override
 	public FluidPipeNetwork getNetwork() {
 		// TODO Auto-generated method stub
 		return network;
+	}
+	
+	public void setTarget(BlockPos target) {
+		this.target = target;
+	}
+
+	@Override
+	public int getCapacity() {
+		// TODO Auto-generated method stub
+		return 100;
 	}
 }
