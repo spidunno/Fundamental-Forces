@@ -24,6 +24,7 @@ public class PacketRegistry {
         int index = 0;
         FufoPlayerCapabilitySyncPacket.register(FufoPlayerCapabilitySyncPacket.class, b -> new FufoPlayerCapabilitySyncPacket(b.readNbt()), INSTANCE, index++);
         FufoEntityCapabilitySyncPacket.register(FufoEntityCapabilitySyncPacket.class, b -> new FufoEntityCapabilitySyncPacket(b.readNbt()), INSTANCE, index++);
+        FufoWorldCapabilitySyncPacket.register(FufoWorldCapabilitySyncPacket.class, b -> new FufoWorldCapabilitySyncPacket(b.readNbt()), INSTANCE, index++);
         UpdateCooldownPacket.register(INSTANCE, index++);
     }
 }

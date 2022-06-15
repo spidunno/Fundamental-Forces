@@ -1,6 +1,6 @@
 package com.sammy.fufo.core.setup.content.worldgen;
 
-import com.sammy.fufo.common.worldgen.MeteoriteFeature;
+import com.sammy.fufo.common.world.gen.MeteoriteFeature;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;

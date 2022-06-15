@@ -1,9 +1,12 @@
 package com.sammy.fufo.core.eventhandlers;
 
 import com.sammy.fufo.common.capability.*;
+import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fufo.core.handlers.StarfallEventHandler;
 import com.sammy.ortus.events.types.RightClickEmptyServer;
+
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -14,6 +17,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -60,7 +64,18 @@ public class RuntimeEvents {
     }
 
     @SubscribeEvent
+    public static void worldLoad(WorldEvent.Load event) {
+//    	FluidPipeNetworkRegistry.getRegistry(event.getWorld()).load();
+    }
+    
+    @SubscribeEvent
+    public static void worldUnload(WorldEvent.Unload event) {
+    	
+    }
+    
+    @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
+    	FluidPipeNetworkRegistry.getRegistry(event.world).tickNetworks();
     }
 
     @SubscribeEvent
