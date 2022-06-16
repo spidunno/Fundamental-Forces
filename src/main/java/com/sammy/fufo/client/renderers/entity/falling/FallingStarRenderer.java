@@ -132,7 +132,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             }
         }
     }
-    public static class TextureSurgeon {
+    public static class TextureSurgeon { //TODO: move this over to ortusLib
         public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> TEXTURES = new ConcurrentHashMap<>();
         public static ResourceLocation DEFAULT_PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
 
