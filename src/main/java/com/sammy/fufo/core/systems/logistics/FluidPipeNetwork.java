@@ -101,20 +101,25 @@ public class FluidPipeNetwork {
 	}
 	
 	public void tick() {
-		List<Triple<PipeNode, PipeNode, Integer>> transfers = new ArrayList<>(); // Triple members, in order: Source, destination, amount
+		
+		// First calculate pressures
+		// We need some sort of reference frame
+		
+		
+		List<Triple<PipeNode, PipeNode, Double>> transfers = new ArrayList<>(); // Triple members, in order: Source, destination, amount
 		// Calculate amount to transfer
 		for (PipeNode node : nodes) {
 			List<PipeNode> connections = node.getConnectedNodes();
 			for (PipeNode other : connections) {
 				if (!node.getStoredFluid().isEmpty()) {
-					Triple<PipeNode, PipeNode, Integer> t = Triple.of(node, other, (int)Math.max(0, (node.getPressure() - other.getPressure()) * PRESSURE_TRANSFER_COEFF));
+					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, (node.getBasePressure() - other.getBasePressure()) * PRESSURE_TRANSFER_COEFF));
 					transfers.add(t);
 				}
 			}
 		}
 		
 		// Transfer the fluid
-		for (Triple<PipeNode, PipeNode, Integer> t : transfers) {
+		for (Triple<PipeNode, PipeNode, Double> t : transfers) {
 			t.getLeft().transferFluid(t.getRight(), t.getMiddle());
 		}
 	}

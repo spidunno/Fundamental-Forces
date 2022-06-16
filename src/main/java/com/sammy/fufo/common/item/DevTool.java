@@ -37,7 +37,7 @@ public class DevTool extends Item implements ItemParticleEmitter {
         Level level = context.getLevel();
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
         if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
-        	node.addFluid(new FluidStack(Fluids.WATER, 100));
+        	node.addFluid(Fluids.WATER, 100.0);
         	return InteractionResult.SUCCESS;
         }
         if (level instanceof ServerLevel serverLevel) {
