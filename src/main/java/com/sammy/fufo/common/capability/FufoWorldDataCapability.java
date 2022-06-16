@@ -1,6 +1,7 @@
 package com.sammy.fufo.common.capability;
 
 import com.sammy.fufo.FufoMod;
+import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.ortus.systems.capability.OrtusCapability;
 import com.sammy.ortus.systems.capability.OrtusCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,7 @@ public class FufoWorldDataCapability implements OrtusCapability {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.register(FufoWorldDataCapability.class);
     }
-
+PipeBuilderAssistant
     public static void attachWorldCapability(AttachCapabilitiesEvent<Level> event) {
         final FufoWorldDataCapability capability = new FufoWorldDataCapability();
         event.addCapability(FufoMod.fufoPath("world_data"), new OrtusCapabilityProvider<>(FufoWorldDataCapability.CAPABILITY, () -> capability));

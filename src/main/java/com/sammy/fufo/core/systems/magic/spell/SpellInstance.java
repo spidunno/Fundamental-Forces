@@ -1,7 +1,7 @@
 package com.sammy.fufo.core.systems.magic.spell;
 
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
-import com.sammy.fufo.common.packets.spell.UpdateCooldownPacket;
+import com.sammy.fufo.common.packets.spell.SyncSpellCooldownPacket;
 import com.sammy.fufo.core.setup.content.magic.SpellRegistry;
 import com.sammy.fufo.core.systems.magic.element.MagicElement;
 import com.sammy.fufo.core.systems.magic.spell.attributes.cast.SpellCastMode;
@@ -82,7 +82,7 @@ public class SpellInstance {
 
     public void playerTick(ServerPlayer player) {
         if (cooldown != null && !cooldown.equals(oldCooldown)) {
-            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new UpdateCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
+            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncSpellCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
         }
         oldCooldown = cooldown;
     }

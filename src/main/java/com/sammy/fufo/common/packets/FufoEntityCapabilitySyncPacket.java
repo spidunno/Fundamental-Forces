@@ -1,16 +1,18 @@
 package com.sammy.fufo.common.packets;
 
 import com.sammy.fufo.common.capability.FufoEntityDataCapability;
-import com.sammy.ortus.systems.network.OrtusSyncPacket;
+import com.sammy.ortus.systems.network.OrtusTwoWayNBTPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.simple.SimpleChannel;
 
 import java.util.function.Supplier;
 
 @SuppressWarnings("ConstantConditions")
-public class FufoEntityCapabilitySyncPacket extends OrtusSyncPacket {
+public class FufoEntityCapabilitySyncPacket extends OrtusTwoWayNBTPacket {
     public static final String ENTITY_ID = "entity_id";
 
     private final int entityID;
@@ -31,12 +33,22 @@ public class FufoEntityCapabilitySyncPacket extends OrtusSyncPacket {
     }
 
     @Override
-    public void modifyClient(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
+    public void clientExecute(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
         Entity entity = Minecraft.getInstance().level.getEntity(entityID);
         FufoEntityDataCapability.getCapability(entity).ifPresent(c -> c.deserializeNBT(tag));
     }
 
     @Override
-    public void modifyServer(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
+    public void serverExecute(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
+        Entity entity = context.get().getSender().level.getEntity(entityID);
+        FufoEntityDataCapability.getCapability(entity).ifPresent(c -> c.deserializeNBT(tag));
+    }
+
+    public static void register(SimpleChannel instance, int index) {
+        instance.registerMessage(index, FufoEntityCapabilitySyncPacket.class, FufoEntityCapabilitySyncPacket::encode, FufoEntityCapabilitySyncPacket::decode, FufoEntityCapabilitySyncPacket::handle);
+    }
+
+    public static FufoEntityCapabilitySyncPacket decode(FriendlyByteBuf buf) {
+        return new FufoEntityCapabilitySyncPacket(buf.readNbt());
     }
 }

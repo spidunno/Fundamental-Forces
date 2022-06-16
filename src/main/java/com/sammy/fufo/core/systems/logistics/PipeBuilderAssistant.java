@@ -53,7 +53,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
 
     @Override
     public void onPlace(Level level, BlockHitResult blockHitResult, BlockState blockState) {
-        if (level.getBlockEntity(recentAnchorPos) instanceof AnchorBlockEntity anchorBlockEntity) {
+        if (!level.isClientSide) {
             for (BlockPos pos : cachedPath) {
                 System.out.println(pos);
                 if (level.getBlockState(pos).getBlock() == Blocks.AIR || level.getBlockState(pos).getMaterial().isReplaceable()) {
@@ -61,11 +61,9 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
                     level.setBlock(pos, Blocks.GLASS.defaultBlockState(), 3);
                 }
             }
+            cachedPath.clear();
         }
         recentAnchorPos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
-        if (level.getBlockEntity(recentAnchorPos) instanceof AnchorBlockEntity anchorBlockEntity) {
-            recentAnchor = anchorBlockEntity;
-        }
     }
 
     @Override

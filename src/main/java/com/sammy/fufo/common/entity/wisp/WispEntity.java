@@ -3,6 +3,7 @@ package com.sammy.fufo.common.entity.wisp;
 import com.sammy.fufo.core.registratation.ItemRegistrate;
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
 import com.sammy.ortus.helpers.ColorHelper;
+import com.sammy.ortus.helpers.EntityHelper;
 import com.sammy.ortus.systems.easing.Easing;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -43,7 +44,7 @@ public class WispEntity extends Entity {
     public int size = 120;
     public int count;
     public int age;
-    public final ArrayList<Vec3> pastPositions = new ArrayList<>();
+    public final ArrayList<EntityHelper.PastPosition> pastPositions = new ArrayList<>();
 
     public WispEntity(EntityType<?> type, Level level) {
         super(type, level);
