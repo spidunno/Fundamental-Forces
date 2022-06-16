@@ -19,6 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
@@ -28,7 +29,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
 	
 	public static final PipeBuilderAssistant INSTANCE = new PipeBuilderAssistant();
 
-    public ArrayList<BlockPos> cachedPath = new ArrayList<>();
+    public Collection<BlockPos> cachedPath = new ArrayList<>();
     public final HashMap<BlockPos, BlockState> states = new HashMap<>();
 
     public BlockPos pastTarget;
@@ -52,7 +53,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
                 cachedPath.clear();
                 return;
             }
-            cachedPath.addAll(BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level));
+            cachedPath = BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
         }
     }
  
