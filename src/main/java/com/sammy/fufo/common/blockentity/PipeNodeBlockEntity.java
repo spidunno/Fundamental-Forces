@@ -56,9 +56,9 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     }
 
     public FluidStack addFluid(Fluid f, double amount) {
-    	partialFill += amount;
-    	FluidStack fs = new FluidStack(f, (int)Math.floor(partialFill));
-    	partialFill -= Math.floor(partialFill);
+    	double realAmount = partialFill + amount;
+    	partialFill = realAmount % 1;
+    	FluidStack fs = new FluidStack(f, (int)realAmount);
 //    	FufoMod.LOGGER.info("Adding fluid");
     	if (fluid.isEmpty()) {
     		fluid = new FluidStack(fs.getFluid(), Math.min(getCapacity(), fs.getAmount()));
@@ -75,7 +75,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     
     // Imperfect, but functional
     public double getBasePressure() {
-    	return fluid.getAmount() + getPos().getY();
+    	return fluid.getAmount() + getPos().getY()*10;
     }
     
     public boolean isOpen() {
@@ -179,9 +179,10 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	}
 	
 	public void transferFluid(double amount, PipeNode dest) {
-		this.getStoredFluid().shrink((int)Math.ceil(amount));
-		dest.addFluid(getStoredFluid().getFluid(), amount);
-		if (isOpen && !fluid.isEmpty()) getStoredFluid().shrink(1); // TODO: make this dependent on pressure
+		double realAmount = fluid.getAmount() + partialFill - amount;
+		partialFill = realAmount % 1;
+		fluid.setAmount((int)realAmount);
+		dest.addFluid(fluid.getFluid(), amount);
 		BlockHelper.updateAndNotifyState(level, getPos());
 		this.setChanged();
 	}
