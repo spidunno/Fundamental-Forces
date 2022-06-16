@@ -1,6 +1,8 @@
 package com.sammy.fufo.common.block;
 
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
+import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,13 +25,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-
-public class PipeAnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlock<T> {
+@SuppressWarnings("unused")
+public class PipeNodeBlock<T extends PipeNodeBlockEntity> extends OrtusEntityBlock<T> {
 
     public static final EnumProperty<Direction.Axis> AXIS = BlockStateProperties.AXIS;
     public static final VoxelShape SHAPE = Block.box(5, 5, 5, 11, 11, 11);
 
-    public PipeAnchorBlock(Properties properties) {
+    public PipeNodeBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(AXIS, Direction.Axis.X));
     }
@@ -64,8 +66,12 @@ public class PipeAnchorBlock<T extends AnchorBlockEntity> extends OrtusEntityBlo
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
-        if (player.isShiftKeyDown() || !player.mayBuild()) return InteractionResult.PASS;
+        if (!player.mayBuild()) return InteractionResult.PASS;
         ItemStack held = player.getItemInHand(hand);
+        if (player.isShiftKeyDown()) {
+        	PipeBuilderAssistant.INSTANCE.recentAnchorPos = pos;
+        	return InteractionResult.SUCCESS;
+        }
 //        IPlacementHelper helper = PlacementHelpers.get(ANCHOR_PLACEMENT_HELPER);
 //        if (helper.matchesItem(held))
 //            return helper.getOffset(player, level, state, pos, ray).placeInWorld(level, (BlockItem) held.getItem(), player, hand, ray);

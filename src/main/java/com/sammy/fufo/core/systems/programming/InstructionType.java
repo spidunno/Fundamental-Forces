@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * An instruction type for programming.
+ * Grab retract pivot pivot twist ungrab extend pivot pivot wait
  */
 public class InstructionType {
 

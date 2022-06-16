@@ -3,7 +3,7 @@ package com.sammy.fufo.client.renderers.block;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.blockentity.AnchorBlockEntity;
+import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
@@ -12,24 +12,33 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.phys.Vec3;
 
 import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
-public class AnchorRenderer implements BlockEntityRenderer<AnchorBlockEntity> {
+import java.awt.Color;
+
+public class AnchorRenderer implements BlockEntityRenderer<PipeNodeBlockEntity> {
 
     private static final ResourceLocation TEST_BEAM = FufoMod.fufoPath("textures/vfx/uv_test.png");
     private static final RenderType TEST_BEAM_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(TEST_BEAM);
+    private static final RenderType TEST_BEAM_TYPE_2 = OrtusRenderTypeRegistry.ADDITIVE_SOLID;
 
     public AnchorRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(AnchorBlockEntity blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(PipeNodeBlockEntity blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         VertexConsumer beamConsumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
+        VertexConsumer beamConsumer2 = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE_2);
         poseStack.pushPose();
-        blockEntityIn.nearbyAnchors.forEach(anchor -> {
-            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setOffset(0.5f, 0.5f, 0.5f).renderBeam(beamConsumer, poseStack, BlockHelper.fromBlockPos(blockEntityIn.getBlockPos()), BlockHelper.fromBlockPos(anchor.getBlockPos()), 0.1f);
+        poseStack.translate(0.5, 0.5, 0.5);
+        blockEntityIn.nearbyAnchorPositions.forEach(anchor -> {
+            VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().renderBeam(beamConsumer, poseStack, BlockHelper.fromBlockPos(blockEntityIn.getBlockPos()), BlockHelper.fromBlockPos(anchor), 0.1f);
         });
+        Vec3 start = BlockHelper.fromBlockPos(blockEntityIn.getBlockPos());
+        Vec3 end = start.add(0, blockEntityIn.getStoredFluid().getAmount()/50.0, 0);
+        VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(Color.BLUE).renderBeam(beamConsumer, poseStack, start, end, 0.1f);
         poseStack.popPose();
     }
 }
