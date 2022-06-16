@@ -2,6 +2,7 @@ package com.sammy.fufo.core.setup.server;
 
 import com.sammy.fufo.common.packets.FufoEntityCapabilitySyncPacket;
 import com.sammy.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
+import com.sammy.fufo.common.packets.FufoWorldCapabilitySyncPacket;
 import com.sammy.fufo.common.packets.spell.SyncSpellCooldownPacket;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +25,7 @@ public class PacketRegistry {
         int index = 0;
         FufoPlayerCapabilitySyncPacket.register(INSTANCE, index++);
         FufoEntityCapabilitySyncPacket.register(INSTANCE, index++);
+        FufoWorldCapabilitySyncPacket.register(INSTANCE, index++);
         SyncSpellCooldownPacket.register(INSTANCE, index++);
     }
 }

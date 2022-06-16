@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Random;
 
 import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
@@ -41,7 +42,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
         }
         int yLevel = (int) stats.mean() - meteorSize;
         BlockPos meteorCenter = new BlockPos(pos.getX(), pos.getY()-meteorSize, pos.getZ());
-        ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos.below(), craterSize, craterSize * 1.1f, b -> !level.getBlockState(b).isAir());
+        Collection<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(pos.below(), craterSize, craterSize * 1.1f, b -> !level.getBlockState(b).isAir());
         craterSphere.forEach(b -> {
             if (level.getBlockState(b.above()).isAir()) {
                 level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);
@@ -69,7 +70,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
             float offset = craterSize*i;
             Vec3 offsetDirection = new Vec3(offset, 0, 0).yRot(rotation);
             BlockPos craterCenter = pos.offset(offsetDirection.x, offsetDirection.y+i/iterations*3f, offsetDirection.z);
-            ArrayList<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, cachedCraterSize * 0.8f, b -> !level.getBlockState(b).isAir());
+            Collection<BlockPos> craterSphere = BlockHelper.getSphereOfBlocks(craterCenter, craterSize, cachedCraterSize * 0.8f, b -> !level.getBlockState(b).isAir());
             craterSphere.forEach(b -> {
                 if (level.getBlockState(b.above()).isAir()) {
                     level.setBlock(b, Blocks.AIR.defaultBlockState(), 3);

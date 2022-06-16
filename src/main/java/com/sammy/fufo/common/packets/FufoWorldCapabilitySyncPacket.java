@@ -1,29 +1,34 @@
 package com.sammy.fufo.common.packets;
 
-import java.util.function.Supplier;
-
 import com.sammy.fufo.common.capability.FufoWorldDataCapability;
-import com.sammy.ortus.systems.network.OrtusSyncPacket;
-
+import com.sammy.ortus.systems.network.OrtusClientNBTPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraftforge.network.simple.SimpleChannel;
 
-public class FufoWorldCapabilitySyncPacket extends OrtusSyncPacket {
+import java.util.function.Supplier;
+
+public class FufoWorldCapabilitySyncPacket extends OrtusClientNBTPacket {
 
 	public FufoWorldCapabilitySyncPacket(CompoundTag tag) {
 		super(tag);
 	}
 
 	@Override
-	public void modifyClient(Supplier<Context> context, CompoundTag tag) {
+	public void execute(Supplier<Context> context, CompoundTag tag) {
 		Level world = Minecraft.getInstance().level;
 		FufoWorldDataCapability.getCapability(world).ifPresent(c -> c.deserializeNBT(tag));
 	}
 
-	@Override
-	public void modifyServer(Supplier<Context> context, CompoundTag tag) {
-		// no-op
+
+	public static void register(SimpleChannel instance, int index) {
+		instance.registerMessage(index, FufoWorldCapabilitySyncPacket.class, FufoWorldCapabilitySyncPacket::encode, FufoWorldCapabilitySyncPacket::decode, FufoWorldCapabilitySyncPacket::handle);
+	}
+
+	public static FufoWorldCapabilitySyncPacket decode(FriendlyByteBuf buf) {
+		return new FufoWorldCapabilitySyncPacket(buf.readNbt());
 	}
 }

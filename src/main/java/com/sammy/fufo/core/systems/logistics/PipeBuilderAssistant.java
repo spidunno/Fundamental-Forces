@@ -1,8 +1,6 @@
 package com.sammy.fufo.core.systems.logistics;
 
-import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.PipeNodeBlock;
-import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.ortus.handlers.GhostBlockHandler;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
@@ -22,7 +20,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.function.Predicate;
 
 import static com.sammy.ortus.handlers.PlacementAssistantHandler.ASSISTANTS;
@@ -55,7 +52,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
                 cachedPath.clear();
                 return;
             }
-            cachedPath = BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
+            cachedPath.addAll(BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level));
         }
     }
  
