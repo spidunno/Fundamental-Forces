@@ -20,10 +20,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.model.StandaloneModelConfiguration;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.client.model.renderable.SimpleRenderable;
 import net.minecraftforge.event.TickEvent;
 import org.antlr.v4.runtime.misc.Triple;
 
@@ -48,8 +44,8 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     private static final ResourceLocation FIRE_TRAIL = fufoPath("textures/vfx/fire_trail.png");
     private static final RenderType FIRE_TYPE = OrtusRenderTypeRegistry.SCROLLING_TEXTURE.apply(FIRE_TRAIL);
 
-    public static final OBJModel METEOR_TEARDROP = OBJLoader.INSTANCE.loadModel(new OBJModel.ModelSettings(fufoPath("models/obj/meteor.obj"), false, false, true, true, null));
-    public static final SimpleRenderable RENDER = METEOR_TEARDROP.bakeRenderable(StandaloneModelConfiguration.INSTANCE);
+//    public static final OBJModel METEOR_TEARDROP = OBJLoader.INSTANCE.loadModel(new OBJModel.ModelSettings(fufoPath("models/obj/meteor.obj"), false, false, true, true, null));
+//    public static final SimpleRenderable RENDER = METEOR_TEARDROP.bakeRenderable(StandaloneModelConfiguration.INSTANCE);
 
     public FallingStarRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
