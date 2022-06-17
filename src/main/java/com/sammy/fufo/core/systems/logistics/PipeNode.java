@@ -3,6 +3,7 @@ package com.sammy.fufo.core.systems.logistics;
 import java.util.List;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 public interface PipeNode {
@@ -13,9 +14,9 @@ public interface PipeNode {
 	 * @param stack
 	 * @return Any fluid not added
 	 */
-	public FluidStack addFluid(FluidStack stack);
+	public FluidStack addFluid(Fluid fluid, double amount);
 	
-	public void transferFluid(int amount, PipeNode dest);
+	public void transferFluid(double amount, PipeNode dest);
 	
 	public List<PipeNode> getConnectedNodes();
 	
@@ -25,7 +26,12 @@ public interface PipeNode {
 	
 	public BlockPos getPos();
 	
-	public double getPressure();
+	/**
+	 * Returns the "base" pressure of the node. Note that this does NOT include external factors
+	 * such as gravity, other nodes, neighbouring pumps, etc
+	 * @return
+	 */
+	public double getBasePressure();
 	
 	public void setNetwork(FluidPipeNetwork network, boolean reciprocate);
 	

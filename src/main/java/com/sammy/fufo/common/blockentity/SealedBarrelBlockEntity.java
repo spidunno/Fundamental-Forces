@@ -61,7 +61,7 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	}
 
 	@Override
-	public double getPressure() {
+	public double getBasePressure() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -81,14 +81,14 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	}
 
 	@Override
-	public FluidStack addFluid(FluidStack stack) {
+	public FluidStack addFluid(Fluid f, double amt) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	public void transferFluid(int amount, PipeNode dest) {
-		this.getStoredFluid().shrink(amount);
-		dest.addFluid(new FluidStack(getStoredFluid().getFluid(), amount));
+	public void transferFluid(double amount, PipeNode dest) {
+		this.getStoredFluid().shrink((int)amount);
+		dest.addFluid(getStoredFluid().getFluid(), amount);
 		this.setChanged();
 	}
 

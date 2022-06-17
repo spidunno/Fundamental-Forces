@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.System.Logger;
@@ -40,7 +41,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     
     private FluidStack fluid = FluidStack.EMPTY;
     
-    private double pressure = 0; // Pressure at this node (Pa)
+    private double partialFill = 0.0;
     private boolean isOpen = false;
     private FluidPipeNetwork network;
     private int networkID;
@@ -54,7 +55,11 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
         super(BlockEntityRegistrate.ANCHOR.get(), pos, state);
     }
 
-    public FluidStack addFluid(FluidStack fs) {
+    public FluidStack addFluid(Fluid f, double amount) {
+    	double realAmount = partialFill + amount;
+    	partialFill = realAmount % 1;
+    	FluidStack fs = new FluidStack(f, (int)realAmount);
+//    	FufoMod.LOGGER.info("Adding fluid");
     	if (fluid.isEmpty()) {
     		fluid = new FluidStack(fs.getFluid(), Math.min(getCapacity(), fs.getAmount()));
     		fs.shrink(fluid.getAmount());
@@ -64,15 +69,21 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     		fluid.grow(transfer);
     		fs.shrink(transfer);
     	}
+//    	BlockHelper.updateAndNotifyState(level, getPos());
     	return fs; // return fluid stack unchanged if it doesn't match
     }
     
-    public double getPressure() {
-    	return (double)fluid.getAmount();
+    // Imperfect, but functional
+    public double getBasePressure() {
+    	return fluid.getAmount() + getPos().getY()*10;
     }
     
     public boolean isOpen() {
     	return isOpen;
+    }
+    
+    public void setOpen(boolean open) {
+    	isOpen = open;
     }
     
     @Override
@@ -80,6 +91,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
         super.saveAdditional(pTag);
         pTag.putInt("network", networkID);
         pTag.put("fluid", fluid.writeToNBT(new CompoundTag()));
+        pTag.putDouble("partialFill", partialFill);
         if (!nearbyAnchorPositions.isEmpty()) {
             CompoundTag compound = new CompoundTag();
             compound.putInt("anchorAmount", nearbyAnchorPositions.size());
@@ -103,6 +115,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 //    	Minecraft.getInstance().mouseHandler.releaseMouse();
         super.load(pTag);
         fluid = FluidStack.loadFluidStackFromNBT(pTag.getCompound("fluid"));
+        partialFill = pTag.getDouble("partialFill");
         nearbyAnchorPositions.clear();
         CompoundTag compound = pTag.getCompound("anchorData");
         int amount = compound.getInt("anchorAmount");
@@ -122,10 +135,8 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     
     @Override
     public void onPlace(LivingEntity placer, ItemStack stack) {
-//    	System.out.printf("Pos %s, prevPos %s\n", PipeBuilderAssistant.INSTANCE.recentAnchorPos, PipeBuilderAssistant.INSTANCE.prevAnchorPos);
-//    	FufoMod.LOGGER.info("Running onPlace");
     	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.prevAnchorPos;
-    	if (prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
+    	if (!level.isClientSide() && prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
     		addConnection(prevPos);
     		prev.addConnection(getPos());
     		setNetwork(prev.getNetwork(), true);
@@ -167,9 +178,11 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 		return fluid;
 	}
 	
-	public void transferFluid(int amount, PipeNode dest) {
-		this.getStoredFluid().shrink(amount);
-		dest.addFluid(new FluidStack(getStoredFluid().getFluid(), amount));
+	public void transferFluid(double amount, PipeNode dest) {
+		double realAmount = fluid.getAmount() + partialFill - amount;
+		partialFill = realAmount % 1;
+		fluid.setAmount((int)realAmount);
+		dest.addFluid(fluid.getFluid(), amount);
 		BlockHelper.updateAndNotifyState(level, getPos());
 		this.setChanged();
 	}
@@ -182,6 +195,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 
 	@Override
 	public void addConnection(BlockPos bp) {
+		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
 			if (network == null) network = other.getNetwork();

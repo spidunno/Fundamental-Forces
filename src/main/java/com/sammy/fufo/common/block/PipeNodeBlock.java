@@ -1,5 +1,6 @@
 package com.sammy.fufo.common.block;
 
+import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
@@ -66,10 +67,18 @@ public class PipeNodeBlock<T extends PipeNodeBlockEntity> extends OrtusEntityBlo
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
+//    	FufoMod.LOGGER.info("Called use");
         if (!player.mayBuild()) return InteractionResult.PASS;
         ItemStack held = player.getItemInHand(hand);
-        if (player.isShiftKeyDown()) {
-        	PipeBuilderAssistant.INSTANCE.recentAnchorPos = pos;
+        if (player.getItemInHand(hand).isEmpty()) {
+        	if (player.isShiftKeyDown()) {
+        		PipeNodeBlockEntity tile = (PipeNodeBlockEntity)level.getBlockEntity(pos);
+        		tile.setOpen(!tile.isOpen());
+        	}
+        	else {
+        		PipeBuilderAssistant.INSTANCE.prevAnchorPos = pos;
+        	}
+        	// PipeBuilderAssistant.INSTANCE.recentAnchorPos = pos;
         	return InteractionResult.SUCCESS;
         }
 //        IPlacementHelper helper = PlacementHelpers.get(ANCHOR_PLACEMENT_HELPER);
