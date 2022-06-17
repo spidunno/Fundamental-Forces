@@ -1,6 +1,7 @@
 package com.sammy.fufo.core.systems.logistics;
 
 import com.sammy.fufo.common.block.PipeNodeBlock;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.ortus.handlers.GhostBlockHandler;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
@@ -10,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -53,7 +53,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
                 cachedPath.clear();
                 return;
             }
-            cachedPath = BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
+            cachedPath = BlockHelper.getPath(blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
         }
     }
  
@@ -84,9 +84,11 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
     @OnlyIn(value = Dist.CLIENT)
     @Override
     public void showAssistance(ClientLevel clientLevel, BlockHitResult blockHitResult, BlockState blockState) {
-        for (BlockPos pos : cachedPath) {
-            GhostBlockHandler.addGhost(pos, Blocks.GLASS.defaultBlockState()).at(pos);
-        }
+        BlockPos relative = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
+        GhostBlockHandler.addGhost(relative, BlockRegistrate.PIPE_ANCHOR.getDefaultState()).at(relative);
+//        for (BlockPos pos : cachedPath) {
+//            GhostBlockHandler.addGhost(pos, Blocks.GLASS.defaultBlockState()).at(pos);
+//        }
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.sammy.fufo.client.renderers.entity.falling.FallingStarRenderer;
 import com.sammy.fufo.client.renderers.entity.magic.spell.tier0.MissileProjectileRenderer;
 import com.sammy.fufo.client.renderers.entity.weave.HologramWeaveEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.weave.WeaveEntityRenderer;
+import com.sammy.fufo.client.renderers.entity.wisp.SparkEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wisp.WispEntityRenderer;
 import com.sammy.fufo.client.renderers.entity.wraith.StoneWraithRenderer;
 import com.sammy.fufo.common.entity.falling.FallingCrashpodEntity;
 import com.sammy.fufo.common.entity.magic.spell.tier1.SpellBolt;
 import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
 import com.sammy.fufo.common.entity.weave.WeaveEntity;
+import com.sammy.fufo.common.entity.wisp.SparkEntity;
 import com.sammy.fufo.common.entity.wisp.WispEntity;
 import com.sammy.fufo.common.entity.wraith.StoneWraith;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
@@ -33,7 +35,8 @@ public class EntityRegistry {
 
     public static final RegistryObject<EntityType<FallingCrashpodEntity>> FALLING_CRASHPOD = register("falling_crashpod", EntityType.Builder.<FallingCrashpodEntity>of((t, l)->new FallingCrashpodEntity(l), MobCategory.MISC).sized(0.5f, 0.5f));
 
-    public static final RegistryObject<EntityType<WispEntity>> WISP = register("wisp", EntityType.Builder.<WispEntity>of((t, l)->new WispEntity(l), MobCategory.MISC).sized(0.25f, 0.25f));
+    public static final RegistryObject<EntityType<SparkEntity>> METEOR_FIRE_SPARK = register("spark", EntityType.Builder.<SparkEntity>of((t, l)->new SparkEntity(l), MobCategory.MISC).sized(0.25f, 0.25f));
+    public static final RegistryObject<EntityType<WispEntity>> METEOR_FIRE_WISP = register("wisp", EntityType.Builder.<WispEntity>of((t, l)->new WispEntity(l), MobCategory.MISC).sized(0.5f, 0.5f));
 
     public static final RegistryObject<EntityType<StoneWraith>> STONE_WRAITH = register("stone_wraith", EntityType.Builder.<StoneWraith>of((t, l)->new StoneWraith(l), MobCategory.MONSTER).sized(0.6F, 1.95F).clientTrackingRange(6));
 
@@ -65,7 +68,8 @@ public class EntityRegistry {
         @SubscribeEvent
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(EntityRegistry.FALLING_CRASHPOD.get(), FallingStarRenderer::new);
-            event.registerEntityRenderer(EntityRegistry.WISP.get(), WispEntityRenderer::new);
+            event.registerEntityRenderer(EntityRegistry.METEOR_FIRE_SPARK.get(), SparkEntityRenderer::new);
+            event.registerEntityRenderer(EntityRegistry.METEOR_FIRE_WISP.get(), WispEntityRenderer::new);
             event.registerEntityRenderer(EntityRegistry.STONE_WRAITH.get(), StoneWraithRenderer::new);
             event.registerEntityRenderer(EntityRegistry.HOLOGRAM_WEAVE.get(), HologramWeaveEntityRenderer::new);
             event.registerEntityRenderer(EntityRegistry.BASIC_WEAVE.get(), WeaveEntityRenderer::new);

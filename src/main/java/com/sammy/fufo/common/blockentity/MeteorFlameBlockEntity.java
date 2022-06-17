@@ -1,6 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
-import com.sammy.fufo.common.entity.wisp.WispEntity;
+import com.sammy.fufo.common.entity.wisp.SparkEntity;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.setup.content.DamageSourceRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemTagRegistry;
@@ -37,15 +37,14 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
     public void tick() {
         if (!level.isClientSide) {
             if (level.random.nextFloat() < 0.01f) {
-                float lerp = (0.8f + level.random.nextFloat() * 0.2f) / 255f;
-                Color startingColor = new Color(253 * lerp, 255 * lerp, 234 * lerp);
-                Color midColor = new Color(255 * lerp, 0, 186 * lerp);
-                Color endingColor = new Color(223 * lerp, 0, 255 * lerp);
+                float lerp = (0.7f + level.random.nextFloat() * 0.3f) / 255f;
+                Color color = new Color(255 * lerp, 0, 186 * lerp);
 
-                Vec3 randPos = BlockHelper.randPos(worldPosition, 0, 1);
-                WispEntity wispEntity = new WispEntity(level, randPos.x, randPos.y, randPos.z, 0, 0.14f, 0);
-                wispEntity.setColor(startingColor, midColor, endingColor);
-                level.addFreshEntity(wispEntity);
+                Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
+                float velocity = 0.35f + level.random.nextFloat()*0.1f;
+                SparkEntity sparkEntity = new SparkEntity(level, randPos.x, randPos.y, randPos.z, 0.05f-level.random.nextFloat()*0.1f, velocity, 0.05f-level.random.nextFloat()*0.1f);
+                sparkEntity.setColor(color);
+                level.addFreshEntity(sparkEntity);
             }
             items.removeIf(e -> !e.isAlive());
         }
@@ -63,7 +62,7 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
                 return;
             }
         }
-        if (!(entity instanceof WispEntity) && !entity.fireImmune() && !items.contains(entity)) {
+        if (!(entity instanceof SparkEntity) && !entity.fireImmune() && !items.contains(entity)) {
             FireEffectInstance instance = FireEffectHandler.getFireEffectInstance(entity);
             if (instance == null) {
                 FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FireEffectTypeRegistry.METEOR_FIRE).setDuration(20));
