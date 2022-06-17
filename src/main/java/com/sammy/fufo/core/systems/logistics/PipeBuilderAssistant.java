@@ -53,8 +53,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
                 cachedPath.clear();
                 return;
             }
-
-            cachedPath = BlockHelper.getPath(PlacementAssistantHandler.target.relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
+            cachedPath = BlockHelper.getPath(blockHitResult.getBlockPos().relative(blockHitResult.getDirection()), recentAnchorPos, 4, true, level);
         }
     }
  
