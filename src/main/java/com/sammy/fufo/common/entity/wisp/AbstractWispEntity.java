@@ -13,9 +13,9 @@ import net.minecraftforge.network.NetworkHooks;
 
 import java.awt.*;
 
-public class AbstractWispEntity extends Entity {
+public abstract class AbstractWispEntity extends Entity {
 
-    public static final int MAX_AGE = 300;
+    public static final int MAX_AGE = 1200;
     protected static final EntityDataAccessor<Integer> DATA_START_COLOR = SynchedEntityData.defineId(AbstractWispEntity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Boolean> DATA_FADING_OUT = SynchedEntityData.defineId(AbstractWispEntity.class, EntityDataSerializers.BOOLEAN);
 
@@ -42,6 +42,7 @@ public class AbstractWispEntity extends Entity {
         this.color = color;
         getEntityData().set(DATA_START_COLOR, color.getRGB());
     }
+
     public void startFading() {
         this.fadingOut = true;
         getEntityData().set(DATA_FADING_OUT, true);
@@ -67,7 +68,7 @@ public class AbstractWispEntity extends Entity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         pCompound.putInt("age", age);
-        pCompound.putInt("start", color.getRGB());
+        pCompound.putInt("color", color.getRGB());
         pCompound.putBoolean("fadingOut", fadingOut);
         pCompound.putFloat("fadeOut", fadeOut);
     }
@@ -75,7 +76,7 @@ public class AbstractWispEntity extends Entity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         age = pCompound.getInt("age");
-        color = new Color(pCompound.getInt("start"));
+        setColor(new Color(pCompound.getInt("color")));
         fadingOut = pCompound.getBoolean("fadingOut");
         fadeOut = pCompound.getFloat("fadeOut");
     }
@@ -87,7 +88,7 @@ public class AbstractWispEntity extends Entity {
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
         age++;
         if (fadingOut) {
-            setDeltaMovement(getDeltaMovement().multiply(0.95f,0.95f,0.95f));
+            setDeltaMovement(getDeltaMovement().multiply(0.95f, 0.95f, 0.95f));
             fadeOut++;
             if (fadeOut > 10) {
                 remove(RemovalReason.DISCARDED);
@@ -106,19 +107,11 @@ public class AbstractWispEntity extends Entity {
         return false;
     }
 
-    public boolean canAbsorb(AbstractWispEntity entity) {
+    public boolean isSparkValidForMerge(SparkEntity entity) {
         return !fadingOut && !entity.fadingOut;
     }
 
-    protected void absorb(AbstractWispEntity entity) {
-        entity.targetEntity = null;
-        entity.age = Math.min(age, entity.age);
-        startFading();
-    }
-
-    protected void targetFound(AbstractWispEntity entity) {
-        targetEntity = entity;
-    }
+    protected abstract void sparkLockedOn(SparkEntity entity);
 
     @Override
     public Packet<?> getAddEntityPacket() {

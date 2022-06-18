@@ -1,10 +1,18 @@
 package com.sammy.fufo.common.entity.wisp;
 
 import com.sammy.fufo.core.setup.content.entity.EntityRegistry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTypeTest;
+
+import java.util.List;
 
 public class WispEntity extends AbstractWispEntity {
+    public int sparksOrbiting = 2;
+    public boolean fullyCharged;
+    public int fullyChargedTicks;
+
     public WispEntity(EntityType<?> type, Level level) {
         super(type, level);
     }
@@ -18,13 +26,55 @@ public class WispEntity extends AbstractWispEntity {
     }
 
     @Override
+    protected void addAdditionalSaveData(CompoundTag pCompound) {
+        pCompound.putInt("sparksOrbiting", sparksOrbiting);
+        pCompound.putBoolean("fullyCharged", fullyCharged);
+        pCompound.putInt("fullyChargedTicks", fullyChargedTicks);
+        super.addAdditionalSaveData(pCompound);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(CompoundTag pCompound) {
+        sparksOrbiting = pCompound.getInt("sparksOrbiting");
+        fullyCharged = pCompound.getBoolean("fullyCharged");
+        fullyChargedTicks = pCompound.getInt("fullyChargedTicks");
+        super.readAdditionalSaveData(pCompound);
+    }
+
+    @Override
     public void tick() {
         super.tick();
-        setDeltaMovement(getDeltaMovement().multiply(0.98f,0.98f,0.98f));
+        if (fullyCharged) {
+            fullyChargedTicks++;
+            if (fullyChargedTicks > 60) {
+                List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(3, 3, 3), e -> this.equals(e.targetEntity));
+                for (SparkEntity spark : entities) {
+                    spark.discard();
+                    spark.magnetism += 0.5f + random.nextFloat();
+                    spark.startFading();
+                }
+                discard();
+            }
+        }
+        setDeltaMovement(getDeltaMovement().multiply(0.98f, 0.98f, 0.98f));
+    }
+
+    @Override
+    public boolean isSparkValidForMerge(SparkEntity entity) {
+        return !fullyCharged && super.isSparkValidForMerge(entity);
+    }
+
+    @Override
+    protected void sparkLockedOn(SparkEntity entity) {
+        sparksOrbiting++;
+        entity.isOrbiting = true;
+        if (sparksOrbiting == 16) {
+            fullyCharged = true;
+        }
     }
 
     @Override
     public boolean hasPriority() {
-        return true;
+        return !fullyCharged;
     }
 }

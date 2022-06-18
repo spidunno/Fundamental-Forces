@@ -36,7 +36,7 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
         poseStack.pushPose();
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        builder.renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.6f);
+        builder.renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.45f);
         poseStack.popPose();
 
         RenderSystem.disableBlend();
