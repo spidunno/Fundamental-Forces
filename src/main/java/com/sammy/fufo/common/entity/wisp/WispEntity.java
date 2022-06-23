@@ -9,7 +9,7 @@ import net.minecraft.world.level.entity.EntityTypeTest;
 import java.util.List;
 
 public class WispEntity extends AbstractWispEntity {
-    public int sparksOrbiting = 2;
+    public int sparksOrbiting;
     public boolean fullyCharged;
     public int fullyChargedTicks;
 
@@ -47,11 +47,9 @@ public class WispEntity extends AbstractWispEntity {
         if (fullyCharged) {
             fullyChargedTicks++;
             if (fullyChargedTicks > 60) {
-                List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(3, 3, 3), e -> this.equals(e.targetEntity));
+                List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(4, 4, 4), e -> this.equals(e.targetEntity));
                 for (SparkEntity spark : entities) {
                     spark.discard();
-                    spark.magnetism += 0.5f + random.nextFloat();
-                    spark.startFading();
                 }
                 discard();
             }
@@ -60,13 +58,15 @@ public class WispEntity extends AbstractWispEntity {
     }
 
     @Override
-    public boolean isSparkValidForMerge(SparkEntity entity) {
-        return !fullyCharged && super.isSparkValidForMerge(entity);
+    public boolean canBeTargeted(SparkEntity entity) {
+        return !fullyCharged && super.canBeTargeted(entity);
     }
 
     @Override
     protected void sparkLockedOn(SparkEntity entity) {
         sparksOrbiting++;
+        age = 0;
+        entity.targetEntity = this;
         entity.isOrbiting = true;
         if (sparksOrbiting == 16) {
             fullyCharged = true;

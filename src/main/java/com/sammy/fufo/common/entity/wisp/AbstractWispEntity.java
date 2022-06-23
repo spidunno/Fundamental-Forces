@@ -107,7 +107,7 @@ public abstract class AbstractWispEntity extends Entity {
         return false;
     }
 
-    public boolean isSparkValidForMerge(SparkEntity entity) {
+    public boolean canBeTargeted(SparkEntity entity) {
         return !fadingOut && !entity.fadingOut;
     }
 

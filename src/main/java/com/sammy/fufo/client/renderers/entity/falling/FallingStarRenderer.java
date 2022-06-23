@@ -122,18 +122,18 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     public static void renderTick(TickEvent.RenderTickEvent event) {
         if (event.phase.equals(TickEvent.Phase.START)) {
             if (Minecraft.getInstance().level != null) {
-                if (Minecraft.getInstance().level.getGameTime() % 2L == 0) {
-                    TextureSurgeon textureSurgeon = new TextureSurgeon();
-                    textureSurgeon
-                            .shouldDumpTextures()
-                            .setSourceTexture(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 32))
-                            .operateWithShaders(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.ADDITIVE_TEXTURE.instance, OrtusShaderRegistry.ADDITIVE_TEXTURE.instance);
-                }
+                TextureSurgeon textureSurgeon = new TextureSurgeon();
+                textureSurgeon
+                        .shouldDumpTextures()
+                        .setSourceTexture(fufoPath("textures/block/crude_array.png"), 32)
+                        .operateWithShaders(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.ADDITIVE_TEXTURE.instance, OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.SCROLLING_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
             }
         }
     }
+
     public static class TextureSurgeon { //TODO: move this over to ortusLib
-        public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> TEXTURES = new ConcurrentHashMap<>();
+        public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> DRAW_TO_TEXTURES = new ConcurrentHashMap<>();
+        public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> SOURCE_TEXTURES = new ConcurrentHashMap<>();
         public static ResourceLocation DEFAULT_PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");
 
         boolean shouldDumpTextures;
@@ -147,16 +147,23 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             return this;
         }
 
-        public TextureSurgeon setSourceTexture(DynamicTexture sourceTexture) {
-            this.sourceTexture = sourceTexture;
+        public TextureSurgeon setSourceTexture(ResourceLocation sourceTexture, int size) {
+            return this.setSourceTexture(sourceTexture, size, size);
+        }
+        public TextureSurgeon setSourceTexture(ResourceLocation sourceTexture, int width, int height) {
+            return setSourceTexture(SOURCE_TEXTURES.computeIfAbsent(new Triple<>(sourceTexture, width, height), p -> new DynamicTexture(sourceTexture, width, height)));
+        }
+        public TextureSurgeon setSourceTexture(DynamicTexture texture) {
+            this.sourceTexture = texture;
             return this;
         }
 
         public TextureSurgeon updateRenderTarget(boolean clearBuffer) {
             return updateRenderTarget(drawToLocation, sourceTexture, clearBuffer);
         }
+
         public TextureSurgeon updateRenderTarget(ResourceLocation drawToLocation, DynamicTexture sourceTexture, boolean clearBuffer) {
-            drawToTexture = TEXTURES.computeIfAbsent(new Triple<>(drawToLocation, sourceTexture.getWidth(), sourceTexture.getHeight()), p -> new DynamicTexture(drawToLocation, p.b, p.c));
+            drawToTexture = DRAW_TO_TEXTURES.computeIfAbsent(new Triple<>(drawToLocation, sourceTexture.getWidth(), sourceTexture.getHeight()), p -> new DynamicTexture(drawToLocation, p.b, p.c));
             RenderTarget frameBuffer = drawToTexture.getFrameBuffer();
             if (clearBuffer) {
                 frameBuffer.clear(Minecraft.ON_OSX);
@@ -188,7 +195,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
                     begin(i == 0);
                     ShaderInstance shader = shaders[i];
                     builder.setShaderTexture(sourceTexture.getTextureLocation()).setShader(shader).draw(posestack);
-                    end(i == shaders.length-1);
+                    end(i == shaders.length - 1);
                     if (i == 0) {
                         dumpTexture();
                         setSourceTexture(drawToTexture);
@@ -230,5 +237,4 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
             }
         }
     }
-
 }

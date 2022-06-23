@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.sammy.fufo.FufoMod.fufoPath;
-import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class WispEntityRenderer extends EntityRenderer<WispEntity> {
 
@@ -36,7 +35,7 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
         poseStack.pushPose();
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        builder.renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.45f);
+//        builder.renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.45f);
         poseStack.popPose();
 
         RenderSystem.disableBlend();
