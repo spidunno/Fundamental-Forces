@@ -197,7 +197,7 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
                     builder.setShaderTexture(sourceTexture.getTextureLocation()).setShader(shader).draw(posestack);
                     end(i == shaders.length - 1);
                     if (i == 0) {
-                        dumpTexture();
+                        dumpTexture(); //for some reason without this here it doesn't render at all
                         setSourceTexture(drawToTexture);
                     }
                 }
