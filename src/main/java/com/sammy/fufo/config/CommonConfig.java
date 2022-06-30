@@ -41,7 +41,7 @@ public class CommonConfig extends OrtusConfig {
 
     public static final OrtusConfig.ConfigValueHolder<Integer> STARFALL_ATMOSPHERE_ENTRY_HEIGHT = new OrtusConfig.ConfigValueHolder<>(FUFO,"common/world_events/starfalls", (builder) ->
             builder.comment("Altitude for impact event objects to enter the atmosphere")
-                    .define("starfall_atmosphere_entry_height", 400));
+                    .define("starfall_atmosphere_entry_height", 150));
 
     public static final OrtusConfig.ConfigValueHolder<Integer> MINIMUM_STARFALL_DISTANCE = new OrtusConfig.ConfigValueHolder<>(FUFO,"common/world_events/starfalls", (builder) ->
             builder.comment("Minimum distance away from a player to spawn an impact event")

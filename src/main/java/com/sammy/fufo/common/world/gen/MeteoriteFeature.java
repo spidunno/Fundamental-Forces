@@ -1,6 +1,7 @@
 package com.sammy.fufo.common.world.gen;
 
 import com.google.common.math.StatsAccumulator;
+import com.sammy.fufo.core.registratation.BlockRegistrate;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.helpers.DataHelper;
 import net.minecraft.core.BlockPos;
@@ -32,7 +33,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
     public static boolean generateMeteorite(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random) {
         int meteorSize = 6;
-        int craterSize = 12;
+        int craterSize = 8;
         StatsAccumulator stats = new StatsAccumulator();
         for (int x = -meteorSize * 2; x <= meteorSize * 2; x++) {
             for (int z = -meteorSize * 2; z <= meteorSize * 2; z++) {
@@ -55,10 +56,10 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
         carveTrajectoryHole(level, generator, pos, random, Mth.nextFloat(random, 0, 6.28f), 5, 12);
 
-//        ArrayList<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
-//        meteoriteSphere.forEach(b -> {
-//            level.setBlock(b, AllBlocks.ASTEROID_ROCK.get().defaultBlockState(), 3);
-//        });
+        Collection<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter, meteorSize);
+        meteoriteSphere.forEach(b -> {
+            level.setBlock(b, BlockRegistrate.ORTUSITE.get().defaultBlockState(), 3);
+        });
         return true;
     }
     public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, float rotation, float craterSize, float iterations)

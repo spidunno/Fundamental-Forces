@@ -1,12 +1,13 @@
 package com.sammy.fufo.client.renderers.worldevent;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import com.sammy.fufo.common.worldevents.starfall.FallingStarfallEvent;
+import com.sammy.ortus.helpers.ColorHelper;
 import com.sammy.ortus.helpers.EntityHelper;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
+import com.sammy.ortus.systems.easing.Easing;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import com.sammy.ortus.systems.worldevent.WorldEventRenderer;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,17 +66,30 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         if (positions.size() > 1) {
             positions.set(positions.size() - 1, new EntityHelper.PastPosition(lerpedPosition.add(instance.motion), 0));
         }
-        List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
-        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
-        float flareSize = 4f;
-        VertexConsumer starConsumer = DELAYED_RENDER.getBuffer(STAR_TYPE);
 
+        float length = instance.startingHeight - instance.atmosphericEntryHeight;
+        double progress = instance.position.y - instance.atmosphericEntryHeight;
+        float atmosphericEntry = (float) Math.max(0, (progress / length));
+        float min = 0.9f - Math.min(0.9f, atmosphericEntry * 0.9f);
+        Color color = ColorHelper.colorLerp(Easing.SINE_IN, min, Color.WHITE, Color.YELLOW);
+        List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(color);
+        float flareSize = 6f;
+        float alphaMultiplier = 0.5f + atmosphericEntry * 0.5f;
         poseStack.pushPose();
-        builder.renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> 4f, f -> builder.setAlpha(0.9f * f));
+        for (int i = 0; i < 10; i++) {
+            float size = 3f + i*0.4f;
+            float alpha = (0.5f - i * 0.05f) * alphaMultiplier;
+            builder.renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setAlpha(alpha * f));
+        }
         poseStack.translate(lerpedPosition.x, lerpedPosition.y, lerpedPosition.z);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        builder.renderQuad(starConsumer, poseStack, flareSize);
+        for (int i = 0; i < 3; i++) {
+            float size = flareSize + i*0.5f;
+            float alpha = (0.8f - i * 0.2f) * alphaMultiplier;
+            builder.setAlpha(alpha).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, size);
+        }
         poseStack.popPose();
     }
 }
