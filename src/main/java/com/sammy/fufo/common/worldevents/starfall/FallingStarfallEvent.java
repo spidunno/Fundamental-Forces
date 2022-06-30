@@ -3,6 +3,7 @@ package com.sammy.fufo.common.worldevents.starfall;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventTypes;
 import com.sammy.ortus.handlers.ScreenshakeHandler;
+import com.sammy.ortus.helpers.EntityHelper;
 import com.sammy.ortus.systems.screenshake.PositionedScreenshakeInstance;
 import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
@@ -11,12 +12,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+
 public class FallingStarfallEvent extends WorldEventInstance {
 
     public StarfallActor actor;
+    public final ArrayList<EntityHelper.PastPosition> pastPositions = new ArrayList<>();
     public BlockPos targetedPos = BlockPos.ZERO;
     public Vec3 startingPosition = Vec3.ZERO;
     public Vec3 position = Vec3.ZERO;
+    public Vec3 positionOld = Vec3.ZERO;
     public Vec3 motion = Vec3.ZERO;
     public float acceleration = 0.01f;
     public float speed;
@@ -37,6 +42,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     @Override
     public void tick(Level level) {
         move();
+        trackPastPositions();
         if (position.y() <= targetedPos.getY()) {
             end(level);
         }
@@ -57,10 +63,27 @@ public class FallingStarfallEvent extends WorldEventInstance {
         return true;
     }
 
-
     private void move() {
-        position = position.add(motion.multiply(speed, speed, speed));
+        positionOld = position;
         speed += acceleration;
+        position = position.add(motion.multiply(speed, speed, speed));
+    }
+
+    public void trackPastPositions() {
+        EntityHelper.trackPastPositions(pastPositions, position, 0.01f);
+        removeOldPositions(pastPositions);
+    }
+
+    public void removeOldPositions(ArrayList<EntityHelper.PastPosition> pastPositions) {
+        int amount = pastPositions.size() - 1;
+        ArrayList<EntityHelper.PastPosition> toRemove = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            EntityHelper.PastPosition excess = pastPositions.get(i);
+            if (excess.time > 15) {
+                toRemove.add(excess);
+            }
+        }
+        pastPositions.removeAll(toRemove);
     }
 
     @Override

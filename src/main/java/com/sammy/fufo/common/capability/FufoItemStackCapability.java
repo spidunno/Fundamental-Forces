@@ -38,7 +38,12 @@ public class FufoItemStackCapability implements OrtusCapability {
     @Override
     public void deserializeNBT(CompoundTag tag) {
     }
-    public static LazyOptional<FufoItemStackCapability> getCapability(ItemStack stack) {
+
+    public static LazyOptional<FufoItemStackCapability> getCapabilityOptional(ItemStack stack) {
         return stack.getCapability(CAPABILITY);
+    }
+
+    public static FufoItemStackCapability getCapability(ItemStack stack) {
+        return stack.getCapability(CAPABILITY).orElse(new FufoItemStackCapability());
     }
 }

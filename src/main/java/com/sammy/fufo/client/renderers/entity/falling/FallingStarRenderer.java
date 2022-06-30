@@ -8,7 +8,6 @@ import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.entity.falling.FallingEntity;
 import com.sammy.ortus.OrtusLib;
 import com.sammy.ortus.setup.OrtusRenderTypeRegistry;
-import com.sammy.ortus.setup.OrtusShaderRegistry;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
 import com.sammy.ortus.systems.rendering.multipass.DynamicTexture;
 import net.minecraft.client.Minecraft;
@@ -120,18 +119,19 @@ public class FallingStarRenderer extends EntityRenderer<FallingEntity> {
     }
 
     public static void renderTick(TickEvent.RenderTickEvent event) {
-        if (event.phase.equals(TickEvent.Phase.START)) {
-            if (Minecraft.getInstance().level != null) {
-                TextureSurgeon textureSurgeon = new TextureSurgeon();
-                textureSurgeon
-                        .shouldDumpTextures()
-                        .setSourceTexture(fufoPath("textures/block/crude_array.png"), 32)
-                        .operateWithShaders(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.ADDITIVE_TEXTURE.instance, OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.SCROLLING_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
-            }
-        }
+//        if (event.phase.equals(TickEvent.Phase.START)) {
+//            if (Minecraft.getInstance().level != null) {
+//                TextureSurgeon textureSurgeon = new TextureSurgeon();
+//                textureSurgeon
+//                        .shouldDumpTextures()
+//                        .setSourceTexture(fufoPath("textures/block/crude_array.png"), 32)
+//                        .setSourceTexture(new DynamicTexture(fufoPath("textures/block/crude_array.png"), 32))
+//                        .operateWithShaders(VFXBuilders.createScreen().setPosColorTexLightmapDefaultFormat(), OrtusShaderRegistry.ADDITIVE_TEXTURE.instance, OrtusShaderRegistry.TRIANGLE_TEXTURE.instance, OrtusShaderRegistry.SCROLLING_TEXTURE.instance, OrtusShaderRegistry.METALLIC_NOISE.instance);
+//            }
+//        }
     }
 
-    public static class TextureSurgeon { //TODO: move this over to ortusLib
+    public static class TextureSurgeon { //TODO: move this over to ortusLib, also make it work please
         public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> DRAW_TO_TEXTURES = new ConcurrentHashMap<>();
         public static final ConcurrentHashMap<Triple<ResourceLocation, Integer, Integer>, DynamicTexture> SOURCE_TEXTURES = new ConcurrentHashMap<>();
         public static ResourceLocation DEFAULT_PATIENT_TEXTURE = FufoMod.fufoPath("textures/vfx/patient_texture.png");

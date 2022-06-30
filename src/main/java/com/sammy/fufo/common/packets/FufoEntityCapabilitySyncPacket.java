@@ -35,13 +35,13 @@ public class FufoEntityCapabilitySyncPacket extends OrtusTwoWayNBTPacket {
     @Override
     public void clientExecute(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
         Entity entity = Minecraft.getInstance().level.getEntity(entityID);
-        FufoEntityDataCapability.getCapability(entity).ifPresent(c -> c.deserializeNBT(tag));
+        FufoEntityDataCapability.getCapabilityOptional(entity).ifPresent(c -> c.deserializeNBT(tag));
     }
 
     @Override
     public void serverExecute(Supplier<NetworkEvent.Context> context, CompoundTag tag) {
         Entity entity = context.get().getSender().level.getEntity(entityID);
-        FufoEntityDataCapability.getCapability(entity).ifPresent(c -> c.deserializeNBT(tag));
+        FufoEntityDataCapability.getCapabilityOptional(entity).ifPresent(c -> c.deserializeNBT(tag));
     }
 
     public static void register(SimpleChannel instance, int index) {
