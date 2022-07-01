@@ -28,7 +28,7 @@ import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
-    private static final ResourceLocation LIGHT_TRAIL = fufoPath("textures/vfx/light_trail.png");
+    private static final ResourceLocation LIGHT_TRAIL = fufoPath("textures/vfx/heavy_light_trail.png");
     public static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation STAR = fufoPath("textures/vfx/star.png");
@@ -70,25 +70,28 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float length = instance.startingHeight - instance.atmosphericEntryHeight;
         double progress = instance.position.y - instance.atmosphericEntryHeight;
         float atmosphericEntry = (float) Math.max(0, (progress / length));
-        float min = 0.9f - Math.min(0.9f, atmosphericEntry * 0.9f);
-        Color color = ColorHelper.colorLerp(Easing.SINE_IN, min, Color.WHITE, Color.YELLOW);
+        float min = Math.min(1f, atmosphericEntry);
         List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
-        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(color);
-        float flareSize = 6f;
-        float alphaMultiplier = 0.5f + atmosphericEntry * 0.5f;
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
+        float flareSize = 8f;
         poseStack.pushPose();
-        for (int i = 0; i < 10; i++) {
-            float size = 3f + i*0.4f;
-            float alpha = (0.5f - i * 0.05f) * alphaMultiplier;
-            builder.renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setAlpha(alpha * f));
+
+        for (int i = 0; i < 5; i++) {
+            float lerp = (float) (i / 4.0);
+            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.ORANGE, Color.ORANGE, Color.RED);
+            float size = 2f + i * 3f;
+            float alpha = (1f - i * 0.1f);
+            builder.setColor(color).renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setColor(ColorHelper.colorLerp(Easing.SINE_OUT, 1-f, color, Color.RED)).setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, alpha, 1))));
         }
         poseStack.translate(lerpedPosition.x, lerpedPosition.y, lerpedPosition.z);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
-        for (int i = 0; i < 3; i++) {
-            float size = flareSize + i*0.5f;
-            float alpha = (0.8f - i * 0.2f) * alphaMultiplier;
-            builder.setAlpha(alpha).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, size);
+        for (int i = 0; i < 4; i++) {
+            float lerp = (float) (i / 3.0);
+            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.ORANGE, Color.RED);
+            float size = flareSize + i*5f;
+            float alpha = (1f - i * 0.2f);
+            builder.setColor(color).setAlpha(alpha).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, size);
         }
         poseStack.popPose();
     }
