@@ -82,7 +82,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         ArrayList<EntityHelper.PastPosition> toRemove = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             EntityHelper.PastPosition excess = pastPositions.get(i);
-            if (excess.time > 15) {
+            if (excess.time > 30) {
                 toRemove.add(excess);
             }
         }

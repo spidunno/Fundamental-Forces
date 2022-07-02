@@ -67,10 +67,10 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
             positions.set(positions.size() - 1, new EntityHelper.PastPosition(lerpedPosition.add(instance.motion), 0));
         }
 
-        float length = instance.startingHeight - instance.atmosphericEntryHeight;
-        double progress = instance.position.y - instance.atmosphericEntryHeight;
-        float atmosphericEntry = (float) Math.max(0, (progress / length));
-        float min = Math.min(1f, atmosphericEntry);
+//        float length = instance.startingHeight - instance.atmosphericEntryHeight;
+//        double progress = instance.position.y - instance.atmosphericEntryHeight;
+//        float atmosphericEntry = (float) Math.max(0, (progress / length));
+//        float min = Math.min(1f, atmosphericEntry);
         List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat();
         float flareSize = 8f;
@@ -79,7 +79,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         for (int i = 0; i < 5; i++) {
             float lerp = (float) (i / 4.0);
             Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.ORANGE, Color.ORANGE, Color.RED);
-            float size = 2f + i * 3f;
+            float size = 1f + i * 2f;
             float alpha = (1f - i * 0.1f);
             builder.setColor(color).renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setColor(ColorHelper.colorLerp(Easing.SINE_OUT, 1-f, color, Color.RED)).setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, alpha, 1))));
         }
