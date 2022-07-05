@@ -29,24 +29,24 @@ public class BlockRegistrate {
 
     //TODO: figure out why generic arguments aren't inferred in the second generic in block registration, called prior to .setBlockEntity
 
-    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor", (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor", (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
 
-    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).blockstate(blankState()).register();
 
-    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).register();
-    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES()).register();
-    public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = setupItemBlock("crude_needle", (p) -> new CrudeNeedleBlock<>(p).<CrudeNeedleBlock<CrudeNeedleBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), CRUDE_PROPERTIES()).register();
-    public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = setupItemBlock("crude_needle", (p) -> new CrudeNeedleBlock<>(p).<CrudeNeedleBlock<CrudeNeedleBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), CRUDE_PROPERTIES()).blockstate(blankState()).register();
+    public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).blockstate(blankState()).register();
 
-    public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = setupBlock("meteor_fire", (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(BlockEntityRegistrate.METEOR_FLAME), METEOR_FIRE_PROPERTIES()).register();
+    public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = setupBlock("meteor_fire", (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(BlockEntityRegistrate.METEOR_FLAME), METEOR_FIRE_PROPERTIES()).blockstate(predefinedState()).register();
     public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE = setupItemBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), ASTEROID_PROPERTIES()).blockstate(ortusiteState()).register();
 
-    public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).register();
+    public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).blockstate(blankState()).register();
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = setupItemBlock("block_of_crack", Block::new, CRACK_PROPERTIES()).register();
 
     public static final BlockEntry<GlassBlock> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", GlassBlock::new, VOLCANIC_GLASS_PROPERTIES()).register();
-    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).register();
+    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).blockstate(blankState()).register();
     public static final BlockEntry<Block> CHARRED_ROCK = setupItemBlock("charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
     public static final BlockEntry<SlabBlock> CHARRED_ROCK_SLAB = setupSlabBlock("charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
     public static final BlockEntry<StairBlock> CHARRED_ROCK_STAIRS = setupStairsBlock("charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
@@ -80,15 +80,25 @@ public class BlockRegistrate {
         return (ctx, p) -> p.stairsBlock(ctx.getEntry(), p.blockTexture(parent.get()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> ortusiteState() {
         return (ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
             int value = s.getValue(FlammableMeteoriteBlock.DEPLETION_STATE);
             ResourceLocation registryName = ctx.get().getRegistryName();
-            String newPath = registryName.getPath() + "_" + value;
+            String newPath = "block/" + registryName.getPath() + "_" + value;
             ModelFile modelFile = p.models().cubeAll(newPath, new ResourceLocation(registryName.getNamespace(), newPath));
             return ConfiguredModel.builder().modelFile(modelFile).build();
         });
+    }
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> blankState() {
+        return (ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
+            ModelFile empty = p.models().getExistingFile(new ResourceLocation("block/air"));
+            return ConfiguredModel.builder().modelFile(empty).build();
+        });
+    }
+
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> predefinedState() {
+        return (ctx, p) -> {};
     }
 
     public static void register() {

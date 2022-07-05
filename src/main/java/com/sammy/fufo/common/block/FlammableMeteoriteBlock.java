@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class FlammableMeteoriteBlock extends Block {
 
-    public static final IntegerProperty DEPLETION_STATE = IntegerProperty.create("depletion", 0, 5);
+    public static final IntegerProperty DEPLETION_STATE = IntegerProperty.create("depletion", 0, 4);
 
     private final FlameStateProvider stateProvider;
 
