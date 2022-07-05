@@ -121,24 +121,24 @@ public class BlockRegistrate {
         return (l, b) -> {
             LootTable.Builder builder = LootTable.lootTable();
 
-            //TODO: make this work
-            LootPool.Builder lootPool = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
+            LootPool.Builder normalShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
+            LootPool.Builder depletedShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
             int size = FlammableMeteoriteBlock.DEPLETION_STATE.getPossibleValues().size()-1;
             for (int i = 0; i <= size; i++) {
                 int fullShards = size - i;
                 if (i != 0) {
-                    lootPool.add(LootItem.lootTableItem(ItemRegistrate.DEPLETED_ORTUSITE_CHUNK.get())
+                    depletedShards.add(LootItem.lootTableItem(ItemRegistrate.DEPLETED_ORTUSITE_CHUNK.get())
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
                             .apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))));
                 }
 
                 if (fullShards != 0) {
-                    lootPool.add(LootItem.lootTableItem(ItemRegistrate.ORTUSITE_CHUNK.get())
+                    normalShards.add(LootItem.lootTableItem(ItemRegistrate.ORTUSITE_CHUNK.get())
                             .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
                             .apply(SetItemCountFunction.setCount(ConstantValue.exactly(fullShards))));
                 }
             }
-            l.add(b, builder.withPool(lootPool));
+            l.add(b, builder.withPool(depletedShards).withPool(normalShards));
         };
     }
 
