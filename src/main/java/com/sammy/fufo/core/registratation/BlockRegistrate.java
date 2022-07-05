@@ -9,16 +9,26 @@ import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 
@@ -39,7 +49,11 @@ public class BlockRegistrate {
     public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).blockstate(blankState()).register();
 
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = setupBlock("meteor_fire", (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(BlockEntityRegistrate.METEOR_FLAME), METEOR_FIRE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE = setupItemBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), ASTEROID_PROPERTIES()).blockstate(ortusiteState()).register();
+    public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE = setupItemBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), ASTEROID_PROPERTIES())
+            .blockstate(ortusiteState())
+            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+            .loot(depletedShardLootTable())
+            .register();
 
     public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).blockstate(blankState()).register();
 
@@ -98,7 +112,34 @@ public class BlockRegistrate {
     }
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> predefinedState() {
-        return (ctx, p) -> {};
+        return (ctx, p) -> {
+        };
+    }
+
+
+    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() {
+        return (l, b) -> {
+            LootTable.Builder builder = LootTable.lootTable();
+
+            //TODO: make this work
+            LootPool.Builder lootPool = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
+            int size = FlammableMeteoriteBlock.DEPLETION_STATE.getPossibleValues().size()-1;
+            for (int i = 0; i <= size; i++) {
+                int fullShards = size - i;
+                if (i != 0) {
+                    lootPool.add(LootItem.lootTableItem(ItemRegistrate.DEPLETED_ORTUSITE_CHUNK.get())
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))));
+                }
+
+                if (fullShards != 0) {
+                    lootPool.add(LootItem.lootTableItem(ItemRegistrate.ORTUSITE_CHUNK.get())
+                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
+                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(fullShards))));
+                }
+            }
+            l.add(b, builder.withPool(lootPool));
+        };
     }
 
     public static void register() {

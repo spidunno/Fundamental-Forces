@@ -1,12 +1,6 @@
 {
   "replace": false,
   "values": [
-    "fufo:block_of_crack",
-    "fufo:charred_rock",
-    "fufo:polished_charred_rock",
-    "fufo:charred_rock_slab",
-    "fufo:polished_charred_rock_slab",
-    "fufo:charred_rock_stairs",
-    "fufo:polished_charred_rock_stairs"
+    "fufo:ortusite"
   ]
 }
