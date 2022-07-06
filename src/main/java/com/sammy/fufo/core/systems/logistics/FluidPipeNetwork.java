@@ -86,7 +86,7 @@ public class FluidPipeNetwork {
 		node.updateSource(source, dir, distance);
 		for (PipeNode next : node.getConnectedNodes()) {
 			double nextDist = distance + Math.sqrt(node.getPos().distSqr(next.getPos()));
-			if (!visited.contains(next) || nextDist < next.getDistFromSource(source)) {
+			if (!visited.contains(next) || nextDist < next.getDistFromSource(source, dir)) {
 				visited.add(next);
 				recalcPressureHelper(source, dir, next, visited, nextDist);
 			}

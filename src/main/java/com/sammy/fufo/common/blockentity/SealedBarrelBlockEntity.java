@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 // Still a WIP
+// How long has this been on the backburner for?
 public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNode {
 
 	private FluidTank storage;
@@ -47,13 +48,15 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	}
 
 	@Override
-	public void addConnection(BlockPos bp) {
+	public boolean addConnection(BlockPos bp) {
 		connection = (PipeNode)getLevel().getBlockEntity(bp);
+		return true;
 	}
 
 	@Override
-	public void removeConnection(BlockPos bp) {
+	public boolean removeConnection(BlockPos bp) {
 		connection = null;
+		return true;
 	}
 
 	@Override
@@ -96,7 +99,7 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	}
 
 	@Override
-	public double getDistFromSource(PressureSource p) {
+	public double getDistFromSource(PressureSource p, FlowDir d) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

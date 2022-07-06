@@ -33,7 +33,7 @@ public class BlockEntityRegistrate {
             FufoMod.registrate().<CrudeNeedleBlockEntity>blockEntity("crude_needle", CrudeNeedleBlockEntity::new).validBlocks(BlockRegistrate.CRUDE_NEEDLE).register();
 
     public static final BlockEntityEntry<PumpBlockEntity> PUMP =
-    		FufoMod.registrate().<PumpBlockEntity>blockEntity("pump", PumpBlockEntity::new).validBlocks(BlockRegistrate.PUMP).register();
+    		FufoMod.registrate().<PumpBlockEntity>blockEntity("pump", PumpBlockEntity::new).validBlocks(BlockRegistrate.PUMP).renderer(() -> AnchorRenderer::new).register();
     public static final BlockEntityEntry<ValveBlockEntity> VALVE =
     		FufoMod.registrate().<ValveBlockEntity>blockEntity("valve", ValveBlockEntity::new).validBlocks(BlockRegistrate.VALVE).register();
     public static void register() {

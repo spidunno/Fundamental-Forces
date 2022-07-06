@@ -30,13 +30,13 @@ public interface PipeNode {
 	
 	public List<PipeNode> getConnectedNodes();
 	
-	public void addConnection(BlockPos bp);
+	public boolean addConnection(BlockPos bp);
 	
-	public void removeConnection(BlockPos bp);
+	public boolean removeConnection(BlockPos bp);
 	
 	public void updateSource(PressureSource p, FlowDir dir, double dist);
 	
-	public double getDistFromSource(PressureSource p);
+	public double getDistFromSource(PressureSource p, FlowDir dir);
 	
 	public BlockPos getPos();
 	

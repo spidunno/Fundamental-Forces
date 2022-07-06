@@ -41,7 +41,7 @@ public class BlockRegistrate {
 
     
     //pipes
-public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
 		(p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
     public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupItemBlock("pump",
     		(p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();

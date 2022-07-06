@@ -9,6 +9,7 @@ import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
 import com.sammy.fufo.core.systems.logistics.PressureSource;
+import com.sammy.fufo.helpers.Debuggable;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
@@ -38,7 +39,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Triple;
 
 @SuppressWarnings("unused")
-public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
+public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable {
 
 	private static final int RANGE = 10;
 
@@ -218,18 +219,20 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	}
 
 	@Override
-	public void addConnection(BlockPos bp) {
-		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
+	public boolean addConnection(BlockPos bp) {
+//		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
-			if (network == null) network = other.getNetwork();
+			if (network == null) setNetwork(other.getNetwork(), false);
 			else network.mergeWith(other.getNetwork());
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void removeConnection(BlockPos bp) {
-		nearbyAnchorPositions.remove(bp);
+	public boolean removeConnection(BlockPos bp) {
+		return nearbyAnchorPositions.remove(bp);
 	}
 
 	@Override
@@ -262,13 +265,26 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 
 	@Override
 	public void updateSource(PressureSource p, FlowDir dir, double dist) {
-		// TODO Auto-generated method stub
-		
+		for (Triple<PressureSource, FlowDir, Double> set : sources) {
+			if (set.getLeft() == p && set.getMiddle() == dir) set = Triple.of(p, dir, dist); // Will this CME?
+		}
 	}
 
 	@Override
-	public double getDistFromSource(PressureSource p) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getDistFromSource(PressureSource p, FlowDir dir) {
+		for (Triple<PressureSource, FlowDir, Double> set : sources) {
+			if (set.getLeft() == p && set.getMiddle() == dir) return set.getRight();
+		}
+		return Double.POSITIVE_INFINITY;
+	}
+
+	@Override
+	public String getDebugMessage(boolean sneak) {
+		if (sneak) {
+			return String.format("%s mb of %s", fluid.getAmount(), fluid.getFluid().getRegistryName());
+		}
+		else {
+			return String.format("Network: %s Pressure: %s", getNetwork() == null ? "none" : getNetwork().getID(), getPressure());
+		}
 	}
 }
