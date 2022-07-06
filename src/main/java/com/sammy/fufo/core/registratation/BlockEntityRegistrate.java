@@ -32,6 +32,10 @@ public class BlockEntityRegistrate {
     public static final BlockEntityEntry<CrudeNeedleBlockEntity> CRUDE_NEEDLE =
             FufoMod.registrate().<CrudeNeedleBlockEntity>blockEntity("crude_needle", CrudeNeedleBlockEntity::new).validBlocks(BlockRegistrate.CRUDE_NEEDLE).register();
 
+    public static final BlockEntityEntry<PumpBlockEntity> PUMP =
+    		FufoMod.registrate().<PumpBlockEntity>blockEntity("pump", PumpBlockEntity::new).validBlocks(BlockRegistrate.PUMP).register();
+    public static final BlockEntityEntry<ValveBlockEntity> VALVE =
+    		FufoMod.registrate().<ValveBlockEntity>blockEntity("valve", ValveBlockEntity::new).validBlocks(BlockRegistrate.VALVE).register();
     public static void register() {
     }
 }

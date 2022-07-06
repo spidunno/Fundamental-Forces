@@ -31,7 +31,11 @@ public class BlockRegistrate {
     //pipes
     public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupSimpleBlock("anchor",
             (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).register();
-
+    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupSimpleBlock("pump",
+    		(p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES()).register();
+    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupSimpleBlock("valve",
+    		(p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES()).register();
+    
     //machines
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupSimpleBlock("burner_extractor",
             (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).register();

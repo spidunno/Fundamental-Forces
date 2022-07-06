@@ -28,10 +28,10 @@ public class FluidStats {
 	}
 	
 	public static class FluidInfo {
-		final double mu; // viscosity (kg/(m*s))
-		final double rho; // density (kg/m^3)
-		final double freezingPoint; // K
-		final double boilingPoint; // K
+		public final double mu; // viscosity (kg/(m*s))
+		public final double rho; // density (kg/m^3)
+		public final double freezingPoint; // K
+		public final double boilingPoint; // K
 		
 		FluidInfo(double m, double r, double f, double b) {
 			mu = m;
