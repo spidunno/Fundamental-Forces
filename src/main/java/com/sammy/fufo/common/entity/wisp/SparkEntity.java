@@ -54,13 +54,25 @@ public class SparkEntity extends AbstractWispEntity {
     @Override
     public void tick() {
         super.tick();
-        float friction = fadingOut ? 0.92f : 0.995f - (Math.max(0, 10 - age) / 10f) * 0.2f;
+        float friction = fadingOut ? 0.97f : 0.995f - (Math.max(0, 10 - age) / 10f) * 0.2f;
         setDeltaMovement(getDeltaMovement().multiply(friction, friction, friction));
         trackPastPositions();
+
+        if (fadingOut) {
+            fadeOut++;
+            if (fadeOut < 20) {
+                distanceMultiplier += 0.05f;
+            }
+            if (fadeOut < 100) {
+                distanceMultiplier += 0.01f;
+            }
+            if (fadeOut > 400) {
+                discard();
+            }
+        }
         if (level.isClientSide) {
             return;
         }
-
         if (targetEntity != null && targetEntity.isAlive()) {
             followTarget();
         }
@@ -91,13 +103,6 @@ public class SparkEntity extends AbstractWispEntity {
 
     public void trackPastPositions() {
         removeOldPositions(pastPositions);
-        if (fadingOut) {
-            pastPositions.forEach(p -> p.time += 2);
-            if (pastPositions.isEmpty()) {
-                remove(RemovalReason.DISCARDED);
-            }
-            fadeOut -= 0.25f;
-        }
         EntityHelper.trackPastPositions(pastPositions, position(), 0.01f);
     }
 
@@ -106,7 +111,7 @@ public class SparkEntity extends AbstractWispEntity {
         ArrayList<EntityHelper.PastPosition> toRemove = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             EntityHelper.PastPosition excess = pastPositions.get(i);
-            if (excess.time > 15) {
+            if (excess.time > 10) {
                 toRemove.add(excess);
             }
         }

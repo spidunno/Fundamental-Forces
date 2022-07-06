@@ -3,9 +3,7 @@ package com.sammy.fufo.common.worldevents.starfall;
 import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventTypes;
-import com.sammy.ortus.handlers.ScreenshakeHandler;
 import com.sammy.ortus.helpers.EntityHelper;
-import com.sammy.ortus.systems.screenshake.PositionedScreenshakeInstance;
 import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -56,7 +54,8 @@ public class FallingStarfallEvent extends WorldEventInstance {
         if (level instanceof ServerLevel serverLevel) {
             actor.act(serverLevel, targetedPos);
         } else {
-            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
+            //TODO: fix this
+            // ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
         }
         discarded = true;
     }

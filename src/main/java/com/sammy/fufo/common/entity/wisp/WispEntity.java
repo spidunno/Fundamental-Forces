@@ -44,14 +44,17 @@ public class WispEntity extends AbstractWispEntity {
     @Override
     public void tick() {
         super.tick();
+        if (fadingOut) {
+            fadeOut++;
+            if (fadeOut > 400) {
+                discard();
+            }
+        }
         if (fullyCharged) {
             fullyChargedTicks++;
             if (fullyChargedTicks > 60) {
-                List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(4, 4, 4), e -> this.equals(e.targetEntity));
-                for (SparkEntity spark : entities) {
-                    spark.discard();
-                }
-                discard();
+                //complete here
+                startFading();
             }
         }
         setDeltaMovement(getDeltaMovement().multiply(0.98f, 0.98f, 0.98f));
@@ -70,6 +73,10 @@ public class WispEntity extends AbstractWispEntity {
         entity.isOrbiting = true;
         if (sparksOrbiting == 16) {
             fullyCharged = true;
+            List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(4, 4, 4), e -> this.equals(e.targetEntity));
+            for (SparkEntity spark : entities) {
+                spark.startFading();
+            }
         }
     }
 

@@ -87,14 +87,6 @@ public abstract class AbstractWispEntity extends Entity {
         Vec3 movement = getDeltaMovement();
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
         age++;
-        if (fadingOut) {
-            setDeltaMovement(getDeltaMovement().multiply(0.95f, 0.95f, 0.95f));
-            fadeOut++;
-            if (fadeOut > 10) {
-                remove(RemovalReason.DISCARDED);
-            }
-            return;
-        }
         if (level.isClientSide) {
             return;
         }

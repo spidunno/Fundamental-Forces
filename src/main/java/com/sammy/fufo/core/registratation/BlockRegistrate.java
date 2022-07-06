@@ -123,7 +123,7 @@ public class BlockRegistrate {
 
             LootPool.Builder normalShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
             LootPool.Builder depletedShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
-            int size = FlammableMeteoriteBlock.DEPLETION_STATE.getPossibleValues().size()-1;
+            int size = FlammableMeteoriteBlock.DEPLETION_STATE.getPossibleValues().size() - 1;
             for (int i = 0; i <= size; i++) {
                 int fullShards = size - i;
                 if (i != 0) {

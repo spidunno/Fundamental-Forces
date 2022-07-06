@@ -27,7 +27,7 @@ public class SparkEntityRenderer extends EntityRenderer<SparkEntity> {
     private static final ResourceLocation WISP_TEXTURE = fufoPath("textures/particle/square.png");
     private static final RenderType WISP_TYPE = OrtusRenderTypeRegistry.TRANSPARENT_TEXTURE.apply(WISP_TEXTURE);
     private static final ResourceLocation SPARK_TRAIL_TEXTURE = fufoPath("textures/entity/wisp/spark_trail.png");
-    private static final RenderType SPARK_TRAIL_TYPE = OrtusRenderTypeRegistry.TRANSPARENT_TEXTURE.apply(SPARK_TRAIL_TEXTURE);
+    private static final RenderType SPARK_TRAIL_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE_TRIANGLE.apply(SPARK_TRAIL_TEXTURE);
 
     public SparkEntityRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -52,19 +52,19 @@ public class SparkEntityRenderer extends EntityRenderer<SparkEntity> {
 
         List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
 
-        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(entity.color.brighter()).setAlpha(1-entity.fadeOut/10f);
+        VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(entity.color.brighter()).setAlpha(1-entity.fadeOut/400f);
 
-        RenderSystem.enableBlend();
-        poseStack.pushPose();
 //        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
 //        poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 //        builder.renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.3f);
-        poseStack.popPose();
 
+        poseStack.pushPose();
+        RenderSystem.enableBlend();
         builder.setOffset(-x, -y, -z)
-                .setUV(0, 0, 1, -1)
-                .renderTrail(DELAYED_RENDER.getBuffer(SPARK_TRAIL_TYPE), poseStack, mappedPastPositions, f -> 0.4f*f);
+                .setUV(0, 0, 1, 1)
+                .renderTrail(DELAYED_RENDER.getBuffer(SPARK_TRAIL_TYPE), poseStack, mappedPastPositions, f -> 0.6f);
         RenderSystem.disableBlend();
+        poseStack.popPose();
     }
 
     @Override

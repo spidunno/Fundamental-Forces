@@ -29,7 +29,7 @@ import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
     private static final ResourceLocation LIGHT_TRAIL = fufoPath("textures/vfx/heavy_light_trail.png");
-    public static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
+    public static final RenderType LIGHT_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
 
     private static final ResourceLocation STAR = fufoPath("textures/vfx/star.png");
     public static final RenderType STAR_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(STAR);

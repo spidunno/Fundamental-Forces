@@ -1,6 +1,7 @@
 package com.sammy.fufo.common.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -24,6 +25,16 @@ public class FlammableMeteoriteBlock extends Block {
 
     public BlockState getFlameState(BlockState state, BlockPos pos) {
         return stateProvider.getFlameState(state, pos);
+    }
+
+    public static boolean progressDepletion(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        int depletion = state.getValue(DEPLETION_STATE);
+        if (depletion < 4) {
+            level.setBlock(pos, state.setValue(DEPLETION_STATE, depletion + 1), 3);
+            return true;
+        }
+        return false;
     }
 
     public interface FlameStateProvider {
