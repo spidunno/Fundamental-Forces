@@ -43,7 +43,9 @@ public class PlayerSpellHotbarHandler {
                 FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
-                        selectedSpell.cast(serverPlayer, event.getPos(), event.getHitVec());
+                        if (!selectedSpell.isEmpty()) {
+                            selectedSpell.cast(serverPlayer, event.getPos(), event.getHitVec());
+                        }
                     }
                 });
             }
@@ -58,15 +60,19 @@ public class PlayerSpellHotbarHandler {
                 int selected = handler.spellHotbar.getSelectedSpellIndex(player);
                 SpellInstance instance = handler.spellHotbar.spells.get(i);
                 instance.selected = i == selected;
-                instance.baseTick(player.level);
-                if (player instanceof ServerPlayer serverPlayer) {
-                    instance.playerTick(serverPlayer);
+                if (!instance.isEmpty()) {
+                    instance.baseTick(player.level);
+                    if (player instanceof ServerPlayer serverPlayer) {
+                        instance.playerTick(serverPlayer);
+                    }
                 }
             }
             if (event.player instanceof ServerPlayer serverPlayer) {
                 if (handler.open && OrtusPlayerDataCapability.getCapability(player).rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
-                    selectedSpell.cast(serverPlayer);
+                    if (!selectedSpell.isEmpty()) {
+                        selectedSpell.cast(serverPlayer);
+                    }
                 }
             }
         });

@@ -47,7 +47,11 @@ public class FufoWorldDataCapability implements OrtusCapability {
     	FluidPipeNetworkRegistry.load(level, nbt.getList("networks", Tag.TAG_COMPOUND));
     }
 
-    public static LazyOptional<FufoWorldDataCapability> getCapability(Level level) {
+    public static LazyOptional<FufoWorldDataCapability> getCapabilityOptional(Level level) {
         return level.getCapability(CAPABILITY);
+    }
+
+    public static FufoWorldDataCapability getCapability(Level level) {
+        return level.getCapability(CAPABILITY).orElse(new FufoWorldDataCapability(level));
     }
 }

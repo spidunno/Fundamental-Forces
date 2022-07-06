@@ -38,7 +38,7 @@ public class StarfallActor {
         for (int x = -range; x <= range; x++) {
             for (int z = -range; z <= range; z++) {
                 LevelChunk chunk = level.getChunk(SectionPos.blockToSectionCoord(pos.getX()) + x, SectionPos.blockToSectionCoord(pos.getZ()) + z);
-                int chunkChanges = FufoChunkDataCapability.getChunkChanges(chunk);
+                int chunkChanges = FufoChunkDataCapability.getCapability(chunk).chunkChanges;
                 if (chunkChanges >= CommonConfig.MAXIMUM_CHUNK_CHANGES.getConfigValue()) {
                     return false;
                 }
@@ -124,7 +124,7 @@ public class StarfallActor {
 
     public void act(ServerLevel level, BlockPos targetPos) {
         LevelChunk chunk = level.getChunkAt(targetPos);
-        FufoChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> chunkDataCapability.chunkChanges = CommonConfig.MAXIMUM_CHUNK_CHANGES.getConfigValue());
+        FufoChunkDataCapability.getCapabilityOptional(chunk).ifPresent(chunkDataCapability -> chunkDataCapability.chunkChanges = CommonConfig.MAXIMUM_CHUNK_CHANGES.getConfigValue());
     }
 
     public final boolean canFall(ServerLevel level, BlockPos pos) {

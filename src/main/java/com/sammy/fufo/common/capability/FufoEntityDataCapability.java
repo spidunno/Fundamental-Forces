@@ -63,10 +63,14 @@ public class FufoEntityDataCapability implements OrtusCapability {
     }
 
     public static void sync(Entity entity, PacketDistributor.PacketTarget target) {
-        getCapability(entity).ifPresent(c -> INSTANCE.send(target, new FufoEntityCapabilitySyncPacket(entity.getId(), c.serializeNBT())));
+        getCapabilityOptional(entity).ifPresent(c -> INSTANCE.send(target, new FufoEntityCapabilitySyncPacket(entity.getId(), c.serializeNBT())));
     }
 
-    public static LazyOptional<FufoEntityDataCapability> getCapability(Entity entity) {
+    public static LazyOptional<FufoEntityDataCapability> getCapabilityOptional(Entity entity) {
         return entity.getCapability(CAPABILITY);
+    }
+
+    public static FufoEntityDataCapability getCapability(Entity entity) {
+        return entity.getCapability(CAPABILITY).orElse(new FufoEntityDataCapability());
     }
 }

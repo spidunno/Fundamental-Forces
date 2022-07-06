@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
-      "model": "fufo:block/ortusite"
+    "depletion=0": {
+      "model": "fufo:block/ortusite_0"
+    },
+    "depletion=1": {
+      "model": "fufo:block/ortusite_1"
+    },
+    "depletion=2": {
+      "model": "fufo:block/ortusite_2"
+    },
+    "depletion=3": {
+      "model": "fufo:block/ortusite_3"
+    },
+    "depletion=4": {
+      "model": "fufo:block/ortusite_4"
     }
   }
 }

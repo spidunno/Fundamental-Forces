@@ -19,7 +19,7 @@ public class StarfallEventHandler {
         if (event.getPlayer() instanceof ServerPlayer player) {
             ServerLevel level = player.getLevel();
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
-            FufoChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
+            FufoChunkDataCapability.getCapabilityOptional(chunk).ifPresent(chunkDataCapability -> {
                 if (level.canSeeSky(player.blockPosition())) {
                     chunkDataCapability.chunkChanges++;
                 }
@@ -31,7 +31,7 @@ public class StarfallEventHandler {
         if (event.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = player.getLevel();
             LevelChunk chunk = level.getChunkAt(player.blockPosition());
-            FufoChunkDataCapability.getCapability(chunk).ifPresent(chunkDataCapability -> {
+            FufoChunkDataCapability.getCapabilityOptional(chunk).ifPresent(chunkDataCapability -> {
                 if (level.canSeeSky(player.blockPosition())) {
                     chunkDataCapability.chunkChanges++;
                 }

@@ -20,7 +20,7 @@ public class FufoWorldCapabilitySyncPacket extends OrtusClientNBTPacket {
 	@Override
 	public void execute(Supplier<Context> context, CompoundTag tag) {
 		Level world = Minecraft.getInstance().level;
-		FufoWorldDataCapability.getCapability(world).ifPresent(c -> c.deserializeNBT(tag));
+		FufoWorldDataCapability.getCapabilityOptional(world).ifPresent(c -> c.deserializeNBT(tag));
 	}
 
 

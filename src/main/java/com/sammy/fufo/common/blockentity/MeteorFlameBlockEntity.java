@@ -1,5 +1,6 @@
 package com.sammy.fufo.common.blockentity;
 
+import com.sammy.fufo.common.block.FlammableMeteoriteBlock;
 import com.sammy.fufo.common.entity.wisp.SparkEntity;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.setup.content.DamageSourceRegistry;
@@ -10,10 +11,13 @@ import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 import com.sammy.ortus.systems.fireeffect.FireEffectInstance;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -24,6 +28,8 @@ import java.util.ArrayList;
 public class MeteorFlameBlockEntity extends OrtusBlockEntity {
 
     public final ArrayList<ItemEntity> items = new ArrayList<>();
+    public int queuedSparks;
+
 
     public MeteorFlameBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -34,17 +40,43 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
     }
 
     @Override
+    protected void saveAdditional(CompoundTag pTag) {
+        pTag.putInt("queuedSparks", queuedSparks);
+    }
+
+    @Override
+    public void load(CompoundTag pTag) {
+        super.load(pTag);
+        queuedSparks = pTag.getInt("queuedSparks");
+    }
+
+    @Override
+    public void init() {
+        if (queuedSparks == 0) {
+            attemptIgnition();
+        }
+    }
+
+    @Override
     public void tick() {
         if (!level.isClientSide) {
-            if (level.random.nextFloat() < 0.01f) {
-                float lerp = (0.7f + level.random.nextFloat() * 0.3f) / 255f;
-                Color color = new Color(255 * lerp, 0, 186 * lerp);
+            if (queuedSparks == 0) {
+                if (level.random.nextFloat() < 0.02f) {
+                    attemptIgnition();
+                }
+            } else {
+                float extraChance = Math.max(0, queuedSparks - 12) * 0.02f;
+                if (level.random.nextFloat() < (0.03f + extraChance)) {
+                    float lerp = (0.7f + level.random.nextFloat() * 0.3f) / 255f;
+                    Color color = new Color(255 * lerp, 0, 186 * lerp);
 
-                Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
-                float velocity = 0.35f + level.random.nextFloat()*0.1f;
-                SparkEntity sparkEntity = new SparkEntity(level, randPos.x, randPos.y, randPos.z, 0.05f-level.random.nextFloat()*0.1f, velocity, 0.05f-level.random.nextFloat()*0.1f);
-                sparkEntity.setColor(color);
-                level.addFreshEntity(sparkEntity);
+                    Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
+                    float velocity = 0.35f + level.random.nextFloat() * 0.1f;
+                    SparkEntity sparkEntity = new SparkEntity(level, randPos.x, randPos.y, randPos.z, 0.05f - level.random.nextFloat() * 0.1f, velocity, 0.05f - level.random.nextFloat() * 0.1f);
+                    sparkEntity.setColor(color);
+                    level.addFreshEntity(sparkEntity);
+                    queuedSparks--;
+                }
             }
             items.removeIf(e -> !e.isAlive());
         }
@@ -73,6 +105,24 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
                 }
             }
             entity.hurt(DamageSourceRegistry.METEOR_FIRE, 1);
+        }
+    }
+
+    public void attemptIgnition() {
+        BlockPos below = getBlockPos().below();
+        BlockState blockState = level.getBlockState(below);
+        Block block = blockState.getBlock();
+        if (block instanceof FlammableMeteoriteBlock) {
+            boolean success = FlammableMeteoriteBlock.progressDepletion(level, below);
+            if (success) {
+                queuedSparks = 16;
+            }
+            else {
+                BlockPos blockPos = getBlockPos();
+                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
+                level.levelEvent(null, 1009, blockPos, 0);
+
+            }
         }
     }
 }

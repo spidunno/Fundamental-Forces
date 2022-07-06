@@ -7,26 +7,12 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "conditions": [
-                {
-                  "condition": "minecraft:block_state_property",
-                  "block": "fufo:charred_rock_slab",
-                  "properties": {
-                    "type": "double"
-                  }
-                }
-              ],
-              "count": 2.0,
-              "add": false
-            },
-            {
-              "function": "minecraft:explosion_decay"
-            }
-          ],
           "name": "fufo:charred_rock_slab"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ]
     }

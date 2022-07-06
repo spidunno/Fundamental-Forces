@@ -50,11 +50,11 @@ public class FufoChunkDataCapability implements OrtusCapability {
         chunkChanges = tag.getBoolean("invalid") ? CommonConfig.MAXIMUM_CHUNK_CHANGES.getConfigValue() : tag.getInt("chunkChanges");
     }
 
-    public static LazyOptional<FufoChunkDataCapability> getCapability(LevelChunk chunk) {
+    public static LazyOptional<FufoChunkDataCapability> getCapabilityOptional(LevelChunk chunk) {
         return chunk.getCapability(CAPABILITY);
     }
 
-    public static int getChunkChanges(LevelChunk chunk) {
-        return chunk.getCapability(CAPABILITY).orElse(new FufoChunkDataCapability()).chunkChanges;
+    public static FufoChunkDataCapability getCapability(LevelChunk chunk) {
+        return chunk.getCapability(CAPABILITY).orElse(new FufoChunkDataCapability());
     }
 }

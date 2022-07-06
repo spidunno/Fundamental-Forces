@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "fufo:block/ortusite"
+    "all": "fufo:block/ortusite_4"
   }
 }

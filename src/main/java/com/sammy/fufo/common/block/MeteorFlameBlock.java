@@ -4,17 +4,14 @@ import com.sammy.fufo.common.blockentity.MeteorFlameBlockEntity;
 import com.sammy.fufo.core.setup.client.FufoParticleRegistry;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
-import com.sammy.ortus.systems.rendering.particle.ParticleRenderTypes;
-import com.sammy.ortus.systems.rendering.particle.SimpleParticleOptions;
-import com.sammy.ortus.systems.rendering.particle.world.GenericParticle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -30,6 +27,11 @@ public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends OrtusEnt
 
     public MeteorFlameBlock(Properties properties) {
         super(properties);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState pState, LevelReader pLevel, BlockPos pPos) {
+        return pLevel.getBlockState(pPos.below()).getBlock() instanceof FlammableMeteoriteBlock;
     }
 
     @Override
@@ -55,10 +57,10 @@ public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends OrtusEnt
             pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.3F, false);
         }
         for (int i = 0; i < 3; i++) {
-            float lerp = (0.6f+pRandom.nextFloat() * 0.4f)/255f;
-            int lifetime = (int)((double)8 / ((double)pLevel.random.nextFloat() * 0.8D + 0.2D) * 2.5f);
-            Color startingColor = new Color(66*lerp, 36*lerp, 95*lerp);
-            Color endingColor = new Color(108*lerp, 38*lerp, 96*lerp).brighter();
+            float lerp = (0.6f + pRandom.nextFloat() * 0.4f) / 255f;
+            int lifetime = (int) ((double) 8 / ((double) pLevel.random.nextFloat() * 0.8D + 0.2D) * 2.5f);
+            Color startingColor = new Color(66 * lerp, 36 * lerp, 95 * lerp);
+            Color endingColor = new Color(108 * lerp, 38 * lerp, 96 * lerp).brighter();
             ParticleBuilders.create(FufoParticleRegistry.COLORED_SMOKE)
                     .randomOffset(0.5f, 0.25f)
                     .setScale(0.25f)
