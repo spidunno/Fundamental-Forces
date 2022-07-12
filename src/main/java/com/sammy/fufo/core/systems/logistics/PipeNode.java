@@ -47,6 +47,14 @@ public interface PipeNode {
 	 */
 	public double getPressure();
 	
+	/**
+	 * Some node types such as pumps may want to override this to calculate pressure differently
+	 * depending on whether they are pushing or pulling fluid
+	 * @param side
+	 * @return
+	 */
+	public default double getPressure(FlowDir side) { return getPressure(); }
+	
 	public void setNetwork(FluidPipeNetwork network, boolean reciprocate);
 	
 	public FluidPipeNetwork getNetwork();

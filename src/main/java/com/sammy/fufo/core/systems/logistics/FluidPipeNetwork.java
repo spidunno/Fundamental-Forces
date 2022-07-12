@@ -147,7 +147,7 @@ public class FluidPipeNetwork {
 			List<PipeNode> connections = node.getConnectedNodes();
 			for (PipeNode other : connections) {
 				if (!node.getStoredFluid().isEmpty()) {
-					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, (node.getPressure() - other.getPressure()) * PRESSURE_TRANSFER_COEFF));
+					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, (node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN)) * PRESSURE_TRANSFER_COEFF));
 					transfers.add(t);
 				}
 			}
