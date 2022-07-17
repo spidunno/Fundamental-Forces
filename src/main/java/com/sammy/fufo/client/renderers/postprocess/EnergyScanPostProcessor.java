@@ -28,11 +28,11 @@ public class EnergyScanPostProcessor extends MultiInstancePostProcessor<EnergySc
             if (event.getKey() == GLFW.GLFW_KEY_L) {
                 FufoPostProcessorRegistry.ENERGY_SCAN.init();
                 FufoPostProcessorRegistry.ENERGY_SPHERE.init();
-                FufoPostProcessorRegistry.EDGE.init();
-                FufoPostProcessorRegistry.EDGE.setActive(true);
+//                FufoPostProcessorRegistry.EDGE.init();
+//                FufoPostProcessorRegistry.EDGE.setActive(true);
             }
             if (event.getKey() == GLFW.GLFW_KEY_U) {
-                FufoPostProcessorRegistry.EDGE.setActive(false);
+//                FufoPostProcessorRegistry.EDGE.setActive(false);
             }
         }
     }
