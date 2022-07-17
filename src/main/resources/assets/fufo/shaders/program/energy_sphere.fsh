@@ -77,11 +77,11 @@ vec3 energySphere(vec3 ray, float worldDepth, vec3 center, float radius, vec3 ba
 }
 
 void main() {
-    vec3 orgCol = texture2D(DiffuseSampler, texCoord).xyz; // the original color of this pixel
+    vec3 orgCol = texture(DiffuseSampler, texCoord).xyz; // the original color of this pixel
 
     vec2 ndc = texCoord2NDC(texCoord); // normalized device coordinate (-1 to 1)
     vec3 ray = rayFromNDC(ndc, lookVector, leftVector, upVector, nearPlaneDistance, fov, aspectRatio);
-    float depth = texture2D(MainDepthSampler, texCoord).r;
+    float depth = texture(MainDepthSampler, texCoord).r;
 
     vec3 worldPos = getWorldPos(depth, texCoord, invProjMat, invViewMat, cameraPos);//FIXME: use linearDepth instead of this!!!
     float worldDepth = distance(worldPos, cameraPos);

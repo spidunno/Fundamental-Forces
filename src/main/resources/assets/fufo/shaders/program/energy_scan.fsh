@@ -64,9 +64,9 @@ vec3 magicEffect(float noiseValue, float distToCenter, float signedDistToRing, v
 }
 
 void main() {
-    vec3 orgCol = texture2D(DiffuseSampler, texCoord).xyz; // the original color of this pixel
+    vec3 orgCol = texture(DiffuseSampler, texCoord).xyz; // the original color of this pixel
 
-    float depth = texture2D(MainDepthSampler, texCoord).r; // non-normalized depth
+    float depth = texture(MainDepthSampler, texCoord).r; // non-normalized depth
     vec3 worldPos = getWorldPos(depth, texCoord, invProjMat, invViewMat, cameraPos); // world coordinate of this pixel
     worldPos = floor((worldPos+.001)*16.)/16.; // voxelize world position
 
