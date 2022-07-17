@@ -1,6 +1,7 @@
 package com.sammy.fufo.core.eventhandlers;
 
 import com.sammy.fufo.core.setup.client.FufoParticleRegistry;
+import com.sammy.fufo.core.setup.client.FufoPostProcessorRegistry;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.setup.content.item.ItemRegistry;
 import com.sammy.fufo.core.setup.content.magic.FireEffectTypeRegistry;
@@ -20,6 +21,7 @@ public class ClientSetupEvents {
         KeyBindingRegistry.registerKeyBinding(event);
         ItemRegistry.ClientOnly.registerParticleEmitters(event);
         FireEffectTypeRegistry.ClientOnly.clientSetup(event);
+        FufoPostProcessorRegistry.register();
 
         event.enqueueWork(() -> Minecraft.getInstance().getMainRenderTarget().enableStencil());
         //Minecraft.getInstance().getMainRenderTarget().enableStencil();

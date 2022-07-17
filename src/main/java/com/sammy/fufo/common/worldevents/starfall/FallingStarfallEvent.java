@@ -1,6 +1,10 @@
 package com.sammy.fufo.common.worldevents.starfall;
 
+import com.mojang.math.Vector3f;
+import com.sammy.fufo.client.renderers.postprocess.EnergyScanFx;
+import com.sammy.fufo.client.renderers.postprocess.EnergySphereFx;
 import com.sammy.fufo.config.CommonConfig;
+import com.sammy.fufo.core.setup.client.FufoPostProcessorRegistry;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventTypes;
 import com.sammy.ortus.helpers.EntityHelper;
@@ -8,6 +12,7 @@ import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -21,7 +26,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     public Vec3 position = Vec3.ZERO;
     public Vec3 positionOld = Vec3.ZERO;
     public Vec3 motion = Vec3.ZERO;
-    public float acceleration = 0.01f;
+    public float acceleration = 5.f;
     public float speed;
     public int startingHeight;
     public int atmosphericEntryHeight;
@@ -54,10 +59,44 @@ public class FallingStarfallEvent extends WorldEventInstance {
         if (level instanceof ServerLevel serverLevel) {
             actor.act(serverLevel, targetedPos);
         } else {
-            //TODO: fix this
-            // ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
+//            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
+
+            playImpactEffect(new Vector3f(Vec3.atCenterOf(targetedPos)));
         }
         discarded = true;
+    }
+
+    private void playImpactEffect(Vector3f position) {
+        FufoPostProcessorRegistry.ENERGY_SCAN.addFxInstance(new EnergyScanFx(position) {
+            @Override
+            public void update(double deltaTime) {
+                super.update(deltaTime);
+
+                virtualRadius = getTime() / 7.5F * 300F;
+                if (virtualRadius > 600F) {
+                    remove();
+                    return;
+                }
+            }
+        });
+
+        FufoPostProcessorRegistry.ENERGY_SPHERE.addFxInstance(new EnergySphereFx(position, 0, 1) {
+            @Override
+            public void update(double deltaTime) {
+                super.update(deltaTime);
+
+                float progress = getTime() / 7.5F;
+
+                if (progress > 1) {
+                    remove();
+                    return;
+                }
+
+                this.radius = progress * 300F;
+                this.intensity = (200F - radius) / 190F;
+                this.intensity = (float) Mth.clamp(intensity, 0., 1.);
+            }
+        });
     }
 
     @Override
