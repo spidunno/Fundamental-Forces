@@ -116,12 +116,10 @@ public class MeteorFlameBlockEntity extends OrtusBlockEntity {
             boolean success = FlammableMeteoriteBlock.progressDepletion(level, below);
             if (success) {
                 queuedSparks = 16;
-            }
-            else {
+            } else {
                 BlockPos blockPos = getBlockPos();
                 level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
                 level.levelEvent(null, 1009, blockPos, 0);
-
             }
         }
     }
