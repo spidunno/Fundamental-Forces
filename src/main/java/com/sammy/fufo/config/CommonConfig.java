@@ -15,6 +15,10 @@ public class CommonConfig extends OrtusConfig {
             builder.comment("Are impact events enabled?")
                     .define("enable_starfalls", true));
 
+    public static final OrtusConfig.ConfigValueHolder<Boolean> IMPATIENT_STARFALLS = new OrtusConfig.ConfigValueHolder<>(FUFO,"common/world_events/starfalls", (builder) ->
+            builder.comment("If enabled, impact events will not give a damn about the player's position when trying to fall.")
+                    .define("impatient_starfalls", false));
+
     public static final OrtusConfig.ConfigValueHolder<Boolean> UNSAFE_STARFALLS = new OrtusConfig.ConfigValueHolder<>(FUFO,"common/world_events/starfalls", (builder) ->
             builder.comment("If enabled, impact events will skip the following safety checks, as well as disregarding any OSHA regulations")
                     .define("unsafe_starfalls", false));

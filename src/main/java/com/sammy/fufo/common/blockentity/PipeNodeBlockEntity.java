@@ -2,10 +2,14 @@ package com.sammy.fufo.common.blockentity;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import com.sammy.fufo.core.reference.FluidStats;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
+import com.sammy.fufo.core.systems.logistics.FlowDir;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
+import com.sammy.fufo.core.systems.logistics.PressureSource;
+import com.sammy.fufo.helpers.Debuggable;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
@@ -32,8 +36,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.tuple.Triple;
+
 @SuppressWarnings("unused")
-public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
+public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable {
 
 	private static final int RANGE = 10;
 
@@ -41,6 +47,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     
     private FluidStack fluid = FluidStack.EMPTY;
     
+    private List<Triple<PressureSource, FlowDir, Double>> sources = new ArrayList<>();
     private double partialFill = 0.0;
     private boolean isOpen = false;
     private FluidPipeNetwork network;
@@ -74,8 +81,26 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
     }
     
     // Imperfect, but functional
-    public double getBasePressure() {
-    	return fluid.getAmount() + getPos().getY()*10;
+    // Will have to incorporate valves into this somehow
+    // Distance isn't calculated dynamically
+    // What to do, what to do
+    
+    // Valves will have to be considered as pressure sources that change dynamically
+    // based on whether they're open or closed
+    // idk, I've got a few ideas
+    
+    private static final double DISTANCE_COEFF = 0.1;
+    public double getPressure() {
+    	double pressure = 0;
+    	for (Triple<PressureSource, FlowDir, Double> t : sources) {
+    		PressureSource source = t.getLeft();
+    		FlowDir dir = t.getMiddle();
+    		double distance = t.getRight();
+    		double contrib = Math.max((source.getForce(dir) - DISTANCE_COEFF * distance), 0);
+    		pressure += contrib;
+    	}
+    	// ignore the height difference if the node has no fluid
+    	return pressure + (fluid.isEmpty() ? 0 : 9.81 * getPos().getY() * FluidStats.getInfo(fluid.getFluid()).rho);
     }
     
     public boolean isOpen() {
@@ -194,18 +219,20 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	}
 
 	@Override
-	public void addConnection(BlockPos bp) {
-		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
+	public boolean addConnection(BlockPos bp) {
+//		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
-			if (network == null) network = other.getNetwork();
+			if (network == null) setNetwork(other.getNetwork(), false);
 			else network.mergeWith(other.getNetwork());
+			return true;
 		}
+		return false;
 	}
 
 	@Override
-	public void removeConnection(BlockPos bp) {
-		nearbyAnchorPositions.remove(bp);
+	public boolean removeConnection(BlockPos bp) {
+		return nearbyAnchorPositions.remove(bp);
 	}
 
 	@Override
@@ -234,5 +261,30 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode {
 	public int getCapacity() {
 		// TODO Auto-generated method stub
 		return 100;
+	}
+
+	@Override
+	public void updateSource(PressureSource p, FlowDir dir, double dist) {
+		for (Triple<PressureSource, FlowDir, Double> set : sources) {
+			if (set.getLeft() == p && set.getMiddle() == dir) set = Triple.of(p, dir, dist); // Will this CME?
+		}
+	}
+
+	@Override
+	public double getDistFromSource(PressureSource p, FlowDir dir) {
+		for (Triple<PressureSource, FlowDir, Double> set : sources) {
+			if (set.getLeft() == p && set.getMiddle() == dir) return set.getRight();
+		}
+		return Double.POSITIVE_INFINITY;
+	}
+
+	@Override
+	public String getDebugMessage(boolean sneak) {
+		if (sneak) {
+			return String.format("%s mb of %s", fluid.getAmount(), fluid.getFluid().getRegistryName());
+		}
+		else {
+			return String.format("Network: %s Pressure: %s", getNetwork() == null ? "none" : getNetwork().getID(), getPressure());
+		}
 	}
 }

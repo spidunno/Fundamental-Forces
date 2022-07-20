@@ -101,7 +101,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     @Override
     public void end(Level level) {
         if (level instanceof ServerLevel serverLevel) {
-            if (timesDelayed != 3 && isEntityValid(serverLevel) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition())) {
+            if (!CommonConfig.IMPATIENT_STARFALLS.getConfigValue() && isEntityValid(serverLevel) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition())) {
                 countdown = actor.randomizedCountdown(level.random, startingCountdown / 10);
                 timesDelayed++;
                 return;

@@ -18,7 +18,7 @@ import static com.sammy.ortus.handlers.RenderHandler.DELAYED_RENDER;
 
 import java.awt.Color;
 
-public class AnchorRenderer implements BlockEntityRenderer<PipeNodeBlockEntity> {
+public class AnchorRenderer<T extends PipeNodeBlockEntity> implements BlockEntityRenderer<T> {
 
     private static final ResourceLocation TEST_BEAM = FufoMod.fufoPath("textures/vfx/uv_test.png");
     private static final RenderType TEST_BEAM_TYPE = OrtusRenderTypeRegistry.ADDITIVE_TEXTURE.apply(TEST_BEAM);
@@ -27,7 +27,7 @@ public class AnchorRenderer implements BlockEntityRenderer<PipeNodeBlockEntity> 
     }
 
     @Override
-    public void render(PipeNodeBlockEntity blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(T blockEntityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         VertexConsumer beamConsumer = DELAYED_RENDER.getBuffer(TEST_BEAM_TYPE);
         poseStack.pushPose();
         poseStack.translate(0.5, 0.5, 0.5);

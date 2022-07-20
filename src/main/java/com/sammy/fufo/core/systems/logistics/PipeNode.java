@@ -18,11 +18,25 @@ public interface PipeNode {
 	
 	public void transferFluid(double amount, PipeNode dest);
 	
+	/**
+	 * Some nodes such as pumps have extra things they do with their action that wouldn't be appropriate to put
+	 * into transferFluid. This method covers such actions.
+	 */
+	public default void doExtraAction() {}
+	
+	public default double getDistance(PipeNode other) {
+		return Math.sqrt(getPos().distSqr(other.getPos()));
+	}
+	
 	public List<PipeNode> getConnectedNodes();
 	
-	public void addConnection(BlockPos bp);
+	public boolean addConnection(BlockPos bp);
 	
-	public void removeConnection(BlockPos bp);
+	public boolean removeConnection(BlockPos bp);
+	
+	public void updateSource(PressureSource p, FlowDir dir, double dist);
+	
+	public double getDistFromSource(PressureSource p, FlowDir dir);
 	
 	public BlockPos getPos();
 	
@@ -31,7 +45,15 @@ public interface PipeNode {
 	 * such as gravity, other nodes, neighbouring pumps, etc
 	 * @return
 	 */
-	public double getBasePressure();
+	public double getPressure();
+	
+	/**
+	 * Some node types such as pumps may want to override this to calculate pressure differently
+	 * depending on whether they are pushing or pulling fluid
+	 * @param side
+	 * @return
+	 */
+	public default double getPressure(FlowDir side) { return getPressure(); }
 	
 	public void setNetwork(FluidPipeNetwork network, boolean reciprocate);
 	

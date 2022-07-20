@@ -39,8 +39,16 @@ public class BlockRegistrate {
 
     //TODO: figure out why generic arguments aren't inferred in the second generic in block registration, called prior to .setBlockEntity
 
-    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor", (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-
+    
+    //pipes
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
+		(p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupItemBlock("pump",
+    		(p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupItemBlock("valve",
+    		(p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    
+    //machines
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).blockstate(blankState()).register();
 
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
