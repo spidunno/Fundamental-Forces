@@ -9,14 +9,16 @@ vec3 getWorldPos(float depth, vec2 texCoord, mat4 invProjMat, mat4 invViewMat, v
     return cameraPos + worldSpacePosition.xyz;
 }
 
-float linearizeDepth(float depth, float nearPlaneDistance, float farPlaneDistance) {
+float linearizeDepth(float depth, float near, float far) {
+    near *= 2.;
+    far *= 2.;
     float z = depth * 2.0 - 1.0;
-    return (nearPlaneDistance * 2. * farPlaneDistance) / (farPlaneDistance + nearPlaneDistance * 2. - z * (farPlaneDistance - nearPlaneDistance * 2.));
+    return (near * far) / (far + near - z * (far - near));
 }
-//float linearizeDepth(float depth, float near, float far) {
-//    float z = depth * 2.0 - 1.0; // Back to NDC
-//    return (2.0 * near) / (far + near - z * (far - near));
-//}
+
+float getWorldDepth(float depth, float near, float far, vec2 texCoord, float fov, float aspectRatio) {
+    return length(vec3(1., (2. * texCoord - 1.) * vec2(aspectRatio, 1.) * tan(fov / 2.)) * linearizeDepth(depth, near, far));
+}
 
 vec2 texCoord2NDC(vec2 tc) {
     return tc * 2.0 - 1.0;
@@ -28,7 +30,7 @@ vec2 NDC2TexCoord(vec2 ndc) {
 
 vec3 rayFromNDC(vec2 ndc, vec3 lookVector, vec3 leftVector, vec3 upVector, float nearPlaneDistance, float fov, float aspectRatio) {
     vec3 planeMid = lookVector * nearPlaneDistance;
-    float fovMulY = nearPlaneDistance * tan(fov);
+    float fovMulY = nearPlaneDistance * tan(fov / 2.);
     float fovMulX = fovMulY * aspectRatio;
     return normalize(planeMid + (leftVector * -ndc.x * fovMulX) + (upVector * ndc.y * fovMulY));
 }

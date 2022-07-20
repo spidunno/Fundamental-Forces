@@ -1,0 +1,20 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "ortus:pp_base",
+  "fragment": "fufo:extract_world_depth",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" },
+    { "name": "MainDepthSampler" }
+  ],
+  "uniforms": [
+    { "name": "fov", "type": "float", "count": 1, "values": [ 1.0 ] },
+    { "name": "aspectRatio", "type": "float", "count": 1, "values": [ 1.0 ] },
+    { "name": "nearPlaneDistance", "type": "float", "count": 1, "values": [ 1.0 ] },
+    { "name": "farPlaneDistance", "type": "float", "count": 1, "values": [ 1.0 ] }
+  ]
+}

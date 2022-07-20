@@ -7,6 +7,7 @@ import com.mojang.math.Vector3f;
 import com.sammy.fufo.core.setup.client.FufoPostProcessorRegistry;
 import com.sammy.ortus.systems.postprocess.MultiInstancePostProcessor;
 import net.minecraft.client.Camera;
+import net.minecraft.client.GraphicsStatus;
 import net.minecraft.client.renderer.EffectInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -26,13 +27,17 @@ public class EnergyScanPostProcessor extends MultiInstancePostProcessor<EnergySc
     public static void onKeyPress(InputEvent.KeyInputEvent event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
             if (event.getKey() == GLFW.GLFW_KEY_L) {
+                FufoPostProcessorRegistry.NORMAL.init();
+                FufoPostProcessorRegistry.IMPACT_FRAME.init();
                 FufoPostProcessorRegistry.ENERGY_SCAN.init();
                 FufoPostProcessorRegistry.ENERGY_SPHERE.init();
-//                FufoPostProcessorRegistry.EDGE.init();
-//                FufoPostProcessorRegistry.EDGE.setActive(true);
+                FufoPostProcessorRegistry.WORLD_HIGHLIGHT.init();
+                FufoPostProcessorRegistry.WORLD_HIGHLIGHT.setActive(true);
+                FufoPostProcessorRegistry.NORMAL.setActive(true);
             }
             if (event.getKey() == GLFW.GLFW_KEY_U) {
-//                FufoPostProcessorRegistry.EDGE.setActive(false);
+                FufoPostProcessorRegistry.WORLD_HIGHLIGHT.setActive(false);
+                FufoPostProcessorRegistry.NORMAL.setActive(false);
             }
         }
     }
@@ -64,19 +69,7 @@ public class EnergyScanPostProcessor extends MultiInstancePostProcessor<EnergySc
     public void beforeProcess(PoseStack viewModelStack) {
         super.beforeProcess(viewModelStack);
 
-        Matrix4f invertedViewMatrix = new Matrix4f(viewModelStack.last().pose());
-        invertedViewMatrix.invert();
-
-        Matrix4f invertedProjectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
-        invertedProjectionMatrix.invert();
-
-        Camera camera = MC.gameRenderer.getMainCamera();
-
         setDataBufferUniform(effectEnergyScan, "Data", "instanceCount");
-        effectEnergyScan.safeGetUniform("time").set((float) time);
-        effectEnergyScan.safeGetUniform("invViewMat").set(invertedViewMatrix);
-        effectEnergyScan.safeGetUniform("invProjMat").set(invertedProjectionMatrix);
-        effectEnergyScan.safeGetUniform("cameraPos").set(new Vector3f(camera.getPosition()));
     }
 
     @Override

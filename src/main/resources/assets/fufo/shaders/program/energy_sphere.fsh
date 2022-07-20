@@ -16,11 +16,6 @@ uniform vec3 leftVector;
 uniform float nearPlaneDistance;
 uniform float farPlaneDistance;
 
-uniform vec3 testCenter;
-
-uniform mat4 invViewMat;
-uniform mat4 invProjMat;
-
 in vec2 texCoord;
 
 out vec4 fragColor;
@@ -82,9 +77,7 @@ void main() {
     vec2 ndc = texCoord2NDC(texCoord); // normalized device coordinate (-1 to 1)
     vec3 ray = rayFromNDC(ndc, lookVector, leftVector, upVector, nearPlaneDistance, fov, aspectRatio);
     float depth = texture(MainDepthSampler, texCoord).r;
-
-    vec3 worldPos = getWorldPos(depth, texCoord, invProjMat, invViewMat, cameraPos);//FIXME: use linearDepth instead of this!!!
-    float worldDepth = distance(worldPos, cameraPos);
+    float worldDepth = getWorldDepth(depth, nearPlaneDistance, farPlaneDistance, texCoord, fov, aspectRatio);
 
     fragColor = vec4(orgCol, 1.0);
 

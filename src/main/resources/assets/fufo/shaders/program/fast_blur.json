@@ -1,0 +1,20 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "fufo:pp_base_texel",
+  "fragment": "fufo:fast_blur",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ],
+  "uniforms": [
+    { "name": "InSize", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
+    { "name": "passes", "type": "float", "count": 1, "values": [ 32.0 ] },
+    { "name": "radius", "type": "float", "count": 1, "values": [ 16.0 ] },
+    { "name": "lossiness", "type": "float", "count": 1, "values": [ 2.0 ] },
+    { "name": "preserveOriginal", "type": "float", "count": 1, "values": [ 0.0 ] }
+  ]
+}

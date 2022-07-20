@@ -1,0 +1,98 @@
+{
+  "targets": [
+    "depthMain",
+    "worldDepth",
+    "edge",
+    "amplifiedEdge",
+    "blurredEdge",
+    "amplifiedEdgeX",
+    "amplifiedEdge",
+    "blurredEdgeA",
+    "edgeAndRing",
+    "blurredEdgeAndRing",
+    "radialNoise",
+    "steppedRadialNoise",
+    "flashRadialNoise",
+    "mixedMain"
+  ],
+  "passes": [
+    {
+      "name": "fufo:extract_world_depth",
+      "intarget": "depthMain",
+      "outtarget": "worldDepth",
+      "auxtargets": [
+        {
+          "name": "MainDepthSampler",
+          "id": "depthMain:depth"
+        }
+      ]
+    },
+    {
+      "name": "fufo:depth_edge",
+      "intarget": "worldDepth",
+      "outtarget": "edge"
+    },
+    {
+      "name": "fufo:line_amplify_x",
+      "intarget": "edge",
+      "outtarget": "amplifiedEdgeX"
+    },
+    {
+      "name": "fufo:line_amplify_y",
+      "intarget": "amplifiedEdgeX",
+      "outtarget": "amplifiedEdge"
+    },
+    {
+      "name": "fufo:radial_blur",
+      "intarget": "amplifiedEdge",
+      "outtarget": "blurredEdgeA"
+    },
+    {
+      "name": "fufo:world_distance_ring_mask",
+      "intarget": "blurredEdgeA",
+      "outtarget": "edgeAndRing",
+      "auxtargets": [
+        {
+          "name": "MainDepthSampler",
+          "id": "depthMain:depth"
+        }
+      ]
+    },
+    {
+      "name": "fufo:fast_blur",
+      "intarget": "edgeAndRing",
+      "outtarget": "blurredEdgeAndRing"
+    },
+    {
+      "name": "fufo:radial_noise",
+      "intarget": "blurredEdgeAndRing",
+      "outtarget": "radialNoise"
+    },
+    {
+      "name": "fufo:step",
+      "intarget": "radialNoise",
+      "outtarget": "steppedRadialNoise"
+    },
+    {
+      "name": "fufo:invert",
+      "intarget": "steppedRadialNoise",
+      "outtarget": "flashRadialNoise"
+    },
+    {
+      "name": "fufo:mix",
+      "intarget": "flashRadialNoise",
+      "outtarget": "mixedMain",
+      "auxtargets": [
+        {
+          "name": "MixSampler",
+          "id": "minecraft:main"
+        }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "mixedMain",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}

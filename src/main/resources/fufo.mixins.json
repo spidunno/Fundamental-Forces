@@ -10,7 +10,9 @@
   ],
   "client": [
     "GuiMixin",
-    "ItemRendererMixin"
+    "ItemRendererMixin",
+    "LevelRendererMixin",
+    "RenderTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

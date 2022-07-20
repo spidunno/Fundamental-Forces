@@ -50,12 +50,12 @@ public class EnergyScanFx extends DynamicShaderFxInstance {
                 new Color(.2F, .1F, .4F, 1F),
                 .15F,
                 .3F,
-                100F,
+                300F,
                 300F,
                 150F,
                 new Color(.5F, .25F, 1F, 1F),
                 .5F,
-                200F,
+                400F,
                 300F,
                 150F
         );

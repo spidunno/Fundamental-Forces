@@ -1,0 +1,19 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "ortus:pp_base",
+  "fragment": "fufo:radial_blur",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ],
+  "uniforms": [
+    { "name": "passes", "type": "int", "count": 1, "values": [ 32 ] },
+    { "name": "center", "type": "float", "count": 2, "values": [ 0.5, 0.5 ] },
+    { "name": "intensity", "type": "float", "count": 1, "values": [ 0.08 ] },
+    { "name": "radius", "type": "float", "count": 1, "values": [ 0.01 ] }
+  ]
+}

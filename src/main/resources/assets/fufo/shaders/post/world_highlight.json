@@ -1,0 +1,29 @@
+{
+  "targets": [
+    "swap",
+    "depthMain",
+    "normalMap"
+  ],
+  "passes": [
+    {
+      "name": "fufo:world_hightlight",
+      "intarget": "minecraft:main",
+      "outtarget": "swap",
+      "auxtargets": [
+        {
+          "name": "MainDepthSampler",
+          "id": "depthMain:depth"
+        },
+        {
+          "name": "NormalMap",
+          "id": "normalMap"
+        }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "swap",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}

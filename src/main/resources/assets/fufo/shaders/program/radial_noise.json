@@ -1,0 +1,19 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "ortus:pp_base",
+  "fragment": "fufo:radial_noise",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ],
+  "uniforms": [
+    { "name": "time", "type": "float", "count": 1, "values": [ 0.0 ] },
+    { "name": "center", "type": "float", "count": 2, "values": [ 0.5, 0.5 ] },
+    { "name": "noiseScale", "type": "float", "count": 2, "values": [ 20.0, 2.0 ] },
+    { "name": "flow", "type": "float", "count": 2, "values": [ 0.0, -5.0 ] }
+  ]
+}

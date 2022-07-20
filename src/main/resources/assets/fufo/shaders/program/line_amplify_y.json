@@ -1,0 +1,18 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "fufo:pp_base_texel",
+  "fragment": "fufo:line_amplify",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" }
+  ],
+  "uniforms": [
+    { "name": "InSize", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
+    { "name": "range", "type": "float", "count": 2, "values": [ 0.0, 0.01 ] },
+    { "name": "threshold", "type": "float", "count": 1, "values": [ 0.1 ] }
+  ]
+}

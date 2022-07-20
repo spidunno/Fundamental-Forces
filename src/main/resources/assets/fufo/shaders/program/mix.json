@@ -1,0 +1,17 @@
+{
+  "blend": {
+    "func": "add",
+    "srcrgb": "one",
+    "dstrgb": "zero"
+  },
+  "vertex": "ortus:pp_base",
+  "fragment": "fufo:mix",
+  "attributes": [ "Position" ],
+  "samplers": [
+    { "name": "DiffuseSampler" },
+    { "name": "MixSampler" }
+  ],
+  "uniforms": [
+    { "name": "m", "type": "float", "count": 1, "values": [ 0.5 ] }
+  ]
+}

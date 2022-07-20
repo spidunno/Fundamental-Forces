@@ -1,0 +1,19 @@
+{
+  "targets": [
+    "depthMain",
+    "normalMap"
+  ],
+  "passes": [
+    {
+      "name": "fufo:surface_normal",
+      "intarget": "minecraft:main",
+      "outtarget": "normalMap",
+      "auxtargets": [
+        {
+          "name": "MainDepthSampler",
+          "id": "depthMain:depth"
+        }
+      ]
+    }
+  ]
+}
