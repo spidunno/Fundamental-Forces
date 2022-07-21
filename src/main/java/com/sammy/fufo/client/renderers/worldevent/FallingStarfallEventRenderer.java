@@ -78,7 +78,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
 
         for (int i = 0; i < 5; i++) {
             float lerp = (float) (i / 4.0);
-            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.ORANGE, Color.ORANGE, Color.RED);
+            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.MAGENTA, Color.MAGENTA, Color.RED);
             float size = 1f + i * 2f;
             float alpha = (1f - i * 0.1f);
             builder.setColor(color).renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setColor(ColorHelper.colorLerp(Easing.SINE_OUT, 1-f, color, Color.RED)).setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, alpha, 1))));
@@ -88,7 +88,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
         for (int i = 0; i < 4; i++) {
             float lerp = (float) (i / 3.0);
-            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.ORANGE, Color.RED);
+            Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.MAGENTA, Color.RED);
             float size = flareSize + i*5f;
             float alpha = (1f - i * 0.2f);
             builder.setColor(color).setAlpha(alpha).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, size);

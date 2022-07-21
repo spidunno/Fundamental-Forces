@@ -56,7 +56,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
 
         if (level instanceof ClientLevel) {
             if (highlight == null) {
-                highlight = new WorldHighlightFx(new Vector3f(position), 100F, new Vector3f(2F, 1F, 4F));
+                highlight = new WorldHighlightFx(new Vector3f(position), 200F, new Vector3f(2F, 1F, 4F));
                 FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(highlight);
             }
             highlight.center = new Vector3f(position);
@@ -126,7 +126,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
             energyReleaseEffect.run();
         }
 
-        FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(new WorldHighlightFx(position, 300F, new Vector3f(8F, 4F, 16F)) {
+        FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(new WorldHighlightFx(position, 400F, new Vector3f(8F, 4F, 16F)) {
             @Override
             public void update(double deltaTime) {
                 radius -= deltaTime*20F;
