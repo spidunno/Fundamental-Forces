@@ -52,11 +52,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
         float xPos = (float) Mth.lerp(partialTicks, oldStarfallPosition.x, starfallPosition.x);
         float yPos = (float) Mth.lerp(partialTicks, oldStarfallPosition.y, starfallPosition.y);
         float zPos = (float) Mth.lerp(partialTicks, oldStarfallPosition.z, starfallPosition.z);
-        float nextXPos = (float) Mth.lerp(partialTicks, starfallPosition.x, starfallPosition.x+instance.motion.x);
-        float nextYPos = (float) Mth.lerp(partialTicks, starfallPosition.y, starfallPosition.y+instance.motion.y);
-        float nextZPos = (float) Mth.lerp(partialTicks, starfallPosition.z, starfallPosition.z+instance.motion.z);
         Vec3 lerpedPosition = new Vec3(xPos, yPos, zPos);
-        Vec3 nextLerpedPosition = new Vec3(nextXPos, nextYPos, nextZPos);
         if (positions.size() > 1) {
             for (int i = 0; i < positions.size() - 2; i++) {
                 EntityHelper.PastPosition position = positions.get(i);
@@ -66,9 +62,6 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
                 float z = (float) Mth.lerp(partialTicks, position.position.z, nextPosition.position.z);
                 positions.set(i, new EntityHelper.PastPosition(new Vec3(x, y, z), position.time));
             }
-        }
-        if (positions.size() > 1) {
-            positions.set(positions.size() - 1, new EntityHelper.PastPosition(nextLerpedPosition, 0));
         }
 
 //        float length = instance.startingHeight - instance.atmosphericEntryHeight;
