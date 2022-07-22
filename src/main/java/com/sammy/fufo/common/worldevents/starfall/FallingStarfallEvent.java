@@ -78,9 +78,8 @@ public class FallingStarfallEvent extends WorldEventInstance {
         if (level instanceof ServerLevel serverLevel) {
             actor.act(serverLevel, targetedPos);
         } else {
-//            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
 
-            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(40, BlockHelper.fromBlockPos(targetedPos), 4f, 10f, Easing.EXPO_OUT).setIntensity(4f, 0));
+            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(80, BlockHelper.fromBlockPos(targetedPos), 10f, 800f, Easing.EXPO_OUT).setIntensity(3f, 0));
             highlight.remove();
             highlight = null;
             playImpactEffect(new Vector3f(Vec3.atCenterOf(targetedPos)));
