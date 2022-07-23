@@ -30,10 +30,6 @@ public class SpellCooldown {
             discarded = true;
         }
     }
-    public void reset(){
-        timer = 0;
-        discarded = false;
-    }
 
     public static boolean shouldTick(SpellCooldown cooldown) {
         return cooldown != null && !cooldown.discarded;
@@ -47,7 +43,6 @@ public class SpellCooldown {
     }
 
     public static SpellCooldown deserializeNBT(CompoundTag tag) {
-
         return new SpellCooldown(tag.getInt("duration"), tag.getInt("timer"));
     }
 }

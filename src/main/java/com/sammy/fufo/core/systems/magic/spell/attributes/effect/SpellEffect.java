@@ -14,39 +14,45 @@ public abstract class SpellEffect {
     public SpellEffect() {
     }
 
-    public void cast(SpellInstance spell, ServerPlayer player){
-        if(castLogic(spell)){
-            effect(spell,player);
+    public void cast(SpellInstance spell, ServerPlayer player) {
+        if (canCast(spell, player)) {
+            effect(spell, player);
         }
     }
-    public void cast(SpellInstance spell, ServerPlayer player, BlockHitResult result){
-        if(castLogic(spell)){
-            effect(spell,player,result);
-        }
-    }
-    public abstract void effect(SpellInstance spell,ServerPlayer player, BlockHitResult result);
-    public abstract void effect(SpellInstance spell,ServerPlayer player);
 
-    public boolean castLogic(SpellInstance spell){
-        if(spell.cooldown==null){
-            spell.setCooldown();
-            return true;
+    public void cast(SpellInstance spell, ServerPlayer player, BlockHitResult result) {
+        if (canCast(spell, player)) {
+            effect(spell, player, result);
         }
-        return spell.isReady();
+    }
+
+    public abstract void effect(SpellInstance spell, ServerPlayer player, BlockHitResult result);
+
+    public abstract void effect(SpellInstance spell, ServerPlayer player);
+
+    public boolean canCast(SpellInstance spell, ServerPlayer player) {
+        boolean isOnCooldown = spell.isOnCooldown();
+        if (!isOnCooldown) {
+            spell.setCooldown(player);
+        }
+        return !isOnCooldown;
     }
 
     public SpellEffect range(int range) {
         this.range = range;
         return this;
     }
+
     public SpellEffect element(MagicElement element) {
         this.element = element;
         return this;
     }
+
     public SpellEffect duration(int duration) {
         this.duration = duration;
         return this;
     }
+
     public SpellEffect power(int power) {
         this.power = power;
         return this;
