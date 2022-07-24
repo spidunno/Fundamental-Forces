@@ -74,6 +74,8 @@ public class ImpactFramePostProcessor extends PostProcessor {
             }
         }
 
+        if (progress > 3F/4F) shouldCutout = true;
+
         if (progress > 1F) {
             setActive(false);
             FufoPostProcessorRegistry.NORMAL.setActive(false);//TODO: a better way to control normal map generation to that multiple things can use it at the same time
@@ -92,15 +94,17 @@ public class ImpactFramePostProcessor extends PostProcessor {
         effectRadialBlur.safeGetUniform("radius").set(0.001F);
         effectFastBlur.safeGetUniform("radius").set(progress*8F);
 //        effectRadialBlur.safeGetUniform("intensity").set(-3F*Mth.square(progress-1F));
-        effectRadialBlur.safeGetUniform("intensity").set(.01F/Mth.abs(progress-.15F)+.15F);
-        effectStep.safeGetUniform("threshold").set(Math.max(progress - .3F, 0F) + .01F);
-//        effectRadialBlur.safeGetUniform("intensity").set(.2F);
+        float intensity = progress < .07F
+                ? .01F/Mth.abs(progress-.07F)+.3F
+                : .03F/Mth.abs(progress-.07F)+.3F;
+        effectRadialBlur.safeGetUniform("intensity").set(intensity);
+//        effectRadialBlur.safeGetUniform("intensity").set(.01F/Mth.abs(progress-.15F)+.15F);
+        effectStep.safeGetUniform("threshold").set(Math.max((progress-.5F)*2F+.15F, 0F) + .01F);
+//        effectStep.safeGetUniform("threshold").set(.01F);
 
         effectInvert.safeGetUniform("invert").set((progress>.05F && progress<.25F) ? 1 : 0);
 
-        effectMix.safeGetUniform("m").set(Math.max(progress*5F - 4F, 0F));
-
-        if (progress > 4F/5F) shouldCutout = true;
+        effectMix.safeGetUniform("m").set(Math.max(progress*4F - 3F, 0F));
     }
 
     @Override
