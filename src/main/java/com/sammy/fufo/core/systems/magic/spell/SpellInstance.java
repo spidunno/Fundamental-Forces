@@ -22,7 +22,6 @@ public class SpellInstance {
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
     public static final SpellInstance EMPTY = new SpellInstance(SpellRegistry.EMPTY);
     public SpellType spellType;
-    public SpellCooldown oldCooldown;
     public SpellCooldown cooldown;
     public boolean selected;
     public int selectedTime;
@@ -47,8 +46,10 @@ public class SpellInstance {
         this.cooldown = cooldown;
         return this;
     }
-    public SpellInstance setCooldown() {
-        this.cooldown = spellType.cooldownFunction.apply(this);
+
+    public SpellInstance setCooldown(ServerPlayer player) {
+        setCooldown(spellType.cooldownFunction.apply(this));
+        FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncSpellCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
         return this;
     }
 
@@ -81,10 +82,6 @@ public class SpellInstance {
     }
 
     public void playerTick(ServerPlayer player) {
-        if (cooldown != null && !cooldown.equals(oldCooldown)) {
-            FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncSpellCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
-        }
-        oldCooldown = cooldown;
     }
 
     public float getIconFadeout() {
@@ -97,11 +94,6 @@ public class SpellInstance {
 
     public boolean isOnCooldown() {
         return SpellCooldown.shouldTick(cooldown);
-    }
-    public boolean isReady(){
-        if(cooldown==null){setCooldown();return true;}
-        if(!isOnCooldown()){cooldown.reset();return true;}
-        return false;
     }
 
     public boolean isEmpty() {

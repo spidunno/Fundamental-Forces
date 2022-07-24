@@ -8,8 +8,11 @@ import com.sammy.fufo.config.CommonConfig;
 import com.sammy.fufo.core.setup.client.FufoPostProcessorRegistry;
 import com.sammy.fufo.core.setup.content.worldevent.StarfallActors;
 import com.sammy.fufo.core.setup.content.worldevent.WorldEventTypes;
+import com.sammy.ortus.handlers.ScreenshakeHandler;
+import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.helpers.EntityHelper;
 import com.sammy.ortus.systems.easing.Easing;
+import com.sammy.ortus.systems.screenshake.PositionedScreenshakeInstance;
 import com.sammy.ortus.systems.worldevent.WorldEventInstance;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -35,6 +38,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     public int atmosphericEntryHeight;
 
     private WorldHighlightFx highlight;//FIXME: this might cause crash on server side
+    //TODO: this WILL cause a crash server side, either store it on the renderer, somewhere. Or store it here as an 'Object' and only manipulate it from a client side thread.
 
     public FallingStarfallEvent() {
         super(WorldEventTypes.FALLING_STARFALL);
@@ -74,8 +78,8 @@ public class FallingStarfallEvent extends WorldEventInstance {
         if (level instanceof ServerLevel serverLevel) {
             actor.act(serverLevel, targetedPos);
         } else {
-//            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(position, 80, 200, 0.85f, 0.04f, 40, 0.01f, 0.04f));
 
+            ScreenshakeHandler.addScreenshake(new PositionedScreenshakeInstance(80, BlockHelper.fromBlockPos(targetedPos), 10f, 800f, Easing.EXPO_OUT).setIntensity(3f, 0));
             highlight.remove();
             highlight = null;
             playImpactEffect(new Vector3f(Vec3.atCenterOf(targetedPos)));
@@ -129,7 +133,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(new WorldHighlightFx(position, 400F, new Vector3f(8F, 4F, 16F)) {
             @Override
             public void update(double deltaTime) {
-                radius -= deltaTime*20F;
+                radius -= deltaTime * 20F;
                 if (radius < 0) remove();
             }
         });

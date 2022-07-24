@@ -63,9 +63,6 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
                 positions.set(i, new EntityHelper.PastPosition(new Vec3(x, y, z), position.time));
             }
         }
-        if (positions.size() > 1) {
-            positions.set(positions.size() - 1, new EntityHelper.PastPosition(lerpedPosition.add(instance.motion), 0));
-        }
 
 //        float length = instance.startingHeight - instance.atmosphericEntryHeight;
 //        double progress = instance.position.y - instance.atmosphericEntryHeight;
