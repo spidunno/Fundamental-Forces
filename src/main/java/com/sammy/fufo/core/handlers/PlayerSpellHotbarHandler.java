@@ -67,6 +67,10 @@ public class PlayerSpellHotbarHandler {
                     }
                 }
             }
+            //TODO: this needs alternative behaviour assuming a player were to trigger the BlockHitResult cast event.
+            // The reason for this is that, on a spell like force orb, when a player holds right click, this code runs first, sets the cooldown, executes the spell (does nothing in this case)
+            // And only then, the block cast event triggers, and well, the spell is on cooldown, so it fails to cast.
+            // There's other ways to get around this, but just performing a raycast here might be best.
             if (event.player instanceof ServerPlayer serverPlayer) {
                 if (handler.open && OrtusPlayerDataCapability.getCapability(player).rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
