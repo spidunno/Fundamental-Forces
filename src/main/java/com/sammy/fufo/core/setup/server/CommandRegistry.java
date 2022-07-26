@@ -27,6 +27,7 @@ public class CommandRegistry {
                 .then(IssueStarfallCommand.register())
                 .then(SetSpellCommand.register())
                 .then(StarfallAreaCheckCommand.register())
+                .then(ToggleManualTickingCommand.register())
         );
         dispatcher.register(Commands.literal(FUFO)
                 .redirect(cmd));

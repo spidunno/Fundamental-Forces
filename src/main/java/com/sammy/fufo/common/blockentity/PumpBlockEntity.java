@@ -53,10 +53,26 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	}
 	
 	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (backPos != null) back = (PipeNode)level.getBlockEntity(backPos);
+		if (frontPos != null) front = (PipeNode)level.getBlockEntity(frontPos);
+	}
+	
+	private BlockPos backPos;
+	private BlockPos frontPos;
+	@Override
+	public void load(CompoundTag pTag) {
+		super.load(pTag);
+		if (pTag.contains("back")) backPos = BlockPos.of(pTag.getLong("back"));
+		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
+	}
+	
+	@Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.putLong("back", back.getPos().asLong()); 
-        pTag.putLong("front", front.getPos().asLong());
+        if (back != null) pTag.putLong("back", back.getPos().asLong()); 
+        if (front != null) pTag.putLong("front", front.getPos().asLong());
     }
 	
 	@Override

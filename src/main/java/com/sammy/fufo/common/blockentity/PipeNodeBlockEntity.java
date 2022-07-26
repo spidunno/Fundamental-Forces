@@ -3,6 +3,7 @@ package com.sammy.fufo.common.blockentity;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import com.sammy.fufo.core.reference.FluidStats;
+import com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.systems.logistics.FlowDir;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
@@ -38,12 +39,15 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
+import static com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental.g;
+
 @SuppressWarnings("unused")
 public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable {
 
 	private static final int RANGE = 10;
 
     public ArrayList<BlockPos> nearbyAnchorPositions = new ArrayList<>();
+    public ArrayList<PipeNode> nearbyAnchors = new ArrayList<>();
     
     private FluidStack fluid = FluidStack.EMPTY;
     
@@ -62,36 +66,41 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
         super(BlockEntityRegistrate.ANCHOR.get(), pos, state);
     }
 
-    public FluidStack addFluid(Fluid f, double amount) {
-    	double realAmount = partialFill + amount;
-    	partialFill = realAmount % 1;
-    	FluidStack fs = new FluidStack(f, (int)realAmount);
-//    	FufoMod.LOGGER.info("Adding fluid");
+    // TODO: fix this method for the 41261816th time
+    public double addFluid(Fluid f, double amount) {
+    	double realAmount = Math.min(fluid.getAmount() + partialFill + amount, getCapacity());
+    	double toReturn = Math.max(0, realAmount - getCapacity());
     	if (fluid.isEmpty()) {
-    		fluid = new FluidStack(fs.getFluid(), Math.min(getCapacity(), fs.getAmount()));
-    		fs.shrink(fluid.getAmount());
+    		fluid = new FluidStack(f, (int)realAmount);
+    		partialFill = realAmount % 1;
     	}
-    	else if (fluid.isFluidEqual(fs)) {
-    		int transfer = Math.min(getCapacity() - fluid.getAmount(), fs.getAmount());
-    		fluid.grow(transfer);
-    		fs.shrink(transfer);
+    	else {
+    		fluid.setAmount((int)realAmount);
+    		partialFill = realAmount % 1;
     	}
-//    	BlockHelper.updateAndNotifyState(level, getPos());
-    	return fs; // return fluid stack unchanged if it doesn't match
+    	BlockHelper.updateAndNotifyState(level, getPos());
+    	this.setChanged();
+    	return toReturn;
     }
     
-    // Imperfect, but functional
-    // Will have to incorporate valves into this somehow
-    // Distance isn't calculated dynamically
-    // What to do, what to do
-    
-    // Valves will have to be considered as pressure sources that change dynamically
-    // based on whether they're open or closed
-    // idk, I've got a few ideas
-    
+	public void transferFluid(double amount, PipeNode dest) {
+		if (FluidPipeNetwork.MANUAL_TICKING) FufoMod.LOGGER.info(String.format("Sending %s from %s to %s", amount, this, dest)); 
+		
+		double realAmount = Math.min(dest.getCapacity() - dest.getFluidAmount(), amount);
+		dest.addFluid(fluid.getFluid(), realAmount);
+		double remaining = this.getFluidAmount() - realAmount;
+		partialFill = remaining % 1;
+		fluid.setAmount((int)remaining);
+		BlockHelper.updateAndNotifyState(level, getPos());
+		this.setChanged();
+	}
+
+    // this method is held together by duct tape and bubble gum
     private static final double DISTANCE_COEFF = 0.1;
     public double getPressure() {
     	double pressure = 0;
+    	
+    	// Pumps, etc
     	for (Triple<PressureSource, FlowDir, Double> t : sources) {
     		PressureSource source = t.getLeft();
     		FlowDir dir = t.getMiddle();
@@ -99,8 +108,17 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     		double contrib = Math.max((source.getForce(dir) - DISTANCE_COEFF * distance), 0);
     		pressure += contrib;
     	}
+    	
+    	// Height difference from neighbours
+    	if ((fluid.getAmount() + partialFill) / getCapacity() > 0.98) { // This might not be needed, idk
+	    	for (PipeNode p : nearbyAnchors) {
+	    		int dy = p.getPos().getY() - getPos().getY();
+	    		pressure += Math.max((p.getStoredFluid().getAmount()*dy*FluidStats.getInfo(fluid.getFluid()).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
+	    	}
+    	}
+    	return pressure;
     	// ignore the height difference if the node has no fluid
-    	return pressure + (fluid.isEmpty() ? 0 : 9.81 * getPos().getY() * FluidStats.getInfo(fluid.getFluid()).rho);
+//    	return pressure + (fluid.isEmpty() ? 0 : (g * (getPos().getY()+64) * FluidStats.getInfo(fluid.getFluid()).rho));
     }
     
     public boolean isOpen() {
@@ -172,6 +190,14 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     @Override
     public void onLoad() {
     	super.onLoad();
+    	for (BlockPos bp : nearbyAnchorPositions) {
+    		if (level.getBlockEntity(bp) instanceof PipeNode node) {
+    			nearbyAnchors.add(node);
+    		}
+    		else {
+    			nearbyAnchorPositions.remove(bp);
+    		}
+    	}
 //    	FufoMod.LOGGER.info("Running onLoad");
     	if (networkID != 0) { // load was run and NBT data was loaded
     		FluidPipeNetwork net = FluidPipeNetworkRegistry.getRegistry(level).getOrLoadNetwork(networkID);
@@ -179,6 +205,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     	}
     }
     
+    // TODO: Have this use nearbyAnchors
     @Override
     public void onBreak(@Nullable Player player) {
     	super.onBreak(player);
@@ -203,14 +230,6 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 		return fluid;
 	}
 	
-	public void transferFluid(double amount, PipeNode dest) {
-		double realAmount = fluid.getAmount() + partialFill - amount;
-		partialFill = realAmount % 1;
-		fluid.setAmount((int)realAmount);
-		dest.addFluid(fluid.getFluid(), amount);
-		BlockHelper.updateAndNotifyState(level, getPos());
-		this.setChanged();
-	}
 
 	@Override
 	public List<PipeNode> getConnectedNodes() {
@@ -220,7 +239,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 
 	@Override
 	public boolean addConnection(BlockPos bp) {
-//		FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
+		if (FluidPipeNetwork.MANUAL_TICKING) FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
 			if (network == null) setNetwork(other.getNetwork(), false);
@@ -232,7 +251,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 
 	@Override
 	public boolean removeConnection(BlockPos bp) {
-		return nearbyAnchorPositions.remove(bp);
+		return nearbyAnchorPositions.remove(bp) && nearbyAnchors.remove((PipeNode)level.getBlockEntity(bp));
 	}
 
 	@Override
@@ -259,7 +278,6 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 
 	@Override
 	public int getCapacity() {
-		// TODO Auto-generated method stub
 		return 100;
 	}
 
@@ -284,7 +302,23 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 			return String.format("%s mb of %s", fluid.getAmount(), fluid.getFluid().getRegistryName());
 		}
 		else {
-			return String.format("Network: %s Pressure: %s", getNetwork() == null ? "none" : getNetwork().getID(), getPressure());
+			return String.format("Network: %s Pressure: %s with %s neighbours", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size());
 		}
+	}
+	
+	@Override
+	public void doExtraAction() {
+		if (isOpen && !fluid.isEmpty()) {
+			fluid.shrink(1); // TODO: Have it drain faster based on external pressure
+		}
+	}
+	
+	@Override
+	public double getFluidAmount() {
+		return fluid.getAmount() + partialFill;
+	}
+	
+	public String toString() {
+		return "NODE at " + getPos();
 	}
 }
