@@ -211,7 +211,7 @@ public class PlayerSpellHotbarHandler {
                                 }
                                 if (instance.isOnCooldown()) {
                                     int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
-                                    barBuilder.setPositionWithWidth(x, y+cooldownOffset, 20, 22-cooldownOffset).setUVWithWidth(28, 28 + cooldownOffset, 20, 22 - cooldownOffset, 256f).setAlpha(0.5f).draw(poseStack);
+                                    barBuilder.setPositionWithWidth(x, y+cooldownOffset, 20, 22-cooldownOffset).setUVWithWidth(28, 28 + cooldownOffset, 20, 22 - cooldownOffset, 256f).setAlpha(0.5f).draw(poseStack).setUVWithWidth(28, 28, 20, 22, 256f);
                                 }
                             }
                         }
