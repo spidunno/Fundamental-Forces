@@ -1,7 +1,6 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
 import com.sammy.fufo.common.entity.magic.spell.AbstractSpellProjectile;
-import com.sammy.fufo.core.systems.magic.spell.SpellCooldown;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -17,6 +16,7 @@ public class ProjectileEffect extends SpellEffect {
     public Color secondColor = new Color(16777215);
 
     public ProjectileEffect(Function<Level, AbstractSpellProjectile> projectileSupplier){
+        super(CastLogicHandler.ALWAYS_DEFAULT_CAST);
         this.projectileSupplier = projectileSupplier;
     }
     @Override

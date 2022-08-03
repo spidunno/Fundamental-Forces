@@ -6,12 +6,21 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 
 public abstract class SpellEffect {
+
+    public enum CastLogicHandler {
+        ONLY_BLOCK,
+        INDEPENDENT,
+        ALWAYS_DEFAULT_CAST
+    }
+
     public MagicElement element;
+    public final CastLogicHandler handler;
     public int range;
     public int duration;
     public int power;
 
-    public SpellEffect() {
+    public SpellEffect(CastLogicHandler handler) {
+        this.handler = handler;
     }
 
     public void cast(SpellInstance spell, ServerPlayer player) {
