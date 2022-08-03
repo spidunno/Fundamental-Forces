@@ -75,9 +75,9 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	}
 
 	@Override
-	public FluidStack addFluid(Fluid f, double amt) {
+	public double addFluid(Fluid f, double amt) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0.0;
 	}
 	
 	public void transferFluid(double amount, PipeNode dest) {
@@ -114,5 +114,11 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	public void setTarget(BlockPos target) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public double getFluidAmount() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

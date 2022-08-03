@@ -12,9 +12,9 @@ public interface PipeNode {
 	/**
 	 * Add a fluid to the node.
 	 * @param stack
-	 * @return Any fluid not added
+	 * @return The amount of fluid not added
 	 */
-	public FluidStack addFluid(Fluid fluid, double amount);
+	public double addFluid(Fluid fluid, double amount);
 	
 	public void transferFluid(double amount, PipeNode dest);
 	
@@ -46,6 +46,8 @@ public interface PipeNode {
 	 * @return
 	 */
 	public double getPressure();
+	
+	public double getFluidAmount();
 	
 	/**
 	 * Some node types such as pumps may want to override this to calculate pressure differently

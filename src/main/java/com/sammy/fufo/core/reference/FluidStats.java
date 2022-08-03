@@ -10,7 +10,7 @@ import net.minecraft.world.level.material.Fluids;
 public class FluidStats {
 	private FluidStats() {}
 	
-	public static final double R = 8.314; // J/(mol*K)
+
 	private static final Map<Fluid, FluidInfo> map = new HashMap<>();
 	
 	public static FluidInfo getInfo(Fluid fluid) {
@@ -33,7 +33,7 @@ public class FluidStats {
 		public final double freezingPoint; // K
 		public final double boilingPoint; // K
 		
-		FluidInfo(double m, double r, double f, double b) {
+		FluidInfo(double r, double m, double f, double b) {
 			mu = m;
 			rho = r;
 			freezingPoint = f;
