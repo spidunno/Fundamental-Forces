@@ -34,7 +34,7 @@ public class StarfallActor {
         this.startingCountdown = startingCountdown;
     }
 
-    public static boolean heightmapCheck(ServerLevel level, BlockPos pos, int range) {
+    public static boolean chunkChangesCheck(ServerLevel level, BlockPos pos, int range) {
         for (int x = -range; x <= range; x++) {
             for (int z = -range; z <= range; z++) {
                 LevelChunk chunk = level.getChunk(SectionPos.blockToSectionCoord(pos.getX()) + x, SectionPos.blockToSectionCoord(pos.getZ()) + z);
@@ -131,7 +131,10 @@ public class StarfallActor {
         if (level.isFluidAtPosition(pos.below(), p -> !p.isEmpty())) {
             return false;
         }
-        boolean heightmap = heightmapCheck(level, pos, 2);
+        if (!level.isInWorldBounds(pos)) {
+            return false;
+        }
+        boolean heightmap = chunkChangesCheck(level, pos, 2);
         boolean blocks = blockCheck(level, nearbyBlockList(level, pos));
         return heightmap && blocks;
     }

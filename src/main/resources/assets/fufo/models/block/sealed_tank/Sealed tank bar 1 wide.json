@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "Sealed Tank/Sealed tank textures",
+		"particle": "Sealed Tank/Sealed tank textures"
+	},
+	"elements": [
+		{
+			"from": [-0.5, 3, -0.5],
+			"to": [-0.5, 6, 16.5],
+			"faces": {
+				"north": {"uv": [0, 0, 0, 0.25], "texture": "#0"},
+				"east": {"uv": [6, 10.125, 8, 10.5], "texture": "#0"},
+				"south": {"uv": [0, 0, 0, 0.25], "texture": "#0"},
+				"west": {"uv": [6.125, 10.125, 8.125, 10.5], "texture": "#0"},
+				"up": {"uv": [0, 0, 0, 4.125], "texture": "#0"},
+				"down": {"uv": [0, 0, 0, 4.125], "texture": "#0"}
+			}
+		}
+	]
+}
