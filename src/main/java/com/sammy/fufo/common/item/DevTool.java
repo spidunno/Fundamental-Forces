@@ -38,11 +38,15 @@ public class DevTool extends Item implements ItemParticleEmitter {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
-        if (te instanceof PipeNodeBlockEntity node /*&& !level.isClientSide() */) {
-        	if (context.getPlayer().isShiftKeyDown() && !level.isClientSide() && FluidPipeNetwork.MANUAL_TICKING) {
+        if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
+        	if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
         		node.getNetwork().tick();
         	}
-        	else if (!level.isClientSide()){
+        	else if (context.getPlayer().isShiftKeyDown()) {
+        		FufoMod.LOGGER.info("Toggling openness");
+        		node.setOpen(!node.isOpen());
+        	}
+        	else {
 	        	FufoMod.LOGGER.info("Adding water");
 	        	node.addFluid(Fluids.WATER, 100.0);
 	        	return InteractionResult.SUCCESS;

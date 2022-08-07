@@ -113,10 +113,10 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     	if ((fluid.getAmount() + partialFill) / getCapacity() > 0.98) { // This might not be needed, idk
 	    	for (PipeNode p : nearbyAnchors) {
 	    		int dy = p.getPos().getY() - getPos().getY();
-	    		pressure += Math.max((p.getStoredFluid().getAmount()*dy*FluidStats.getInfo(fluid.getFluid()).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
+	    		pressure += Math.max((p.getFluidAmount()*dy*FluidStats.getInfo(fluid.getFluid()).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
 	    	}
     	}
-    	return pressure;
+    	return pressure + (getFluidAmount() / 100); // Volume equals pressure, at least a little bit
     	// ignore the height difference if the node has no fluid
 //    	return pressure + (fluid.isEmpty() ? 0 : (g * (getPos().getY()+64) * FluidStats.getInfo(fluid.getFluid()).rho));
     }
@@ -127,6 +127,8 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     
     public void setOpen(boolean open) {
     	isOpen = open;
+    	setChanged();
+    	BlockHelper.updateAndNotifyState(level, getPos());
     }
     
     @Override
@@ -135,6 +137,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
         pTag.putInt("network", networkID);
         pTag.put("fluid", fluid.writeToNBT(new CompoundTag()));
         pTag.putDouble("partialFill", partialFill);
+        pTag.putBoolean("isOpen", isOpen);
         if (!nearbyAnchorPositions.isEmpty()) {
             CompoundTag compound = new CompoundTag();
             compound.putInt("anchorAmount", nearbyAnchorPositions.size());
@@ -159,6 +162,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
         super.load(pTag);
         fluid = FluidStack.loadFluidStackFromNBT(pTag.getCompound("fluid"));
         partialFill = pTag.getDouble("partialFill");
+        isOpen = pTag.getBoolean("isOpen");
         nearbyAnchorPositions.clear();
         CompoundTag compound = pTag.getCompound("anchorData");
         int amount = compound.getInt("anchorAmount");
@@ -226,7 +230,6 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 
 	@Override
 	public FluidStack getStoredFluid() {
-		// TODO Auto-generated method stub
 		return fluid;
 	}
 	
@@ -242,8 +245,10 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 		if (FluidPipeNetwork.MANUAL_TICKING) FufoMod.LOGGER.info(String.format("%s adding connection to %s", getPos(), bp));
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
+			nearbyAnchors.add(other);
 			if (network == null) setNetwork(other.getNetwork(), false);
 			else network.mergeWith(other.getNetwork());
+			BlockHelper.updateAndNotifyState(level, getPos());
 			return true;
 		}
 		return false;
@@ -302,14 +307,17 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 			return String.format("%s mb of %s", fluid.getAmount(), fluid.getFluid().getRegistryName());
 		}
 		else {
-			return String.format("Network: %s Pressure: %s with %s neighbours", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size());
+			return String.format("Network: %s Pressure: %s with %s (%s) neighbours", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size(), nearbyAnchors.size());
 		}
 	}
 	
 	@Override
 	public void doExtraAction() {
 		if (isOpen && !fluid.isEmpty()) {
-			fluid.shrink(1); // TODO: Have it drain faster based on external pressure
+			double v = this.getFluidAmount();
+			v -= this.getPressure() * FluidPipeNetwork.PRESSURE_TRANSFER_COEFF;
+			fluid.setAmount((int)v);
+			partialFill = v % 1;
 		}
 	}
 	
