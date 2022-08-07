@@ -3,6 +3,7 @@ package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.*;
 import com.sammy.fufo.common.blockentity.*;
+import com.sammy.fufo.common.item.FluidTankItem;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import com.tterrag.registrate.Registrate;
@@ -50,6 +51,7 @@ public class BlockRegistrate {
     
     //machines
     public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).blockstate(blankState()).register();
+    public static final BlockEntry<FluidTankBlock<FluidTankBlockEntity>> FLUID_TANK = setupBlock("fluid_tank", (p) -> new FluidTankBlock<>(p).<FluidTankBlock<FluidTankBlockEntity>>setBlockEntity(BlockEntityRegistrate.FLUID_TANK), CRUDE_PROPERTIES()).blockstate(blankState()).item(FluidTankItem::new).build().register();
 
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
     public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();

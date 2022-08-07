@@ -7,6 +7,9 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class BlockEntityRegistrate {
 
+    public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
+        FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(BlockRegistrate.PIPE_ANCHOR).register();
+
     public static final BlockEntityEntry<BurnerExtractorBlockEntity> BURNER_EXTRACTOR =
             FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();
 
