@@ -1,46 +1,35 @@
 package com.sammy.fufo.common.block;
 
-import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.common.blockentity.ArrayBlockEntity;
 import com.sammy.fufo.common.entity.weave.HologramWeaveEntity;
 import com.sammy.fufo.common.entity.weave.WeaveEntity;
-import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
-import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 
 public class ArrayBlock<T extends ArrayBlockEntity> extends OrtusEntityBlock<T> {
-    private boolean toggled = false;
+    private boolean toggled = false; //TODO: what is this.
 
     public final VoxelShape SHAPE = Stream.of(
             Shapes.join(Block.box(5, 5, 12, 11, 11, 16), Shapes.join(Block.box(4, 4, 4, 12, 13, 12), Shapes.join(Block.box(5, 7, 3, 7, 14, 3), Block.box(9, 7, 3, 11, 14, 3), BooleanOp.OR), BooleanOp.OR), BooleanOp.OR),

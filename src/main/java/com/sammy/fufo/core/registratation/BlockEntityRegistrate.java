@@ -9,7 +9,7 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 public class BlockEntityRegistrate {
 
     public static final BlockEntityEntry<SealedBarrelBlockEntity> SEALED_BARREL =
-        FufoMod.registrate().<SealedBarrelBlockEntity>blockEntity("fluid_tank", SealedBarrelBlockEntity::new).validBlocks(BlockRegistrate.SEALED_BARREL).register();
+        FufoMod.registrate().<SealedBarrelBlockEntity>blockEntity("sealed_barrel", SealedBarrelBlockEntity::new).validBlocks(BlockRegistrate.SEALED_BARREL).register();
 
     public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
         FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(BlockRegistrate.FLUID_TANK).register();
