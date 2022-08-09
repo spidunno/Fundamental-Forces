@@ -10,18 +10,22 @@ import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
 import com.sammy.fufo.core.systems.logistics.PressureSource;
 import com.sammy.fufo.core.helpers.Debuggable;
+import com.sammy.fufo.core.helpers.DevToolResponse;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -34,7 +38,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import static com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental.g;
 
 @SuppressWarnings("unused")
-public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable {
+public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable, DevToolResponse {
 
 	private static final int RANGE = 10;
 
@@ -320,5 +324,20 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 	
 	public String toString() {
 		return "NODE at " + getPos();
+	}
+
+	@Override
+	public void onDevTool(UseOnContext context) {
+		if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
+    		getNetwork().tick();
+    	}
+    	else if (context.getPlayer().isShiftKeyDown()) {
+    		FufoMod.LOGGER.info("Toggling openness");
+    		setOpen(!isOpen());
+    	}
+    	else {
+        	FufoMod.LOGGER.info("Adding water");
+        	addFluid(Fluids.WATER, 100.0);
+    	}
 	}
 }

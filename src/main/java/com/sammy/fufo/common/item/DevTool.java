@@ -3,6 +3,7 @@ package com.sammy.fufo.common.item;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.common.world.gen.MeteoriteFeature;
+import com.sammy.fufo.core.helpers.DevToolResponse;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
@@ -38,19 +39,20 @@ public class DevTool extends Item implements ItemParticleEmitter {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
-        if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
-        	if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
-        		node.getNetwork().tick();
-        	}
-        	else if (context.getPlayer().isShiftKeyDown()) {
-        		FufoMod.LOGGER.info("Toggling openness");
-        		node.setOpen(!node.isOpen());
-        	}
-        	else {
-	        	FufoMod.LOGGER.info("Adding water");
-	        	node.addFluid(Fluids.WATER, 100.0);
-	        	return InteractionResult.SUCCESS;
-        	}
+        if (te instanceof DevToolResponse dev) {
+        	dev.onDevTool(context);
+//        	if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
+//        		node.getNetwork().tick();
+//        	}
+//        	else if (context.getPlayer().isShiftKeyDown()) {
+//        		FufoMod.LOGGER.info("Toggling openness");
+//        		node.setOpen(!node.isOpen());
+//        	}
+//        	else {
+//	        	FufoMod.LOGGER.info("Adding water");
+//	        	node.addFluid(Fluids.WATER, 100.0);
+//	        	return InteractionResult.SUCCESS;
+//        	}
         	return InteractionResult.SUCCESS;
         }
 //        if (level instanceof ServerLevel serverLevel) {
