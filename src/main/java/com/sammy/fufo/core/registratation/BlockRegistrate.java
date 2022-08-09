@@ -19,6 +19,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
@@ -82,7 +83,13 @@ public class BlockRegistrate {
 
     public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupBlock("valve",
         (p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES())
-        .blockstate(invisibleState())
+        .blockstate((ctx, p) -> {
+            ModelFile model = p.models().getExistingFile(fufoPath("block/logistics/valve"));
+            p.getVariantBuilder(ctx.get())
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.Y).modelForState().modelFile(model).addModel()
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.Z).modelForState().modelFile(model).rotationX(90).addModel()
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.X).modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
+        })
         .item()
         .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
         .build()
@@ -102,9 +109,12 @@ public class BlockRegistrate {
 //        .blockstate(invisibleState())
 //        .register();
 
-
-    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
+    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> p.horizontalBlock(ctx.get(), p.models().getExistingFile(fufoPath("block/crude_array"))))
+        .register();
+    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> p.horizontalBlock(ctx.get(), p.models().getExistingFile(fufoPath("block/crude_primer"))))
+        .register();
     public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = setupItemBlock("crude_needle", (p) -> new CrudeNeedleBlock<>(p).<CrudeNeedleBlock<CrudeNeedleBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), CRUDE_PROPERTIES()).blockstate(invisibleState()).register();
     public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).blockstate(invisibleState()).register();
 
