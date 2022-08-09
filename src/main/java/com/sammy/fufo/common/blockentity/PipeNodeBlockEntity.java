@@ -3,35 +3,27 @@ package com.sammy.fufo.common.blockentity;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import com.sammy.fufo.core.reference.FluidStats;
-import com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental;
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.fufo.core.systems.logistics.FlowDir;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
 import com.sammy.fufo.core.systems.logistics.PressureSource;
-import com.sammy.fufo.helpers.Debuggable;
-import com.sammy.ortus.handlers.PlacementAssistantHandler;
+import com.sammy.fufo.core.helpers.Debuggable;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.lang.System.Logger;
 import java.util.ArrayList;
 import java.util.List;
 

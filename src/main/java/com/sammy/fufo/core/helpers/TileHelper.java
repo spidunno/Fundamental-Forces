@@ -1,10 +1,10 @@
-package com.sammy.fufo.helpers;
-
-import java.util.Optional;
+package com.sammy.fufo.core.helpers;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+
+import java.util.Optional;
 
 public class TileHelper {
 	private TileHelper() {}

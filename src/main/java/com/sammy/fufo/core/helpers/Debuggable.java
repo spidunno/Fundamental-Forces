@@ -1,4 +1,4 @@
-package com.sammy.fufo.helpers;
+package com.sammy.fufo.core.helpers;
 
 /**
  * This interface indicates that it is a valid target for the Debug Tool.
