@@ -36,7 +36,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 // We will also ignore the entrance region and assume that all flows are fully developed
 public class FluidPipeNetwork {
 	public static boolean MANUAL_TICKING = false; // Debug only, remove before release
-	public static final double PRESSURE_TRANSFER_COEFF = 0.00001; // Must be between 0 and 1
+	public static final double PRESSURE_TRANSFER_COEFF = 0.0005; // Must be between 0 and 1
 	public static final double DRAIN_COEFF = 0.1;
 	public Set<PipeNode> nodes = new HashSet<>(); // may have to be changed to a List
 	public Set<BlockPos> nodePositions = new HashSet<>();
@@ -155,12 +155,12 @@ public class FluidPipeNetwork {
 					double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
 					double g = ForcesThatAreActuallyFundamental.g;
 
-					double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - rho*g*dy;  
+					double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - (node.getFluidAmount()*rho*g*dy)/1000;  
 					if (MANUAL_TICKING) {
 
-						FufoMod.LOGGER.info(String.format("TRANSFER from %s to %s", node, other));
-						FufoMod.LOGGER.info(String.format("Required pressure difference = %s", dy*rho*g/1000));
-						FufoMod.LOGGER.info(String.format("Effective pressure difference = %s", adjustedPressureDifference));
+						FufoMod.LOGGER.info(String.format("TRANSFER from %s (%s) to %s (%s)", node, node.getPressure(FlowDir.OUT), other, other.getPressure(FlowDir.IN)));
+						FufoMod.LOGGER.info(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
+						FufoMod.LOGGER.info(String.format("Amount to transfer = %s", adjustedPressureDifference));
 					}
 					
 					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF);
