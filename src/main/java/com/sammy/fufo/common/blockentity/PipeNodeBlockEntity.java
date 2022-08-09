@@ -11,6 +11,7 @@ import com.sammy.fufo.core.systems.logistics.PipeBuilderAssistant;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
 import com.sammy.fufo.core.systems.logistics.PressureSource;
 import com.sammy.fufo.helpers.Debuggable;
+import com.sammy.fufo.helpers.DevToolResponse;
 import com.sammy.ortus.handlers.PlacementAssistantHandler;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
@@ -20,15 +21,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.lang.System.Logger;
@@ -42,7 +46,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import static com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental.g;
 
 @SuppressWarnings("unused")
-public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable {
+public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, Debuggable, DevToolResponse {
 
 	private static final int RANGE = 10;
 
@@ -194,12 +198,13 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     @Override
     public void onLoad() {
     	super.onLoad();
-    	for (BlockPos bp : nearbyAnchorPositions) {
+    	for (int i=nearbyAnchorPositions.size()-1; i>=0; i--) { // Have to do a manual iteration to avoid CMEs
+    		BlockPos bp = nearbyAnchorPositions.get(i);
     		if (level.getBlockEntity(bp) instanceof PipeNode node) {
     			nearbyAnchors.add(node);
     		}
     		else {
-    			nearbyAnchorPositions.remove(bp);
+    			nearbyAnchorPositions.remove(i);
     		}
     	}
 //    	FufoMod.LOGGER.info("Running onLoad");
@@ -328,5 +333,22 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 	
 	public String toString() {
 		return "NODE at " + getPos();
+	}
+
+	@Override
+	public void onDevTool(UseOnContext context) {
+		if (!level.isClientSide()) {
+        	if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
+        		getNetwork().tick();
+        	}
+        	else if (context.getPlayer().isShiftKeyDown()) {
+        		FufoMod.LOGGER.info("Toggling openness");
+        		setOpen(!isOpen());
+        	}
+        	else {
+	        	FufoMod.LOGGER.info("Adding water");
+	        	addFluid(Fluids.WATER, 100.0);
+        	}
+		}
 	}
 }

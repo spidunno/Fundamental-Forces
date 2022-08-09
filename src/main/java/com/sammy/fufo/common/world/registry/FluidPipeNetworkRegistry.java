@@ -6,8 +6,10 @@ import java.util.Set;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoWorldDataCapability;
+import com.sammy.fufo.core.systems.logistics.FlowDir;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
+import com.sammy.fufo.core.systems.logistics.PressureSource;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -44,6 +46,10 @@ public class FluidPipeNetworkRegistry {
 			for (PipeNode p : networks.get(id).getNodes()) {
 				CompoundTag pos = new CompoundTag();
 				pos.putLong("pos", p.getPos().asLong());
+				if (p instanceof PressureSource src) {
+					pos.putDouble("in", src.getForce(FlowDir.IN));
+					pos.putDouble("out", src.getForce(FlowDir.OUT));
+				}
 				nodes.add(pos);
 			}
 			net.put("nodes", nodes);

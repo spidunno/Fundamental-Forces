@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -26,7 +27,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	
 	public PumpBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		force = 20; // for testing
+		force = 200; // for testing
 	}
 	
 	public PumpBlockEntity(BlockPos pos, BlockState state) {
@@ -45,6 +46,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 			else if (front == null) front = other;
 			else return false; // if back and front are both spoken for reject the connection
 			nearbyAnchorPositions.add(bp);
+			nearbyAnchors.add(other);
 			if (getNetwork() == null) setNetwork(other.getNetwork(), false);
 			else getNetwork().mergeWith(other.getNetwork());
 			return true;
@@ -68,17 +70,29 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
 	}
 	
+	private void flip() {
+		if (!level.isClientSide) {
+			PipeNode temp = back;
+			back = front;
+			front = temp;
+			frontPos = front.getPos();
+			backPos = back.getPos();
+		}
+		BlockHelper.updateAndNotifyState(level, getPos());
+	}
+	
 	@Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         if (back != null) pTag.putLong("back", back.getPos().asLong()); 
         if (front != null) pTag.putLong("front", front.getPos().asLong());
-    }
+	}
 	
 	@Override
 	public double getPressure() {
 		return force;
 	}
+	
 	public double getPressure(FlowDir dir) {
 		return (dir == FlowDir.OUT ? force : -force);
 	}
@@ -99,5 +113,15 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	public int getForce(FlowDir dir) {
 		// TODO Auto-generated method stub
 		return (int)force;
+	}
+	
+	@Override
+	public String getDebugMessage(boolean sneak) {
+		return String.format("Front is %s, back is %s\nCurrently contains %s mb\nPressure is %s/%s", front, back, getFluidAmount(), getPressure(FlowDir.IN), getPressure(FlowDir.OUT));
+	}
+	
+	@Override
+	public void onDevTool(UseOnContext context) {
+		flip();
 	}
 }

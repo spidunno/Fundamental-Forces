@@ -67,7 +67,7 @@ public class FluidPipeNetwork {
 		}
 		forceLoadNetwork();
 	}
-	
+
 	// Make a random network ID that is guaranteed to be nonzero and not already used
 	private int makeID() {
 		int id;
@@ -81,6 +81,8 @@ public class FluidPipeNetwork {
 		nodes.add(node);
 		nodePositions.add(node.getPos());
 		if (reciprocate) node.setNetwork(this, false);
+		
+		if (node instanceof PressureSource source) addSource(source);
 	}
 	
 	// Each node just needs to keep its own distance from each pressure source.
