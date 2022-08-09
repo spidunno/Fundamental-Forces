@@ -1,6 +1,5 @@
-package com.sammy.fufo.common.block;
+package com.sammy.fufo.common.logistics.fluid_tank;
 
-import com.sammy.fufo.common.blockentity.FluidTankBlockEntity;
 import com.sammy.ortus.systems.block.OrtusEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

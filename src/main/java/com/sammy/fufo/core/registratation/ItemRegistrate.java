@@ -9,7 +9,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.world.item.Item;
 
-public class ItemRegistrate{
+public class ItemRegistrate {
     public static final ItemEntry<Item> CRACK = itemRegister("crack");
     public static final ItemEntry<Item> BOTTLE_OF_CRACK = itemRegister("bottle_of_crack");
     public static final ItemEntry<Item> WISP_BOTTLE = itemRegister("wisp_bottle");
@@ -20,12 +20,13 @@ public class ItemRegistrate{
     public static final ItemEntry<DebugTool> DEBUG_TOOL = itemRegister("debug_tool", DebugTool::new);
 
     public static ItemEntry<Item> itemRegister(String name) {
-    	return itemRegister(name, Item::new);
+        return itemRegister(name, Item::new);
     }
-    
+
     public static <T extends Item> ItemEntry<T> itemRegister(String name, NonNullFunction<Item.Properties, T> factory) {
         return FufoMod.registrate().item(name, factory).tab(ContentTab::get).register();
     }
 
-    public static void register() {}
+    public static void register() {
+    }
 }

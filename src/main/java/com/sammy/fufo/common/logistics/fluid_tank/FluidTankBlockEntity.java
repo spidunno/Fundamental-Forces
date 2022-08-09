@@ -1,4 +1,4 @@
-package com.sammy.fufo.common.blockentity;
+package com.sammy.fufo.common.logistics.fluid_tank;
 
 import com.sammy.fufo.core.registratation.BlockEntityRegistrate;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
