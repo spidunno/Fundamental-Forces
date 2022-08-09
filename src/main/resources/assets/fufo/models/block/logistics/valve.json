@@ -1,0 +1,49 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"valve": "fufo:block/logistics/valve",
+		"particle": "fufo:block/logistics/valve"
+	},
+	"elements": [
+		{
+			"from": [5, 5, 0],
+			"to": [11, 11, 16],
+			"faces": {
+				"north": {"uv": [8, 0, 11, 3], "texture": "#valve"},
+				"east": {"uv": [8, 3, 0, 6], "texture": "#valve"},
+				"south": {"uv": [8, 0, 11, 3], "texture": "#valve"},
+				"west": {"uv": [0, 3, 8, 6], "texture": "#valve"},
+				"up": {"uv": [0, 0, 8, 3], "rotation": 270, "texture": "#valve"},
+				"down": {"uv": [0, 6, 8, 9], "rotation": 90, "texture": "#valve"}
+			}
+		},
+		{
+			"from": [7, 11, 7],
+			"to": [9, 13, 9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 12, 8]},
+			"faces": {
+				"north": {"uv": [11, 1, 12, 2], "texture": "#valve"},
+				"east": {"uv": [11, 1, 12, 2], "texture": "#valve"},
+				"south": {"uv": [11, 1, 12, 2], "texture": "#valve"},
+				"west": {"uv": [11, 1, 12, 2], "texture": "#valve"},
+				"up": {"uv": [11, 0, 12, 1], "texture": "#valve"},
+				"down": {"uv": [11, 0, 12, 1], "texture": "#valve"}
+			}
+		},
+		{
+			"from": [5, 13, 8],
+			"to": [11, 13, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 13, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 3, 0], "texture": "#valve"},
+				"east": {"uv": [0, 0, 3.5, 0], "texture": "#valve"},
+				"south": {"uv": [0, 0, 3, 0], "texture": "#valve"},
+				"west": {"uv": [0, 0, 3.5, 0], "texture": "#valve"},
+				"up": {"uv": [12.5, 0, 16, 3], "rotation": 270, "texture": "#valve"},
+				"down": {"uv": [12.5, 0, 16, 3], "rotation": 90, "texture": "#valve"}
+			}
+		}
+	]
+}

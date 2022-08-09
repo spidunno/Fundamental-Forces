@@ -11,11 +11,8 @@ import net.minecraft.world.item.Item;
 
 public class ItemRegistrate {
     public static final ItemEntry<Item> CRACK = itemRegister("crack");
-    public static final ItemEntry<Item> BOTTLE_OF_CRACK = itemRegister("bottle_of_crack");
-    public static final ItemEntry<Item> WISP_BOTTLE = itemRegister("wisp_bottle");
     public static final ItemEntry<Item> DEPLETED_ORTUSITE_CHUNK = itemRegister("depleted_ortusite_chunk");
     public static final ItemEntry<Item> ORTUSITE_CHUNK = itemRegister("ortusite_chunk");
-    public static final ItemEntry<Item> ASTRAL_SHARD = itemRegister("astral_shard");
     public static final ItemEntry<DevTool> DEV_TOOL = itemRegister("dev_tool", DevTool::new);
     public static final ItemEntry<DebugTool> DEBUG_TOOL = itemRegister("debug_tool", DebugTool::new);
 

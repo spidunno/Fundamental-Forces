@@ -1,9 +1,0 @@
-{
-  "type": "fufo:impact_conversion",
-  "input": {
-    "tag": "forge:sand"
-  },
-  "output": {
-    "item": "fufo:volcanic_glass"
-  }
-}

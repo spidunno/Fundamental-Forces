@@ -6,6 +6,7 @@ import com.sammy.fufo.common.blockentity.*;
 import com.sammy.fufo.common.item.FluidTankItem;
 import com.sammy.fufo.common.logistics.fluid_tank.FluidTankBlock;
 import com.sammy.fufo.common.logistics.fluid_tank.FluidTankBlockEntity;
+import com.sammy.fufo.common.logistics.sealed_barrel.SealedBarrelBlock;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import com.tterrag.registrate.Registrate;
@@ -21,7 +22,6 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -53,19 +53,8 @@ public class BlockRegistrate {
         .blockstate(predefinedState())
         .register();
 
-    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupItemBlock("pump",
-        (p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES())
-        .blockstate(predefinedState())
-        .register();
-
-    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupItemBlock("valve",
-        (p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES())
-        .blockstate(predefinedState())
-        .register();
-
     public static final BlockEntry<FluidTankBlock<FluidTankBlockEntity>> FLUID_TANK = setupBlock("fluid_tank", (p) -> new FluidTankBlock<>(p).<FluidTankBlock<FluidTankBlockEntity>>setBlockEntity(BlockEntityRegistrate.FLUID_TANK), CRUDE_PROPERTIES())
         .blockstate((ctx, p) -> {
-            ResourceLocation registryName = ctx.get().getRegistryName();
             Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_tank/" + s)));
             p.getVariantBuilder(ctx.get())
                 .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("single_unit")).addModel()
@@ -74,13 +63,44 @@ public class BlockRegistrate {
                 .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("tall_unit_bottom")).addModel();
         })
         .item(FluidTankItem::new)
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_tank/single_unit"))).build())
+        .build()
+        .register();
+
+
+    public static final BlockEntry<SealedBarrelBlock<SealedBarrelBlockEntity>> SEALED_BARREL = setupBlock("sealed_barrel", (p) -> new SealedBarrelBlock<>(p).<SealedBarrelBlock<SealedBarrelBlockEntity>>setBlockEntity(BlockEntityRegistrate.SEALED_BARREL), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> {
+            Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_barrel/" + s)));
+            p.getVariantBuilder(ctx.get())
+                .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NORMAL).modelForState().modelFile(modelFunction.apply("default")).addModel()
+                .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NO_WINDOW).modelForState().modelFile(modelFunction.apply("no_window")).addModel();
+        })
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_barrel/default"))).build())
+        .build()
+        .register();
+
+    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupBlock("valve",
+        (p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES())
+        .blockstate(invisibleState())
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
+        .build()
+        .register();
+
+    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupBlock("pump",
+        (p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES())
+        .blockstate(invisibleState())
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
+        //.model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/pump"))).build())
         .build()
         .register();
 
     //machines
-    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES())
-        .blockstate(invisibleState())
-        .register();
+//    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES())
+//        .blockstate(invisibleState())
+//        .register();
 
 
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
@@ -97,20 +117,23 @@ public class BlockRegistrate {
         }))
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .loot(depletedShardLootTable())
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry),fufoPath("block/ortusite_0"))).build())
+        .build()
         .register();
 
     public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).blockstate(invisibleState()).register();
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = setupItemBlock("block_of_crack", Block::new, CRACK_PROPERTIES()).register();
 
-    public static final BlockEntry<GlassBlock> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", GlassBlock::new, VOLCANIC_GLASS_PROPERTIES()).register();
-    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).blockstate(invisibleState()).register();
-    public static final BlockEntry<Block> CHARRED_ROCK = setupItemBlock("charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
-    public static final BlockEntry<SlabBlock> CHARRED_ROCK_SLAB = setupSlabBlock("charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
-    public static final BlockEntry<StairBlock> CHARRED_ROCK_STAIRS = setupStairsBlock("charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
-    public static final BlockEntry<Block> POLISHED_CHARRED_ROCK = setupItemBlock("polished_charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
-    public static final BlockEntry<SlabBlock> POLISHED_CHARRED_ROCK_SLAB = setupSlabBlock("polished_charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
-    public static final BlockEntry<StairBlock> POLISHED_CHARRED_ROCK_STAIRS = setupStairsBlock("polished_charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
+//    public static final BlockEntry<GlassBlock> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", GlassBlock::new, VOLCANIC_GLASS_PROPERTIES()).register();
+//    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).blockstate(invisibleState()).register();
+//    public static final BlockEntry<Block> CHARRED_ROCK = setupItemBlock("charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
+//    public static final BlockEntry<SlabBlock> CHARRED_ROCK_SLAB = setupSlabBlock("charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
+//    public static final BlockEntry<StairBlock> CHARRED_ROCK_STAIRS = setupStairsBlock("charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
+//    public static final BlockEntry<Block> POLISHED_CHARRED_ROCK = setupItemBlock("polished_charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
+//    public static final BlockEntry<SlabBlock> POLISHED_CHARRED_ROCK_SLAB = setupSlabBlock("polished_charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
+//    public static final BlockEntry<StairBlock> POLISHED_CHARRED_ROCK_STAIRS = setupStairsBlock("polished_charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
 
     public static <T extends StairBlock> BlockBuilder<T, Registrate> setupStairsBlock(String name, NonNullFunction<BlockBehaviour.Properties, T> factory, OrtusBlockProperties properties, RegistryEntry<? extends Block> parent) {
         return setupItemBlock(name, factory, properties).blockstate(stairState(parent));
@@ -145,7 +168,6 @@ public class BlockRegistrate {
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> predefinedState() {
         return (ctx, p) -> {};
     }
-
 
     public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() { //TODO: do something with this, it's kind of an eyesore.
         return (l, b) -> {

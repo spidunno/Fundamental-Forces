@@ -1,19 +1,18 @@
 package com.sammy.fufo.common.blockentity;
 
-import java.util.List;
-
 import com.sammy.fufo.core.systems.logistics.FlowDir;
 import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.fufo.core.systems.logistics.PipeNode;
 import com.sammy.fufo.core.systems.logistics.PressureSource;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+
+import java.util.List;
 
 // Still a WIP
 // How long has this been on the backburner for?
@@ -25,7 +24,6 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 	public SealedBarrelBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		storage = new FluidTank(8000);
-		
 	}
 
 	public int getStored() {

@@ -8,6 +8,9 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class BlockEntityRegistrate {
 
+    public static final BlockEntityEntry<SealedBarrelBlockEntity> SEALED_BARREL =
+        FufoMod.registrate().<SealedBarrelBlockEntity>blockEntity("fluid_tank", SealedBarrelBlockEntity::new).validBlocks(BlockRegistrate.SEALED_BARREL).register();
+
     public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
         FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(BlockRegistrate.FLUID_TANK).register();
 
@@ -28,7 +31,6 @@ public class BlockEntityRegistrate {
 
     public static final BlockEntityEntry<MeteorFlameBlockEntity> METEOR_FLAME =
             FufoMod.registrate().<MeteorFlameBlockEntity>blockEntity("meteor_flame", MeteorFlameBlockEntity::new).validBlocks(BlockRegistrate.METEOR_FIRE).register();
-
 
     public static final BlockEntityEntry<CrudePrimerBlockEntity> CRUDE_PRIMER =
             FufoMod.registrate().<CrudePrimerBlockEntity>blockEntity("crude_primer", CrudePrimerBlockEntity::new).renderer(() -> CrudePrimerRenderer::new).validBlocks(BlockRegistrate.CRUDE_PRIMER).register();
