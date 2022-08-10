@@ -33,6 +33,8 @@ d143e86f560e23ec002016356ab4fe30af42a80d assets/fufo/models/item/ortusite_chunk.
 77b6602eefd01453413b321ae384c2a889d5c69b assets/fufo/models/item/sealed_barrel.json
 7c36ca6b27a15a866df7b717a17d0025dc1407a3 assets/fufo/models/item/ui_test.json
 59fe7f311150516c9f9f21843f482f6af81ff0f5 assets/fufo/models/item/valve.json
+30ffffb8b55b55c6d755e19504e06f75a68c961e data/fufo/advancements/recipes/fufo/sealed_barrel.json
+4c24b17207f0535ae7164821f3a9461e7b63a789 data/fufo/advancements/recipes/fufo/sealed_barrel_simple.json
 8387eb3491eb7d6422d033759b9aff8a0b2c1f5c data/fufo/loot_tables/blocks/anchor.json
 1b5186d7c53bf796b732b5be7565049add26cc58 data/fufo/loot_tables/blocks/block_of_crack.json
 ce5dbf3b3f034e1a932a40d738a20ac05130ed5f data/fufo/loot_tables/blocks/crude_array.json
@@ -45,4 +47,6 @@ c16c3ac08e41ee32e04bde3cc549019dff90ee0a data/fufo/loot_tables/blocks/crude_prim
 52b5a696d28ce50f69a5eecd80a3b60466d18cad data/fufo/loot_tables/blocks/sealed_barrel.json
 6f78f4f9300ec35af9dc80c15e97f2defd7a30e5 data/fufo/loot_tables/blocks/ui_test.json
 17197637cdda47207093dd0f9d7a429ef59cd573 data/fufo/loot_tables/blocks/valve.json
+f76acecb81b9b4fc7b7b89bcc0abd3638043537d data/fufo/recipes/sealed_barrel.json
+d2f3eb61a666d1395d5b461274bf46f4e6964b16 data/fufo/recipes/sealed_barrel_simple.json
 091aefe2340ee97a0b08d929e7302a5f1cfc2d9b data/minecraft/tags/blocks/mineable/pickaxe.json

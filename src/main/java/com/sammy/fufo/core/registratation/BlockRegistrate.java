@@ -20,8 +20,12 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -35,11 +39,13 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Function;
 
 import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.fufo.core.setup.content.block.BlockPropertiesRegistry.*;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 
 @SuppressWarnings("ConstantConditions")
 public class BlockRegistrate {
@@ -77,6 +83,19 @@ public class BlockRegistrate {
                 .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NO_WINDOW).modelForState().modelFile(modelFunction.apply("no_window")).addModel();
         })
         .item()
+        .recipe((ctx, p) -> {
+            ShapedRecipeBuilder.shaped(ctx.get())
+                .pattern("XZX").pattern("XYX").pattern("XZX")
+                .define('X', ItemTags.PLANKS).define('Z', ItemTags.WOODEN_SLABS).define('Y', Tags.Items.INGOTS_COPPER)
+                .group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT))
+                .save(p, p.safeId(ctx.get()));
+
+            ShapelessRecipeBuilder.shapeless(ctx.get())
+                .requires(Tags.Items.BARRELS_WOODEN)
+                .requires(Tags.Items.INGOTS_COPPER)
+                .group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT))
+                .save(p, fufoPath("sealed_barrel_simple"));
+        })
         .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_barrel/default"))).build())
         .build()
         .register();
