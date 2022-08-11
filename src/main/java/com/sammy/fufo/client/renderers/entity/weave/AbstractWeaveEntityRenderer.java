@@ -1,7 +1,5 @@
 package com.sammy.fufo.client.renderers.entity.weave;
 
-import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
-import com.lowdragmc.shimmer.client.shader.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -92,12 +90,8 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
         weave.getLinks().forEach((link, type) -> {
             ps.pushPose();
             ps.translate(link.getFirst().getX(), link.getFirst().getY() + 0.1, link.getFirst().getZ());
-            PoseStack finalStack = RenderUtils.copyPoseStack(ps);
-            VFXBuilders.WorldVFXBuilder finalC = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(beamColor);
-            PostProcessing.BLOOM_UNITY.postEntity(cons -> {
-                VertexConsumer consumer = cons.getBuffer(TEST_BEAM_TYPE);
-                finalC.renderBeam(consumer, finalStack, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
-            });
+            VertexConsumer vc = buffer.getBuffer(TEST_BEAM_TYPE);
+            VFXBuilders.WorldVFXBuilder finalC = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(beamColor).renderBeam(vc, ps, new Vec3(link.getFirst().getX(), link.getFirst().getY(), link.getFirst().getZ()), new Vec3(link.getSecond().getX(), link.getSecond().getY(), link.getSecond().getZ()), 0.1f);
             ps.translate(-link.getFirst().getX(), -link.getFirst().getY() - 0.1, -link.getFirst().getZ());
             ps.popPose();
         });

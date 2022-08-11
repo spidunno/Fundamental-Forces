@@ -149,7 +149,6 @@ dependencies {
 
     implementation fg.deobf("curse.maven:curios-309927:3748873")
 
-    implementation fg.deobf("curse.maven:shimmer-627824:3811991")
 
     compileOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193:api')
     runtimeOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193')
