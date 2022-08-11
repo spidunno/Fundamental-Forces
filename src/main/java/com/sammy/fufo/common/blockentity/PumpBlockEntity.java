@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -59,6 +60,14 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		if (frontPos != null) front = (PipeNode)level.getBlockEntity(frontPos);
 	}
 	
+	private void flip() {
+		PipeNode temp = back;
+		back = front;
+		front = temp;
+		backPos = back.getPos();
+		frontPos = front.getPos();
+	}
+	
 	private BlockPos backPos;
 	private BlockPos frontPos;
 	@Override
@@ -99,5 +108,10 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	public int getForce(FlowDir dir) {
 		// TODO Auto-generated method stub
 		return (int)force;
+	}
+	
+	@Override
+	public void onDevTool(UseOnContext ctx) {
+		flip();
 	}
 }

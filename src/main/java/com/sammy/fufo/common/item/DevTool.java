@@ -41,18 +41,6 @@ public class DevTool extends Item implements ItemParticleEmitter {
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
         if (te instanceof DevToolResponse dev) {
         	dev.onDevTool(context);
-//        	if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
-//        		node.getNetwork().tick();
-//        	}
-//        	else if (context.getPlayer().isShiftKeyDown()) {
-//        		FufoMod.LOGGER.info("Toggling openness");
-//        		node.setOpen(!node.isOpen());
-//        	}
-//        	else {
-//	        	FufoMod.LOGGER.info("Adding water");
-//	        	node.addFluid(Fluids.WATER, 100.0);
-//	        	return InteractionResult.SUCCESS;
-//        	}
         	return InteractionResult.SUCCESS;
         }
 //        if (level instanceof ServerLevel serverLevel) {

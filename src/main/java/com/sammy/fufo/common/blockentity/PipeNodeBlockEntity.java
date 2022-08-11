@@ -185,6 +185,10 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     		setNetwork(prev.getNetwork(), true);
     	}
     	else setNetwork(new FluidPipeNetwork(getLevel()), true);
+    	
+    	if (!level.isClientSide() && this instanceof PressureSource p) {
+    		getNetwork().addSource(p);
+    	}
     }
     
     @Override
@@ -300,7 +304,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 	@Override
 	public String getDebugMessage(boolean sneak) {
 		if (sneak) {
-			return String.format("%s mb of %s", fluid.getAmount(), fluid.getFluid().getRegistryName());
+			return getNetwork().getInfo();
 		}
 		else {
 			return String.format("Network: %s Pressure: %s with %s (%s) neighbours", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size(), nearbyAnchors.size());
