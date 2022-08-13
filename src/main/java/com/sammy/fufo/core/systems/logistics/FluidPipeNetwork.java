@@ -42,6 +42,8 @@ public class FluidPipeNetwork {
 	public Set<BlockPos> nodePositions = new HashSet<>();
 	private List<PressureSource> pressureSources = new ArrayList<>();
 	
+	private int numNodes; // This number is NOT changed during runtime. Only during save/load so that the network knows when all nodes have been loaded
+	private int numLoaded;
 	private int id;
 	private Level world; // In this household we call it a World
 	private boolean loaded = false;
@@ -58,14 +60,36 @@ public class FluidPipeNetwork {
 		if (world == null) throw new NullPointerException("Attempting to build a network in a null world!");
 		this.world = world;
 		id = nbt.getInt("id");
+		numNodes = nbt.getInt("numNodes");
 		for (Tag t : nbt.getList("nodes", Tag.TAG_COMPOUND)) {
 			CompoundTag node = (CompoundTag)t;
 			BlockEntity te = world.getBlockEntity(BlockPos.of(node.getLong("pos")));
 			if (te instanceof PipeNode p) {
-				addNode(p, true);
+				addNode(p, true, false);
+				if (p instanceof PressureSource s) {
+					addSource(s, false);
+				}
 			}
 		}
 		forceLoadNetwork();
+		FufoMod.LOGGER.info("Successfully loaded network " + id + " from memory");
+	}
+
+	// Called from PipeNodeBlockEntity if it's the last one in a network to load
+	// in order to ensure that recalcPressure does not run until all nodes are loaded
+	public void finishLoading() {
+		recalcPressure();
+	}
+	
+	public void loadNode() {
+		numLoaded++;
+	}
+	
+	public int numLoadedNodes() {
+		return numLoaded;
+	}
+	public int numSavedNodes() {
+		return numNodes;
 	}
 	
 	// Make a random network ID that is guaranteed to be nonzero and not already used
@@ -77,11 +101,11 @@ public class FluidPipeNetwork {
 		return id;
 	}
 	
-	public void addNode(PipeNode node, boolean reciprocate) {
+	public void addNode(PipeNode node, boolean reciprocate, boolean calcPressure) {
 		nodes.add(node);
 		nodePositions.add(node.getPos());
-		recalcPressure();
-		if (reciprocate) node.setNetwork(this, false);
+		if (calcPressure) recalcPressure();
+		if (reciprocate) node.setNetwork(this, false, calcPressure);
 	}
 	
 	// Each node just needs to keep its own distance from each pressure source.
@@ -109,14 +133,14 @@ public class FluidPipeNetwork {
 		}
 	}
 	
-	public void addSource(PressureSource source) {
+	public void addSource(PressureSource source, boolean recalc) {
 		pressureSources.add(source);
-		recalcPressure();
+		if (recalc) recalcPressure();
 	}
 	
-	public void removeSource(PressureSource source) {
+	public void removeSource(PressureSource source, boolean recalc) {
 		pressureSources.remove(source);
-		recalcPressure();
+		if (recalc) recalcPressure();
 	}
 
 	public int getID() {
@@ -186,13 +210,14 @@ public class FluidPipeNetwork {
 	}
 	
 	public void mergeWith(FluidPipeNetwork other) {
-		other.nodes.forEach(node -> node.setNetwork(this, true));
+		other.nodes.forEach(node -> node.setNetwork(this, true, false));
+		recalcPressure();
 	}
 	
 	private FluidPipeNetwork subnetHelper(PipeNode current, FluidPipeNetwork network) {
 		for (PipeNode p : current.getConnectedNodes()) {
 			if (!network.contains(p)) {
-				network.addNode(p, true);
+				network.addNode(p, true, true);
 				return subnetHelper(p, network);
 			}
 		}
@@ -228,4 +253,6 @@ public class FluidPipeNetwork {
 		}
 		return builder.toString();
 	}
+
+	
 }

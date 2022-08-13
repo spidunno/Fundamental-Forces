@@ -14,6 +14,7 @@ import com.sammy.fufo.core.helpers.DevToolResponse;
 import com.sammy.ortus.helpers.BlockHelper;
 import com.sammy.ortus.systems.blockentity.OrtusBlockEntity;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
@@ -182,30 +183,39 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
     	if (!level.isClientSide() && prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
     		addConnection(prevPos);
     		prev.addConnection(getPos());
-    		setNetwork(prev.getNetwork(), true);
+    		setNetwork(prev.getNetwork(), true, true);
     	}
-    	else setNetwork(new FluidPipeNetwork(getLevel()), true);
+    	else setNetwork(new FluidPipeNetwork(getLevel()), true, true);
     	
     	if (!level.isClientSide() && this instanceof PressureSource p) {
-    		getNetwork().addSource(p);
+    		getNetwork().addSource(p, true);
     	}
     }
     
     @Override
     public void onLoad() {
     	super.onLoad();
-    	for (BlockPos bp : nearbyAnchorPositions) {
+    	for (int i=nearbyAnchorPositions.size()-1; i>=0; i--) { // Have to do a manual traversal to avoid CMEs
+    		BlockPos bp = nearbyAnchorPositions.get(i);
+//    	for (BlockPos bp : nearbyAnchorPositions) {
     		if (level.getBlockEntity(bp) instanceof PipeNode node) {
     			nearbyAnchors.add(node);
     		}
     		else {
-    			nearbyAnchorPositions.remove(bp);
+    			nearbyAnchorPositions.remove(i);
     		}
     	}
 //    	FufoMod.LOGGER.info("Running onLoad");
     	if (networkID != 0) { // load was run and NBT data was loaded
+  //  		Minecraft.getInstance().mouseHandler.releaseMouse();
     		FluidPipeNetwork net = FluidPipeNetworkRegistry.getRegistry(level).getOrLoadNetwork(networkID);
-    		if (network != null) this.setNetwork(net, true);
+    		if (network != null) {
+    			this.setNetwork(net, true, false);
+    			if (this instanceof PressureSource p) network.addSource(p, false);
+    			network.loadNode();
+    			FufoMod.LOGGER.info(String.format("Adding %s to network %s (%s/%s)\n", this, networkID, net.numLoadedNodes(), net.numSavedNodes()));
+    			if (network.numLoadedNodes() == network.numSavedNodes()) network.finishLoading();
+    		}
     	}
     }
     
@@ -246,7 +256,7 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
 			nearbyAnchorPositions.add(bp);
 			nearbyAnchors.add(other);
-			if (network == null) setNetwork(other.getNetwork(), false);
+			if (network == null) setNetwork(other.getNetwork(), false, true);
 			else network.mergeWith(other.getNetwork());
 			BlockHelper.updateAndNotifyState(level, getPos());
 			return true;
@@ -265,10 +275,10 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 	}
 
 	@Override
-	public void setNetwork(FluidPipeNetwork network, boolean reciprocate) {
+	public void setNetwork(FluidPipeNetwork network, boolean reciprocate, boolean recalc) {
 		this.network = network;
 		this.networkID = network.getID();
-		if (reciprocate) network.addNode(this, false);
+		if (reciprocate) network.addNode(this, false, recalc);
 	}
 
 	@Override
@@ -312,7 +322,13 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 			return getNetwork().getInfo();
 		}
 		else {
-			return String.format("Network: %s Pressure: %s with %s (%s) neighbours", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size(), nearbyAnchors.size());
+			StringBuilder builder = new StringBuilder();
+			builder.append(String.format("Network: %s Pressure: %s with %s (%s) neighbours\n", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size(), nearbyAnchors.size()));
+			builder.append("Sources:\n");
+			for (Triple<PressureSource, FlowDir, Double> t : sources) {
+				builder.append(String.format("%s, %s, %s\n", t.getLeft().toString(), t.getMiddle().name(), t.getRight()));
+			}
+			return builder.toString();
 		}
 	}
 	

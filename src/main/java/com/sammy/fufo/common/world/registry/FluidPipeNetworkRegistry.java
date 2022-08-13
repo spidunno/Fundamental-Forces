@@ -40,6 +40,7 @@ public class FluidPipeNetworkRegistry {
 		for (int id : networks.keySet()) {
 			CompoundTag net = new CompoundTag();
 			net.putInt("id", id);
+			net.putInt("numNodes", networks.get(id).getNodes().size());
 			ListTag nodes = new ListTag();
 			for (PipeNode p : networks.get(id).getNodes()) {
 				CompoundTag pos = new CompoundTag();

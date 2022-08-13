@@ -46,7 +46,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 			else if (front == null) front = other;
 			else return false; // if back and front are both spoken for reject the connection
 			nearbyAnchorPositions.add(bp);
-			if (getNetwork() == null) setNetwork(other.getNetwork(), false);
+			if (getNetwork() == null) setNetwork(other.getNetwork(), false, true);
 			else getNetwork().mergeWith(other.getNetwork());
 			return true;
 		}

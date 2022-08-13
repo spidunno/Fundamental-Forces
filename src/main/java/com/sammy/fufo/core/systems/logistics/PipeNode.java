@@ -57,7 +57,7 @@ public interface PipeNode {
 	 */
 	public default double getPressure(FlowDir side) { return getPressure(); }
 	
-	public void setNetwork(FluidPipeNetwork network, boolean reciprocate);
+	public void setNetwork(FluidPipeNetwork network, boolean reciprocate, boolean recalc);
 	
 	public FluidPipeNetwork getNetwork();
 	

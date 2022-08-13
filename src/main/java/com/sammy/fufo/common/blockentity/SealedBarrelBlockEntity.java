@@ -64,7 +64,7 @@ public class SealedBarrelBlockEntity extends OrtusBlockEntity implements PipeNod
 		return getBlockPos();
 	}
 	
-	public void setNetwork(FluidPipeNetwork network, boolean reciprocate) {
+	public void setNetwork(FluidPipeNetwork network, boolean reciprocate, boolean recalc) {
 		this.network = network;
 	}
 
