@@ -1,7 +1,10 @@
 package com.sammy.fufo.common.item;
 
+import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
 import com.sammy.fufo.common.world.gen.MeteoriteFeature;
+import com.sammy.fufo.core.helpers.DevToolResponse;
+import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.ortus.setup.OrtusScreenParticleRegistry;
 import com.sammy.ortus.systems.rendering.particle.ParticleBuilders;
 import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
@@ -36,15 +39,15 @@ public class DevTool extends Item implements ItemParticleEmitter {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         BlockEntity te = level.getBlockEntity(context.getClickedPos());
-        if (te instanceof PipeNodeBlockEntity node && !level.isClientSide()) {
-        	node.addFluid(Fluids.WATER, 100.0);
+        if (te instanceof DevToolResponse dev) {
+        	dev.onDevTool(context);
         	return InteractionResult.SUCCESS;
         }
-        if (level instanceof ServerLevel serverLevel) {
-            BlockPos pos = context.getClickedPos();
-            MeteoriteFeature.generateMeteorite(serverLevel, serverLevel.getChunkSource().getGenerator(), pos, level.random);
-            return InteractionResult.SUCCESS;
-        }
+//        if (level instanceof ServerLevel serverLevel) {
+//            BlockPos pos = context.getClickedPos();
+//            MeteoriteFeature.generateMeteorite(serverLevel, serverLevel.getChunkSource().getGenerator(), pos, level.random);
+//            return InteractionResult.SUCCESS;
+//        }
         return super.useOn(context);
     }
 

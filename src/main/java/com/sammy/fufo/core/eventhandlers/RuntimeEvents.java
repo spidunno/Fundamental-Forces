@@ -4,6 +4,7 @@ import com.sammy.fufo.common.capability.*;
 import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import com.sammy.fufo.core.handlers.PlayerSpellHotbarHandler;
 import com.sammy.fufo.core.handlers.StarfallEventHandler;
+import com.sammy.fufo.core.systems.logistics.FluidPipeNetwork;
 import com.sammy.ortus.events.types.RightClickEmptyServer;
 
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +24,8 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RuntimeEvents {
+	
+
     @SubscribeEvent
     public static void breakBlock(BlockEvent.BreakEvent event) {
         StarfallEventHandler.breakBlock(event);
@@ -75,7 +78,7 @@ public class RuntimeEvents {
     
     @SubscribeEvent
     public static void worldTick(TickEvent.WorldTickEvent event) {
-    	FluidPipeNetworkRegistry.getRegistry(event.world).tickNetworks();
+    	if (!FluidPipeNetwork.MANUAL_TICKING) FluidPipeNetworkRegistry.getRegistry(event.world).tickNetworks();
     }
 
     @SubscribeEvent

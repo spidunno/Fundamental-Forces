@@ -1,9 +1,0 @@
-{
-  "type": "fufo:impact_conversion",
-  "input": {
-    "tag": "forge:stone"
-  },
-  "output": {
-    "item": "fufo:charred_rock"
-  }
-}

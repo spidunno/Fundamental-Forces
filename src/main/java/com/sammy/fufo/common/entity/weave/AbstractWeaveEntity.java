@@ -82,7 +82,6 @@ public abstract class AbstractWeaveEntity extends Entity {
         super.onSyncedDataUpdated(pKey);
     }
 
-
     @Override
     public void tick() {
         if (level.isClientSide) {
@@ -101,7 +100,6 @@ public abstract class AbstractWeaveEntity extends Entity {
                             .setColorCoefficient(0.5f)
                             .enableNoClip()
                             .repeat(level, position().x() + offset.getX(), position().y() + offset.getY() + 0.45f, position().z() + offset.getZ(), 1);
-
                     ParticleBuilders.create(OrtusParticleRegistry.SMOKE_PARTICLE)
                             .setAlpha(0.01f, 0.08f, 0f)
                             .setAlphaEasing(Easing.QUINTIC_IN, Easing.QUINTIC_OUT)

@@ -1,11 +1,8 @@
 package com.sammy.fufo.common.item;
 
 import com.sammy.fufo.FufoMod;
-import com.sammy.fufo.common.blockentity.PipeNodeBlockEntity;
-import com.sammy.fufo.helpers.Debuggable;
+import com.sammy.fufo.core.helpers.Debuggable;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

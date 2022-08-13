@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -53,10 +54,34 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	}
 	
 	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (backPos != null) back = (PipeNode)level.getBlockEntity(backPos);
+		if (frontPos != null) front = (PipeNode)level.getBlockEntity(frontPos);
+	}
+	
+	private void flip() {
+		PipeNode temp = back;
+		back = front;
+		front = temp;
+		backPos = back.getPos();
+		frontPos = front.getPos();
+	}
+	
+	private BlockPos backPos;
+	private BlockPos frontPos;
+	@Override
+	public void load(CompoundTag pTag) {
+		super.load(pTag);
+		if (pTag.contains("back")) backPos = BlockPos.of(pTag.getLong("back"));
+		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
+	}
+	
+	@Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.putLong("back", back.getPos().asLong()); 
-        pTag.putLong("front", front.getPos().asLong());
+        if (back != null) pTag.putLong("back", back.getPos().asLong()); 
+        if (front != null) pTag.putLong("front", front.getPos().asLong());
     }
 	
 	@Override
@@ -83,5 +108,10 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	public int getForce(FlowDir dir) {
 		// TODO Auto-generated method stub
 		return (int)force;
+	}
+	
+	@Override
+	public void onDevTool(UseOnContext ctx) {
+		flip();
 	}
 }

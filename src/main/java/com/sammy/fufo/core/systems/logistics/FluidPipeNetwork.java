@@ -12,6 +12,8 @@ import org.apache.commons.lang3.tuple.Triple;
 
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import com.sammy.fufo.core.reference.FluidStats;
+import com.sammy.fufo.core.reference.ForcesThatAreActuallyFundamental;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -33,7 +35,8 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 
 // We will also ignore the entrance region and assume that all flows are fully developed
 public class FluidPipeNetwork {
-	public static final double PRESSURE_TRANSFER_COEFF = 0.1; // Must be between 0 and 1
+	public static boolean MANUAL_TICKING = false; // Debug only, remove before release
+	public static final double PRESSURE_TRANSFER_COEFF = 0.0005; // Must be between 0 and 1
 	public static final double DRAIN_COEFF = 0.1;
 	public Set<PipeNode> nodes = new HashSet<>(); // may have to be changed to a List
 	public Set<BlockPos> nodePositions = new HashSet<>();
@@ -77,14 +80,17 @@ public class FluidPipeNetwork {
 	public void addNode(PipeNode node, boolean reciprocate) {
 		nodes.add(node);
 		nodePositions.add(node.getPos());
+		recalcPressure();
 		if (reciprocate) node.setNetwork(this, false);
 	}
 	
 	// Each node just needs to keep its own distance from each pressure source.
 	// This is not an efficient algorithm but it doesn't run very often so should be ok
+	// Y'know, as long as we can avoid infinite recursion
 	private void recalcPressureHelper(PressureSource source, FlowDir dir, PipeNode node, Set<PipeNode> visited, double distance) {
 		node.updateSource(source, dir, distance);
 		for (PipeNode next : node.getConnectedNodes()) {
+			if (next == source) continue;
 			double nextDist = distance + Math.sqrt(node.getPos().distSqr(next.getPos()));
 			if (!visited.contains(next) || nextDist < next.getDistFromSource(source, dir)) {
 				visited.add(next);
@@ -94,6 +100,7 @@ public class FluidPipeNetwork {
 	}
 	
 	private void recalcPressure() {
+		Minecraft.getInstance().mouseHandler.releaseMouse();
 		for (PressureSource p : pressureSources) {
 			PipeNode in = p.getConnection(FlowDir.IN);
 			recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
@@ -140,14 +147,27 @@ public class FluidPipeNetwork {
 	}
 	
 	public void tick() {
-		
+		if (MANUAL_TICKING) FufoMod.LOGGER.info("Ticking network");
 		List<Triple<PipeNode, PipeNode, Double>> transfers = new ArrayList<>(); // Triple members, in order: Source, destination, amount
 		// Calculate amount to transfer
 		for (PipeNode node : nodes) {
 			List<PipeNode> connections = node.getConnectedNodes();
 			for (PipeNode other : connections) {
 				if (!node.getStoredFluid().isEmpty()) {
-					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, (node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN)) * PRESSURE_TRANSFER_COEFF));
+					// The pressure difference required to overcome a height difference is equal to the fluid's density times gravity times the change in height
+					int dy = other.getPos().getY() - node.getPos().getY();
+					double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
+					double g = ForcesThatAreActuallyFundamental.g;
+
+					double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - (node.getFluidAmount()*rho*g*dy)/1000;  
+					if (MANUAL_TICKING) {
+
+						FufoMod.LOGGER.info(String.format("TRANSFER from %s (%s) to %s (%s)", node, node.getPressure(FlowDir.OUT), other, other.getPressure(FlowDir.IN)));
+						FufoMod.LOGGER.info(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
+						FufoMod.LOGGER.info(String.format("Amount to transfer = %s", adjustedPressureDifference));
+					}
+					
+					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF);
 					transfers.add(t);
 				}
 			}
@@ -193,5 +213,19 @@ public class FluidPipeNetwork {
 		}
 		FluidPipeNetworkRegistry.getRegistry((ServerLevel)world).removeNetwork(this);
 		return networks;
+	}
+
+	public String getInfo() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Network ID: " + id +"\n");
+		builder.append("Pressure sources:\n");
+		for (PressureSource p : pressureSources) {
+			builder.append(p.toString() + "\n");
+		}
+		builder.append("Nodes:\n");
+		for (PipeNode p : nodes) {
+			builder.append(p.toString() + "\n");
+		}
+		return builder.toString();
 	}
 }

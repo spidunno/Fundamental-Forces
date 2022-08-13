@@ -3,6 +3,10 @@ package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.block.*;
 import com.sammy.fufo.common.blockentity.*;
+import com.sammy.fufo.common.item.FluidTankItem;
+import com.sammy.fufo.common.logistics.fluid_tank.FluidTankBlock;
+import com.sammy.fufo.common.logistics.fluid_tank.FluidTankBlockEntity;
+import com.sammy.fufo.common.logistics.sealed_barrel.SealedBarrelBlock;
 import com.sammy.fufo.core.setup.content.item.tabs.ContentTab;
 import com.sammy.ortus.systems.block.OrtusBlockProperties;
 import com.tterrag.registrate.Registrate;
@@ -15,10 +19,14 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.core.Direction;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.GlassBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -31,50 +39,130 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePrope
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.common.Tags;
 
+import java.util.function.Function;
+
+import static com.sammy.fufo.FufoMod.fufoPath;
 import static com.sammy.fufo.core.setup.content.block.BlockPropertiesRegistry.*;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
 
+@SuppressWarnings("ConstantConditions")
 public class BlockRegistrate {
     private static final Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(ContentTab::get);
 
     //TODO: figure out why generic arguments aren't inferred in the second generic in block registration, called prior to .setBlockEntity
 
-    
-    //pipes
-    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
-		(p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupItemBlock("pump",
-    		(p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupItemBlock("valve",
-    		(p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    
-    //machines
-    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES()).blockstate(blankState()).register();
 
-    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES()).blockstate(predefinedState()).register();
-    public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = setupItemBlock("crude_needle", (p) -> new CrudeNeedleBlock<>(p).<CrudeNeedleBlock<CrudeNeedleBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), CRUDE_PROPERTIES()).blockstate(blankState()).register();
-    public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).blockstate(blankState()).register();
+    //fluid management
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
+        (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(BlockEntityRegistrate.ANCHOR), CRUDE_PROPERTIES())
+        .blockstate(predefinedState())
+        .register();
+
+    public static final BlockEntry<FluidTankBlock<FluidTankBlockEntity>> FLUID_TANK = setupBlock("fluid_tank", (p) -> new FluidTankBlock<>(p).<FluidTankBlock<FluidTankBlockEntity>>setBlockEntity(BlockEntityRegistrate.FLUID_TANK), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> {
+            Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_tank/" + s)));
+            p.getVariantBuilder(ctx.get())
+                .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("single_unit")).addModel()
+                .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_top")).addModel()
+                .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_middle")).addModel()
+                .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("tall_unit_bottom")).addModel();
+        })
+        .item(FluidTankItem::new)
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_tank/single_unit"))).build())
+        .build()
+        .register();
+
+
+    public static final BlockEntry<SealedBarrelBlock<SealedBarrelBlockEntity>> SEALED_BARREL = setupBlock("sealed_barrel", (p) -> new SealedBarrelBlock<>(p).<SealedBarrelBlock<SealedBarrelBlockEntity>>setBlockEntity(BlockEntityRegistrate.SEALED_BARREL), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> {
+            Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_barrel/" + s)));
+            p.getVariantBuilder(ctx.get())
+                .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NORMAL).modelForState().modelFile(modelFunction.apply("default")).addModel()
+                .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NO_WINDOW).modelForState().modelFile(modelFunction.apply("no_window")).addModel();
+        })
+        .item()
+        .recipe((ctx, p) -> {
+            ShapedRecipeBuilder.shaped(ctx.get())
+                .pattern("XZX").pattern("XYX").pattern("XZX")
+                .define('X', ItemTags.PLANKS).define('Z', ItemTags.WOODEN_SLABS).define('Y', Tags.Items.INGOTS_COPPER)
+                .group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT))
+                .save(p, p.safeId(ctx.get()));
+
+            ShapelessRecipeBuilder.shapeless(ctx.get())
+                .requires(Tags.Items.BARRELS_WOODEN)
+                .requires(Tags.Items.INGOTS_COPPER)
+                .group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT))
+                .save(p, fufoPath("sealed_barrel_simple"));
+        })
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_barrel/default"))).build())
+        .build()
+        .register();
+
+    public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupBlock("valve",
+        (p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(BlockEntityRegistrate.VALVE), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> {
+            ModelFile model = p.models().getExistingFile(fufoPath("block/logistics/valve"));
+            p.getVariantBuilder(ctx.get())
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.Y).modelForState().modelFile(model).addModel()
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.Z).modelForState().modelFile(model).rotationX(90).addModel()
+                .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.X).modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
+        })
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
+        .build()
+        .register();
+
+    public static final BlockEntry<PipeNodeBlock<PumpBlockEntity>> PUMP = setupBlock("pump",
+        (p) -> new PipeNodeBlock<PumpBlockEntity>(p).<PipeNodeBlock<PumpBlockEntity>>setBlockEntity(BlockEntityRegistrate.PUMP), CRUDE_PROPERTIES())
+        .blockstate(invisibleState())
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
+        //.model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/pump"))).build())
+        .build()
+        .register();
+
+    //machines
+//    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES())
+//        .blockstate(invisibleState())
+//        .register();
+
+    public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_ARRAY), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> p.horizontalBlock(ctx.get(), p.models().getExistingFile(fufoPath("block/crude_array"))))
+        .register();
+    public static final BlockEntry<CrudePrimerBlock<CrudePrimerBlockEntity>> CRUDE_PRIMER = setupItemBlock("crude_primer", (p) -> new CrudePrimerBlock<>(p).<CrudePrimerBlock<CrudePrimerBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_PRIMER), CRUDE_PROPERTIES())
+        .blockstate((ctx, p) -> p.horizontalBlock(ctx.get(), p.models().getExistingFile(fufoPath("block/crude_primer"))))
+        .register();
+    public static final BlockEntry<CrudeNeedleBlock<CrudeNeedleBlockEntity>> CRUDE_NEEDLE = setupItemBlock("crude_needle", (p) -> new CrudeNeedleBlock<>(p).<CrudeNeedleBlock<CrudeNeedleBlockEntity>>setBlockEntity(BlockEntityRegistrate.CRUDE_NEEDLE), CRUDE_PROPERTIES()).blockstate(invisibleState()).register();
+    public static final BlockEntry<UITestBlock<UITestBlockEntity>> UI_TEST = setupItemBlock("ui_test", (p) -> new UITestBlock<>(p).<UITestBlock<UITestBlockEntity>>setBlockEntity(BlockEntityRegistrate.UI_TEST_BLOCK), CRUDE_PROPERTIES()).blockstate(invisibleState()).register();
 
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = setupBlock("meteor_fire", (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(BlockEntityRegistrate.METEOR_FLAME), METEOR_FIRE_PROPERTIES()).blockstate(predefinedState()).register();
     public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE = setupItemBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), ASTEROID_PROPERTIES())
-            .blockstate(ortusiteState())
-            .tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .loot(depletedShardLootTable())
-            .register();
+        .blockstate((ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
+            ResourceLocation registryName = ctx.get().getRegistryName();
+            String newPath = "block/" + registryName.getPath() + "_" + s.getValue(FlammableMeteoriteBlock.DEPLETION_STATE);
+            return ConfiguredModel.builder().modelFile(p.models().cubeAll(newPath, new ResourceLocation(registryName.getNamespace(), newPath))).build();
+        }))
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .loot(depletedShardLootTable())
+        .item()
+        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry),fufoPath("block/ortusite_0"))).build())
+        .build()
+        .register();
 
-    public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).blockstate(blankState()).register();
+    public static final BlockEntry<OrbBlock<OrbBlockEntity>> FORCE_ORB = setupBlock("force_orb", (p) -> new OrbBlock<>(p).<OrbBlock<OrbBlockEntity>>setBlockEntity(BlockEntityRegistrate.ORB), ORB_PROPERTIES()).blockstate(invisibleState()).register();
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = setupItemBlock("block_of_crack", Block::new, CRACK_PROPERTIES()).register();
 
-    public static final BlockEntry<GlassBlock> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", GlassBlock::new, VOLCANIC_GLASS_PROPERTIES()).register();
-    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).blockstate(blankState()).register();
-    public static final BlockEntry<Block> CHARRED_ROCK = setupItemBlock("charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
-    public static final BlockEntry<SlabBlock> CHARRED_ROCK_SLAB = setupSlabBlock("charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
-    public static final BlockEntry<StairBlock> CHARRED_ROCK_STAIRS = setupStairsBlock("charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
-    public static final BlockEntry<Block> POLISHED_CHARRED_ROCK = setupItemBlock("polished_charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
-    public static final BlockEntry<SlabBlock> POLISHED_CHARRED_ROCK_SLAB = setupSlabBlock("polished_charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
-    public static final BlockEntry<StairBlock> POLISHED_CHARRED_ROCK_STAIRS = setupStairsBlock("polished_charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
+//    public static final BlockEntry<GlassBlock> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", GlassBlock::new, VOLCANIC_GLASS_PROPERTIES()).register();
+//    public static final BlockEntry<ScorchedEarthBlock> SCORCHED_EARTH = setupItemBlock("scorched_earth", ScorchedEarthBlock::new, SCORCHED_EARTH_PROPERTIES()).blockstate(invisibleState()).register();
+//    public static final BlockEntry<Block> CHARRED_ROCK = setupItemBlock("charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
+//    public static final BlockEntry<SlabBlock> CHARRED_ROCK_SLAB = setupSlabBlock("charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
+//    public static final BlockEntry<StairBlock> CHARRED_ROCK_STAIRS = setupStairsBlock("charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), CHARRED_ROCK).register();
+//    public static final BlockEntry<Block> POLISHED_CHARRED_ROCK = setupItemBlock("polished_charred_rock", Block::new, CHARRED_ROCK_PROPERTIES()).register();
+//    public static final BlockEntry<SlabBlock> POLISHED_CHARRED_ROCK_SLAB = setupSlabBlock("polished_charred_rock_slab", SlabBlock::new, CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
+//    public static final BlockEntry<StairBlock> POLISHED_CHARRED_ROCK_STAIRS = setupStairsBlock("polished_charred_rock_stairs", (p) -> new StairBlock(CHARRED_ROCK::getDefaultState, p), CHARRED_ROCK_PROPERTIES(), POLISHED_CHARRED_ROCK).register();
 
     public static <T extends StairBlock> BlockBuilder<T, Registrate> setupStairsBlock(String name, NonNullFunction<BlockBehaviour.Properties, T> factory, OrtusBlockProperties properties, RegistryEntry<? extends Block> parent) {
         return setupItemBlock(name, factory, properties).blockstate(stairState(parent));
@@ -102,33 +190,17 @@ public class BlockRegistrate {
         return (ctx, p) -> p.stairsBlock(ctx.getEntry(), p.blockTexture(parent.get()));
     }
 
-    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> ortusiteState() {
-        return (ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
-            int value = s.getValue(FlammableMeteoriteBlock.DEPLETION_STATE);
-            ResourceLocation registryName = ctx.get().getRegistryName();
-            String newPath = "block/" + registryName.getPath() + "_" + value;
-            ModelFile modelFile = p.models().cubeAll(newPath, new ResourceLocation(registryName.getNamespace(), newPath));
-            return ConfiguredModel.builder().modelFile(modelFile).build();
-        });
-    }
-
-    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> blankState() {
-        return (ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
-            ModelFile empty = p.models().getExistingFile(new ResourceLocation("block/air"));
-            return ConfiguredModel.builder().modelFile(empty).build();
-        });
+    public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> invisibleState() {
+        return (ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> ConfiguredModel.builder().modelFile(p.models().getExistingFile(new ResourceLocation("block/air"))).build());
     }
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> predefinedState() {
-        return (ctx, p) -> {
-        };
+        return (ctx, p) -> {};
     }
 
-
-    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() {
+    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() { //TODO: do something with this, it's kind of an eyesore.
         return (l, b) -> {
             LootTable.Builder builder = LootTable.lootTable();
-
             LootPool.Builder normalShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
             LootPool.Builder depletedShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());
             int size = FlammableMeteoriteBlock.DEPLETION_STATE.getPossibleValues().size() - 1;
@@ -136,14 +208,13 @@ public class BlockRegistrate {
                 int fullShards = size - i;
                 if (i != 0) {
                     depletedShards.add(LootItem.lootTableItem(ItemRegistrate.DEPLETED_ORTUSITE_CHUNK.get())
-                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
-                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))));
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(i))));
                 }
-
                 if (fullShards != 0) {
                     normalShards.add(LootItem.lootTableItem(ItemRegistrate.ORTUSITE_CHUNK.get())
-                            .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
-                            .apply(SetItemCountFunction.setCount(ConstantValue.exactly(fullShards))));
+                        .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b).setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(FlammableMeteoriteBlock.DEPLETION_STATE, i)))
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(fullShards))));
                 }
             }
             l.add(b, builder.withPool(depletedShards).withPool(normalShards));

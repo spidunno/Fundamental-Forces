@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "side": "fufo:block/charred_rock",
-    "bottom": "fufo:block/charred_rock",
-    "top": "fufo:block/charred_rock"
-  }
-}

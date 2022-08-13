@@ -7,6 +7,7 @@ import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.common.capability.FufoPlayerDataCapability;
 import com.sammy.fufo.core.setup.client.KeyBindingRegistry;
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
+import com.sammy.fufo.core.systems.magic.spell.attributes.effect.SpellEffect;
 import com.sammy.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
 import com.sammy.ortus.capability.OrtusPlayerDataCapability;
 import com.sammy.ortus.systems.rendering.VFXBuilders;
@@ -43,7 +44,7 @@ public class PlayerSpellHotbarHandler {
                 FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
-                        if (!selectedSpell.isEmpty()) {
+                        if (!selectedSpell.isEmpty() && selectedSpell.effect.handler != SpellEffect.CastLogicHandler.ALWAYS_DEFAULT_CAST) {
                             selectedSpell.cast(serverPlayer, event.getPos(), event.getHitVec());
                         }
                     }
@@ -70,7 +71,7 @@ public class PlayerSpellHotbarHandler {
             if (event.player instanceof ServerPlayer serverPlayer) {
                 if (handler.open && OrtusPlayerDataCapability.getCapability(player).rightClickHeld) {
                     SpellInstance selectedSpell = handler.spellHotbar.getSelectedSpell(player);
-                    if (!selectedSpell.isEmpty()) {
+                    if (!selectedSpell.isEmpty() && selectedSpell.effect.handler != SpellEffect.CastLogicHandler.ONLY_BLOCK) {
                         selectedSpell.cast(serverPlayer);
                     }
                 }
@@ -207,7 +208,7 @@ public class PlayerSpellHotbarHandler {
                                 }
                                 if (instance.isOnCooldown()) {
                                     int cooldownOffset = (int) (22 * instance.cooldown.getProgress());
-                                    barBuilder.setPositionWithWidth(x, y+cooldownOffset, 20, 22-cooldownOffset).setUVWithWidth(28, 28 + cooldownOffset, 20, 22 - cooldownOffset, 256f).setAlpha(0.5f).draw(poseStack);
+                                    barBuilder.setPositionWithWidth(x, y+cooldownOffset, 20, 22-cooldownOffset).setUVWithWidth(28, 28 + cooldownOffset, 20, 22 - cooldownOffset, 256f).setAlpha(0.5f).draw(poseStack).setUVWithWidth(28, 28, 20, 22, 256f);
                                 }
                             }
                         }

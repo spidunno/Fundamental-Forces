@@ -1,21 +1,17 @@
 package com.sammy.fufo.core.systems.magic.spell.attributes.effect;
 
 import com.sammy.fufo.core.systems.magic.spell.SpellInstance;
-import com.sammy.ortus.capability.OrtusPlayerDataCapability;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.common.Tags;
-
-import java.util.function.Supplier;
 
 public class PlaceSpellEffect extends SpellEffect{
     BlockEntry<?> entry;
     public PlaceSpellEffect(BlockEntry<?> entry){
+        super(CastLogicHandler.ONLY_BLOCK);
         this.entry = entry;
     }
     @Override
