@@ -100,7 +100,7 @@ public class FluidPipeNetwork {
 	}
 	
 	private void recalcPressure() {
-		Minecraft.getInstance().mouseHandler.releaseMouse();
+//		Minecraft.getInstance().mouseHandler.releaseMouse();
 		for (PressureSource p : pressureSources) {
 			PipeNode in = p.getConnection(FlowDir.IN);
 			recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
