@@ -288,8 +288,13 @@ public class PipeNodeBlockEntity extends OrtusBlockEntity implements PipeNode, D
 
 	@Override
 	public void updateSource(PressureSource p, FlowDir dir, double dist) {
+		boolean found = false;
 		for (Triple<PressureSource, FlowDir, Double> set : sources) {
 			if (set.getLeft() == p && set.getMiddle() == dir) set = Triple.of(p, dir, dist); // Will this CME?
+			found = true;
+		}
+		if (!found) {
+			sources.add(Triple.of(p, dir, dist));
 		}
 	}
 

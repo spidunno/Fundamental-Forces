@@ -86,6 +86,7 @@ public class FluidPipeNetwork {
 	
 	// Each node just needs to keep its own distance from each pressure source.
 	// This is not an efficient algorithm but it doesn't run very often so should be ok
+	// Y'know, as long as we can avoid infinite recursion
 	private void recalcPressureHelper(PressureSource source, FlowDir dir, PipeNode node, Set<PipeNode> visited, double distance) {
 		node.updateSource(source, dir, distance);
 		for (PipeNode next : node.getConnectedNodes()) {
@@ -99,6 +100,7 @@ public class FluidPipeNetwork {
 	}
 	
 	private void recalcPressure() {
+		Minecraft.getInstance().mouseHandler.releaseMouse();
 		for (PressureSource p : pressureSources) {
 			PipeNode in = p.getConnection(FlowDir.IN);
 			recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
