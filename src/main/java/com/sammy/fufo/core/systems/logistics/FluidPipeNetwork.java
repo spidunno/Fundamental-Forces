@@ -80,14 +80,17 @@ public class FluidPipeNetwork {
 	public void addNode(PipeNode node, boolean reciprocate) {
 		nodes.add(node);
 		nodePositions.add(node.getPos());
+		recalcPressure();
 		if (reciprocate) node.setNetwork(this, false);
 	}
 	
 	// Each node just needs to keep its own distance from each pressure source.
 	// This is not an efficient algorithm but it doesn't run very often so should be ok
+	// Y'know, as long as we can avoid infinite recursion
 	private void recalcPressureHelper(PressureSource source, FlowDir dir, PipeNode node, Set<PipeNode> visited, double distance) {
 		node.updateSource(source, dir, distance);
 		for (PipeNode next : node.getConnectedNodes()) {
+			if (next == source) continue;
 			double nextDist = distance + Math.sqrt(node.getPos().distSqr(next.getPos()));
 			if (!visited.contains(next) || nextDist < next.getDistFromSource(source, dir)) {
 				visited.add(next);
@@ -97,6 +100,7 @@ public class FluidPipeNetwork {
 	}
 	
 	private void recalcPressure() {
+		Minecraft.getInstance().mouseHandler.releaseMouse();
 		for (PressureSource p : pressureSources) {
 			PipeNode in = p.getConnection(FlowDir.IN);
 			recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
@@ -209,5 +213,19 @@ public class FluidPipeNetwork {
 		}
 		FluidPipeNetworkRegistry.getRegistry((ServerLevel)world).removeNetwork(this);
 		return networks;
+	}
+
+	public String getInfo() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Network ID: " + id +"\n");
+		builder.append("Pressure sources:\n");
+		for (PressureSource p : pressureSources) {
+			builder.append(p.toString() + "\n");
+		}
+		builder.append("Nodes:\n");
+		for (PipeNode p : nodes) {
+			builder.append(p.toString() + "\n");
+		}
+		return builder.toString();
 	}
 }
