@@ -69,11 +69,6 @@ public class ArrayBlockEntity extends OrtusBlockEntity {
 
     @Override
     public InteractionResult onUse(Player player, InteractionHand hand) {
-        //box.removeChild(1);
-
-        if(level.isClientSide) {
-            Minecraft.getInstance().setScreen(new ProgrammingScreen(null));
-        }
 
         return InteractionResult.SUCCESS;
     }

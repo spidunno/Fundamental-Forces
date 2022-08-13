@@ -1,7 +1,5 @@
 package com.sammy.fufo.client.renderers.entity.weave;
 
-import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
-import com.lowdragmc.shimmer.client.shader.RenderUtils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
@@ -89,7 +87,8 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             ps.translate(-offset.getX(), -offset.getY(), -offset.getZ());
             i++;
         }
-        weave.getLinks().forEach((link, type) -> {
+        // TODO: fix this to not use shimmer!
+        /*weave.getLinks().forEach((link, type) -> {
             ps.pushPose();
             ps.translate(link.getFirst().getX(), link.getFirst().getY() + 0.1, link.getFirst().getZ());
             PoseStack finalStack = RenderUtils.copyPoseStack(ps);
@@ -100,7 +99,7 @@ public class AbstractWeaveEntityRenderer extends EntityRenderer<AbstractWeaveEnt
             });
             ps.translate(-link.getFirst().getX(), -link.getFirst().getY() - 0.1, -link.getFirst().getZ());
             ps.popPose();
-        });
+        });*/
         ps.popPose();
     }
 

@@ -11,8 +11,6 @@ import com.sammy.fufo.client.ui.transition.AxisOrderedPositionEasingTransition;
 import com.sammy.fufo.client.ui.transition.PositionEasingTransition;
 import com.sammy.fufo.client.ui.transition.SizeEasingTransition;
 import com.sammy.fufo.client.ui.transition.Transition;
-import com.sammy.fufo.core.setup.content.programming.InstructionTypeRegistry;
-import com.sammy.fufo.core.systems.programming.InstructionType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -26,12 +24,9 @@ public class ProgrammingScreen extends Screen {
 
     FlexBox screen;
     FlexBox sidePanel;
-    FlexBox toolbox;
-    FlexBox collapser;
-    Wrapper actions;
 
     boolean collapsed = true;
-    float scale = 1.5f;
+    float scale = 1.0f;
     public long previousTime = -1;
 
     public ProgrammingScreen(Component pTitle) {
@@ -46,119 +41,32 @@ public class ProgrammingScreen extends Screen {
         // position transition
         PositionEasingTransition positionTransition = new PositionEasingTransition(5.0);
         SizeEasingTransition sizeTransition = new SizeEasingTransition(5.0);
-//        Transition collapsingTransition = new AxisOrderedPositionEasingTransition(7.0, true, 8.0);
-//        Transition expandingTransition = new AxisOrderedPositionEasingTransition(7.0, false, 8.0);
         Transition collapsingTransition = new PositionEasingTransition(7.0);
         Transition expandingTransition = new PositionEasingTransition(7.0);
 
         screen = new FlexBox()
                 .withWidth(new PixelConstraint(width / scale))
                 .withHeight(new PixelConstraint(height / scale))
-                .withOpacity(0.7f)
-                .withColor(Color.GRAY)
-                .withAxis(FlexBox.Axis.HORIZONTAL)
-                .padded(new Vector2(5, 5));
+                .withOpacity(0.8f)
+                .withColor(Color.WHITE)
+                .withAxis(FlexBox.Axis.HORIZONTAL);
 
         // side panel/top left window
         DimensionConstraint collapsedConstraint = new PixelConstraint(110);
         DimensionConstraint expandedConstraint = new PercentageConstraint(1.0);
 
         sidePanel = new FlexBox()
-                .withWidth(new PixelConstraint(80))
-                .withHeight(collapsedConstraint)
+                .withWidth(new PixelConstraint(50))
+                .withHeight(new PixelConstraint(1000))
                 .withAlignmentAlongAxis(FlexBox.Alignment.CENTER)
                 .withAlignmentAgainstAxis(FlexBox.Alignment.START)
                 .withAxis(FlexBox.Axis.VERTICAL)
                 .withTransition(positionTransition)
                 .withTransition(sizeTransition)
-                .withOpacity(0.0f);
-
-        sidePanel.withChild(new FlexBox()
-                .padded(new Vector2(2, 2))
-                .withHeight(new PixelConstraint(12))
-                .withWidth(new PercentageConstraint(1))
                 .withColor(Color.BLACK)
-                .withOpacity(0.8f)
-                .withChild(new TextComponent("Actions", 8f))
-                .withTransition(positionTransition)
-                .withTransition(sizeTransition)
-        );
-
-
-        toolbox = new FlexBox()
-                .withWidth(new PercentageConstraint(1))
-                .withHeight(new PercentageConstraint(1))
-                .withFlex(1)
-                .withAxis(FlexBox.Axis.VERTICAL)
-                .padded(new Vector2(3, 3))
-                .withColor(Color.BLACK)
-                .withOpacity(0.5f)
-                .withTransition(positionTransition)
-                .withTransition(sizeTransition)
-                .withSpacing(3);
-
-        actions = new Wrapper()
-                .withWidth(new PercentageConstraint(1))
-                .withHeight(new PercentageConstraint(1))
-                .withColor(Color.RED)
-                .withOpacity(0.0f)
-                .withAxis(FlexBox.Axis.HORIZONTAL)
-                .withTransition(positionTransition)
-                .withTransition(sizeTransition)
-                .withSpacing(3);
-
-        // add all the instruction type icons to toolbox
-        for (InstructionType instructionType : InstructionTypeRegistry.ORDERED_INSTRUCTION_TYPES) {
-            actions.withChild(new InstructionTypeIcon(instructionType).withTransition(expandingTransition));
-        }
-
-        toolbox.withChild(actions);
-
-        sidePanel.withChild(toolbox);
-
-        String collapsedText = "▼";
-        String expandedText = "▲";
-
-        TextComponent collapsedTextComponent = new TextComponent(collapsedText, 13f);
-        collapser = new FlexBox()
-                .withWidth(new PercentageConstraint(1.0))
-                .withHeight(new PixelConstraint(13))
-                .withColor(Color.BLACK)
-                .withOpacity(0.6f)
-                .withAlignmentAgainstAxis(FlexBox.Alignment.CENTER)
-                .withAlignmentAlongAxis(FlexBox.Alignment.CENTER)
-                .withTransition(positionTransition)
-                .withTransition(sizeTransition)
-                .withChild(collapsedTextComponent)
-                .withClickHandler((position, button) -> {
-                    if(collapsed) {
-                        actions.withAxis(FlexBox.Axis.VERTICAL);
-                        sidePanel.withHeight(expandedConstraint);
-                        sidePanel.reform();
-
-                        for (UIComponent<?> child : actions.getChildren()) {
-                            child.withTransition(expandingTransition);
-                            ((InstructionTypeIcon) child).showName(true);
-                        }
-                    } else {
-                        actions.withAxis(FlexBox.Axis.HORIZONTAL);
-                        sidePanel.withHeight(collapsedConstraint);
-                        sidePanel.reform();
-
-                        for (UIComponent<?> child : actions.getChildren()) {
-                            child.withTransition(collapsingTransition);
-                            ((InstructionTypeIcon) child).showName(false);
-                        }
-                    }
-
-                    collapsed = !collapsed;
-                    collapsedTextComponent.setText(collapsed ? collapsedText : expandedText);
-                });
-
-        sidePanel.withChild(collapser);
+                .withOpacity(0.5f);
 
         screen.withChild(sidePanel);
-
         screen.jerk();
 
     }
@@ -195,7 +103,6 @@ public class ProgrammingScreen extends Screen {
         screen.render(pPoseStack, delta);
 
         previousTime = currentTime;
-
     }
 
     @Override

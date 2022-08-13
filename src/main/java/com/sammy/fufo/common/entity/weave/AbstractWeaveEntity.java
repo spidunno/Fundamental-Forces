@@ -1,6 +1,5 @@
 package com.sammy.fufo.common.entity.weave;
 
-import com.lowdragmc.shimmer.client.postprocessing.PostProcessing;
 import com.sammy.fufo.core.systems.magic.weaving.StandardWeave;
 import com.sammy.fufo.core.systems.magic.weaving.Weave;
 import com.sammy.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
