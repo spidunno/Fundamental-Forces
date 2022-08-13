@@ -3,12 +3,16 @@ package com.sammy.fufo.core.registratation;
 import com.sammy.fufo.FufoMod;
 import com.sammy.fufo.client.renderers.block.*;
 import com.sammy.fufo.common.blockentity.*;
+import com.sammy.fufo.common.logistics.fluid_tank.FluidTankBlockEntity;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class BlockEntityRegistrate {
 
+    public static final BlockEntityEntry<SealedBarrelBlockEntity> SEALED_BARREL =
+        FufoMod.registrate().<SealedBarrelBlockEntity>blockEntity("sealed_barrel", SealedBarrelBlockEntity::new).validBlocks(BlockRegistrate.SEALED_BARREL).register();
+
     public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
-        FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(BlockRegistrate.PIPE_ANCHOR).register();
+        FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(BlockRegistrate.FLUID_TANK).register();
 
     public static final BlockEntityEntry<BurnerExtractorBlockEntity> BURNER_EXTRACTOR =
             FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();
@@ -27,7 +31,6 @@ public class BlockEntityRegistrate {
 
     public static final BlockEntityEntry<MeteorFlameBlockEntity> METEOR_FLAME =
             FufoMod.registrate().<MeteorFlameBlockEntity>blockEntity("meteor_flame", MeteorFlameBlockEntity::new).validBlocks(BlockRegistrate.METEOR_FIRE).register();
-
 
     public static final BlockEntityEntry<CrudePrimerBlockEntity> CRUDE_PRIMER =
             FufoMod.registrate().<CrudePrimerBlockEntity>blockEntity("crude_primer", CrudePrimerBlockEntity::new).renderer(() -> CrudePrimerRenderer::new).validBlocks(BlockRegistrate.CRUDE_PRIMER).register();

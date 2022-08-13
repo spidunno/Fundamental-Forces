@@ -1,9 +1,0 @@
-{
-  "type": "fufo:mana_absorption",
-  "input": {
-    "tag": "forge:glass"
-  },
-  "output": {
-    "item": "fufo:volcanic_glass"
-  }
-}

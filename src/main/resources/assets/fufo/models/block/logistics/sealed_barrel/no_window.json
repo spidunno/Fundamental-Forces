@@ -1,0 +1,7 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "fufo:block/logistics/sealed_barrel/default",
+	"textures": {
+		"top": "fufo:block/logistics/sealed_barrel_top"
+	}
+}

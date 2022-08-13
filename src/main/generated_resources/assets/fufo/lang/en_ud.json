@@ -1,0 +1,20 @@
+{
+  "block.fufo.anchor": "\u0279o\u0265\u0254u\u2C6F",
+  "block.fufo.block_of_crack": "\u029E\u0254\u0250\u0279\u0186 \u025FO \u029E\u0254o\u05DF\u15FA",
+  "block.fufo.crude_array": "\u028E\u0250\u0279\u0279\u2C6F \u01DDpn\u0279\u0186",
+  "block.fufo.crude_needle": "\u01DD\u05DFp\u01DD\u01DDN \u01DDpn\u0279\u0186",
+  "block.fufo.crude_primer": "\u0279\u01DD\u026F\u0131\u0279\u0500 \u01DDpn\u0279\u0186",
+  "block.fufo.fluid_tank": "\u029Eu\u0250\u27D8 p\u0131n\u05DF\u2132",
+  "block.fufo.force_orb": "q\u0279O \u01DD\u0254\u0279o\u2132",
+  "block.fufo.meteor_fire": "\u01DD\u0279\u0131\u2132 \u0279o\u01DD\u0287\u01DDW",
+  "block.fufo.ortusite": "\u01DD\u0287\u0131sn\u0287\u0279O",
+  "block.fufo.pump": "d\u026Fn\u0500",
+  "block.fufo.sealed_barrel": "\u05DF\u01DD\u0279\u0279\u0250\u15FA p\u01DD\u05DF\u0250\u01DDS",
+  "block.fufo.ui_test": "\u0287s\u01DD\u27D8 \u0131\u2229",
+  "block.fufo.valve": "\u01DD\u028C\u05DF\u0250\u039B",
+  "item.fufo.crack": "\u029E\u0254\u0250\u0279\u0186",
+  "item.fufo.debug_tool": "\u05DFoo\u27D8 bnq\u01DD\u15E1",
+  "item.fufo.depleted_ortusite_chunk": "\u029Eun\u0265\u0186 \u01DD\u0287\u0131sn\u0287\u0279O p\u01DD\u0287\u01DD\u05DFd\u01DD\u15E1",
+  "item.fufo.dev_tool": "\u05DFoo\u27D8 \u028C\u01DD\u15E1",
+  "item.fufo.ortusite_chunk": "\u029Eun\u0265\u0186 \u01DD\u0287\u0131sn\u0287\u0279O"
+}
