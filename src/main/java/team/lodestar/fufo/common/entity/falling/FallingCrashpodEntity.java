@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.entity.falling;
 
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.world.level.Level;
@@ -8,7 +8,7 @@ import net.minecraftforge.network.NetworkHooks;
 
 public class FallingCrashpodEntity extends FallingEntity {
     public FallingCrashpodEntity(Level level) {
-        super(EntityRegistry.FALLING_CRASHPOD.get(), level);
+        super(FufoEntities.FALLING_CRASHPOD.get(), level);
     }
 
     @Override

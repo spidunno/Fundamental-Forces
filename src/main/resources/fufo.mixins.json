@@ -4,15 +4,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "fufo.refmap.json",
   "mixins": [
-    "team.lodestar.fufo.mixin.BaseFireBlockMixin",
-    "team.lodestar.fufo.mixin.FlintAndSteelMixin",
-    "team.lodestar.fufo.mixin.InventoryMixin"
+    "BaseFireBlockMixin",
+    "FlintAndSteelMixin",
+    "InventoryMixin"
   ],
   "client": [
-    "team.lodestar.fufo.mixin.GuiMixin",
-    "team.lodestar.fufo.mixin.ItemRendererMixin",
-    "team.lodestar.fufo.mixin.LevelRendererMixin",
-    "team.lodestar.fufo.mixin.RenderTypeMixin"
+    "GuiMixin",
+    "LevelRendererMixin",
+    "RenderTypeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

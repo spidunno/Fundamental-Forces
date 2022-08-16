@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.blockentity;
 
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.lodestone.setup.LodestoneParticleRegistry;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
@@ -17,7 +17,7 @@ public class OrbBlockEntity extends LodestoneBlockEntity {
     }
 
     public OrbBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.ORB.get(), pos, state);
+        super(FufoBlockEntities.ORB.get(), pos, state);
     }
 
     @Override

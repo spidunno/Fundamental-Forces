@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.block;
 
 import team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity;
-import team.lodestar.fufo.core.systems.logistics.PipeBuilderAssistant;
+import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
 import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

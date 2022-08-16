@@ -4,7 +4,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import team.lodestar.fufo.core.setup.content.RecipeTypeRegistry;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -47,7 +47,7 @@ public class NBTCarryRecipe extends CustomRecipe implements IShapedRecipe<Crafti
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeTypeRegistry.NBT_CARRY.get();
+        return FufoRecipeTypes.NBT_CARRY.get();
     }
 
     @Override

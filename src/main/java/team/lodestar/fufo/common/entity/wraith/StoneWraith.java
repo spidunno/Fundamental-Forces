@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.entity.wraith;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimatedEntity;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationEffectHandler;
 import gg.moonflower.pollen.pinwheel.api.common.animation.AnimationState;
@@ -37,7 +37,7 @@ public class StoneWraith extends Monster implements AnimatedEntity {
     private int animationTick;
 
     public StoneWraith(Level level) {
-        super(EntityRegistry.STONE_WRAITH.get(), level);
+        super(FufoEntities.STONE_WRAITH.get(), level);
         this.effectHandler = new AnimationEffectHandler(this);
         this.animationState = VIBING;
     }

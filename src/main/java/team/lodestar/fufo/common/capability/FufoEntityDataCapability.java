@@ -16,7 +16,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
 
-import static team.lodestar.fufo.core.setup.server.PacketRegistry.INSTANCE;
+import static team.lodestar.fufo.registry.common.FufoPackets.INSTANCE;
 
 public class FufoEntityDataCapability implements LodestoneCapability {
 

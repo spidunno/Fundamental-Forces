@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Set;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.systems.logistics.FluidPipeNetwork;
-import team.lodestar.fufo.core.systems.logistics.PipeNode;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
+import team.lodestar.fufo.core.fluid.PipeNode;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.entity.wisp;
 
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -18,11 +18,11 @@ public class WispEntity extends AbstractWispEntity {
     }
 
     public WispEntity(Level level) {
-        this(EntityRegistry.METEOR_FIRE_WISP.get(), level);
+        this(FufoEntities.METEOR_FIRE_WISP.get(), level);
     }
 
     public WispEntity(Level level, double posX, double posY, double posZ, double velX, double velY, double velZ) {
-        super(EntityRegistry.METEOR_FIRE_WISP.get(), level, posX, posY, posZ, velX, velY, velZ);
+        super(FufoEntities.METEOR_FIRE_WISP.get(), level, posX, posY, posZ, velX, velY, velZ);
     }
 
     @Override

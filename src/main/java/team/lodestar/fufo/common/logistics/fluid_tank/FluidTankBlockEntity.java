@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.logistics.fluid_tank;
 
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class FluidTankBlockEntity extends LodestoneBlockEntity {
     public FluidTankBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.FLUID_TANK.get(), pos, state);
+        super(FufoBlockEntities.FLUID_TANK.get(), pos, state);
     }
 
     public FluidTankBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {

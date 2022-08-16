@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.entity.magic.spell.tier1;
 
 import team.lodestar.fufo.common.entity.magic.spell.AbstractSpellProjectile;
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import team.lodestar.lodestone.setup.LodestoneParticleRegistry;
 import team.lodestar.lodestone.systems.easing.Easing;
 import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
@@ -22,7 +22,7 @@ public class SpellBolt extends AbstractSpellProjectile {
     public double knockback = 0.4;
 
     public SpellBolt(Level level) {
-        super(EntityRegistry.SPELL_BOLT.get(), level);
+        super(FufoEntities.SPELL_BOLT.get(), level);
         lifetime = 100;
     }
 

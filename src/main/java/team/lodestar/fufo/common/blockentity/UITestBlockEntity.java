@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.blockentity;
 
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -15,7 +15,7 @@ public class UITestBlockEntity extends LodestoneBlockEntity {
         super(type, pos, state);
     }
     public UITestBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.UI_TEST_BLOCK.get(),pos, state);
+        super(FufoBlockEntities.UI_TEST_BLOCK.get(),pos, state);
     }
 
     @Override

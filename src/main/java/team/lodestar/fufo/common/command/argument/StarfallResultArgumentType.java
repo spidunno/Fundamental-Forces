@@ -7,8 +7,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import team.lodestar.fufo.core.data.LangHelpers;
-import team.lodestar.fufo.core.setup.content.worldevent.StarfallActors;
+import team.lodestar.fufo.unsorted.LangHelpers;
+import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.Collection;
@@ -24,7 +24,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
     @Override
     public String parse(final StringReader reader) throws CommandSyntaxException {
         String read = reader.readUnquotedString();
-        if (StarfallActors.ACTORS.containsKey(read)) {
+        if (FufoStarfallActors.ACTORS.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -45,7 +45,7 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
 
     @Override
     public Collection<String> getExamples() {
-        return StarfallActors.ACTORS.keySet();
+        return FufoStarfallActors.ACTORS.keySet();
     }
 
     private static String escape(final String input) {

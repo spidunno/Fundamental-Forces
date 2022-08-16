@@ -1,13 +1,11 @@
 package team.lodestar.fufo.common.entity.weave;
 
-import team.lodestar.fufo.core.systems.magic.weaving.StandardWeave;
-import team.lodestar.fufo.core.systems.magic.weaving.Weave;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
+import team.lodestar.fufo.core.weaving.StandardWeave;
+import team.lodestar.fufo.core.weaving.Weave;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 import team.lodestar.lodestone.setup.LodestoneParticleRegistry;
-import team.lodestar.lodestone.setup.LodestoneRenderTypeRegistry;
 import team.lodestar.lodestone.systems.easing.Easing;
 import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
-import team.lodestar.lodestone.systems.rendering.particle.world.WorldParticleOptions;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

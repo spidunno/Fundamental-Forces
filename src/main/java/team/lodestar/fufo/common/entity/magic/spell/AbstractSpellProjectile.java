@@ -1,7 +1,6 @@
 package team.lodestar.fufo.common.entity.magic.spell;
 
-import team.lodestar.fufo.core.setup.content.magic.SpellRegistry;
-import team.lodestar.fufo.core.systems.magic.element.MagicElement;
+import team.lodestar.fufo.core.element.MagicElement;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -23,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import team.lodestar.fufo.registry.common.magic.FufoMagicElements;
 
 import java.awt.*;
 
@@ -70,7 +70,7 @@ public class AbstractSpellProjectile extends Projectile {
     @Override
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        element = SpellRegistry.ELEMENTS.get(new ResourceLocation(compound.getString("elementType")));
+        element = FufoMagicElements.ELEMENTS.get(new ResourceLocation(compound.getString("elementType")));
         age = compound.getInt("age");
         lifetime = compound.getInt("lifetime");
         startColor = new Color(compound.getInt("start"));

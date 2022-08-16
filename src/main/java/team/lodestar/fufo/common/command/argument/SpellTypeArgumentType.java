@@ -7,8 +7,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import team.lodestar.fufo.core.data.LangHelpers;
-import team.lodestar.fufo.core.setup.content.magic.SpellRegistry;
+import team.lodestar.fufo.registry.common.magic.FufoSpellTypes;
+import team.lodestar.fufo.unsorted.LangHelpers;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -26,7 +26,7 @@ public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
     @Override
     public ResourceLocation parse(final StringReader reader) throws CommandSyntaxException {
         ResourceLocation read = ResourceLocation.read(reader);
-        if (SpellRegistry.SPELL_TYPES.containsKey(read)) {
+        if (FufoSpellTypes.SPELL_TYPES.containsKey(read)) {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
@@ -47,7 +47,7 @@ public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
 
     @Override
     public Collection<String> getExamples() {
-        return SpellRegistry.SPELL_TYPES.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList());
+        return FufoSpellTypes.SPELL_TYPES.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList());
     }
 
     private static String escape(final String input) {

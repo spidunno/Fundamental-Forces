@@ -2,15 +2,15 @@ package team.lodestar.fufo.common.blockentity;
 
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
-import team.lodestar.fufo.core.reference.FluidStats;
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
-import team.lodestar.fufo.core.systems.logistics.FlowDir;
-import team.lodestar.fufo.core.systems.logistics.FluidPipeNetwork;
-import team.lodestar.fufo.core.systems.logistics.PipeBuilderAssistant;
-import team.lodestar.fufo.core.systems.logistics.PipeNode;
-import team.lodestar.fufo.core.systems.logistics.PressureSource;
-import team.lodestar.fufo.core.helpers.Debuggable;
-import team.lodestar.fufo.core.helpers.DevToolResponse;
+import team.lodestar.fufo.core.fluid.FluidStats;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
+import team.lodestar.fufo.core.fluid.FlowDir;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
+import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import team.lodestar.fufo.core.fluid.PipeNode;
+import team.lodestar.fufo.core.fluid.PressureSource;
+import team.lodestar.fufo.unsorted.util.Debuggable;
+import team.lodestar.fufo.unsorted.util.DevToolResponse;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 
@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Triple;
 
-import static team.lodestar.fufo.core.reference.ForcesThatAreActuallyFundamental.g;
+import static team.lodestar.fufo.unsorted.ForcesThatAreActuallyFundamental.g;
 
 @SuppressWarnings("unused")
 public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNode, Debuggable, DevToolResponse {
@@ -58,7 +58,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     }
 
     public PipeNodeBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.ANCHOR.get(), pos, state);
+        super(FufoBlockEntities.ANCHOR.get(), pos, state);
     }
 
     // TODO: fix this method for the 41261816th time

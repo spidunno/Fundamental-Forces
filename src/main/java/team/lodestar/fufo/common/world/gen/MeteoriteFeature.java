@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.world.gen;
 
 import com.google.common.math.StatsAccumulator;
-import team.lodestar.fufo.core.registratation.BlockRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlocks;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.helpers.DataHelper;
 import net.minecraft.core.BlockPos;
@@ -58,7 +58,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
         Collection<BlockPos> meteoriteSphere = BlockHelper.getSphereOfBlocks(meteorCenter.above(), meteorSize);
         meteoriteSphere.forEach(b -> {
-            level.setBlock(b, BlockRegistrate.ORTUSITE.get().defaultBlockState(), 3);
+            level.setBlock(b, FufoBlocks.ORTUSITE.get().defaultBlockState(), 3);
         });
         return true;
     }

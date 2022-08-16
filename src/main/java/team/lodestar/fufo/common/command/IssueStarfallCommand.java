@@ -5,8 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import team.lodestar.fufo.common.command.argument.StarfallResultArgumentType;
 import team.lodestar.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
 import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
-import team.lodestar.fufo.core.data.LangHelpers;
-import team.lodestar.fufo.core.setup.content.worldevent.StarfallActors;
+import team.lodestar.fufo.unsorted.LangHelpers;
+import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.lodestone.handlers.WorldEventHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -28,7 +28,7 @@ public class IssueStarfallCommand {
                         .then(Commands.argument("position", BlockPosArgument.blockPos())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = FufoStarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                     WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetPosition(pos).determined());
@@ -38,7 +38,7 @@ public class IssueStarfallCommand {
                         .then(Commands.argument("target", EntityArgument.player())
                                 .executes(context -> {
                                     CommandSourceStack source = context.getSource();
-                                    StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
+                                    StarfallActor result = FufoStarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                     ServerLevel level = source.getLevel();
                                     Player target = EntityArgument.getPlayer(context, "target");
                                     WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).randomizedStartingCountdown(level).targetEntity(target).determined());
@@ -52,7 +52,7 @@ public class IssueStarfallCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = FufoStarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             BlockPos pos = BlockPosArgument.getSpawnablePos(context, "position");
                                             WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetExactPosition(pos));
@@ -65,7 +65,7 @@ public class IssueStarfallCommand {
                                         .executes(context -> {
                                             CommandSourceStack source = context.getSource();
                                             int countdown = IntegerArgumentType.getInteger(context, "countdown");
-                                            StarfallActor result = StarfallActors.ACTORS.get(context.getArgument("result", String.class));
+                                            StarfallActor result = FufoStarfallActors.ACTORS.get(context.getArgument("result", String.class));
                                             ServerLevel level = source.getLevel();
                                             Player target = EntityArgument.getPlayer(context, "target");
                                             WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(result).exactStartingCountdown(countdown).targetEntity(target));

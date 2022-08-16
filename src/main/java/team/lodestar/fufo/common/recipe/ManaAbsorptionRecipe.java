@@ -2,7 +2,7 @@ package team.lodestar.fufo.common.recipe;
 
 import com.google.gson.JsonObject;
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.setup.content.RecipeTypeRegistry;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
 import team.lodestar.lodestone.systems.recipe.ILodestoneRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -43,7 +43,7 @@ public class ManaAbsorptionRecipe extends ILodestoneRecipe
     @Override
     public RecipeSerializer<?> getSerializer()
     {
-        return RecipeTypeRegistry.MANA_ABSORPTION.get();
+        return FufoRecipeTypes.MANA_ABSORPTION.get();
     }
 
     @Override

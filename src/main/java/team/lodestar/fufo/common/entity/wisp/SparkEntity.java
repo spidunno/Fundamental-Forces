@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.entity.wisp;
 
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import team.lodestar.lodestone.helpers.DataHelper;
 import team.lodestar.lodestone.helpers.EntityHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -27,11 +27,11 @@ public class SparkEntity extends AbstractWispEntity {
     }
 
     public SparkEntity(Level level) {
-        this(EntityRegistry.METEOR_FIRE_SPARK.get(), level);
+        this(FufoEntities.METEOR_FIRE_SPARK.get(), level);
     }
 
     public SparkEntity(Level level, double posX, double posY, double posZ, double velX, double velY, double velZ) {
-        super(EntityRegistry.METEOR_FIRE_SPARK.get(), level, posX, posY, posZ, velX, velY, velZ);
+        super(FufoEntities.METEOR_FIRE_SPARK.get(), level, posX, posY, posZ, velX, velY, velZ);
         findTarget();
     }
 

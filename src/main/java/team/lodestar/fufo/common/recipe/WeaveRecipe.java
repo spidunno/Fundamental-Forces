@@ -7,12 +7,12 @@ import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.setup.content.RecipeTypeRegistry;
-import team.lodestar.fufo.core.systems.magic.weaving.Bindable;
-import team.lodestar.fufo.core.systems.magic.weaving.BindingType;
-import team.lodestar.fufo.core.systems.magic.weaving.Weave;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.EntityTypeBindable;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
+import team.lodestar.fufo.core.weaving.Bindable;
+import team.lodestar.fufo.core.weaving.BindingType;
+import team.lodestar.fufo.core.weaving.Weave;
+import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
+import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -126,7 +126,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return RecipeTypeRegistry.WEAVE.get();
+        return FufoRecipeTypes.WEAVE.get();
     }
 
     @Override

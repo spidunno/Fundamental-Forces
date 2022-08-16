@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.item;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.helpers.Debuggable;
+import team.lodestar.fufo.unsorted.util.Debuggable;
 
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;

@@ -1,9 +1,9 @@
 package team.lodestar.fufo.common.blockentity;
 
-import team.lodestar.fufo.core.systems.logistics.FlowDir;
-import team.lodestar.fufo.core.systems.logistics.FluidPipeNetwork;
-import team.lodestar.fufo.core.systems.logistics.PipeNode;
-import team.lodestar.fufo.core.systems.logistics.PressureSource;
+import team.lodestar.fufo.core.fluid.FlowDir;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
+import team.lodestar.fufo.core.fluid.PipeNode;
+import team.lodestar.fufo.core.fluid.PressureSource;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;

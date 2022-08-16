@@ -2,8 +2,8 @@ package team.lodestar.fufo.common.blockentity;
 
 import java.util.ArrayList;
 
-import team.lodestar.fufo.core.systems.logistics.FluidPipeNetwork;
-import team.lodestar.fufo.core.systems.logistics.PipeNode;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
+import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 
 import net.minecraft.core.BlockPos;

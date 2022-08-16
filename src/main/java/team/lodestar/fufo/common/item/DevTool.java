@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.item;
 
-import team.lodestar.fufo.core.helpers.DevToolResponse;
+import team.lodestar.fufo.unsorted.util.DevToolResponse;
 import team.lodestar.lodestone.setup.LodestoneScreenParticleRegistry;
 import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 import team.lodestar.lodestone.systems.rendering.particle.screen.base.ScreenParticle;

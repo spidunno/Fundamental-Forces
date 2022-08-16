@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.entity.weave;
 
 import team.lodestar.fufo.common.blockentity.CrudePrimerBlockEntity;
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
+import team.lodestar.fufo.registry.common.FufoEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -22,7 +22,7 @@ public class WeaveEntity extends AbstractWeaveEntity {
     }
 
     public WeaveEntity(Level level) {
-        super(EntityRegistry.BASIC_WEAVE.get(), level);
+        super(FufoEntities.BASIC_WEAVE.get(), level);
         this.mainColors = new Color[]{new Color(254, 120, 0), new Color(254, 190, 66)};
         this.secondaryColors = new Color[]{new Color(255, 190, 0), new Color(155, 210, 122)};
     }

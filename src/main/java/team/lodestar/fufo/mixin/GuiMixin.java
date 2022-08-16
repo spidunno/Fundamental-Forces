@@ -1,7 +1,7 @@
 package team.lodestar.fufo.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import team.lodestar.fufo.core.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
 import net.minecraft.client.gui.Gui;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Gui.class)
 public class GuiMixin {
+
+    //TODO: all this should be done with forges gui system. Wire knows this shit best.
 
     @Inject(method = "renderHotbar", at = @At("HEAD"), cancellable = true)
     private void fundamentalForcesHotbarOffset(float partialTicks, PoseStack poseStack, CallbackInfo ci) {

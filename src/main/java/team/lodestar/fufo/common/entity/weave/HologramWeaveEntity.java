@@ -2,11 +2,11 @@ package team.lodestar.fufo.common.entity.weave;
 
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.recipe.WeaveRecipe;
-import team.lodestar.fufo.core.setup.content.RecipeTypeRegistry;
-import team.lodestar.fufo.core.setup.content.entity.EntityRegistry;
-import team.lodestar.fufo.core.systems.magic.weaving.BindingType;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.IngredientBindable;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
+import team.lodestar.fufo.registry.common.FufoEntities;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
+import team.lodestar.fufo.core.weaving.BindingType;
+import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
@@ -26,7 +26,7 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
     }
 
     public HologramWeaveEntity(Level level) {
-        super(EntityRegistry.HOLOGRAM_WEAVE.get(), level);
+        super(FufoEntities.HOLOGRAM_WEAVE.get(), level);
         this.noPhysics = true;
         this.weave.add(Vec3i.ZERO, new ItemStackBindable(Items.STONE.getDefaultInstance()));
         this.weave.add(this.weave.get(Vec3i.ZERO), new BindingType(FufoMod.fufoPath("boingo")), new Vec3i(0,1,0), new IngredientBindable(Ingredient.of(Tags.Items.COBBLESTONE)));
@@ -37,7 +37,7 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         if (pCompound.contains("Weave")) {
-            WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) RecipeTypeRegistry.WEAVE.get();
+            WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) FufoRecipeTypes.WEAVE.get();
             this.weave = serializer.fromNBT((CompoundTag) pCompound.get("Weave"));
         }
     }
@@ -45,7 +45,7 @@ public class HologramWeaveEntity extends AbstractWeaveEntity {
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         WeaveRecipe recipe = (WeaveRecipe) weave;
-        WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) RecipeTypeRegistry.WEAVE.get();
+        WeaveRecipe.Serializer serializer = (WeaveRecipe.Serializer) FufoRecipeTypes.WEAVE.get();
         pCompound.put("Weave", serializer.toNBT(recipe));
     }
 

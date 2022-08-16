@@ -1,13 +1,13 @@
 package team.lodestar.fufo.common.worldevents.starfall;
 
 import com.mojang.math.Vector3f;
-import team.lodestar.fufo.client.renderers.postprocess.EnergyScanFx;
-import team.lodestar.fufo.client.renderers.postprocess.EnergySphereFx;
-import team.lodestar.fufo.client.renderers.postprocess.WorldHighlightFx;
+import team.lodestar.fufo.client.rendering.postprocess.EnergyScanFx;
+import team.lodestar.fufo.client.rendering.postprocess.EnergySphereFx;
+import team.lodestar.fufo.client.rendering.postprocess.WorldHighlightFx;
 import team.lodestar.fufo.config.CommonConfig;
-import team.lodestar.fufo.core.setup.client.FufoPostProcessorRegistry;
-import team.lodestar.fufo.core.setup.content.worldevent.StarfallActors;
-import team.lodestar.fufo.core.setup.content.worldevent.WorldEventTypes;
+import team.lodestar.fufo.registry.client.FufoPostProcessingEffects;
+import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
+import team.lodestar.fufo.registry.common.worldevent.FufoWorldEventTypes;
 import team.lodestar.lodestone.handlers.ScreenshakeHandler;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.helpers.EntityHelper;
@@ -41,7 +41,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
     //TODO: this WILL cause a crash server side, either store it on the renderer, somewhere. Or store it here as an 'Object' and only manipulate it from a client side thread.
 
     public FallingStarfallEvent() {
-        super(WorldEventTypes.FALLING_STARFALL);
+        super(FufoWorldEventTypes.FALLING_STARFALL);
     }
 
     public FallingStarfallEvent(StarfallActor actor, Vec3 position, Vec3 motion, BlockPos targetedPos) {
@@ -61,7 +61,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         if (level instanceof ClientLevel) {
             if (highlight == null) {
                 highlight = new WorldHighlightFx(new Vector3f(position), 200F, new Vector3f(2F, 1F, 4F));
-                FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(highlight);
+                FufoPostProcessingEffects.WORLD_HIGHLIGHT.addFxInstance(highlight);
             }
             highlight.center = new Vector3f(position);
         }
@@ -89,7 +89,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
 
     private void playImpactEffect(Vector3f position) {
         Runnable energyReleaseEffect = () -> {
-            FufoPostProcessorRegistry.ENERGY_SCAN.addFxInstance(new EnergyScanFx(position) {
+            FufoPostProcessingEffects.ENERGY_SCAN.addFxInstance(new EnergyScanFx(position) {
                 @Override
                 public void update(double deltaTime) {
                     super.update(deltaTime);
@@ -106,7 +106,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
                     }
                 }
             });
-            FufoPostProcessorRegistry.ENERGY_SPHERE.addFxInstance(new EnergySphereFx(position, 0, 1) {
+            FufoPostProcessingEffects.ENERGY_SPHERE.addFxInstance(new EnergySphereFx(position, 0, 1) {
                 @Override
                 public void update(double deltaTime) {
                     super.update(deltaTime);
@@ -126,11 +126,11 @@ public class FallingStarfallEvent extends WorldEventInstance {
             });
         };
 
-        if (!FufoPostProcessorRegistry.IMPACT_FRAME.playEffect(position, .75F, energyReleaseEffect)) {
+        if (!FufoPostProcessingEffects.IMPACT_FRAME.playEffect(position, .75F, energyReleaseEffect)) {
             energyReleaseEffect.run();
         }
 
-        FufoPostProcessorRegistry.WORLD_HIGHLIGHT.addFxInstance(new WorldHighlightFx(position, 400F, new Vector3f(8F, 4F, 16F)) {
+        FufoPostProcessingEffects.WORLD_HIGHLIGHT.addFxInstance(new WorldHighlightFx(position, 400F, new Vector3f(8F, 4F, 16F)) {
             @Override
             public void update(double deltaTime) {
                 radius -= deltaTime * 20F;
@@ -186,7 +186,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
 
     @Override
     public FallingStarfallEvent deserializeNBT(CompoundTag tag) {
-        actor = StarfallActors.ACTORS.get(tag.getString("actorId"));
+        actor = FufoStarfallActors.ACTORS.get(tag.getString("actorId"));
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         position = new Vec3(tag.getDouble("posX"), tag.getDouble("posY"), tag.getDouble("posZ"));

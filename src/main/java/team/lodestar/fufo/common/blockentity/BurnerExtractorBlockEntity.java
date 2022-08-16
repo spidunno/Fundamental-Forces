@@ -1,6 +1,6 @@
 package team.lodestar.fufo.common.blockentity;
 
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -11,6 +11,6 @@ public class BurnerExtractorBlockEntity extends LodestoneBlockEntity {
         super(type, pos, state);
     }
     public BurnerExtractorBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.BURNER_EXTRACTOR.get(), pos, state);
+        super(FufoBlockEntities.BURNER_EXTRACTOR.get(), pos, state);
     }
 }

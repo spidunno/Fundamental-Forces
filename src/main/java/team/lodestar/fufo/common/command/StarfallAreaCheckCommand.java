@@ -2,7 +2,7 @@ package team.lodestar.fufo.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
-import team.lodestar.fufo.core.data.LangHelpers;
+import team.lodestar.fufo.unsorted.LangHelpers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.TextComponent;

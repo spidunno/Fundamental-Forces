@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import team.lodestar.fufo.core.systems.logistics.FluidPipeNetwork;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

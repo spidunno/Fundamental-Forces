@@ -1,8 +1,7 @@
 package team.lodestar.fufo.mixin;
 
 import team.lodestar.fufo.common.block.FlammableMeteoriteBlock;
-import team.lodestar.fufo.core.registratation.BlockRegistrate;
-import team.lodestar.fufo.core.setup.content.item.ItemTagRegistry;
+import team.lodestar.fufo.registry.common.FufoBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import team.lodestar.fufo.registry.common.FufoTags;
 
 @Mixin(BaseFireBlock.class)
 public class BaseFireBlockMixin {
@@ -25,8 +25,8 @@ public class BaseFireBlockMixin {
         if (pEntity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (pState.equals(pState.getBlock().defaultBlockState())) {
-                if (stack.is(ItemTagRegistry.METEOR_FLAME_CATALYST)) {
-                    pLevel.setBlock(pPos, BlockRegistrate.METEOR_FIRE.get().defaultBlockState(), 3);
+                if (stack.is(FufoTags.METEOR_FLAME_CATALYST)) {
+                    pLevel.setBlock(pPos, FufoBlocks.METEOR_FIRE.get().defaultBlockState(), 3);
                     ci.cancel();
                 }
             }

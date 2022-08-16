@@ -1,8 +1,8 @@
 package team.lodestar.fufo.common.worldevents.starfall;
 
 import team.lodestar.fufo.config.CommonConfig;
-import team.lodestar.fufo.core.setup.content.worldevent.StarfallActors;
-import team.lodestar.fufo.core.setup.content.worldevent.WorldEventTypes;
+import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
+import team.lodestar.fufo.registry.common.worldevent.FufoWorldEventTypes;
 import team.lodestar.lodestone.capability.LodestoneWorldDataCapability;
 import team.lodestar.lodestone.handlers.WorldEventHandler;
 import team.lodestar.lodestone.systems.worldevent.WorldEventInstance;
@@ -33,11 +33,11 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     protected boolean exactPosition;
 
     public ScheduledStarfallEvent() {
-        super(WorldEventTypes.SCHEDULED_STARFALL);
+        super(FufoWorldEventTypes.SCHEDULED_STARFALL);
     }
 
     public ScheduledStarfallEvent(StarfallActor actor) {
-        super(WorldEventTypes.SCHEDULED_STARFALL);
+        super(FufoWorldEventTypes.SCHEDULED_STARFALL);
         this.actor = actor;
     }
 
@@ -173,7 +173,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
 
     @Override
     public ScheduledStarfallEvent deserializeNBT(CompoundTag tag) {
-        actor = StarfallActors.ACTORS.get(tag.getString("resultId"));
+        actor = FufoStarfallActors.ACTORS.get(tag.getString("resultId"));
         targetedUUID = tag.getUUID("targetedUUID");
         int[] positions = tag.getIntArray("targetedPos");
         targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
@@ -207,12 +207,12 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
 
     public static void addNaturalStarfall(ServerLevel level, LivingEntity entity) {
         if (areStarfallsAllowed(level)) {
-            ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined());
+            ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(FufoStarfallActors.SPACE_DEBRIS).targetEntity(entity).randomizedStartingCountdown(level).looping().determined());
             Double chance = CommonConfig.ASTEROID_CHANCE.getConfigValue();
             int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.getConfigValue();
             for (int i = 0; i < maxAsteroids; i++) {
                 if (level.random.nextFloat() < chance) {
-                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(StarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined());
+                    WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(FufoStarfallActors.ASTEROID).targetEntity(entity).randomizedStartingCountdown(level, debrisInstance.startingCountdown).determined());
                     chance *= 0.8f;
                 } else {
                     break;

@@ -2,10 +2,10 @@ package team.lodestar.fufo.common.blockentity;
 
 import team.lodestar.fufo.common.block.FlammableMeteoriteBlock;
 import team.lodestar.fufo.common.entity.wisp.SparkEntity;
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
-import team.lodestar.fufo.core.setup.content.DamageSourceRegistry;
-import team.lodestar.fufo.core.setup.content.item.ItemTagRegistry;
-import team.lodestar.fufo.core.setup.content.magic.FireEffectTypeRegistry;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
+import team.lodestar.fufo.registry.common.FufoDamageSources;
+import team.lodestar.fufo.registry.common.FufoTags;
+import team.lodestar.fufo.registry.common.magic.FufoFireEffects;
 import team.lodestar.lodestone.handlers.FireEffectHandler;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
@@ -36,7 +36,7 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
     }
 
     public MeteorFlameBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.METEOR_FLAME.get(), pos, state);
+        super(FufoBlockEntities.METEOR_FLAME.get(), pos, state);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
         if (entity instanceof ItemEntity itemEntity) {
             ItemStack stack = itemEntity.getItem();
             if (!items.contains(itemEntity)) {
-                if (stack.is(ItemTagRegistry.METEOR_FLAME_CATALYST)) {
+                if (stack.is(FufoTags.METEOR_FLAME_CATALYST)) {
                     items.add(itemEntity);
                 }
                 return;
@@ -97,14 +97,14 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
         if (!(entity instanceof SparkEntity) && !entity.fireImmune() && !items.contains(entity)) {
             FireEffectInstance instance = FireEffectHandler.getFireEffectInstance(entity);
             if (instance == null) {
-                FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FireEffectTypeRegistry.METEOR_FIRE).setDuration(20));
+                FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FufoFireEffects.METEOR_FIRE).setDuration(20));
             } else {
                 instance.setDuration(160);
                 if (!level.isClientSide) {
                     instance.sync(entity);
                 }
             }
-            entity.hurt(DamageSourceRegistry.METEOR_FIRE, 1);
+            entity.hurt(FufoDamageSources.METEOR_FIRE, 1);
         }
     }
 

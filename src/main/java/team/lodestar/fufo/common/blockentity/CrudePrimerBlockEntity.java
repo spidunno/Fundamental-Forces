@@ -1,8 +1,8 @@
 package team.lodestar.fufo.common.blockentity;
 
 import team.lodestar.fufo.common.entity.weave.WeaveEntity;
-import team.lodestar.fufo.core.systems.magic.weaving.StandardWeave;
-import team.lodestar.fufo.core.systems.magic.weaving.recipe.ItemStackBindable;
+import team.lodestar.fufo.core.weaving.StandardWeave;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.systems.blockentity.ItemHolderBlockEntity;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntityInventory;

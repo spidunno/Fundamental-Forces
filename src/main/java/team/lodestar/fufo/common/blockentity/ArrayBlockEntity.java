@@ -3,11 +3,10 @@ package team.lodestar.fufo.common.blockentity;
 import team.lodestar.fufo.client.ui.component.FlexBox;
 import team.lodestar.fufo.client.ui.component.ScrollBox;
 import team.lodestar.fufo.client.ui.Vector2;
-import team.lodestar.fufo.client.ui.component.*;
 import team.lodestar.fufo.client.ui.component.TextComponent;
 import team.lodestar.fufo.client.ui.constraint.PercentageConstraint;
 import team.lodestar.fufo.client.ui.constraint.PixelConstraint;
-import team.lodestar.fufo.core.registratation.BlockEntityRegistrate;
+import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -58,7 +57,7 @@ public class ArrayBlockEntity extends LodestoneBlockEntity {
     }
 
     public ArrayBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityRegistrate.CRUDE_ARRAY.get(), pos, state);
+        super(FufoBlockEntities.CRUDE_ARRAY.get(), pos, state);
 
     }
 

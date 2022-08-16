@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.block;
 
 import team.lodestar.fufo.common.blockentity.MeteorFlameBlockEntity;
-import team.lodestar.fufo.core.setup.client.FufoParticleRegistry;
+import team.lodestar.fufo.registry.client.FufoParticles;
 import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.client.particle.ParticleRenderType;
@@ -61,7 +61,7 @@ public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends Lodeston
             int lifetime = (int) ((double) 8 / ((double) pLevel.random.nextFloat() * 0.8D + 0.2D) * 2.5f);
             Color startingColor = new Color(66 * lerp, 36 * lerp, 95 * lerp);
             Color endingColor = new Color(108 * lerp, 38 * lerp, 96 * lerp).brighter();
-            ParticleBuilders.create(FufoParticleRegistry.COLORED_SMOKE)
+            ParticleBuilders.create(FufoParticles.COLORED_SMOKE)
                     .randomOffset(0.5f, 0.25f)
                     .setScale(0.25f)
                     .setAlpha(1)

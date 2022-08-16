@@ -2,11 +2,11 @@ package team.lodestar.fufo.common.capability;
 
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
-import team.lodestar.fufo.core.handlers.PlayerSpellHotbarHandler;
-import team.lodestar.fufo.core.handlers.ProgressionHandler;
-import team.lodestar.fufo.core.setup.server.PacketRegistry;
-import team.lodestar.fufo.core.systems.logistics.PipeBuilderAssistant;
-import team.lodestar.fufo.core.systems.magic.spell.hotbar.SpellHotbar;
+import team.lodestar.fufo.registry.common.FufoPackets;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.ProgressionHandler;
+import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
 import team.lodestar.lodestone.helpers.NBTHelper;
 import team.lodestar.lodestone.systems.capability.LodestoneCapability;
 import team.lodestar.lodestone.systems.capability.LodestoneCapabilityProvider;
@@ -102,7 +102,7 @@ public class FufoPlayerDataCapability implements LodestoneCapability {
     }
 
     public static void sync(Player player, PacketDistributor.PacketTarget target, NBTHelper.TagFilter filter) {
-        getCapabilityOptional(player).ifPresent(c -> PacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), NBTHelper.filterTag(c.serializeNBT(), filter))));
+        getCapabilityOptional(player).ifPresent(c -> FufoPackets.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), NBTHelper.filterTag(c.serializeNBT(), filter))));
     }
 
     public static void syncServer(Player player) {
@@ -122,7 +122,7 @@ public class FufoPlayerDataCapability implements LodestoneCapability {
     }
 
     public static void sync(Player player, PacketDistributor.PacketTarget target) {
-        getCapabilityOptional(player).ifPresent(c -> PacketRegistry.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
+        getCapabilityOptional(player).ifPresent(c -> FufoPackets.INSTANCE.send(target, new FufoPlayerCapabilitySyncPacket(player.getUUID(), c.serializeNBT())));
     }
 
     public static LazyOptional<FufoPlayerDataCapability> getCapabilityOptional(Player player) {

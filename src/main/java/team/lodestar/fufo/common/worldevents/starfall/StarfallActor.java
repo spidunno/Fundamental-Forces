@@ -3,13 +3,12 @@ package team.lodestar.fufo.common.worldevents.starfall;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.capability.FufoChunkDataCapability;
 import team.lodestar.fufo.config.CommonConfig;
-import team.lodestar.fufo.core.setup.content.block.BlockTagRegistry;
+import team.lodestar.fufo.registry.common.FufoTags;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.setup.LodestoneBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
 import java.util.ArrayList;
@@ -75,7 +73,7 @@ public class StarfallActor {
             if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
                 failed += 8;
             }
-            if (state.is(BlockTags.FEATURES_CANNOT_REPLACE)) {
+            if (state.is(net.minecraft.tags.BlockTags.FEATURES_CANNOT_REPLACE)) {
                 return false;
             }
             if (!blockEntityCheck(level, pos)) {
@@ -97,7 +95,7 @@ public class StarfallActor {
 
     @SuppressWarnings("all")
     public static boolean blockCheck(ServerLevel level, BlockState state) {
-        TagKey<Block>[] tags = new TagKey[]{BlockTagRegistry.STARFALL_ALLOWED, LodestoneBlockTags.TERRACOTTA, BlockTags.LUSH_GROUND_REPLACEABLE, BlockTags.MUSHROOM_GROW_BLOCK, BlockTags.LOGS, BlockTags.LEAVES, BlockTags.SNOW, BlockTags.SAND, Tags.Blocks.SANDSTONE};
+        TagKey<Block>[] tags = new TagKey[]{FufoTags.STARFALL_ALLOWED, LodestoneBlockTags.TERRACOTTA, net.minecraft.tags.BlockTags.LUSH_GROUND_REPLACEABLE, net.minecraft.tags.BlockTags.MUSHROOM_GROW_BLOCK, net.minecraft.tags.BlockTags.LOGS, net.minecraft.tags.BlockTags.LEAVES, net.minecraft.tags.BlockTags.SNOW, net.minecraft.tags.BlockTags.SAND, net.minecraftforge.common.Tags.Blocks.SANDSTONE};
         for (TagKey<Block> tag : tags) {
             if (state.is(tag)) {
                 return true;
@@ -162,7 +160,7 @@ public class StarfallActor {
 
         ForgeChunkManager.forceChunk(level, FufoMod.FUFO, pos, SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()), true, false);
         BlockPos surfacePos = level.getHeightmapPos(type, pos);
-        while (level.getBlockState(surfacePos.below()).is(BlockTags.LOGS)) {
+        while (level.getBlockState(surfacePos.below()).is(net.minecraft.tags.BlockTags.LOGS)) {
             //TODO: it'd be best to replace this while statement with a custom Heightmap.Types' type.
             // However the Heightmap.Types enum isn't an IExtendibleEnum, we would need to make a dreaded forge PR for them to make it one
             surfacePos = surfacePos.below();

@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.packets.spell;
 
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
-import team.lodestar.fufo.core.systems.magic.spell.SpellCooldown;
+import team.lodestar.fufo.core.spell.SpellCooldown;
 import team.lodestar.lodestone.systems.network.LodestoneClientPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
