@@ -1,9 +1,14 @@
 package team.lodestar.fufo.common.blockentity;
 
+import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.core.fluid.FlowDir;
+import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
 
+import org.apache.commons.lang3.tuple.Triple;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,17 +41,26 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	@Override
 	public void onPlace(LivingEntity placer, ItemStack stack) {
 		super.onPlace(placer, stack);
+//		BlockPos prevPos = PipeBuilderAssistant.INSTANCE.prevAnchorPos;
 	}
 	
 	@Override
 	public boolean addConnection(BlockPos bp) {
+//		Minecraft.getInstance().mouseHandler.releaseMouse();
 		if (level.getBlockEntity(bp) instanceof PipeNode other) {
-			if (back == null) back = other;
-			else if (front == null) front = other;
+			if (back == null) {
+				back = other;
+				backPos = bp;
+			}
+			else if (front == null) {
+				front = other;
+				frontPos = bp;
+			}
 			else return false; // if back and front are both spoken for reject the connection
 			nearbyAnchorPositions.add(bp);
 			if (getNetwork() == null) setNetwork(other.getNetwork(), false, true);
 			else getNetwork().mergeWith(other.getNetwork());
+			setChanged();
 			return true;
 		}
 		return false;
@@ -57,6 +71,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super.onLoad();
 		if (backPos != null) back = (PipeNode)level.getBlockEntity(backPos);
 		if (frontPos != null) front = (PipeNode)level.getBlockEntity(frontPos);
+		FufoMod.LOGGER.info("Successfully loaded back and front!");
 	}
 	
 	private void flip() {
@@ -74,13 +89,14 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super.load(pTag);
 		if (pTag.contains("back")) backPos = BlockPos.of(pTag.getLong("back"));
 		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
+		FufoMod.LOGGER.info(String.format("Successfully loaded positions %s and %s from NBT", backPos, frontPos));
 	}
 	
 	@Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        if (back != null) pTag.putLong("back", back.getPos().asLong()); 
-        if (front != null) pTag.putLong("front", front.getPos().asLong());
+        if (backPos != null) pTag.putLong("back", backPos.asLong()); 
+        if (frontPos != null) pTag.putLong("front", frontPos.asLong());
     }
 	
 	@Override
@@ -107,6 +123,13 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	public int getForce(FlowDir dir) {
 		// TODO Auto-generated method stub
 		return (int)force;
+	}
+	
+	@Override
+	public String getDebugMessage(boolean sneak) {
+		String msg = super.getDebugMessage(sneak);
+		String io = String.format("In: %s / Out: %s\n", backPos, frontPos);
+		return msg + "\n" + io;
 	}
 	
 	@Override

@@ -21,15 +21,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
-// I should be able to reuse some ideas from Inventory Link.
-
-// The new pressure system code:
-// Each network keeps a list of pressure sources
-// Each node in the network then tracks its distance (vertical and overall) to each pressure source.
-// The pressure of a node is determined by the strength of the sources, the distances, etc
-// and is essentially a superposition of each individual source
-
-// We will also ignore the entrance region and assume that all flows are fully developed
+/**
+ * FluidPipeNetwork handles the pressure system, fluid transfer, etc.
+ * @see team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity
+ * @author davidpowell
+ *
+ */
 public class FluidPipeNetwork {
 	public static boolean MANUAL_TICKING = false; // Debug only, remove before release
 	public static final double PRESSURE_TRANSFER_COEFF = 0.0005; // Must be between 0 and 1
@@ -122,10 +119,13 @@ public class FluidPipeNetwork {
 	private void recalcPressure() {
 //		Minecraft.getInstance().mouseHandler.releaseMouse();
 		for (PressureSource p : pressureSources) {
+			
 			PipeNode in = p.getConnection(FlowDir.IN);
-			recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
 			PipeNode out = p.getConnection(FlowDir.OUT);
-			recalcPressureHelper(p, FlowDir.OUT, out, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(out.getPos())));
+			if (in != null && out != null) { // Ignore contributions from pumps/etc that aren't fully connected
+				recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
+				recalcPressureHelper(p, FlowDir.OUT, out, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(out.getPos())));
+			}
 		}
 	}
 	
