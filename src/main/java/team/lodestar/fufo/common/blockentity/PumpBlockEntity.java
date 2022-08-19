@@ -31,7 +31,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	
 	public PumpBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		force = 20; // for testing
+		force = 2000; // for testing
 	}
 	
 	public PumpBlockEntity(BlockPos pos, BlockState state) {
@@ -101,10 +101,16 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	
 	@Override
 	public double getPressure() {
+		FufoMod.LOGGER.error("Calling the wrong getPressure method!");
+		Thread.dumpStack();
 		return force;
 	}
+	
+	@Override
 	public double getPressure(FlowDir dir) {
-		return (dir == FlowDir.OUT ? force : -force);
+		double p = (dir == FlowDir.OUT ? force : -force);
+		FufoMod.LOGGER.info(String.format("Pressure at %s from direction %s: %s", this, dir, p));
+		return p;
 	}
 
 	@Override
@@ -122,7 +128,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	@Override
 	public int getForce(FlowDir dir) {
 		// TODO Auto-generated method stub
-		return (int)force;
+		return (int)(dir == FlowDir.OUT ? force : -force);
 	}
 	
 	@Override

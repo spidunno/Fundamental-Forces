@@ -92,7 +92,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 	}
 
     // this method is held together by duct tape and bubble gum
-    private static final double DISTANCE_COEFF = 0.1;
+    private static final double DISTANCE_COEFF = 100;
     public double getPressure() {
     	double pressure = 0;
     	
@@ -101,7 +101,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     		PressureSource source = t.getLeft();
     		FlowDir dir = t.getMiddle();
     		double distance = t.getRight();
-    		double contrib = Math.max((source.getForce(dir) - DISTANCE_COEFF * distance), 0);
+    		double contrib = source.getForce(dir) - (DISTANCE_COEFF * distance);
     		pressure += contrib;
     	}
     	
@@ -297,14 +297,14 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
 	@Override
 	public void updateSource(PressureSource p, FlowDir dir, double dist) {
-		boolean found = false;
 		for (Triple<PressureSource, FlowDir, Double> set : sources) {
-			if (set.getLeft() == p && set.getMiddle() == dir) set = Triple.of(p, dir, dist); // Will this CME?
-			found = true;
+			if (set.getLeft() == p && set.getMiddle() == dir) {
+				set = Triple.of(p, dir, dist); // Will this CME?
+				return;
+			}
+			
 		}
-		if (!found) {
-			sources.add(Triple.of(p, dir, dist));
-		}
+		sources.add(Triple.of(p, dir, dist)); // If we get here there was no match for the source
 	}
 
 	@Override
@@ -318,7 +318,8 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 	@Override
 	public String getDebugMessage(boolean sneak) {
 		if (sneak) {
-			return getNetwork().getInfo();
+			if (getNetwork() != null) return getNetwork().getInfo();
+			else return "No network; either this is client-side or something has gone wrong";
 		}
 		else {
 			StringBuilder builder = new StringBuilder();
