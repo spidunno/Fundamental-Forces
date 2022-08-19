@@ -1,9 +1,0 @@
-{
-  "type": "fufo:impact_conversion",
-  "input": {
-    "tag": "forge:netherrack"
-  },
-  "output": {
-    "item": "minecraft:magma_block"
-  }
-}

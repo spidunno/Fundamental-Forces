@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "fufo:block/logistics/valve",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "fufo:block/logistics/valve"
+    },
+    "axis=z": {
+      "model": "fufo:block/logistics/valve",
+      "x": 90
+    }
+  }
+}

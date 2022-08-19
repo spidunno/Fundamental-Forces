@@ -12,58 +12,69 @@ buildscript {
     }
 
 }
-plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
-}
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
+jarJar.enable()
+
+boolean inWorkspace = findProject(':Lodestone') != null
 
 version = "${project.minecraftVersion}-${project.modVersion}"
-group = "com.${project.groupId}.${project.modId}"
+if (System.getenv('BUILD_NUMBER') != null) {
+    version += "." + System.getenv('BUILD_NUMBER')
+}
+group = "team.lodestar.${project.modId}"
 archivesBaseName = project.modId
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-sourceSets {
-    main.resources.srcDirs += 'src/main/generated_resources'
-}
+sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 mixin {
     add sourceSets.main, "${project.modId}.refmap.json"
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    mappings channel: 'parchment', version: "${parchmentVersion}-${minecraftVersion}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
             workingDirectory project.file('run')
-            arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
             mods {
                 self {
                     source sourceSets.main
+                }
+                if (inWorkspace) {
+                    lodestone {
+                        source project(":Lodestone").sourceSets.main
+                    }
                 }
             }
         }
 
         server {
             workingDirectory project.file('run')
-            arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=" + archivesBaseName + ".mixins.json"
 
             mods {
                 self {
                     source sourceSets.main
+                }
+                if (inWorkspace) {
+                    lodestone {
+                        source project(":Lodestone").sourceSets.main
+                    }
                 }
             }
         }
@@ -73,11 +84,16 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', "${project.modId}", '--all', '--output', file('src/main/generated_resources/'), '--existing', file('src/main/resources/')
+            args '--mod', "${project.modId}", '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 self {
                     source sourceSets.main
+                }
+                if (inWorkspace) {
+                    lodestone {
+                        source project(":Lodestone").sourceSets.main
+                    }
                 }
             }
         }
@@ -90,19 +106,16 @@ repositories {
         name 'Curios maven'
         url "https://maven.theillusivec4.top/"
     }
+
     maven {
         name 'JEI maven'
         url "https://dvs1.progwml6.com/files/maven"
     }
-    maven { url = 'https://maven.blamejared.com/' }
     maven {
-        name "CTM Maven"
+        name 'tterrag maven'
         url "https://maven.tterrag.com/"
     }
-    maven {
-        name "Moonflower Maven"
-        url "https://repo.moonflower.gg/releases"
-    }
+    maven { url 'https://maven.blamejared.com/' }
     maven {
         name = "Curse Maven"
         url "https://cursemaven.com"
@@ -110,51 +123,46 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven { // Registrate
-        url "https://maven.tterrag.com/"
+    maven {
+        name "Moonflower Maven"
+        url "https://repo.moonflower.gg/releases"
     }
-    mavenLocal()
-}
-
-
-configurations {
-    shade
-}
-
-shadowJar {
-    configurations = [project.configurations.shade]
-    relocate 'com.tterrag.registrate', 'com.sammy.fufo.repack.registrate'
-}
-
-reobf {
-    shadowJar {}
 }
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.minecraftVersion}-${project.forgeVersion}"
 
-    def registrate = "com.tterrag.registrate:Registrate:${registrateVersion}"
-    implementation fg.deobf(registrate)
-    shade registrate
-
+    // Use this to make sure it functions in the intellij environment
     if (System.getProperty("idea.sync.active") != "true") {
-        annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+        annotationProcessor "org.spongepowered:mixin:${mixinVersion}:processor"
     }
 
-    implementation fg.deobf('gg.moonflower:pollen-forge:1.4.0+1.18.2') {
+    // JEI dependency
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
+
+    // Curios dependency
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}:api")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}")
+
+    // Pollen dependency
+    implementation fg.deobf("gg.moonflower:pollen-forge:${pollenVersion}+${minecraftVersion}") {
         transitive = false
     }
 
-    implementation fg.deobf("com.sammy.ortus:ortus:${project.ortusLibVersion}")
+    // Registrate dependency
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.18.2-1.1.3,)') {
+        jarJar.pin(it, project.registrateVersion)
+    }
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")
 
-    implementation fg.deobf("curse.maven:curios-309927:3748873")
+    // Use local lodestone when in multiproject
 
-    implementation fg.deobf("curse.maven:shimmer-627824:3811991")
-
-    compileOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193:api')
-    runtimeOnly fg.deobf('mezz.jei:jei-1.18.2:9.7.0.193')
-
-//    runtimeOnly fg.deobf("team.chisel.ctm:CTM:MC1.16.1-1.1.1.5")
+    if (inWorkspace) {
+        implementation project(':Lodestone')
+    } else {
+        implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
+    }
 
 }
 
@@ -162,18 +170,37 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "Fundamental Forces",
-                "Specification-Vendor"    : "Sammy Semicolon",
+                "Specification-Vendor"    : "Lodestar",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : "${version}",
-                "Implementation-Vendor"   : "Sammy Semicolon",
+                "Implementation-Vendor"   : "Lodestar",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "${project.modId}.mixins.json"
         ])
     }
 }
 
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
+}
+
+task jarJarRelease {
+    doLast {
+        tasks.jarJar {
+            classifier = ''
+        }
+    }
+    finalizedBy tasks.jarJar
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 jar.finalizedBy('reobfJar')
+tasks.jarJar.finalizedBy('reobfJarJar')
 
 publishing {
     publications {

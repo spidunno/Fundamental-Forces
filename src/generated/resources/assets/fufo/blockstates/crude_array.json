@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "fufo:block/crude_array"
+    },
+    "facing=south": {
+      "model": "fufo:block/crude_array",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "fufo:block/crude_array",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "fufo:block/crude_array",
+      "y": 90
+    }
+  }
+}

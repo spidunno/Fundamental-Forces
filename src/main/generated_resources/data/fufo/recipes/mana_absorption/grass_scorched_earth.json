@@ -1,9 +1,0 @@
-{
-  "type": "fufo:mana_absorption",
-  "input": {
-    "item": "minecraft:grass_block"
-  },
-  "output": {
-    "item": "fufo:scorched_earth"
-  }
-}
