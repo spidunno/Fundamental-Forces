@@ -92,7 +92,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 	}
 
     // this method is held together by duct tape and bubble gum
-    private static final double DISTANCE_COEFF = 100;
+    private static final double DISTANCE_COEFF = 10;
     public double getPressure() {
     	double pressure = 0;
     	
@@ -101,7 +101,12 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     		PressureSource source = t.getLeft();
     		FlowDir dir = t.getMiddle();
     		double distance = t.getRight();
-    		double contrib = source.getForce(dir) - (DISTANCE_COEFF * distance);
+    		int force = source.getForce(dir);
+    		// Basically we want pressure to tend to zero
+    		double contrib;
+    		if (force > 0) contrib = Math.max(0, source.getForce(dir) - (DISTANCE_COEFF * distance));
+    		else contrib = Math.min(0, source.getForce(dir) + (DISTANCE_COEFF * distance));
+//    		double contrib = source.getForce(dir) - (DISTANCE_COEFF * distance);
     		pressure += contrib;
     	}
     	
@@ -354,7 +359,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 	@Override
 	public void onDevTool(UseOnContext context) {
 		if (context.getPlayer().isShiftKeyDown() && FluidPipeNetwork.MANUAL_TICKING) {
-    		getNetwork().tick();
+    		if (getNetwork() != null) getNetwork().tick();
     	}
     	else if (context.getPlayer().isShiftKeyDown()) {
     		FufoMod.LOGGER.info("Toggling openness");
