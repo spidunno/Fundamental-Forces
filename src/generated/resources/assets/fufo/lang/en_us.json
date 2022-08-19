@@ -7,14 +7,14 @@
   "block.fufo.fluid_tank": "Fluid Tank",
   "block.fufo.force_orb": "Force Orb",
   "block.fufo.meteor_fire": "Meteor Fire",
-  "block.fufo.ortusite": "Lodestoneite",
+  "block.fufo.ortusite": "Ortusite",
   "block.fufo.pump": "Pump",
   "block.fufo.sealed_barrel": "Sealed Barrel",
   "block.fufo.ui_test": "Ui Test",
   "block.fufo.valve": "Valve",
   "item.fufo.crack": "Crack",
   "item.fufo.debug_tool": "Debug Tool",
-  "item.fufo.depleted_ortusite_chunk": "Depleted Lodestoneite Chunk",
+  "item.fufo.depleted_ortusite_chunk": "Depleted Ortusite Chunk",
   "item.fufo.dev_tool": "Dev Tool",
-  "item.fufo.ortusite_chunk": "Lodestoneite Chunk"
+  "item.fufo.ortusite_chunk": "Ortusite Chunk"
 }

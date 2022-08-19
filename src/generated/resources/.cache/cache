@@ -49,4 +49,5 @@ c16c3ac08e41ee32e04bde3cc549019dff90ee0a data/fufo/loot_tables/blocks/crude_prim
 17197637cdda47207093dd0f9d7a429ef59cd573 data/fufo/loot_tables/blocks/valve.json
 f76acecb81b9b4fc7b7b89bcc0abd3638043537d data/fufo/recipes/sealed_barrel.json
 d2f3eb61a666d1395d5b461274bf46f4e6964b16 data/fufo/recipes/sealed_barrel_simple.json
+08cd64bf79a3736067e92e589a44af6daa89eeef data/fufo/tags/items/meteor_flame_catalyst.json
 091aefe2340ee97a0b08d929e7302a5f1cfc2d9b data/minecraft/tags/blocks/mineable/pickaxe.json
