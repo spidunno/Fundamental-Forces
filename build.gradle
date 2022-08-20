@@ -20,8 +20,6 @@ apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 jarJar.enable()
 
-boolean inWorkspace = findProject(':Lodestone') != null
-
 version = "${project.minecraftVersion}-${project.modVersion}"
 if (System.getenv('BUILD_NUMBER') != null) {
     version += "." + System.getenv('BUILD_NUMBER')
@@ -52,11 +50,6 @@ minecraft {
                 self {
                     source sourceSets.main
                 }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
-                }
             }
         }
 
@@ -71,11 +64,6 @@ minecraft {
                 self {
                     source sourceSets.main
                 }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
-                }
             }
         }
 
@@ -89,11 +77,6 @@ minecraft {
             mods {
                 self {
                     source sourceSets.main
-                }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
                 }
             }
         }
@@ -157,12 +140,7 @@ dependencies {
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")
 
     // Use local lodestone when in multiproject
-
-    if (inWorkspace) {
-        implementation project(':Lodestone')
-    } else {
-        implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
-    }
+    implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
 
 }
 
