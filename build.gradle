@@ -135,7 +135,7 @@ dependencies {
 //    }
 
     // Registrate dependency
-    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.19.2-1.1.5,)') {
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.19-1.1.5,)') {
         jarJar.pin(it, project.registrateVersion)
     }
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")

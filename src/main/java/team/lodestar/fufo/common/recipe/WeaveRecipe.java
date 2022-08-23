@@ -20,6 +20,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.core.weaving.Bindable;
 import team.lodestar.fufo.core.weaving.BindingType;
@@ -352,7 +353,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
                     buffer.writeUtf("entity");
                     EntityTypeBindable entityTypeBindable = (EntityTypeBindable) entry;
                     EntityType<?> entityType = entityTypeBindable.get();
-                    buffer.writeUtf(entityType.getRegistryName().toString());
+                    buffer.writeUtf(ForgeRegistries.ENTITY_TYPES.getKey(entityType).toString());
                 }
             }
 

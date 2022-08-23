@@ -31,6 +31,7 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.block.*;
 import team.lodestar.fufo.common.blockentity.*;
@@ -138,7 +139,7 @@ public class FufoBlocks {
     public static final BlockEntry<MeteorFlameBlock<MeteorFlameBlockEntity>> METEOR_FIRE = setupBlock("meteor_fire", (p) -> new MeteorFlameBlock<>(p).<MeteorFlameBlock<MeteorFlameBlockEntity>>setBlockEntity(FufoBlockEntities.METEOR_FLAME), FufoBlockProperties.METEOR_FIRE_PROPERTIES()).blockstate(predefinedState()).register();
     public static final BlockEntry<FlammableMeteoriteBlock> ORTUSITE = setupItemBlock("ortusite", (p) -> new FlammableMeteoriteBlock(p, (s, b) -> METEOR_FIRE.getDefaultState()), FufoBlockProperties.ASTEROID_PROPERTIES())
         .blockstate((ctx, p) -> p.getVariantBuilder(ctx.getEntry()).forAllStates(s -> {
-            ResourceLocation registryName = ctx.get().getRegistryName();
+            ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(ctx.get());
             String newPath = "block/" + registryName.getPath() + "_" + s.getValue(FlammableMeteoriteBlock.DEPLETION_STATE);
             return ConfiguredModel.builder().modelFile(p.models().cubeAll(newPath, new ResourceLocation(registryName.getNamespace(), newPath))).build();
         }))
