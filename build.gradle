@@ -129,12 +129,12 @@ dependencies {
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}")
 
     // Pollen dependency
-    implementation fg.deobf("gg.moonflower:pollen-forge:${pollenVersion}+${minecraftVersion}") {
-        transitive = false
-    }
+//    implementation fg.deobf("gg.moonflower:pollen-forge:${pollenVersion}+${minecraftVersion}") {
+//        transitive = false
+//    }
 
     // Registrate dependency
-    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.18.2-1.1.3,)') {
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.19.2-1.1.5,)') {
         jarJar.pin(it, project.registrateVersion)
     }
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")
