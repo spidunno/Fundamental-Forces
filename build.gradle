@@ -120,9 +120,10 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixinVersion}:processor"
     }
 
-    // JEI dependency
-    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
+    // JEI Dependency
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-forge-api:${jeiVersion}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-forge:${jeiVersion}")
 
     // Curios dependency
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}:api")
@@ -139,9 +140,7 @@ dependencies {
     }
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")
 
-    // Use local lodestone when in multiproject
     implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
-
 }
 
 jar {
@@ -157,6 +156,12 @@ jar {
                 "MixinConfigs"            : "${project.modId}.mixins.json"
         ])
     }
+}
+
+// Workaround for SpongePowered/MixinGradle#38
+afterEvaluate {
+    tasks.configureReobfTaskForReobfJar.mustRunAfter(tasks.compileJava)
+    tasks.configureReobfTaskForReobfJarJar.mustRunAfter(tasks.compileJava)
 }
 
 tasks.withType(GenerateModuleMetadata) {
