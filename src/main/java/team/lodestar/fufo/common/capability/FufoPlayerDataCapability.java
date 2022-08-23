@@ -1,15 +1,5 @@
 package team.lodestar.fufo.common.capability;
 
-import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
-import team.lodestar.fufo.registry.common.FufoPackets;
-import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
-import team.lodestar.fufo.unsorted.handlers.ProgressionHandler;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
-import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
-import team.lodestar.lodestone.helpers.NBTHelper;
-import team.lodestar.lodestone.systems.capability.LodestoneCapability;
-import team.lodestar.lodestone.systems.capability.LodestoneCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,9 +11,19 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
+import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
+import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
+import team.lodestar.fufo.registry.common.FufoPackets;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.ProgressionHandler;
+import team.lodestar.lodestone.helpers.NBTHelper;
+import team.lodestar.lodestone.systems.capability.LodestoneCapability;
+import team.lodestar.lodestone.systems.capability.LodestoneCapabilityProvider;
 
 public class FufoPlayerDataCapability implements LodestoneCapability {
 
@@ -52,7 +52,7 @@ public class FufoPlayerDataCapability implements LodestoneCapability {
         }
     }
 
-    public static void playerJoin(EntityJoinWorldEvent event) {
+    public static void playerJoin(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
             syncSelf(serverPlayer);
         }

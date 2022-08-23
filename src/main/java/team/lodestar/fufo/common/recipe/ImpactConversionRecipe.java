@@ -1,9 +1,6 @@
 package team.lodestar.fufo.common.recipe;
 
 import com.google.gson.JsonObject;
-import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.registry.common.FufoRecipeTypes;
-import team.lodestar.lodestone.systems.recipe.ILodestoneRecipe;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +8,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
+import team.lodestar.lodestone.systems.recipe.ILodestoneRecipe;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class ImpactConversionRecipe extends ILodestoneRecipe
         return level.getRecipeManager().getAllRecipesFor(ImpactConversionRecipe.Type.INSTANCE);
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<ImpactConversionRecipe> {
+    public static class Serializer implements RecipeSerializer<ImpactConversionRecipe> {
 
         @Override
         public ImpactConversionRecipe fromJson(ResourceLocation recipeId, JsonObject json)

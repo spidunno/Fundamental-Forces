@@ -2,7 +2,7 @@ package team.lodestar.fufo.registry.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,7 +15,7 @@ public class FufoParticles {
 
     public static RegistryObject<LodestoneParticleType> COLORED_SMOKE = PARTICLES.register("smoke", LodestoneParticleType::new);
 
-    public static void registerParticleFactory(ParticleFactoryRegisterEvent event) {
+    public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
         Minecraft.getInstance().particleEngine.register(COLORED_SMOKE.get(), LodestoneParticleType.Factory::new);
     }
 }

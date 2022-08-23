@@ -1,14 +1,13 @@
 package team.lodestar.fufo.common.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
-import team.lodestar.fufo.unsorted.LangHelpers;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
+import team.lodestar.fufo.unsorted.LangHelpers;
 
 public class StarfallAreaCheckCommand {
     public StarfallAreaCheckCommand() {
@@ -25,26 +24,26 @@ public class StarfallAreaCheckCommand {
                         boolean blocks = StarfallActor.blockCheck(level, StarfallActor.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.report.success")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.report.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.report.failure")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.report.failure")), true);
 
                         }
-                        source.sendSuccess(new TextComponent("--------------------------------------------"), true);
+                        source.sendSuccess(Component.literal("--------------------------------------------"), true);
                         if (heightmap) {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.heightmap.success")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.heightmap.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.heightmap.failure")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.heightmap.failure")), true);
                         }
 
-                        source.sendSuccess(new TextComponent("--------------------------------------------"), true);
+                        source.sendSuccess(Component.literal("--------------------------------------------"), true);
                         if (blocks) {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.blocktag.success")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.blocktag.success")), true);
                         } else {
-                            source.sendSuccess(new TranslatableComponent(LangHelpers.getCommand("checkarea.blocktag.failure")), true);
+                            source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.blocktag.failure")), true);
                         }
 
-                        source.sendSuccess(new TextComponent("--------------------------------------------"), true);
+                        source.sendSuccess(Component.literal("--------------------------------------------"), true);
                     }
                     return 1;
                 });
