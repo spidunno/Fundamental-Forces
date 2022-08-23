@@ -2,6 +2,7 @@ package team.lodestar.fufo.unsorted.eventhandlers;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -17,7 +18,6 @@ public class ClientSetupEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         FufoWorldEventRenderers.registerRenderers(event);
-        FufoKeybinds.registerKeyBinding(event);
         FufoFireEffects.ClientOnly.clientSetup(event);
         FufoPostProcessingEffects.register();
 
@@ -29,5 +29,10 @@ public class ClientSetupEvents {
     @SubscribeEvent
     public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
         FufoParticles.registerParticleFactory(event);
+    }
+
+    @SubscribeEvent
+    public static void registerKeybindsEvent(RegisterKeyMappingsEvent event) {
+        FufoKeybinds.registerKeyBinding(event);
     }
 }
