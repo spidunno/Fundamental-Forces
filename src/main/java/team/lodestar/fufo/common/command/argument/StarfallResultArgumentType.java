@@ -7,16 +7,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import team.lodestar.fufo.unsorted.LangHelpers;
+import net.minecraft.network.chat.Component;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
-import net.minecraft.network.chat.TranslatableComponent;
+import team.lodestar.fufo.unsorted.LangHelpers;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 public class StarfallResultArgumentType implements ArgumentType<String> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(LangHelpers.getCommandOutput("error.starfall.result")));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(Component.translatable(LangHelpers.getCommandOutput("error.starfall.result")));
 
     public StarfallResultArgumentType() {
     }

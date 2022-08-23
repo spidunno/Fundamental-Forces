@@ -1,16 +1,16 @@
 package team.lodestar.fufo.unsorted.handlers;
 
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import team.lodestar.fufo.common.capability.FufoChunkDataCapability;
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
 import team.lodestar.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.world.BlockEvent;
 
 import static team.lodestar.lodestone.handlers.WorldEventHandler.addWorldEvent;
 
@@ -39,7 +39,7 @@ public class StarfallEventHandler {
         }
     }
 
-    public static void playerJoin(EntityJoinWorldEvent event) {
+    public static void playerJoin(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (player.level instanceof ServerLevel level) {
                 FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(capability -> {

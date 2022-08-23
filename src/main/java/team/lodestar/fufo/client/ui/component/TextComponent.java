@@ -2,12 +2,12 @@ package team.lodestar.fufo.client.ui.component;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import team.lodestar.fufo.client.ui.Vector2;
-import team.lodestar.fufo.client.ui.transition.Transition;
-import team.lodestar.lodestone.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import team.lodestar.fufo.client.ui.Vector2;
+import team.lodestar.fufo.client.ui.transition.Transition;
 
 import java.util.List;
 
@@ -60,11 +60,11 @@ public class TextComponent extends UIComponent<TextComponent>{
         double width;
         if(shouldUseAllocatedSpace()) {
             width = getAllocatedSize().x;
-            split = font.split(new net.minecraft.network.chat.TextComponent(text), (int) Math.floor(width / size));
+            split = font.split(Component.literal(text), (int) Math.floor(width / size));
         } else {
             if(getParent() != null) {
                 width = getParent().getInnerSize().x;
-                split = font.split(new net.minecraft.network.chat.TextComponent(text), (int) Math.floor(width / size));
+                split = font.split(Component.literal(text), (int) Math.floor(width / size));
             } else {
                 throw new RuntimeException("TextComponent must have a parent to use getPreferredSize()");
             }
@@ -120,11 +120,11 @@ public class TextComponent extends UIComponent<TextComponent>{
         double width;
         if(shouldUseAllocatedSpace()) {
             width = getAllocatedSize().x;
-            split = font.split(new net.minecraft.network.chat.TextComponent(text), (int) Math.floor(width / scale));
+            split = font.split(Component.literal(text), (int) Math.floor(width / scale));
         } else {
             if(getParent() != null) {
                 width = getParent().getInnerSize().x;
-                split = font.split(new net.minecraft.network.chat.TextComponent(text), (int) Math.floor(width / scale));
+                split = font.split(Component.literal(text), (int) Math.floor(width / scale));
             } else {
                 throw new RuntimeException("TextComponent must have a parent to use getPreferredSize()");
             }

@@ -1,25 +1,24 @@
 package team.lodestar.fufo.unsorted.eventhandlers;
 
-import team.lodestar.fufo.common.capability.*;
-import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
-import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
-import team.lodestar.fufo.unsorted.handlers.StarfallEventHandler;
-import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
-import team.lodestar.lodestone.events.types.RightClickEmptyServer;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import team.lodestar.fufo.common.capability.*;
+import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.StarfallEventHandler;
+import team.lodestar.lodestone.events.types.RightClickEmptyServer;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class RuntimeEvents {
@@ -36,7 +35,7 @@ public class RuntimeEvents {
     }
 
     @SubscribeEvent
-    public static void entityJoin(EntityJoinWorldEvent event) {
+    public static void entityJoin(EntityJoinLevelEvent event) {
         FufoPlayerDataCapability.playerJoin(event);
         StarfallEventHandler.playerJoin(event);
     }
@@ -66,18 +65,18 @@ public class RuntimeEvents {
     }
 
     @SubscribeEvent
-    public static void worldLoad(WorldEvent.Load event) {
+    public static void worldLoad(LevelEvent.Load event) {
 //    	FluidPipeNetworkRegistry.getRegistry(event.getWorld()).load();
     }
     
     @SubscribeEvent
-    public static void worldUnload(WorldEvent.Unload event) {
+    public static void worldUnload(LevelEvent.Unload event) {
     	
     }
     
     @SubscribeEvent
-    public static void worldTick(TickEvent.WorldTickEvent event) {
-    	if (!FluidPipeNetwork.MANUAL_TICKING) FluidPipeNetworkRegistry.getRegistry(event.world).tickNetworks();
+    public static void worldTick(TickEvent.LevelTickEvent event) {
+    	if (!FluidPipeNetwork.MANUAL_TICKING) FluidPipeNetworkRegistry.getRegistry(event.level).tickNetworks();
     }
 
     @SubscribeEvent

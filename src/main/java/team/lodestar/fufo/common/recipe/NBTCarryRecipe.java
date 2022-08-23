@@ -4,7 +4,6 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
-import team.lodestar.fufo.registry.common.FufoRecipeTypes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,6 +17,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
 
 import java.util.Map;
 import java.util.Set;
@@ -279,7 +279,7 @@ public class NBTCarryRecipe extends CustomRecipe implements IShapedRecipe<Crafti
     }
 
 
-    public static class Serializer extends net.minecraftforge.registries.ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<NBTCarryRecipe> {
+    public static class Serializer implements RecipeSerializer<NBTCarryRecipe> {
         public NBTCarryRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             String s = GsonHelper.getAsString(json, "group", "");
             Map<String, Ingredient> map = deserializeKey(GsonHelper.getAsJsonObject(json, "key"));

@@ -18,7 +18,7 @@ public class EnergyScanPostProcessor extends MultiInstancePostProcessor<EnergySc
 
     //FOR TESTING
     @SubscribeEvent
-    public static void onKeyPress(InputEvent.KeyInputEvent event) {
+    public static void onKeyPress(InputEvent.Key event) {
         if (event.getAction() == GLFW.GLFW_PRESS) {
             if (event.getKey() == GLFW.GLFW_KEY_L) {
                 FufoPostProcessingEffects.NORMAL.init();

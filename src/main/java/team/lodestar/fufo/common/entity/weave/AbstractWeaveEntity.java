@@ -1,27 +1,27 @@
 package team.lodestar.fufo.common.entity.weave;
 
-import team.lodestar.fufo.core.weaving.StandardWeave;
-import team.lodestar.fufo.core.weaving.Weave;
-import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
-import team.lodestar.lodestone.setup.LodestoneParticleRegistry;
-import team.lodestar.lodestone.systems.easing.Easing;
-import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import team.lodestar.fufo.core.weaving.StandardWeave;
+import team.lodestar.fufo.core.weaving.Weave;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
+import team.lodestar.lodestone.setup.LodestoneParticleRegistry;
+import team.lodestar.lodestone.systems.easing.Easing;
+import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Random;
 
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -84,7 +84,7 @@ public abstract class AbstractWeaveEntity extends Entity {
             if (weave != null) {
                 weave.getBindables().forEach(b -> {
                     Vec3i offset = b.getLocation();
-                    Random rand = level.getRandom();
+                    RandomSource rand = level.getRandom();
                     ParticleBuilders.create(LodestoneParticleRegistry.WISP_PARTICLE)
                             .setAlpha(0.05f, 0.15f, 0f)
                             .setAlphaEasing(Easing.QUINTIC_IN, Easing.QUINTIC_OUT)

@@ -7,10 +7,10 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import team.lodestar.fufo.registry.common.magic.FufoSpellTypes;
 import team.lodestar.fufo.unsorted.LangHelpers;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(LangHelpers.getCommandOutput("error.spell.type.result")));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(Component.translatable(LangHelpers.getCommandOutput("error.spell.type.result")));
 
     public SpellTypeArgumentType() {
     }

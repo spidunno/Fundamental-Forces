@@ -1,11 +1,9 @@
 package team.lodestar.fufo.common.world.gen;
 
 import com.google.common.math.StatsAccumulator;
-import team.lodestar.fufo.registry.common.FufoBlocks;
-import team.lodestar.lodestone.helpers.BlockHelper;
-import team.lodestar.lodestone.helpers.DataHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
@@ -13,10 +11,12 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.phys.Vec3;
+import team.lodestar.fufo.registry.common.FufoBlocks;
+import team.lodestar.lodestone.helpers.BlockHelper;
+import team.lodestar.lodestone.helpers.DataHelper;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
 
 import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
@@ -31,7 +31,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
         return generateMeteorite(context.level(), context.chunkGenerator(), context.origin(), context.random());
     }
 
-    public static boolean generateMeteorite(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random) {
+    public static boolean generateMeteorite(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, RandomSource random) {
         int meteorSize = 6;
         int craterSize = 8;
         StatsAccumulator stats = new StatsAccumulator();
@@ -63,7 +63,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, Random random, float rotation, float craterSize, float iterations) {
+    public static boolean carveTrajectoryHole(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, RandomSource random, float rotation, float craterSize, float iterations) {
         float cachedCraterSize = craterSize;
         float decrease = craterSize / iterations;
         for (int i = 1; i < iterations; i++) {

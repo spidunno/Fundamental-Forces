@@ -40,17 +40,12 @@ public class FufoMod {
         FufoBlocks.register();
         FufoItems.register();
         FufoBlockEntities.register();
-        FufoCommands.registerArgumentTypes();
         FufoEntities.ENTITY_TYPES.register(modBus);
         FufoMobEffects.EFFECTS.register(modBus);
         FufoSounds.SOUNDS.register(modBus);
         FufoWorldgenFeatures.FEATURE_TYPES.register(modBus);
         FufoRecipeTypes.RECIPE_TYPES.register(modBus);
         FufoParticles.PARTICLES.register(modBus);
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            FufoTextureLoaders.setup();
-        }
     }
     public static ResourceLocation fufoPath(String path) {
         return new ResourceLocation(FUFO, path);

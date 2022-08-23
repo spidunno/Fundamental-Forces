@@ -1,5 +1,6 @@
 package team.lodestar.fufo.common.worldevents.starfall;
 
+import net.minecraft.util.RandomSource;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.capability.FufoChunkDataCapability;
 import team.lodestar.fufo.config.CommonConfig;
@@ -112,11 +113,11 @@ public class StarfallActor {
         return state.getMaterial().isSolid() && !state.isAir() && !state.getMaterial().isReplaceable() && state.getMaterial().blocksMotion();
     }
 
-    public int randomizedCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(RandomSource random, int parentCountdown) {
         return parentCountdown;
     }
 
-    public int randomizedCountdown(Random random) {
+    public int randomizedCountdown(RandomSource random) {
         return randomizedCountdown(random, startingCountdown);
     }
 
@@ -138,7 +139,7 @@ public class StarfallActor {
     }
 
     public BlockPos randomizedStarfallTargetPosition(ServerLevel level, BlockPos centerPos) {
-        Random random = level.random;
+        RandomSource random = level.random;
         int minOffset = CommonConfig.MINIMUM_STARFALL_DISTANCE.getConfigValue();
         int maxOffset = CommonConfig.MAXIMUM_STARFALL_DISTANCE.getConfigValue();
         int xOffset = Mth.nextInt(random, minOffset, maxOffset) * (random.nextBoolean() ? 1 : -1);
