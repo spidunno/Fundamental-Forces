@@ -1,5 +1,6 @@
 package team.lodestar.fufo.common.worldevents.starfall.actors;
 
+import net.minecraft.util.RandomSource;
 import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
 import team.lodestar.fufo.config.CommonConfig;
 import net.minecraft.core.BlockPos;
@@ -15,7 +16,7 @@ public class AsteroidStarfallActor extends StarfallActor {
     }
 
     @Override
-    public int randomizedCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(RandomSource random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
         double max = CommonConfig.MAXIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);

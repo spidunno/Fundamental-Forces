@@ -7,6 +7,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.synchronization.ArgumentSerializer;
 import net.minecraft.commands.synchronization.ArgumentTypes;
+import net.minecraft.commands.synchronization.ArgumentUtils;
 import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.event.RegisterCommandsEvent;

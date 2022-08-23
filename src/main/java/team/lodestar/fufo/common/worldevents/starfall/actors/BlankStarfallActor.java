@@ -1,5 +1,6 @@
 package team.lodestar.fufo.common.worldevents.starfall.actors;
 
+import net.minecraft.util.RandomSource;
 import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -12,7 +13,7 @@ public class BlankStarfallActor extends StarfallActor {
     }
 
     @Override
-    public int randomizedCountdown(Random random, int parentCountdown) {
+    public int randomizedCountdown(RandomSource random, int parentCountdown) {
         return 0;
     }
 
