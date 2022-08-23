@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import team.lodestar.fufo.FufoMod;
@@ -105,7 +106,7 @@ public class PlayerSpellHotbarHandler {
         public static final ResourceLocation ICONS_TEXTURE = FufoMod.fufoPath("textures/spell/hotbar.png");
 
         public static void moveOverlays(RenderGuiOverlayEvent.Pre event) {
-            if (event.getType().equals(RenderGuiOverlayEvent.ElementType.ALL)) { // TODO 1.19: fix like superior shields
+            if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) { // TODO 1.19: fix like superior shields
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
                 FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
@@ -170,7 +171,7 @@ public class PlayerSpellHotbarHandler {
         public static void renderSpellHotbar(RenderGuiOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            if (event.getType() == RenderGuiOverlayEvent.ElementType.ALL && !player.isSpectator()) { // TODO 1.19: fix like superior shields
+            if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type() && !player.isSpectator()) { // TODO 1.19: fix like superior shields
                 FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
