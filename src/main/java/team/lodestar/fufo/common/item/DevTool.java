@@ -1,11 +1,7 @@
 package team.lodestar.fufo.common.item;
 
-import team.lodestar.fufo.unsorted.util.DevToolResponse;
-import team.lodestar.lodestone.setup.LodestoneScreenParticleRegistry;
-import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
-import team.lodestar.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
-import team.lodestar.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,9 +10,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import team.lodestar.fufo.unsorted.util.DevToolResponse;
+import team.lodestar.lodestone.setup.LodestoneScreenParticleRegistry;
+import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
+import team.lodestar.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
+import team.lodestar.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 
 import java.awt.*;
-import java.util.Random;
 
 import static net.minecraft.util.Mth.nextFloat;
 
@@ -48,7 +48,7 @@ public class DevTool extends Item implements ItemParticleEmitter {
         testFunnyTestFromMalum(Color.RED, Color.BLUE, stack, x, y, renderOrder);
     }
     public static void testFunnyTestFromMalum(Color color, Color endColor, ItemStack stack, float pXPosition, float pYPosition, ScreenParticle.RenderOrder renderOrder) {
-        Random rand = Minecraft.getInstance().level.getRandom();
+        RandomSource rand = Minecraft.getInstance().level.getRandom();
         ParticleBuilders.create(LodestoneScreenParticleRegistry.TWINKLE)
                 .setAlpha(0.07f, 0f)
                 .setLifetime(10 + rand.nextInt(10))

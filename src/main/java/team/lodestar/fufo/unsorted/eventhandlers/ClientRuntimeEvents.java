@@ -3,7 +3,6 @@ package team.lodestar.fufo.unsorted.eventhandlers;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,10 +28,6 @@ public class ClientRuntimeEvents {
     @SubscribeEvent
     public static void renderTick(TickEvent.RenderTickEvent event) {
         FallingStarRenderer.renderTick(event);
-    }
-
-    @SubscribeEvent
-    public static void renderLast(RenderLevelLastEvent event) {
     }
 
     @SubscribeEvent

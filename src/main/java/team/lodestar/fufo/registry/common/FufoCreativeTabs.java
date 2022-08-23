@@ -1,12 +1,12 @@
 package team.lodestar.fufo.registry.common;
 
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
+import team.lodestar.fufo.FufoMod;
 
 import static team.lodestar.fufo.FufoMod.FUFO;
-import static team.lodestar.fufo.FufoMod.REGISTRATE;
 
 
 public class FufoCreativeTabs {
@@ -23,7 +23,7 @@ public class FufoCreativeTabs {
 
         @Override
         public @NotNull ItemStack makeIcon() {
-            return REGISTRATE.get().get("crack", Item.class).get().getDefaultInstance();
+            return FufoMod.registrate().get("crack", ForgeRegistries.ITEMS.getRegistryKey()).get().getDefaultInstance();
         }
     }
 }

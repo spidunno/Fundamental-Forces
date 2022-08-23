@@ -68,7 +68,7 @@ public class FufoPlayerDataCapability implements LodestoneCapability {
 
     public static void playerClone(PlayerEvent.Clone event) {
         event.getOriginal().revive();
-        FufoPlayerDataCapability.getCapabilityOptional(event.getOriginal()).ifPresent(o -> FufoPlayerDataCapability.getCapabilityOptional(event.getPlayer()).ifPresent(c -> c.deserializeNBT(o.serializeNBT())));
+        FufoPlayerDataCapability.getCapabilityOptional(event.getOriginal()).ifPresent(o -> FufoPlayerDataCapability.getCapabilityOptional(event.getEntity()).ifPresent(c -> c.deserializeNBT(o.serializeNBT())));
     }
 
     @Override

@@ -1,13 +1,10 @@
 package team.lodestar.fufo.common.block;
 
-import team.lodestar.fufo.common.blockentity.MeteorFlameBlockEntity;
-import team.lodestar.fufo.registry.client.FufoParticles;
-import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
-import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,9 +13,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import team.lodestar.fufo.common.blockentity.MeteorFlameBlockEntity;
+import team.lodestar.fufo.registry.client.FufoParticles;
+import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
+import team.lodestar.lodestone.systems.rendering.particle.ParticleBuilders;
 
 import java.awt.*;
-import java.util.Random;
 
 import static team.lodestar.lodestone.systems.rendering.particle.SimpleParticleOptions.Animator.WITH_AGE;
 
@@ -52,7 +52,7 @@ public class MeteorFlameBlock<T extends MeteorFlameBlockEntity> extends Lodeston
     }
 
     @Override
-    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, RandomSource pRandom) {
         if (pRandom.nextInt(24) == 0) {
             pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.3F, false);
         }
