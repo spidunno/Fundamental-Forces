@@ -30,6 +30,6 @@ description=''' '''
 [[dependencies.fufo]]
     modId="lodestone"
     mandatory=true
-    versionRange="[2.0.0,)"
+    versionRange="[1.19.2-2.0.0,)"
     ordering="NONE"
     side="BOTH"
