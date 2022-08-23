@@ -76,7 +76,7 @@ public class RuntimeEvents {
     
     @SubscribeEvent
     public static void worldTick(TickEvent.LevelTickEvent event) {
-    	if (!FluidPipeNetwork.MANUAL_TICKING) FluidPipeNetworkRegistry.getRegistry(event.world).tickNetworks();
+    	if (!FluidPipeNetwork.MANUAL_TICKING) FluidPipeNetworkRegistry.getRegistry(event.level).tickNetworks();
     }
 
     @SubscribeEvent
