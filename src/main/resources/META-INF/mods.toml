@@ -9,16 +9,16 @@ logoFile="fundamental_forces.png"
 credits="Credits go here"
 authors="Authors go here"
 description=''' '''
-[[dependencies.fufo]]
-    modId="pollen"
-    mandatory=true
-    versionRange="[FORGE-1.19.2,)"
-    ordering="AFTER"
-    side="BOTH"
+#[[dependencies.fufo]]
+#    modId="pollen"
+#    mandatory=true
+#    versionRange="[FORGE-1.19.2,)"
+#    ordering="AFTER"
+#    side="BOTH"
 [[dependencies.fufo]]
     modId="forge"
     mandatory=true
-    versionRange="[43,)"
+    versionRange="[43.1.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.fufo]]
