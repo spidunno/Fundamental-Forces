@@ -40,7 +40,6 @@ public class FufoMod {
         FufoBlocks.register();
         FufoItems.register();
         FufoBlockEntities.register();
-        FufoCommands.registerArgumentTypes();
         FufoEntities.ENTITY_TYPES.register(modBus);
         FufoMobEffects.EFFECTS.register(modBus);
         FufoSounds.SOUNDS.register(modBus);

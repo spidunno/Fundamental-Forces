@@ -1,18 +1,16 @@
 package team.lodestar.fufo.registry.common;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.commands.synchronization.ArgumentSerializer;
-import net.minecraft.commands.synchronization.ArgumentTypes;
-import net.minecraft.commands.synchronization.ArgumentUtils;
-import net.minecraft.commands.synchronization.EmptyArgumentSerializer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.commands.synchronization.ArgumentTypeInfos;
+import net.minecraft.commands.synchronization.SingletonArgumentInfo;
+import net.minecraft.core.Registry;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.RegisterEvent;
 import team.lodestar.fufo.common.command.IssueStarfallCommand;
 import team.lodestar.fufo.common.command.SetSpellCommand;
 import team.lodestar.fufo.common.command.StarfallAreaCheckCommand;
@@ -37,11 +35,8 @@ public class FufoCommands {
                 .redirect(cmd));
     }
 
-    public static void registerArgumentTypes() {
-        registerArgumentType(fufoPath("starfall_result"), StarfallResultArgumentType.class, new EmptyArgumentSerializer<>(StarfallResultArgumentType::new));
-    }
-
-    private static <T extends ArgumentType<?>> void registerArgumentType(ResourceLocation key, Class<T> argumentClass, ArgumentSerializer<T> serializer) {
-        ArgumentTypes.register(key.toString(), argumentClass, serializer);
+    @SubscribeEvent
+    private static void registerArgumentTypes(RegisterEvent event) {
+        event.register(Registry.COMMAND_ARGUMENT_TYPE_REGISTRY, fufoPath("starfall_result"), () -> ArgumentTypeInfos.registerByClass(StarfallResultArgumentType.class, SingletonArgumentInfo.contextFree(StarfallResultArgumentType::new)));
     }
 }
