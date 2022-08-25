@@ -44,19 +44,4 @@ public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
     public Collection<String> getExamples() {
         return FufoSpellTypes.SPELL_TYPES.keySet().stream().map(ResourceLocation::toString).collect(Collectors.toList());
     }
-
-    private static String escape(final String input) {
-        final StringBuilder result = new StringBuilder("\"");
-
-        for (int i = 0; i < input.length(); i++) {
-            final char c = input.charAt(i);
-            if (c == '\\' || c == '"') {
-                result.append('\\');
-            }
-            result.append(c);
-        }
-
-        result.append("\"");
-        return result.toString();
-    }
 }
