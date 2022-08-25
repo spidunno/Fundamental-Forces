@@ -35,8 +35,4 @@ public class FufoCommands {
                 .redirect(cmd));
     }
 
-    @SubscribeEvent
-    public static void registerArgumentTypes(RegisterEvent event) {
-        event.register(Registry.COMMAND_ARGUMENT_TYPE_REGISTRY, fufoPath("starfall_result"), () -> ArgumentTypeInfos.registerByClass(StarfallResultArgumentType.class, SingletonArgumentInfo.contextFree(StarfallResultArgumentType::new)));
-    }
 }

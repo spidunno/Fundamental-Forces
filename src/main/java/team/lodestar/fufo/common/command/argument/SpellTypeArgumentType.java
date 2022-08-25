@@ -33,11 +33,6 @@ public class SpellTypeArgumentType implements ArgumentType<ResourceLocation> {
     }
 
     @Override
-    public String toString() {
-        return "string()";
-    }
-
-    @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         for (String suggestion : getExamples()) {
             builder = builder.suggest(suggestion);

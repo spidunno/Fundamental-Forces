@@ -31,11 +31,6 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
     }
 
     @Override
-    public String toString() {
-        return "string()";
-    }
-
-    @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         for (String suggestion : getExamples()) {
             builder = builder.suggest(suggestion);
@@ -48,18 +43,4 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
         return FufoStarfallActors.ACTORS.keySet();
     }
 
-    private static String escape(final String input) {
-        final StringBuilder result = new StringBuilder("\"");
-
-        for (int i = 0; i < input.length(); i++) {
-            final char c = input.charAt(i);
-            if (c == '\\' || c == '"') {
-                result.append('\\');
-            }
-            result.append(c);
-        }
-
-        result.append("\"");
-        return result.toString();
-    }
 }
