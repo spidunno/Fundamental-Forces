@@ -46,6 +46,7 @@ public class FufoMod {
         FufoWorldgenFeatures.FEATURE_TYPES.register(modBus);
         FufoRecipeTypes.RECIPE_TYPES.register(modBus);
         FufoParticles.PARTICLES.register(modBus);
+        FufoCommandArguments.ARGUMENT_TYPES.register(modBus);
     }
     public static ResourceLocation fufoPath(String path) {
         return new ResourceLocation(FUFO, path);
