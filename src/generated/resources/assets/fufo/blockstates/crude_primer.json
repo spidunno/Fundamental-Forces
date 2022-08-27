@@ -1,5 +1,9 @@
 {
   "variants": {
+    "facing=east": {
+      "model": "fufo:block/crude_primer",
+      "y": 90
+    },
     "facing=north": {
       "model": "fufo:block/crude_primer"
     },
@@ -10,10 +14,6 @@
     "facing=west": {
       "model": "fufo:block/crude_primer",
       "y": 270
-    },
-    "facing=east": {
-      "model": "fufo:block/crude_primer",
-      "y": 90
     }
   }
 }

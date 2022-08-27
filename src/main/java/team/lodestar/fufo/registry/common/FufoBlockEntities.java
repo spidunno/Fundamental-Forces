@@ -12,7 +12,7 @@ public class FufoBlockEntities {
         FufoMod.registrate().<SealedBarrelBlockEntity>blockEntity("sealed_barrel", SealedBarrelBlockEntity::new).validBlocks(FufoBlocks.SEALED_BARREL).register();
 
     public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
-        FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(FufoBlocks.FLUID_TANK).register();
+        FufoMod.registrate().<FluidTankBlockEntity>blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(FufoBlocks.SEALED_TANK).register();
 
     public static final BlockEntityEntry<BurnerExtractorBlockEntity> BURNER_EXTRACTOR =
             FufoMod.registrate().<BurnerExtractorBlockEntity>blockEntity("burner_extractor", BurnerExtractorBlockEntity::new).register();

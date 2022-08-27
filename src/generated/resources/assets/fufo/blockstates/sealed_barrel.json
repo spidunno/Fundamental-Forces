@@ -1,10 +1,10 @@
 {
   "variants": {
-    "shape=normal": {
-      "model": "fufo:block/logistics/sealed_barrel/default"
-    },
     "shape=no_window": {
       "model": "fufo:block/logistics/sealed_barrel/no_window"
+    },
+    "shape=normal": {
+      "model": "fufo:block/logistics/sealed_barrel/default"
     }
   }
 }

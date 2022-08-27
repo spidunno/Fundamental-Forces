@@ -59,22 +59,7 @@ public class FufoBlocks {
         .blockstate(predefinedState())
         .register();
 
-    public static final BlockEntry<FluidTankBlock<FluidTankBlockEntity>> FLUID_TANK = setupBlock("fluid_tank", (p) -> new FluidTankBlock<>(p).<FluidTankBlock<FluidTankBlockEntity>>setBlockEntity(FufoBlockEntities.FLUID_TANK), FufoBlockProperties.CRUDE_PROPERTIES())
-        .blockstate((ctx, p) -> {
-            Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_tank/" + s)));
-            p.getVariantBuilder(ctx.get())
-                .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("single_unit")).addModel()
-                .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_top")).addModel()
-                .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_middle")).addModel()
-                .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("tall_unit_bottom")).addModel();
-        })
-        .item(FluidTankItem::new)
-        .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_tank/single_unit"))).build())
-        .build()
-        .register();
-
-
-    public static final BlockEntry<SealedBarrelBlock<SealedBarrelBlockEntity>> SEALED_BARREL = setupBlock("sealed_barrel", (p) -> new SealedBarrelBlock<>(p).<SealedBarrelBlock<SealedBarrelBlockEntity>>setBlockEntity(FufoBlockEntities.SEALED_BARREL), FufoBlockProperties.CRUDE_PROPERTIES())
+    public static final BlockEntry<SealedBarrelBlock<SealedBarrelBlockEntity>> SEALED_BARREL = setupBlock("sealed_barrel", (p) -> new SealedBarrelBlock<>(p).<SealedBarrelBlock<SealedBarrelBlockEntity>>setBlockEntity(FufoBlockEntities.SEALED_BARREL), FufoBlockProperties.CRUDE_PROPERTIES().isCutoutLayer())
         .blockstate((ctx, p) -> {
             Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_barrel/" + s)));
             p.getVariantBuilder(ctx.get())
@@ -98,6 +83,20 @@ public class FufoBlocks {
         .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_barrel/default"))).build())
         .build()
         .register();
+
+    public static final BlockEntry<FluidTankBlock<FluidTankBlockEntity>> SEALED_TANK = setupBlock("sealed_tank", (p) -> new FluidTankBlock<>(p).<FluidTankBlock<FluidTankBlockEntity>>setBlockEntity(FufoBlockEntities.FLUID_TANK), FufoBlockProperties.CRUDE_PROPERTIES().isCutoutLayer())
+            .blockstate((ctx, p) -> {
+                Function<String, ModelFile> modelFunction = (s) -> (p.models().getExistingFile(fufoPath("block/logistics/sealed_tank/" + s)));
+                p.getVariantBuilder(ctx.get())
+                        .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("single_unit")).addModel()
+                        .partialState().with(FluidTankBlock.TOP, true).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_top")).addModel()
+                        .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, false).modelForState().modelFile(modelFunction.apply("tall_unit_middle")).addModel()
+                        .partialState().with(FluidTankBlock.TOP, false).with(FluidTankBlock.BOTTOM, true).modelForState().modelFile(modelFunction.apply("tall_unit_bottom")).addModel();
+            })
+            .item(FluidTankItem::new)
+            .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/sealed_tank/single_unit"))).build())
+            .build()
+            .register();
 
     public static final BlockEntry<PipeNodeBlock<ValveBlockEntity>> VALVE = setupBlock("valve",
         (p) -> new PipeNodeBlock<ValveBlockEntity>(p).<PipeNodeBlock<ValveBlockEntity>>setBlockEntity(FufoBlockEntities.VALVE), FufoBlockProperties.CRUDE_PROPERTIES())

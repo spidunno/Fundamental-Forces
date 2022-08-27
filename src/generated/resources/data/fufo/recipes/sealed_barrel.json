@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "group": "sealed_barrel",
+  "key": {
+    "X": {
+      "tag": "minecraft:planks"
+    },
+    "Y": {
+      "tag": "forge:ingots/copper"
+    },
+    "Z": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
   "pattern": [
     "XZX",
     "XYX",
     "XZX"
   ],
-  "key": {
-    "X": {
-      "tag": "minecraft:planks"
-    },
-    "Z": {
-      "tag": "minecraft:wooden_slabs"
-    },
-    "Y": {
-      "tag": "forge:ingots/copper"
-    }
-  },
   "result": {
     "item": "fufo:sealed_barrel"
   }
