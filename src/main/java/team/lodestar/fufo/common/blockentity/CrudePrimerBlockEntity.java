@@ -25,7 +25,7 @@ import java.awt.*;
 public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
     public CrudePrimerBlockEntity(BlockEntityType<? extends CrudePrimerBlockEntity> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-        inventory = new LodestoneBlockEntityInventory(1, 1){
+        inventory = new LodestoneBlockEntityInventory(1, 1) {
             @Override
             public void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
@@ -36,7 +36,7 @@ public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
 
     @Override
     public InteractionResult onUse(Player player, InteractionHand hand) {
-        if(!level.isClientSide){
+        if (!level.isClientSide) {
             if (this.inventory.isEmpty() && !player.getItemInHand(hand).isEmpty()) {
                 if (level.getEntities(player, new AABB(getBlockPos().offset(0, 1, 0)), entity -> entity instanceof WeaveEntity).isEmpty()) {
                     inventory.interact(player.level, player, hand);
@@ -59,28 +59,5 @@ public class CrudePrimerBlockEntity extends ItemHolderBlockEntity {
             }
         }
         return InteractionResult.FAIL;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-            return inventory.inventoryOptional.cast();
-        }
-        return super.getCapability(cap);
-    }
-
-    @NotNull
-    @Override
-    public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-            return inventory.inventoryOptional.cast();
-        }
-        return super.getCapability(cap, side);
     }
 }

@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.item;
+package team.lodestar.fufo.common.fluid.fluid_tank;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;

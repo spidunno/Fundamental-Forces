@@ -16,10 +16,6 @@ public class OrbBlockEntity extends LodestoneBlockEntity {
         super(type, pos, state);
     }
 
-    public OrbBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.ORB.get(), pos, state);
-    }
-
     @Override
     public void tick() {
         if (level.isClientSide) {

@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid;
 
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
@@ -57,23 +57,18 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
         super(type, pos, state);
     }
 
-    public PipeNodeBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.ANCHOR.get(), pos, state);
-    }
-
     // TODO: fix this method for the 41261816th time
     public double addFluid(Fluid f, double amount) {
     	double realAmount = Math.min(fluid.getAmount() + partialFill + amount, getCapacity());
     	double toReturn = Math.max(0, realAmount - getCapacity());
     	if (fluid.isEmpty()) {
     		fluid = new FluidStack(f, (int)realAmount);
-    		partialFill = realAmount % 1;
-    	}
+		}
     	else {
     		fluid.setAmount((int)realAmount);
-    		partialFill = realAmount % 1;
-    	}
-    	BlockHelper.updateAndNotifyState(level, getPos());
+		}
+		partialFill = realAmount % 1;
+		BlockHelper.updateAndNotifyState(level, getPos());
     	this.setChanged();
     	return toReturn;
     }

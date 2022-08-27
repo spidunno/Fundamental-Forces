@@ -1,6 +1,5 @@
-package team.lodestar.fufo.common.logistics.sealed_barrel;
+package team.lodestar.fufo.common.fluid.sealed_barrel;
 
-import team.lodestar.fufo.common.blockentity.SealedBarrelBlockEntity;
 import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;

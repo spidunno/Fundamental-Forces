@@ -1,6 +1,6 @@
 package team.lodestar.fufo.core.fluid;
 
-import team.lodestar.fufo.common.block.PipeNodeBlock;
+import team.lodestar.fufo.common.fluid.PipeNodeBlock;
 import team.lodestar.lodestone.handlers.GhostBlockHandler;
 import team.lodestar.lodestone.handlers.PlacementAssistantHandler;
 import team.lodestar.lodestone.helpers.BlockHelper;

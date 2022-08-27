@@ -35,10 +35,6 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
         super(type, pos, state);
     }
 
-    public MeteorFlameBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.METEOR_FLAME.get(), pos, state);
-    }
-
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         pTag.putInt("queuedSparks", queuedSparks);

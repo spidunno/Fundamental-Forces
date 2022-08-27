@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid.sealed_barrel;
 
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;

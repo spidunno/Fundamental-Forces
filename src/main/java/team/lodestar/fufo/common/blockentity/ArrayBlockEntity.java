@@ -56,11 +56,6 @@ public class ArrayBlockEntity extends LodestoneBlockEntity {
 
     }
 
-    public ArrayBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.CRUDE_ARRAY.get(), pos, state);
-
-    }
-
     @Override
     public void tick() {
         // get all players within 5 blocks
@@ -68,7 +63,6 @@ public class ArrayBlockEntity extends LodestoneBlockEntity {
 
     @Override
     public InteractionResult onUse(Player player, InteractionHand hand) {
-
         return InteractionResult.SUCCESS;
     }
 }

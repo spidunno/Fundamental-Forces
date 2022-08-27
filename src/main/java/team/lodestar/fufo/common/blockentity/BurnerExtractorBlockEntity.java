@@ -10,7 +10,4 @@ public class BurnerExtractorBlockEntity extends LodestoneBlockEntity {
     public BurnerExtractorBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
-    public BurnerExtractorBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.BURNER_EXTRACTOR.get(), pos, state);
-    }
 }

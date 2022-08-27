@@ -1,5 +1,6 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid.valve;
 
+import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
