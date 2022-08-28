@@ -184,7 +184,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     	if (!level.isClientSide() && this instanceof PressureSource p) {
     		getNetwork().addSource(p);
     	}
-		PipeBuilderAssistant.INSTANCE.updateSelectedNode(this); //TODO: move this somewhere else preferably, 
+		PipeBuilderAssistant.INSTANCE.updateSelectedNode(this); //TODO: move this somewhere else preferably,
     }
     
     @Override

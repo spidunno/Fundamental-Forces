@@ -13,14 +13,7 @@ public class PipeNodeBlockItem extends BlockItem {
 
     @Override
     public InteractionResult place(BlockPlaceContext pContext) {
-        if (pContext.getLevel().getBlockEntity(pContext.getClickedPos().relative(pContext.getClickedFace().getOpposite())) instanceof PipeNode pipeNode) {
-            PipeBuilderAssistant instance = PipeBuilderAssistant.INSTANCE;
-            if (!pipeNode.getPos().equals(instance.previousNodePosition)) {
-                instance.updateSelectedNode(pipeNode);
-                pContext.getPlayer().swing(pContext.getHand(), true);
-                return InteractionResult.PASS;
-            }
-        }
-        return super.place(pContext);
+        InteractionResult result = PipeBuilderAssistant.INSTANCE.updateSelectedNode(pContext);
+        return result == null ? super.place(pContext) : result;
     }
 }
