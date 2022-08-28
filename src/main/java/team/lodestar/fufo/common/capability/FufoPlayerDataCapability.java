@@ -16,7 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.network.PacketDistributor;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.packets.FufoPlayerCapabilitySyncPacket;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import team.lodestar.fufo.common.fluid.PipeBuilderAssistant;
 import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
 import team.lodestar.fufo.registry.common.FufoPackets;
 import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;

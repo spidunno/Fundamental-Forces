@@ -37,6 +37,7 @@ import team.lodestar.fufo.common.block.*;
 import team.lodestar.fufo.common.blockentity.*;
 import team.lodestar.fufo.common.fluid.PipeNodeBlock;
 import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
+import team.lodestar.fufo.common.fluid.PipeNodeBlockItem;
 import team.lodestar.fufo.common.fluid.fluid_tank.FluidTankItem;
 import team.lodestar.fufo.common.fluid.fluid_tank.FluidTankBlock;
 import team.lodestar.fufo.common.fluid.fluid_tank.FluidTankBlockEntity;
@@ -61,8 +62,10 @@ public class FufoBlocks {
 
 
     //fluid management
-    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupItemBlock("anchor",
+    public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupBlock("anchor",
             (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(FufoBlockEntities.ANCHOR), FufoBlockProperties.CRUDE_PROPERTIES())
+            .item(PipeNodeBlockItem::new)
+            .build()
             .blockstate(predefinedState())
             .register();
 
@@ -73,7 +76,7 @@ public class FufoBlocks {
                         .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NORMAL).modelForState().modelFile(modelFunction.apply("default")).addModel()
                         .partialState().with(SealedBarrelBlock.SHAPE, SealedBarrelBlock.Shape.NO_WINDOW).modelForState().modelFile(modelFunction.apply("no_window")).addModel();
             })
-            .item()
+            .item(PipeNodeBlockItem::new)
             .recipe((ctx, p) -> {
                 ShapedRecipeBuilder.shaped(ctx.get()).pattern("XZX").pattern("XYX").pattern("XZX").define('X', ItemTags.PLANKS).define('Z', ItemTags.WOODEN_SLABS).define('Y', Tags.Items.INGOTS_COPPER).group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT)).save(p, p.safeId(ctx.get()));
                 ShapelessRecipeBuilder.shapeless(ctx.get()).requires(Tags.Items.BARRELS_WOODEN).requires(Tags.Items.INGOTS_COPPER).group("sealed_barrel").unlockedBy("has_" + p.safeName(ctx.get()), has(Items.COPPER_INGOT)).save(p, fufoPath("sealed_barrel_simple"));
@@ -105,7 +108,7 @@ public class FufoBlocks {
                         .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.Z).modelForState().modelFile(model).rotationX(90).addModel()
                         .partialState().with(PipeNodeBlock.AXIS, Direction.Axis.X).modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
             })
-            .item()
+            .item(PipeNodeBlockItem::new)
             .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
             .build()
             .register();
@@ -113,7 +116,7 @@ public class FufoBlocks {
     public static final BlockEntry<PumpBlock<PumpBlockEntity>> PUMP = setupBlock("pump",
             (p) -> new PumpBlock<>(p).<PumpBlock<PumpBlockEntity>>setBlockEntity(FufoBlockEntities.PUMP), FufoBlockProperties.CRUDE_PROPERTIES())
             .blockstate(invisibleState())
-            .item()
+            .item(PipeNodeBlockItem::new)
             .model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/valve"))).build())
             //.model((ctx, p) -> ConfiguredModel.builder().modelFile(p.withExistingParent(p.name(ctx::getEntry), fufoPath("block/logistics/pump"))).build())
             .build()

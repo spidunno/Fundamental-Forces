@@ -1,12 +1,13 @@
 package team.lodestar.fufo.common.fluid;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BlockItem;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.core.fluid.FluidStats;
-import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
 import team.lodestar.fufo.unsorted.util.Debuggable;
@@ -172,17 +173,18 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     
     @Override
     public void onPlace(LivingEntity placer, ItemStack stack) {
-    	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.prevAnchorPos;
+    	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.previousNodePosition;
     	if (!level.isClientSide() && prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
     		addConnection(prevPos);
     		prev.addConnection(getPos());
     		setNetwork(prev.getNetwork(), true);
     	}
     	else setNetwork(new FluidPipeNetwork(getLevel()), true);
-    	
+
     	if (!level.isClientSide() && this instanceof PressureSource p) {
     		getNetwork().addSource(p);
     	}
+		PipeBuilderAssistant.INSTANCE.updateSelectedNode(this); //TODO: move this somewhere else preferably, 
     }
     
     @Override
@@ -202,8 +204,22 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     		if (network != null) this.setNetwork(net, true);
     	}
     }
-    
-    // TODO: Have this use nearbyAnchors
+
+
+	@Override
+	public InteractionResult onUse(Player player, InteractionHand hand) {
+		if (!player.mayBuild()) return InteractionResult.PASS;
+		ItemStack itemInHand = player.getItemInHand(hand);
+		if (itemInHand.isEmpty()) {
+			if (player.isShiftKeyDown()) {
+				setOpen(!isOpen());
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return InteractionResult.PASS;
+	}
+
+	// TODO: Have this use nearbyAnchors
     @Override
     public void onBreak(@Nullable Player player) {
     	super.onBreak(player);
