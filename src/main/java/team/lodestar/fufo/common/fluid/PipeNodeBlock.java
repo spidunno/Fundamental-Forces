@@ -1,7 +1,6 @@
-package team.lodestar.fufo.common.block;
+package team.lodestar.fufo.common.fluid;
 
-import team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import net.minecraft.world.item.BlockItem;
 import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -61,27 +60,5 @@ public class PipeNodeBlock<T extends PipeNodeBlockEntity> extends LodestoneEntit
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
         return SHAPE;
-    }
-
-    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult ray) {
-//    	FufoMod.LOGGER.info("Called use");
-        if (!player.mayBuild()) return InteractionResult.PASS;
-        ItemStack held = player.getItemInHand(hand);
-        if (player.getItemInHand(hand).isEmpty()) {
-        	if (player.isShiftKeyDown()) {
-        		PipeNodeBlockEntity tile = (PipeNodeBlockEntity)level.getBlockEntity(pos);
-        		tile.setOpen(!tile.isOpen());
-        	}
-        	else {
-        		PipeBuilderAssistant.INSTANCE.prevAnchorPos = pos;
-        	}
-        	// PipeBuilderAssistant.INSTANCE.recentAnchorPos = pos;
-        	return InteractionResult.SUCCESS;
-        }
-//        IPlacementHelper helper = PlacementHelpers.get(ANCHOR_PLACEMENT_HELPER);
-//        if (helper.matchesItem(held))
-//            return helper.getOffset(player, level, state, pos, ray).placeInWorld(level, (BlockItem) held.getItem(), player, hand, ray);
-        return InteractionResult.PASS;
     }
 }

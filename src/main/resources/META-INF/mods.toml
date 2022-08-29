@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[39,)"
+loaderVersion="[43,)"
 license="All rights reserved"
 [[mods]]
 modId="fufo"
@@ -9,21 +9,27 @@ logoFile="fundamental_forces.png"
 credits="Credits go here"
 authors="Authors go here"
 description=''' '''
-[[dependencies.fufo]]
-    modId="pollen"
-    mandatory=true
-    versionRange="[FORGE-1.18.2,)"
-    ordering="AFTER"
-    side="BOTH"
+#[[dependencies.fufo]]
+#    modId="pollen"
+#    mandatory=true
+#    versionRange="[FORGE-1.19.2,)"
+#    ordering="AFTER"
+#    side="BOTH"
 [[dependencies.fufo]]
     modId="forge"
     mandatory=true
-    versionRange="[39,)"
+    versionRange="[43.1.1,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.fufo]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2,)"
+    versionRange="[1.19.2,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.fufo]]
+    modId="lodestone"
+    mandatory=true
+    versionRange="[1.19.2-2.0.0,)"
     ordering="NONE"
     side="BOTH"

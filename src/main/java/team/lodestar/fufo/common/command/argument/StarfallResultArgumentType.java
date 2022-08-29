@@ -7,16 +7,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
-import team.lodestar.fufo.unsorted.LangHelpers;
+import net.minecraft.network.chat.Component;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
-import net.minecraft.network.chat.TranslatableComponent;
+import team.lodestar.fufo.unsorted.LangHelpers;
 
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 public class StarfallResultArgumentType implements ArgumentType<String> {
 
-    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(new TranslatableComponent(LangHelpers.getCommandOutput("error.starfall.result")));
+    public static final SimpleCommandExceptionType INCORRECT_RESULT = new SimpleCommandExceptionType(Component.translatable(LangHelpers.getCommandOutput("error.starfall.result")));
 
     public StarfallResultArgumentType() {
     }
@@ -28,11 +28,6 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
             return read;
         }
         throw INCORRECT_RESULT.createWithContext(reader);
-    }
-
-    @Override
-    public String toString() {
-        return "string()";
     }
 
     @Override
@@ -48,18 +43,4 @@ public class StarfallResultArgumentType implements ArgumentType<String> {
         return FufoStarfallActors.ACTORS.keySet();
     }
 
-    private static String escape(final String input) {
-        final StringBuilder result = new StringBuilder("\"");
-
-        for (int i = 0; i < input.length(); i++) {
-            final char c = input.charAt(i);
-            if (c == '\\' || c == '"') {
-                result.append('\\');
-            }
-            result.append(c);
-        }
-
-        result.append("\"");
-        return result.toString();
-    }
 }

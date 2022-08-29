@@ -1,8 +1,10 @@
 package team.lodestar.fufo.client.ui.programming;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import team.lodestar.fufo.client.ui.Vector2;
-import team.lodestar.fufo.client.ui.component.*;
 import team.lodestar.fufo.client.ui.component.FlexBox;
 import team.lodestar.fufo.client.ui.constraint.DimensionConstraint;
 import team.lodestar.fufo.client.ui.constraint.PercentageConstraint;
@@ -10,10 +12,6 @@ import team.lodestar.fufo.client.ui.constraint.PixelConstraint;
 import team.lodestar.fufo.client.ui.transition.PositionEasingTransition;
 import team.lodestar.fufo.client.ui.transition.SizeEasingTransition;
 import team.lodestar.fufo.client.ui.transition.Transition;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 
 import java.awt.*;
 
@@ -28,7 +26,7 @@ public class ProgrammingScreen extends Screen {
 
     public ProgrammingScreen(Component pTitle) {
         // TODO: lang stuff
-        super(new TranslatableComponent("Programming Screen"));
+        super(Component.translatable("Programming Screen"));
     }
 
     @Override

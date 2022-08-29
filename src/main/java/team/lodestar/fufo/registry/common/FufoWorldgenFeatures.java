@@ -20,13 +20,4 @@ public class FufoWorldgenFeatures {
     public static final DeferredRegister<Feature<?>> FEATURE_TYPES = DeferredRegister.create(ForgeRegistries.FEATURES, FufoMod.FUFO);
 
     public static final RegistryObject<Feature<NoneFeatureConfiguration>> METEORITE = FEATURE_TYPES.register("meteorite", MeteoriteFeature::new);
-
-    //TODO: clean this up!
-    public static final class ConfiguredFeatures {
-        public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> METEORITE = FeatureUtils.register("meteorite", FufoWorldgenFeatures.METEORITE.get(), INSTANCE);
-
-    }
-
-    public static final class PlacedFeatures {
-    }
 }

@@ -1,7 +1,7 @@
 package team.lodestar.fufo.unsorted.eventhandlers;
 
 import team.lodestar.fufo.common.capability.*;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
+import team.lodestar.fufo.common.fluid.PipeBuilderAssistant;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

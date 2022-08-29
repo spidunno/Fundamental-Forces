@@ -117,7 +117,7 @@ public class FluidPipeNetwork {
 	}
 	
 	private void recalcPressure() {
-//		Minecraft.getInstance().mouseHandler.releaseMouse();
+
 		for (PressureSource p : pressureSources) {
 			
 			PipeNode in = p.getConnection(FlowDir.IN);

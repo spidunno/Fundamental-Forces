@@ -2,6 +2,7 @@ package team.lodestar.fufo;
 
 import com.tterrag.registrate.Registrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,20 +38,17 @@ public class FufoMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
+        
         FufoBlocks.register();
         FufoItems.register();
         FufoBlockEntities.register();
-        FufoCommands.registerArgumentTypes();
         FufoEntities.ENTITY_TYPES.register(modBus);
         FufoMobEffects.EFFECTS.register(modBus);
         FufoSounds.SOUNDS.register(modBus);
         FufoWorldgenFeatures.FEATURE_TYPES.register(modBus);
         FufoRecipeTypes.RECIPE_TYPES.register(modBus);
         FufoParticles.PARTICLES.register(modBus);
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            FufoTextureLoaders.setup();
-        }
+        FufoCommandArguments.ARGUMENT_TYPES.register(modBus);
     }
     public static ResourceLocation fufoPath(String path) {
         return new ResourceLocation(FUFO, path);

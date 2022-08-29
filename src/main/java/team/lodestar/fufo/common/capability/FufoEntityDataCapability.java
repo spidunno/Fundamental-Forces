@@ -39,7 +39,7 @@ public class FufoEntityDataCapability implements LodestoneCapability {
 
     public static void syncEntityCapability(PlayerEvent.StartTracking event) {
         if (event.getEntity().level instanceof ServerLevel) {
-            FufoEntityDataCapability.syncTracking(event.getEntityLiving());
+            FufoEntityDataCapability.syncTracking(event.getEntity());
         }
     }
 

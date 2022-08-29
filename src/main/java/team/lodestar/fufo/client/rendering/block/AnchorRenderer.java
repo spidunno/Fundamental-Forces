@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity;
+import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.setup.LodestoneRenderTypeRegistry;
 import team.lodestar.lodestone.systems.rendering.VFXBuilders;

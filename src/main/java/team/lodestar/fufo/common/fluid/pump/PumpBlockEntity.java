@@ -1,8 +1,8 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid.pump;
 
 import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
 import team.lodestar.fufo.core.fluid.FlowDir;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
 
@@ -33,10 +33,6 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super(type, pos, state);
 		force = 2000; // for testing
 	}
-	
-	public PumpBlockEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
-    }
 
 	@Override
 	public void onPlace(LivingEntity placer, ItemStack stack) {

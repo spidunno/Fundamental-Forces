@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.logistics.fluid_tank;
+package team.lodestar.fufo.common.fluid.fluid_tank;
 
 import team.lodestar.lodestone.systems.block.LodestoneEntityBlock;
 import net.minecraft.core.BlockPos;

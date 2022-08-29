@@ -3,14 +3,6 @@ package team.lodestar.fufo.unsorted.handlers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
-import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
-import team.lodestar.fufo.registry.client.FufoKeybinds;
-import team.lodestar.fufo.core.spell.SpellInstance;
-import team.lodestar.fufo.core.spell.attributes.effect.SpellEffect;
-import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
-import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
-import team.lodestar.lodestone.systems.rendering.VFXBuilders;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
@@ -20,10 +12,19 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
+import team.lodestar.fufo.core.spell.SpellInstance;
+import team.lodestar.fufo.core.spell.attributes.effect.SpellEffect;
+import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
+import team.lodestar.fufo.registry.client.FufoKeybinds;
+import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
+import team.lodestar.lodestone.systems.rendering.VFXBuilders;
 
 //Whoever programmed this class must really like cock and balls like a lot
 public class PlayerSpellHotbarHandler {
@@ -40,7 +41,7 @@ public class PlayerSpellHotbarHandler {
 
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
         if (event.getHand().equals(InteractionHand.MAIN_HAND)) {
-            if (event.getPlayer() instanceof ServerPlayer serverPlayer) {
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 FufoPlayerDataCapability.getCapabilityOptional(serverPlayer).ifPresent(c -> {
                     if (c.hotbarHandler.open) {
                         SpellInstance selectedSpell = c.hotbarHandler.spellHotbar.getSelectedSpell(serverPlayer);
@@ -104,16 +105,16 @@ public class PlayerSpellHotbarHandler {
     public static class ClientOnly {
         public static final ResourceLocation ICONS_TEXTURE = FufoMod.fufoPath("textures/spell/hotbar.png");
 
-        public static void moveOverlays(RenderGameOverlayEvent.Pre event) {
-            if (event.getType().equals(RenderGameOverlayEvent.ElementType.ALL)) {
+        public static void moveOverlays(RenderGuiOverlayEvent.Pre event) {
+            if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type()) { // TODO 1.19: fix like superior shields
                 Minecraft minecraft = Minecraft.getInstance();
                 LocalPlayer player = minecraft.player;
                 FufoPlayerDataCapability capability = FufoPlayerDataCapability.getCapability(player);
                 float progress = Math.max(0, capability.hotbarHandler.animationProgress - 0.5f) * 2f;
                 float offset = progress * 4;
 
-                ((ForgeIngameGui) Minecraft.getInstance().gui).left_height += offset;
-                ((ForgeIngameGui) Minecraft.getInstance().gui).right_height += offset;
+                ((ForgeGui) Minecraft.getInstance().gui).leftHeight += offset;
+                ((ForgeGui) Minecraft.getInstance().gui).rightHeight += offset;
             }
         }
 
@@ -167,10 +168,10 @@ public class PlayerSpellHotbarHandler {
 
         public static Tesselator spellTesselator = new Tesselator();
 
-        public static void renderSpellHotbar(RenderGameOverlayEvent.Post event) {
+        public static void renderSpellHotbar(RenderGuiOverlayEvent.Post event) {
             Minecraft minecraft = Minecraft.getInstance();
             LocalPlayer player = minecraft.player;
-            if (event.getType() == RenderGameOverlayEvent.ElementType.ALL && !player.isSpectator()) {
+            if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type() && !player.isSpectator()) { // TODO 1.19: fix like superior shields
                 FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                     if (c.hotbarHandler.animationProgress >= 0.5f) {
                         float progress = Math.max(0, c.hotbarHandler.animationProgress - 0.5f) * 2f;
@@ -178,7 +179,7 @@ public class PlayerSpellHotbarHandler {
                         int left = event.getWindow().getGuiScaledWidth() / 2 - 109;
                         int top = event.getWindow().getGuiScaledHeight() - 31;
                         int slot = player.getInventory().selected;
-                        PoseStack poseStack = event.getMatrixStack();
+                        PoseStack poseStack = event.getPoseStack();
                         poseStack.pushPose();
                         poseStack.translate(0, offset, 0);
                         RenderSystem.enableBlend();

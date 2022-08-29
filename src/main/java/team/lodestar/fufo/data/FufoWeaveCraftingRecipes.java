@@ -1,13 +1,6 @@
 package team.lodestar.fufo.data;
 
 
-import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.recipe.WeaveRecipe;
-import team.lodestar.fufo.data.builder.WeaveRecipeBuilder;
-import team.lodestar.fufo.core.weaving.BindingType;
-import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
-import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
-import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.core.Vec3i;
 import net.minecraft.data.DataGenerator;
@@ -22,6 +15,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
+import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.common.recipe.WeaveRecipe;
+import team.lodestar.fufo.core.weaving.BindingType;
+import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
+import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
+import team.lodestar.fufo.data.builder.WeaveRecipeBuilder;
 
 import java.util.function.Consumer;
 
@@ -51,9 +52,9 @@ public class FufoWeaveCraftingRecipes extends RecipeProvider {
                     new BindingType(FufoMod.fufoPath("ultimate_floppe")),
                     new IngredientBindable(new Vec3i(2, 2, 2), Ingredient.of(Tags.Items.SHEARS))
                 )
-                .primersAllowed(Items.DIAMOND_SWORD.getRegistryName(), 1)
-                .primersAllowed(Items.SHEARS.getRegistryName(), 1)
-                .primersAllowed(EntityType.HORSE.getRegistryName(), 1)
+                .primersAllowed(ForgeRegistries.ITEMS.getKey(Items.DIAMOND_SWORD), 1)
+                .primersAllowed(ForgeRegistries.ITEMS.getKey(Items.SHEARS), 1)
+                .primersAllowed(ForgeRegistries.ENTITY_TYPES.getKey(EntityType.HORSE), 1)
                 .setOutput(new ItemStack(Items.SLIME_BALL))
         ).build(consumer, "glue");
 
@@ -71,9 +72,9 @@ public class FufoWeaveCraftingRecipes extends RecipeProvider {
                     new BindingType(FufoMod.fufoPath("ultimate_floppe")),
                     new IngredientBindable(new Vec3i(1, 1, 1), Ingredient.of(Tags.Items.SHEARS))
                 )
-                .primersAllowed(Items.DIAMOND_SWORD.getRegistryName(), 1)
-                .primersAllowed(Items.SHEARS.getRegistryName(), 1)
-                .primersAllowed(EntityType.HORSE.getRegistryName(), 1)
+                .primersAllowed(ForgeRegistries.ITEMS.getKey(Items.DIAMOND_SWORD), 1)
+                .primersAllowed(ForgeRegistries.ITEMS.getKey(Items.SHEARS), 1)
+                .primersAllowed(ForgeRegistries.ENTITY_TYPES.getKey(EntityType.HORSE), 1)
                 .setOutput(new ItemStack(Items.SLIME_BALL))
         ).build(consumer, "glue_two_electric_boogaloo");
     }

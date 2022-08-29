@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid.sealed_barrel;
 
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
@@ -93,7 +93,6 @@ public class SealedBarrelBlockEntity extends LodestoneBlockEntity implements Pip
 	@Override
 	public void updateSource(PressureSource p, FlowDir dir, double dist) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

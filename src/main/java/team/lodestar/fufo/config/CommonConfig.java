@@ -77,15 +77,15 @@ public class CommonConfig extends LodestoneConfig {
 
     public static final LodestoneConfig.ConfigValueHolder<Integer> NATURAL_DEBRIS_COUNTDOWN = new LodestoneConfig.ConfigValueHolder<>(FUFO,"common/world_events/space_debris", (builder) ->
             builder.comment("Base countdown for every subsequent space debris impact events")
-                    .define("natural_space_debris_countdown", 500));
+                    .define("natural_space_debris_countdown", 50000));
 
     public static final LodestoneConfig.ConfigValueHolder<Double> MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER = new LodestoneConfig.ConfigValueHolder<>(FUFO,"common/world_events/space_debris", (builder) ->
             builder.comment("Minimum multiplier for space debris impact event countdowns. Every time an impact event occurs, the countdown for the next one is generated and randomized between these two multipliers.")
-                    .defineInRange("minimum_asteroid_countdown_multiplier", 0.85, 0, Integer.MAX_VALUE));
+                    .defineInRange("minimum_asteroid_countdown_multiplier", 0.85, 0, 10));
 
     public static final LodestoneConfig.ConfigValueHolder<Double> MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER = new LodestoneConfig.ConfigValueHolder<>(FUFO,"common/world_events/space_debris", (builder) ->
             builder.comment("Maximum multiplier for a space debris impact event countdowns")
-                    .defineInRange("maximum_asteroid_countdown_multiplier", 1.25, 0, Integer.MAX_VALUE));
+                    .defineInRange("maximum_asteroid_countdown_multiplier", 1.25, 0, 10));
 
     public static final LodestoneConfig.ConfigValueHolder<Integer> MINIMUM_METEOR_FLAME_COST = new LodestoneConfig.ConfigValueHolder<>(FUFO,"common/gameplay/meteor_flame", (builder) ->
             builder.comment("Minimum durability consumed to light a meteor rock on fire")

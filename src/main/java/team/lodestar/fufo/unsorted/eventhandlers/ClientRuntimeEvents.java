@@ -1,15 +1,13 @@
 package team.lodestar.fufo.unsorted.eventhandlers;
 
-import team.lodestar.fufo.client.rendering.entity.falling.FallingStarRenderer;
-import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import team.lodestar.fufo.client.rendering.entity.falling.FallingStarRenderer;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {
@@ -33,20 +31,12 @@ public class ClientRuntimeEvents {
     }
 
     @SubscribeEvent
-    public static void renderLast(RenderLevelLastEvent event) {
-    }
-
-    @SubscribeEvent
-    public static void renderBlockOverlay(RenderBlockOverlayEvent event) {
-    }
-
-    @SubscribeEvent
-    public static void renderOverlay(RenderGameOverlayEvent.Pre event) {
+    public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
         PlayerSpellHotbarHandler.ClientOnly.moveOverlays(event);
     }
 
     @SubscribeEvent
-    public static void renderOverlay(RenderGameOverlayEvent.Post event) {
+    public static void renderOverlay(RenderGuiOverlayEvent.Post event) {
         PlayerSpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
     }
 }

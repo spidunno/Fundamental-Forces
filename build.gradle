@@ -6,9 +6,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradleVersion}", changing: false
+        classpath "org.spongepowered:mixingradle:${mixingradleVersion}"
+        classpath "org.parchmentmc:librarian:${librarianVersion}"
     }
 
 }
@@ -19,8 +19,6 @@ apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 jarJar.enable()
-
-boolean inWorkspace = findProject(':Lodestone') != null
 
 version = "${project.minecraftVersion}-${project.modVersion}"
 if (System.getenv('BUILD_NUMBER') != null) {
@@ -52,11 +50,6 @@ minecraft {
                 self {
                     source sourceSets.main
                 }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
-                }
             }
         }
 
@@ -71,11 +64,6 @@ minecraft {
                 self {
                     source sourceSets.main
                 }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
-                }
             }
         }
 
@@ -89,11 +77,6 @@ minecraft {
             mods {
                 self {
                     source sourceSets.main
-                }
-                if (inWorkspace) {
-                    lodestone {
-                        source project(":Lodestone").sourceSets.main
-                    }
                 }
             }
         }
@@ -137,33 +120,27 @@ dependencies {
         annotationProcessor "org.spongepowered:mixin:${mixinVersion}:processor"
     }
 
-    // JEI dependency
-    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}:${jeiVersion}")
+    // JEI Dependency
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-forge-api:${jeiVersion}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-common-api:${jeiVersion}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraftVersion}-forge:${jeiVersion}")
 
     // Curios dependency
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}:api")
     runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${minecraftVersion}-${curiosVersion}")
 
     // Pollen dependency
-    implementation fg.deobf("gg.moonflower:pollen-forge:${pollenVersion}+${minecraftVersion}") {
-        transitive = false
-    }
+//    implementation fg.deobf("gg.moonflower:pollen-forge:${pollenVersion}+${minecraftVersion}") {
+//        transitive = false
+//    }
 
     // Registrate dependency
-    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.18.2-1.1.3,)') {
+    jarJar(group: 'com.tterrag.registrate', name: 'Registrate', version: '[MC1.19-1.1.5,)') {
         jarJar.pin(it, project.registrateVersion)
     }
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrateVersion}")
 
-    // Use local lodestone when in multiproject
-
-    if (inWorkspace) {
-        implementation project(':Lodestone')
-    } else {
-        implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
-    }
-
+    implementation fg.deobf("team.lodestar.lodestone:lodestone:${minecraftVersion}-${project.lodestoneVersion}")
 }
 
 jar {
@@ -179,6 +156,12 @@ jar {
                 "MixinConfigs"            : "${project.modId}.mixins.json"
         ])
     }
+}
+
+// Workaround for SpongePowered/MixinGradle#38
+afterEvaluate {
+    tasks.configureReobfTaskForReobfJar.mustRunAfter(tasks.compileJava)
+    tasks.configureReobfTaskForReobfJarJar.mustRunAfter(tasks.compileJava)
 }
 
 tasks.withType(GenerateModuleMetadata) {

@@ -6,13 +6,6 @@ import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
-import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.registry.common.FufoRecipeTypes;
-import team.lodestar.fufo.core.weaving.Bindable;
-import team.lodestar.fufo.core.weaving.BindingType;
-import team.lodestar.fufo.core.weaving.Weave;
-import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
-import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
@@ -27,7 +20,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.ForgeRegistries;
+import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.core.weaving.Bindable;
+import team.lodestar.fufo.core.weaving.BindingType;
+import team.lodestar.fufo.core.weaving.Weave;
+import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
+import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
+import team.lodestar.fufo.registry.common.FufoRecipeTypes;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -134,7 +134,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
         return Type.INSTANCE;
     }
 
-    public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<WeaveRecipe> {
+    public static class Serializer implements RecipeSerializer<WeaveRecipe> {
 
         public static Vec3i readVec3i(JsonObject json) {
             return new Vec3i(json.get("x").getAsInt(), json.get("y").getAsInt(), json.get("z").getAsInt());
@@ -211,7 +211,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
                 }
                 if (entry instanceof EntityTypeBindable) {
                     ingredient.addProperty("type", "entity");
-                    String name = ((EntityTypeBindable) entry).get().getRegistryName().toString();
+                    String name = ((EntityTypeBindable) entry).get().toString();
                     JsonObject value = new JsonObject();
                     value.addProperty("entity", name);
                     ingredient.add("value", value);
@@ -353,7 +353,7 @@ public class WeaveRecipe extends Weave<WeaveRecipe> implements Recipe<Container>
                     buffer.writeUtf("entity");
                     EntityTypeBindable entityTypeBindable = (EntityTypeBindable) entry;
                     EntityType<?> entityType = entityTypeBindable.get();
-                    buffer.writeUtf(entityType.getRegistryName().toString());
+                    buffer.writeUtf(ForgeRegistries.ENTITY_TYPES.getKey(entityType).toString());
                 }
             }
 

@@ -11,11 +11,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class UITestBlockEntity extends LodestoneBlockEntity {
     public boolean toggle = false;
+
     public UITestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-    public UITestBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.UI_TEST_BLOCK.get(),pos, state);
     }
 
     @Override

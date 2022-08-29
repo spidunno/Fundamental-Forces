@@ -1,12 +1,13 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.BlockItem;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.core.fluid.FluidStats;
-import team.lodestar.fufo.registry.common.FufoBlockEntities;
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
-import team.lodestar.fufo.core.fluid.PipeBuilderAssistant;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
 import team.lodestar.fufo.unsorted.util.Debuggable;
@@ -58,23 +59,18 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
         super(type, pos, state);
     }
 
-    public PipeNodeBlockEntity(BlockPos pos, BlockState state) {
-        super(FufoBlockEntities.ANCHOR.get(), pos, state);
-    }
-
     // TODO: fix this method for the 41261816th time
     public double addFluid(Fluid f, double amount) {
     	double realAmount = Math.min(fluid.getAmount() + partialFill + amount, getCapacity());
     	double toReturn = Math.max(0, realAmount - getCapacity());
     	if (fluid.isEmpty()) {
     		fluid = new FluidStack(f, (int)realAmount);
-    		partialFill = realAmount % 1;
-    	}
+		}
     	else {
     		fluid.setAmount((int)realAmount);
-    		partialFill = realAmount % 1;
-    	}
-    	BlockHelper.updateAndNotifyState(level, getPos());
+		}
+		partialFill = realAmount % 1;
+		BlockHelper.updateAndNotifyState(level, getPos());
     	this.setChanged();
     	return toReturn;
     }
@@ -183,7 +179,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     
     @Override
     public void onPlace(LivingEntity placer, ItemStack stack) {
-    	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.prevAnchorPos;
+    	BlockPos prevPos = PipeBuilderAssistant.INSTANCE.previousNodePosition; //TODO: move this to a generic area ran by all implementations of PipeNode
     	if (!level.isClientSide() && prevPos != null && level.getBlockEntity(prevPos) instanceof PipeNode prev && prev.getNetwork() != null) {
     		addConnection(prevPos);
     		prev.addConnection(getPos());
@@ -222,8 +218,22 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     		}
     	}
     }
-    
-    // TODO: Have this use nearbyAnchors
+
+
+	@Override
+	public InteractionResult onUse(Player player, InteractionHand hand) {
+		if (!player.mayBuild()) return InteractionResult.PASS;
+		ItemStack itemInHand = player.getItemInHand(hand);
+		if (itemInHand.isEmpty()) {
+			if (player.isShiftKeyDown()) {
+				setOpen(!isOpen());
+			}
+			return InteractionResult.SUCCESS;
+		}
+		return InteractionResult.PASS;
+	}
+
+	// TODO: Have this use nearbyAnchors
     @Override
     public void onBreak(@Nullable Player player) {
     	super.onBreak(player);

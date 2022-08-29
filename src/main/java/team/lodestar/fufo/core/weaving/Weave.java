@@ -3,17 +3,21 @@ package team.lodestar.fufo.core.weaving;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Dynamic;
 import com.mojang.serialization.JsonOps;
-import team.lodestar.fufo.common.recipe.WeaveRecipe;
-import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
-import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
-import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraftforge.registries.ForgeRegistries;
+import team.lodestar.fufo.common.recipe.WeaveRecipe;
+import team.lodestar.fufo.core.weaving.recipe.EntityTypeBindable;
+import team.lodestar.fufo.core.weaving.recipe.IngredientBindable;
+import team.lodestar.fufo.core.weaving.recipe.ItemStackBindable;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -228,7 +232,7 @@ public abstract class Weave<T extends Weave> {
             } else if(bindable instanceof EntityTypeBindable) {
                 bindableTag.putString("type", "entity_type");
                 CompoundTag valueTag = new CompoundTag();
-                valueTag.putString("entity", ((EntityTypeBindable) bindable).get().getRegistryName().toString());
+                valueTag.putString("entity", ForgeRegistries.ENTITY_TYPES.getKey(((EntityTypeBindable) bindable).get()).toString());
                 bindableTag.put("value", valueTag);
             } else if (bindable instanceof ItemStackBindable) {
                 bindableTag.putString("type", "item");

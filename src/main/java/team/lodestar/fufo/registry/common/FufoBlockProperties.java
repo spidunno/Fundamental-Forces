@@ -18,7 +18,7 @@ public class FufoBlockProperties {
     }
 
     public static LodestoneBlockProperties METEOR_FIRE_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().noDrops().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b -> 15);
+        return new LodestoneBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b -> 15);
     }
 
     public static LodestoneBlockProperties CHARRED_ROCK_PROPERTIES() {
