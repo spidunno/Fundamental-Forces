@@ -11,7 +11,7 @@ public interface PipeNode {
 	
 	/**
 	 * Add a fluid to the node.
-	 * @param stack
+	 * @param fluid The type of fluid to add
 	 * @return The amount of fluid not added
 	 */
 	public double addFluid(Fluid fluid, double amount);

@@ -203,7 +203,7 @@ public abstract class Weave<T extends Weave> {
 
     /**
      * Writes this Weave to NBT
-     * @returns a {@link CompoundTag} containing the Weave's data
+     * @return a {@link CompoundTag} containing the Weave's data
      */
     public CompoundTag serialize() {
         CompoundTag tag = new CompoundTag();

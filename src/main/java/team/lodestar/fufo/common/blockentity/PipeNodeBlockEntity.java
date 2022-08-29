@@ -45,7 +45,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     public ArrayList<BlockPos> nearbyAnchorPositions = new ArrayList<>();
     public ArrayList<PipeNode> nearbyAnchors = new ArrayList<>();
     
-    private FluidStack fluid = FluidStack.EMPTY;
+    protected FluidStack fluid = FluidStack.EMPTY;
     
     private List<Triple<PressureSource, FlowDir, Double>> sources = new ArrayList<>();
     private double partialFill = 0.0;
