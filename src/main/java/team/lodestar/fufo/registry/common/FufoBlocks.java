@@ -63,7 +63,7 @@ public class FufoBlocks {
 
     //fluid management
     public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupBlock("anchor",
-            (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(FufoBlockEntities.ANCHOR), FufoBlockProperties.CRUDE_PROPERTIES())
+            (p) -> new PipeNodeBlock<>(p).<PipeNodeBlock<PipeNodeBlockEntity>>setBlockEntity(FufoBlockEntities.ANCHOR), FufoBlockProperties.CRUDE_COPPER_PROPERTIES())
             .item(PipeNodeBlockItem::new)
             .build()
             .blockstate(predefinedState())
