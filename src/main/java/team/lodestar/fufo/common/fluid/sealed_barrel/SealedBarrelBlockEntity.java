@@ -108,12 +108,6 @@ public class SealedBarrelBlockEntity extends LodestoneBlockEntity implements Pip
 	}
 
 	@Override
-	public void setTarget(BlockPos target) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public double getFluidAmount() {
 		// TODO Auto-generated method stub
 		return 0;

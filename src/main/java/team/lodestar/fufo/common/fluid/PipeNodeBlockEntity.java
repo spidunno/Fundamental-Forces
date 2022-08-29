@@ -53,7 +53,6 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     private boolean isOpen = false;
     private FluidPipeNetwork network;
     private int networkID;
-    private BlockPos target;
 
     public PipeNodeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -301,9 +300,6 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 		return network;
 	}
 	
-	public void setTarget(BlockPos target) {
-		this.target = target;
-	}
 
 	@Override
 	public int getCapacity() {
