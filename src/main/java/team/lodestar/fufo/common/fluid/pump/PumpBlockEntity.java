@@ -85,7 +85,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super.load(pTag);
 		if (pTag.contains("back")) backPos = BlockPos.of(pTag.getLong("back"));
 		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
-		FufoMod.LOGGER.info(String.format("Successfully loaded positions %s and %s from NBT", backPos, frontPos));
+//		FufoMod.LOGGER.info(String.format("Successfully loaded positions %s and %s from NBT", backPos, frontPos));
 	}
 	
 	@Override
@@ -105,7 +105,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	@Override
 	public double getPressure(FlowDir dir) {
 		double p = (dir == FlowDir.OUT ? force : -force);
-		FufoMod.LOGGER.info(String.format("Pressure at %s from direction %s: %s", this, dir, p));
+//		FufoMod.LOGGER.info(String.format("Pressure at %s from direction %s: %s", this, dir, p));
 		return p;
 	}
 
