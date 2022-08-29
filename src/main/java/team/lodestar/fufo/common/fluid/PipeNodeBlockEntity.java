@@ -49,7 +49,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     protected FluidStack fluid = FluidStack.EMPTY;
     
     private List<Triple<PressureSource, FlowDir, Double>> sources = new ArrayList<>();
-    private double partialFill = 0.0;
+    protected double partialFill = 0.0;
     private boolean isOpen = false;
     private FluidPipeNetwork network;
     private int networkID;

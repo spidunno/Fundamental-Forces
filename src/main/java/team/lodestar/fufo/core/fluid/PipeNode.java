@@ -20,6 +20,10 @@ import net.minecraftforge.fluids.FluidStack;
  * @see team.lodestar.fufo.common.fluid.PipeNodeBlockEntity
  */
 public interface PipeNode {
+	/**
+	 * Returns the integer part of the stored fluid. Meant for interfacing with other mods' fluid systems.
+	 * @return
+	 */
 	public FluidStack getStoredFluid();
 	
 	/**
