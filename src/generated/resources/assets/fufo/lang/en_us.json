@@ -1,0 +1,20 @@
+{
+  "block.fufo.anchor": "Anchor",
+  "block.fufo.block_of_crack": "Block Of Crack",
+  "block.fufo.crude_array": "Crude Array",
+  "block.fufo.crude_needle": "Crude Needle",
+  "block.fufo.crude_primer": "Crude Primer",
+  "block.fufo.force_orb": "Force Orb",
+  "block.fufo.meteor_fire": "Meteor Fire",
+  "block.fufo.ortusite": "Ortusite",
+  "block.fufo.pump": "Pump",
+  "block.fufo.sealed_barrel": "Sealed Barrel",
+  "block.fufo.sealed_tank": "Sealed Tank",
+  "block.fufo.ui_test": "Ui Test",
+  "block.fufo.valve": "Valve",
+  "item.fufo.crack": "Crack",
+  "item.fufo.debug_tool": "Debug Tool",
+  "item.fufo.depleted_ortusite_chunk": "Depleted Ortusite Chunk",
+  "item.fufo.dev_tool": "Dev Tool",
+  "item.fufo.ortusite_chunk": "Ortusite Chunk"
+}

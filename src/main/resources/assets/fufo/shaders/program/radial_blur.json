@@ -4,7 +4,7 @@
     "srcrgb": "one",
     "dstrgb": "zero"
   },
-  "vertex": "ortus:pp_base",
+  "vertex": "lodestone:pp_base",
   "fragment": "fufo:radial_blur",
   "attributes": [ "Position" ],
   "samplers": [

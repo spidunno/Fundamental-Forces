@@ -1,0 +1,187 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:depleted_ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:depleted_ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:depleted_ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "4"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 4.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:depleted_ortusite_chunk"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "0"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 4.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:ortusite_chunk"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "block": "fufo:ortusite",
+              "condition": "minecraft:block_state_property",
+              "properties": {
+                "depletion": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "add": false,
+              "count": 1.0,
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "fufo:ortusite_chunk"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

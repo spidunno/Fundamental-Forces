@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "bottom=false,top=false": {
+      "model": "fufo:block/logistics/sealed_tank/tall_unit_middle"
+    },
+    "bottom=false,top=true": {
+      "model": "fufo:block/logistics/sealed_tank/tall_unit_top"
+    },
+    "bottom=true,top=false": {
+      "model": "fufo:block/logistics/sealed_tank/tall_unit_bottom"
+    },
+    "bottom=true,top=true": {
+      "model": "fufo:block/logistics/sealed_tank/single_unit"
+    }
+  }
+}

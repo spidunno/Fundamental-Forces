@@ -1,9 +1,0 @@
-{
-  "type": "fufo:mana_absorption",
-  "input": {
-    "tag": "forge:cobblestone"
-  },
-  "output": {
-    "item": "fufo:charred_rock"
-  }
-}

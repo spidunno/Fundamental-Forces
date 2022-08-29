@@ -4,7 +4,7 @@
     "srcrgb": "one",
     "dstrgb": "zero"
   },
-  "vertex": "ortus:pp_base",
+  "vertex": "lodestone:pp_base",
   "fragment": "fufo:world_distance_ring_mask",
   "attributes": [ "Position" ],
   "samplers": [
