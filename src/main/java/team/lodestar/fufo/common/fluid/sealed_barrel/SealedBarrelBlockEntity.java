@@ -93,7 +93,6 @@ public class SealedBarrelBlockEntity extends LodestoneBlockEntity implements Pip
 	@Override
 	public void updateSource(PressureSource p, FlowDir dir, double dist) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

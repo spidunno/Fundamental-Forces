@@ -78,8 +78,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
             PipeBuilderAssistant instance = PipeBuilderAssistant.INSTANCE;
             if (!pipeNode.getPos().equals(instance.previousNodePosition)) {
                 instance.updateSelectedNode(pipeNode);
-                pContext.getPlayer().swing(pContext.getHand(), true);
-                return InteractionResult.PASS;
+                return InteractionResult.SUCCESS;
             }
         }
         return null;
@@ -115,7 +114,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
         if (currentNodePosition != null && !cachedPath.isEmpty()) {
             BlockState anchor = ((BlockItem)held.getItem()).getBlock().defaultBlockState();
             BlockPos placedPos = getTargetPosition(blockHitResult);
-            GhostBlockHandler.addGhost(placedPos, GhostBlockRenderer.STANDARD, GhostBlockOptions.create(anchor, placedPos).withRenderType(LodestoneRenderTypeRegistry.ADDITIVE_BLOCK).withColor(0.6f, 0.95f, 1f).withAlpha(()-> 0.75f).withScale(() -> 1.25f), 0);
+            GhostBlockHandler.addGhost(placedPos, GhostBlockRenderer.STANDARD, GhostBlockOptions.create(anchor, placedPos).withRenderType(LodestoneRenderTypeRegistry.ADDITIVE_BLOCK).withColor(0.6f, 0.95f, 1f).withAlpha(()-> 0.75f).withScale(() -> 1.1f), 0);
         }
     }
 
@@ -123,7 +122,7 @@ public class PipeBuilderAssistant implements IPlacementAssistant {
     public void showPassiveAssistance(ClientLevel level, @Nullable BlockHitResult hit) {
         if (currentNodePosition != null) {
             BlockState anchor = level.getBlockState(currentNodePosition);
-            GhostBlockHandler.addGhost(currentNodePosition, GhostBlockRenderer.STANDARD, GhostBlockOptions.create(anchor, currentNodePosition).withRenderType(LodestoneRenderTypeRegistry.ADDITIVE_BLOCK).withColor(0.6f, 0.95f, 1f).withAlpha(()-> 0.75f).withScale(() -> 1.25f), 0);
+            GhostBlockHandler.addGhost(currentNodePosition, GhostBlockRenderer.STANDARD, GhostBlockOptions.create(anchor, currentNodePosition).withRenderType(LodestoneRenderTypeRegistry.ADDITIVE_BLOCK).withColor(0.6f, 0.95f, 1f).withAlpha(()-> 0.75f).withScale(() -> 1.1f), 0);
         }
     }
 

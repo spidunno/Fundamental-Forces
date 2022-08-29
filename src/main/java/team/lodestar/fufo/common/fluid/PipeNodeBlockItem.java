@@ -18,7 +18,7 @@ public class PipeNodeBlockItem extends BlockItem {
             return result;
         }
         InteractionResult originalResult = super.place(pContext);
-        if (pContext.getLevel().getBlockEntity(pContext.getClickedPos()) instanceof PipeNode pipeNode) {
+        if (!originalResult.equals(InteractionResult.FAIL) && pContext.getLevel().getBlockEntity(pContext.getClickedPos()) instanceof PipeNode pipeNode) {
             PipeBuilderAssistant.INSTANCE.updateSelectedNode(pipeNode);
         }
         return originalResult;
