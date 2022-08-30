@@ -13,7 +13,7 @@ import team.lodestar.fufo.common.fluid.valve.ValveBlockEntity;
 public class FufoBlockEntities {
 
     public static final BlockEntityEntry<SealedBarrelBlockEntity> SEALED_BARREL =
-            FufoMod.registrate().blockEntity("sealed_barrel", SealedBarrelBlockEntity::new).validBlocks(FufoBlocks.SEALED_BARREL).register();
+            FufoMod.registrate().blockEntity("sealed_barrel", SealedBarrelBlockEntity::new).validBlocks(FufoBlocks.SEALED_BARREL).renderer(() -> SealedBarrelRenderer::new).register();
 
     public static final BlockEntityEntry<FluidTankBlockEntity> FLUID_TANK =
             FufoMod.registrate().blockEntity("fluid_tank", FluidTankBlockEntity::new).validBlocks(FufoBlocks.SEALED_TANK).register();

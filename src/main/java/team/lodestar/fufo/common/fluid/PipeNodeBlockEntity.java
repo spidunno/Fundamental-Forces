@@ -374,7 +374,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     	}
     	else {
         	FufoMod.LOGGER.info("Adding water");
-        	addFluid(Fluids.WATER, 100.0);
+        	addFluid(Fluids.WATER, 1000.0);
     	}
 	}
 }
