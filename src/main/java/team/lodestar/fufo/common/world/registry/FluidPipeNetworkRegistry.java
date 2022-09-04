@@ -5,9 +5,10 @@ import java.util.Map;
 import java.util.Set;
 
 import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
 import team.lodestar.fufo.core.fluid.PipeNode;
-
+import team.lodestar.fufo.core.fluid.PressureSource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -43,6 +44,10 @@ public class FluidPipeNetworkRegistry {
 			for (PipeNode p : networks.get(id).getNodes()) {
 				CompoundTag pos = new CompoundTag();
 				pos.putLong("pos", p.getPos().asLong());
+				if (p instanceof PressureSource src) {
+					pos.putDouble("in", src.getForce(FlowDir.IN));
+					pos.putDouble("out", src.getForce(FlowDir.OUT));
+				}
 				nodes.add(pos);
 			}
 			net.put("nodes", nodes);

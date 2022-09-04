@@ -5,9 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import team.lodestar.fufo.FufoMod;
+import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
 import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.unsorted.ForcesThatAreActuallyFundamental;
 
@@ -24,7 +26,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 /**
  * FluidPipeNetwork handles the pressure system, fluid transfer, etc.
  * @see team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity
- * @author davidpowell
+ * @author ProfessorLucario
  *
  */
 public class FluidPipeNetwork {
@@ -46,6 +48,10 @@ public class FluidPipeNetwork {
 		id = makeID();
 		FluidPipeNetworkRegistry.getRegistry(world).addNetwork(this);
 		FufoMod.LOGGER.info("Creating new network with ID " + id);
+	}
+	
+	public static void logIfManual(Object o) {
+		if (MANUAL_TICKING) FufoMod.LOGGER.info(o.toString());
 	}
 	
 	// Called when loading a previously-existing pipe network from NBT
@@ -84,7 +90,7 @@ public class FluidPipeNetwork {
 	public int numSavedNodes() {
 		return numNodes;
 	}
-	
+
 	// Make a random network ID that is guaranteed to be nonzero and not already used
 	private int makeID() {
 		int id;
@@ -97,8 +103,15 @@ public class FluidPipeNetwork {
 	public void addNode(PipeNode node, boolean reciprocate, boolean calcPressure) {
 		nodes.add(node);
 		nodePositions.add(node.getPos());
+
 		if (calcPressure) recalcPressure();
 		if (reciprocate) node.setNetwork(this, false, calcPressure);
+	}
+	
+	public void removeNode(PipeNode node) {
+		nodes.remove(node);
+		nodePositions.remove(node.getPos());
+		recalcPressure();
 	}
 	
 	// Each node just needs to keep its own distance from each pressure source.
@@ -135,7 +148,7 @@ public class FluidPipeNetwork {
 	}
 	
 	public void removeSource(PressureSource source, boolean recalc) {
-		pressureSources.remove(source);
+		pressureSources.removeIf(s -> s.getPos().equals(source.getPos()));
 		if (recalc) recalcPressure();
 	}
 
@@ -166,33 +179,55 @@ public class FluidPipeNetwork {
 		return nodes;
 	}
 	
+	private List<Pair<PipeNode, Double>> calcTransfers(PipeNode node, List<PipeNode> connections) {
+		List<Pair<PipeNode, Double>> intermediateTransfers = new ArrayList<>();
+		for (PipeNode other : connections) {
+			if (!node.getStoredFluid().isEmpty()) {
+				// The pressure difference required to overcome a height difference is equal to the fluid's density times gravity times the change in height
+				int dy = other.getPos().getY() - node.getPos().getY();
+				double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
+				double g = ForcesThatAreActuallyFundamental.g;
+
+				double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - (node.getFluidAmount()*rho*g*dy)/1000;  
+
+					logIfManual(String.format("TRANSFER from %s (%s) to %s (%s)", node, node.getPressure(FlowDir.OUT), other, other.getPressure(FlowDir.IN)));
+					logIfManual(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
+					logIfManual(String.format("Amount to transfer = %s", adjustedPressureDifference));
+				
+				intermediateTransfers.add(Pair.of(other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF));
+				
+//					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF);
+//					transfers.add(t);
+			}
+		}
+		return intermediateTransfers;
+	}
+	
 	public void tick() {
 		if (MANUAL_TICKING) FufoMod.LOGGER.info("Ticking network");
 		List<Triple<PipeNode, PipeNode, Double>> transfers = new ArrayList<>(); // Triple members, in order: Source, destination, amount
 		// Calculate amount to transfer
 		for (PipeNode node : nodes) {
-			List<PipeNode> connections = node.getConnectedNodes();
-			for (PipeNode other : connections) {
-				if (!node.getStoredFluid().isEmpty()) {
-					// The pressure difference required to overcome a height difference is equal to the fluid's density times gravity times the change in height
-					int dy = other.getPos().getY() - node.getPos().getY();
-					double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
-					double g = ForcesThatAreActuallyFundamental.g;
-
-					double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - (node.getFluidAmount()*rho*g*dy)/1000;  
-					if (MANUAL_TICKING) {
-
-						FufoMod.LOGGER.info(String.format("TRANSFER from %s (%s) to %s (%s)", node, node.getPressure(FlowDir.OUT), other, other.getPressure(FlowDir.IN)));
-						FufoMod.LOGGER.info(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
-						FufoMod.LOGGER.info(String.format("Amount to transfer = %s", adjustedPressureDifference));
-					}
-					
-					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF);
-					transfers.add(t);
+			List<Pair<PipeNode, Double>> intermediateTransfers = new ArrayList<>();
+			if (node instanceof SidedNode sn) {
+				for (FlowDir dir: FlowDir.values()) {
+					intermediateTransfers.addAll(calcTransfers(node, sn.getConnectedNodes(dir)));
 				}
 			}
+			else {
+				intermediateTransfers.addAll(calcTransfers(node, node.getConnectedNodes()));
+			}
+			logIfManual(intermediateTransfers);
+			// If the total amount of fluid to transfer out of a node would be greater than the amount of fluid it actually has,
+			// ensure a correct split
+			double sum = intermediateTransfers.stream().mapToDouble(p -> p.getRight()).sum();
+			double ratio = Math.min(node.getFluidAmount()/sum, 1);
+			for (int i=0; i<intermediateTransfers.size(); i++) {
+				Pair<PipeNode, Double> p = intermediateTransfers.get(i);
+				transfers.add(Triple.of(node, p.getLeft(), p.getRight() * ratio));
+			}
 		}
-		
+		logIfManual(transfers);
 		// Transfer the fluid
 		for (Triple<PipeNode, PipeNode, Double> t : transfers) {
 			t.getLeft().transferFluid(t.getRight(), t.getMiddle());
@@ -249,6 +284,8 @@ public class FluidPipeNetwork {
 		}
 		return builder.toString();
 	}
+
+	
 
 	
 }

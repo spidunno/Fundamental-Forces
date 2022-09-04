@@ -5,6 +5,11 @@ import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
+import team.lodestar.lodestone.helpers.BlockHelper;
+
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -31,6 +36,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	
 	public PumpBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+
 		force = 2000; // for testing
 	}
 
@@ -67,15 +73,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super.onLoad();
 		if (backPos != null) back = (PipeNode)level.getBlockEntity(backPos);
 		if (frontPos != null) front = (PipeNode)level.getBlockEntity(frontPos);
-		FufoMod.LOGGER.info("Successfully loaded back and front!");
-	}
-	
-	private void flip() {
-		PipeNode temp = back;
-		back = front;
-		front = temp;
-		backPos = back.getPos();
-		frontPos = front.getPos();
+//		FufoMod.LOGGER.info("Successfully loaded back and front!");
 	}
 	
 	private BlockPos backPos;
@@ -85,27 +83,53 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 		super.load(pTag);
 		if (pTag.contains("back")) backPos = BlockPos.of(pTag.getLong("back"));
 		if (pTag.contains("front")) frontPos = BlockPos.of(pTag.getLong("front"));
-		FufoMod.LOGGER.info(String.format("Successfully loaded positions %s and %s from NBT", backPos, frontPos));
+//		FufoMod.LOGGER.info(String.format("Successfully loaded positions %s and %s from NBT", backPos, frontPos));
+	}
+	
+	private void flip() {
+		if (!level.isClientSide) {
+			getNetwork().removeSource(this, false);
+			PipeNode temp = back;
+			back = front;
+			front = temp;
+			frontPos = front.getPos();
+			backPos = back.getPos();
+			getNetwork().addSource(this, true);
+		}
+		BlockHelper.updateAndNotifyState(level, getPos());
 	}
 	
 	@Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
+
         if (backPos != null) pTag.putLong("back", backPos.asLong()); 
         if (frontPos != null) pTag.putLong("front", frontPos.asLong());
     }
 	
 	@Override
 	public double getPressure() {
-		FufoMod.LOGGER.error("Calling the wrong getPressure method!");
-		Thread.dumpStack();
+		FufoMod.LOGGER.warn("Calling the wrong getPressure method!");
+//		Thread.dumpStack();
 		return force;
+	}
+	
+	@Override
+	public List<PipeNode> getConnectedNodes(@Nonnull FlowDir dir) {
+		if (dir == FlowDir.IN) {
+			if (back == null) return List.of();
+			else return List.of(back);
+		}
+		else {
+			if (front == null) return List.of();
+			else return List.of(front);
+		}
 	}
 	
 	@Override
 	public double getPressure(FlowDir dir) {
 		double p = (dir == FlowDir.OUT ? force : -force);
-		FufoMod.LOGGER.info(String.format("Pressure at %s from direction %s: %s", this, dir, p));
+//		FufoMod.LOGGER.info(String.format("Pressure at %s from direction %s: %s", this, dir, p));
 		return p;
 	}
 
@@ -130,7 +154,7 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	@Override
 	public String getDebugMessage(boolean sneak) {
 		String msg = super.getDebugMessage(sneak);
-		String io = String.format("In: %s / Out: %s\n", backPos, frontPos);
+		String io = String.format("In: %s @ %s / Out: %s @ %s\n", backPos, getPressure(FlowDir.IN), frontPos, getPressure(FlowDir.OUT));
 		return msg + "\n" + io;
 	}
 	
@@ -138,4 +162,6 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	public void onDevTool(UseOnContext ctx) {
 		flip();
 	}
+	
+	
 }

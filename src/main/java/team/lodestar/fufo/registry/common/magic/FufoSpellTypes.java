@@ -20,8 +20,8 @@ public class FufoSpellTypes {
 
     public static final SpellType EMPTY = registerSpellHolder(new SpellType(FufoMod.fufoPath("empty"), SpellInstance::new, (h) -> null));
 
-    public static final SpellType FORCE_BOLT = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_bolt"), createBasicType(FufoSpellCastModes.INSTANT, FufoMagicElements.FORCE), createBasicCooldownProvider(50), new ProjectileEffect(SpellBolt::new).duration(100)));
-    public static final SpellType FORCE_ORB = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_orb"), createBasicType(FufoSpellCastModes.INSTANT, FufoMagicElements.FORCE), createBasicCooldownProvider(50), new PlaceSpellEffect(FufoBlocks.FORCE_ORB)));
+    public static final SpellType FORCE_BOLT = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_bolt"), createBasicType(FufoSpellCastModes.INSTANT, FufoMagicElements.FORCE), createBasicCooldownProvider(20), new ProjectileEffect(SpellBolt::new).duration(100)));
+    public static final SpellType FORCE_ORB = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_orb"), createBasicType(FufoSpellCastModes.INSTANT, FufoMagicElements.FORCE), createBasicCooldownProvider(20), new PlaceSpellEffect(FufoBlocks.FORCE_ORB)));
 
     public static SpellType registerSpellHolder(SpellType spellType) {
         SPELL_TYPES.put(spellType.id, spellType);

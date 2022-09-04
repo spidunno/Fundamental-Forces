@@ -1,3 +1,4 @@
+
 package team.lodestar.fufo.unsorted.util;
 
 import net.minecraft.world.item.context.UseOnContext;

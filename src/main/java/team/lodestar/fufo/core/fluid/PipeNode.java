@@ -61,6 +61,7 @@ public interface PipeNode {
 	 */
 	public List<PipeNode> getConnectedNodes();
 	
+
 	/**
 	 * Creates a connection between this node and the one at the given position.
 	 * @param bp The BlockPos of the node to connect to
@@ -117,6 +118,8 @@ public interface PipeNode {
 	/**
 	 * Some node types such as pumps may want to override this to calculate pressure differently
 	 * depending on whether they are pushing or pulling fluid
+	 * 
+	 * Also, yes, this would go better into SidedNode but frankly that would require rewriting too much stuff
 	 * @param side
 	 * @return
 	 */
