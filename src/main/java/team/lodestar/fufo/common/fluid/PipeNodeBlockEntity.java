@@ -18,7 +18,7 @@ import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,10 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     public ArrayList<BlockPos> nearbyAnchorPositions = new ArrayList<>();
     public ArrayList<PipeNode> nearbyAnchors = new ArrayList<>();
     
-    protected FluidStack fluid = FluidStack.EMPTY;
+    protected Fluid fluidType = Fluids.EMPTY;
+    protected double fluidAmount = 0.0;
     
     private List<Triple<PressureSource, FlowDir, Double>> sources = new ArrayList<>();
-    protected double partialFill = 0.0;
     private boolean isOpen = false;
     private FluidPipeNetwork network;
     private int networkID;
@@ -61,34 +62,32 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
     // TODO: fix this method for the 41261816th time
     public double addFluid(Fluid f, double amount) {
-    	double realAmount = Math.min(fluid.getAmount() + partialFill + amount, getCapacity());
+    	FluidPipeNetwork.logIfManual(String.format("%s: Receiving %s of %s", this, amount, f.toString()));
+    	if (fluidType == null || fluidType == Fluids.EMPTY) fluidType = f;
+    	else if (f != fluidType) return amount; // No fluid mixing for now
+    	double realAmount = Math.min(fluidAmount + amount, getCapacity());
     	double toReturn = Math.max(0, realAmount - getCapacity());
-    	if (fluid.isEmpty()) {
-    		fluid = new FluidStack(f, (int)realAmount);
-		}
-    	else {
-    		fluid.setAmount((int)realAmount);
-		}
-		partialFill = realAmount % 1;
+    	fluidAmount = realAmount;
 		BlockHelper.updateAndNotifyState(level, getPos());
     	this.setChanged();
     	return toReturn;
     }
     
 	public void transferFluid(double amount, PipeNode dest) {
-		if (FluidPipeNetwork.MANUAL_TICKING) FufoMod.LOGGER.info(String.format("Sending %s from %s to %s", amount, this, dest)); 
-		
-		double realAmount = Math.min(dest.getCapacity() - dest.getFluidAmount(), amount);
-		dest.addFluid(fluid.getFluid(), realAmount);
-		double remaining = this.getFluidAmount() - realAmount;
-		partialFill = remaining % 1;
-		fluid.setAmount((int)remaining);
+		FluidPipeNetwork.logIfManual(String.format("Sending %s of %s from %s to %s", amount, getFluidAmount(), this, dest)); 
+		double realAmount = Math.min(Math.min(amount, dest.getCapacity()-dest.getFluidAmount()), getFluidAmount());
+		double returned = dest.addFluid(fluidType, realAmount);
+		fluidAmount -= (realAmount - returned);
+		if (fluidAmount < 0.001) {
+			fluidAmount = 0;
+			fluidType = Fluids.EMPTY;
+		}
 		BlockHelper.updateAndNotifyState(level, getPos());
 		this.setChanged();
 	}
 
     // this method is held together by duct tape and bubble gum
-    private static final double DISTANCE_COEFF = 10;
+    private static final double DISTANCE_COEFF = 200;
     public double getPressure() {
     	double pressure = 0;
     	
@@ -107,10 +106,10 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     	}
     	
     	// Height difference from neighbours
-    	if ((fluid.getAmount() + partialFill) / getCapacity() > 0.98) { // This might not be needed, idk
+    	if (fluidAmount / getCapacity() > 0.98) { // This might not be needed, idk
 	    	for (PipeNode p : nearbyAnchors) {
 	    		int dy = p.getPos().getY() - getPos().getY();
-	    		pressure += Math.max((p.getFluidAmount()*dy*FluidStats.getInfo(fluid.getFluid()).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
+	    		pressure += Math.max((p.getFluidAmount()*dy*FluidStats.getInfo(fluidType).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
 	    	}
     	}
     	return pressure + (getFluidAmount() / 100); // Volume equals pressure, at least a little bit
@@ -132,8 +131,8 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
         pTag.putInt("network", networkID);
-        pTag.put("fluid", fluid.writeToNBT(new CompoundTag()));
-        pTag.putDouble("partialFill", partialFill);
+        pTag.putString("fluidType", ForgeRegistries.FLUIDS.getKey(fluidType).toString());
+        pTag.putDouble("fluidAmount", fluidAmount);
         pTag.putBoolean("isOpen", isOpen);
         if (!nearbyAnchorPositions.isEmpty()) {
             CompoundTag compound = new CompoundTag();
@@ -157,8 +156,8 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     public void load(CompoundTag pTag) {
 //    	Minecraft.getInstance().mouseHandler.releaseMouse();
         super.load(pTag);
-        fluid = FluidStack.loadFluidStackFromNBT(pTag.getCompound("fluid"));
-        partialFill = pTag.getDouble("partialFill");
+        if (pTag.contains("fluidType")) fluidType = ForgeRegistries.FLUIDS.getValue(new ResourceLocation(pTag.getString("fluidType")));
+        if (pTag.contains("fluidAmount")) fluidAmount = pTag.getDouble("fluidAmount");
         isOpen = pTag.getBoolean("isOpen");
         nearbyAnchorPositions.clear();
         CompoundTag compound = pTag.getCompound("anchorData");
@@ -243,7 +242,10 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     		node.removeConnection(this.getBlockPos());
     		BlockHelper.updateState(getLevel(), bp);
     	}
-    	if (!level.isClientSide && network != null) network.splitNetwork(nodes);
+    	if (!level.isClientSide && network != null) {
+    		network.splitNetwork(nodes);
+    		network.removeNode(this);
+    	}
 //    	nearbyAnchorPositions.stream().map(p -> this.getLevel().getBlockEntity(p)).forEach(te -> ((PipeNodeBlockEntity)te).nearbyAnchorPositions.remove(this.getBlockPos()));
     }
 
@@ -253,7 +255,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
 	@Override
 	public FluidStack getStoredFluid() {
-		return fluid;
+		return new FluidStack(fluidType, (int)fluidAmount);
 	}
 	
 
@@ -334,6 +336,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 		}
 		else {
 			StringBuilder builder = new StringBuilder();
+			builder.append(String.format("Currently contains %s mb of %s\n", this.getFluidAmount(), getStoredFluid().getFluid()));
 			builder.append(String.format("Network: %s Pressure: %s with %s (%s) neighbours\n", getNetwork() == null ? "none" : getNetwork().getID(), getPressure(), nearbyAnchorPositions.size(), nearbyAnchors.size()));
 			builder.append("Sources:\n");
 			for (Triple<PressureSource, FlowDir, Double> t : sources) {
@@ -345,17 +348,14 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 	
 	@Override
 	public void doExtraAction() {
-		if (isOpen && !fluid.isEmpty()) {
-			double v = this.getFluidAmount();
-			v -= this.getPressure() * FluidPipeNetwork.PRESSURE_TRANSFER_COEFF;
-			fluid.setAmount((int)v);
-			partialFill = v % 1;
+		if (isOpen && fluidType != Fluids.EMPTY) {
+			fluidAmount -= this.getPressure() * FluidPipeNetwork.PRESSURE_TRANSFER_COEFF;
 		}
 	}
 	
 	@Override
 	public double getFluidAmount() {
-		return fluid.getAmount() + partialFill;
+		return fluidAmount;
 	}
 	
 	public String toString() {

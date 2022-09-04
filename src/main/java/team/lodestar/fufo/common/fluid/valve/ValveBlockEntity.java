@@ -5,6 +5,8 @@ import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.PipeNode;
 import team.lodestar.fufo.core.fluid.PressureSource;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +28,12 @@ public class ValveBlockEntity extends PipeNodeBlockEntity implements PressureSou
 	public int getForce(FlowDir dir) {
 		if (isOpen) return 0;
 		else return (int)(dir == FlowDir.IN ? this.getPressure() : -this.getPressure());
+	}
+
+	@Override
+	public List<PipeNode> getConnectedNodes(FlowDir dir) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
