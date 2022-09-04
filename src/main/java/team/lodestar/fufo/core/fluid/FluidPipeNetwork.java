@@ -182,13 +182,16 @@ public class FluidPipeNetwork {
 	private List<Pair<PipeNode, Double>> calcTransfers(PipeNode node, List<PipeNode> connections) {
 		List<Pair<PipeNode, Double>> intermediateTransfers = new ArrayList<>();
 		for (PipeNode other : connections) {
+
 			if (!node.getStoredFluid().isEmpty()) {
 				// The pressure difference required to overcome a height difference is equal to the fluid's density times gravity times the change in height
 				int dy = other.getPos().getY() - node.getPos().getY();
 				double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
 				double g = ForcesThatAreActuallyFundamental.g;
-
-				double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - other.getPressure(FlowDir.IN) - (node.getFluidAmount()*rho*g*dy)/1000;  
+				double targetPressure;
+				if (other instanceof SidedNode sided && sided.getConnectedNodes(FlowDir.OUT).contains(node)) targetPressure = other.getPressure(FlowDir.OUT);
+				else targetPressure = other.getPressure(FlowDir.IN);
+				double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - targetPressure - (node.getFluidAmount()*rho*g*dy)/1000;  
 
 					logIfManual(String.format("TRANSFER from %s (%s) to %s (%s)", node, node.getPressure(FlowDir.OUT), other, other.getPressure(FlowDir.IN)));
 					logIfManual(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
