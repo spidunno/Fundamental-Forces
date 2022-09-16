@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.blockentity;
+package team.lodestar.fufo.common.fluid;
 
 import java.util.ArrayList;
 

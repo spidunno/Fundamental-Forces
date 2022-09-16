@@ -1,5 +1,6 @@
-package team.lodestar.fufo.common.worldevents.starfall;
+package team.lodestar.fufo.common.starfall;
 
+import team.lodestar.fufo.common.starfall.actors.AbstractStarfallActor;
 import team.lodestar.fufo.config.CommonConfig;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.fufo.registry.common.worldevent.FufoWorldEventTypes;
@@ -20,7 +21,7 @@ import java.util.UUID;
 
 public class ScheduledStarfallEvent extends WorldEventInstance {
 
-    public StarfallActor actor;
+    public AbstractStarfallActor actor;
     @Nullable
     public UUID targetedUUID;
     public LivingEntity targetedEntity;
@@ -36,7 +37,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         super(FufoWorldEventTypes.SCHEDULED_STARFALL);
     }
 
-    public ScheduledStarfallEvent(StarfallActor actor) {
+    public ScheduledStarfallEvent(AbstractStarfallActor actor) {
         super(FufoWorldEventTypes.SCHEDULED_STARFALL);
         this.actor = actor;
     }

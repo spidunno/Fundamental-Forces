@@ -1,7 +1,7 @@
 package team.lodestar.fufo.registry.common.worldevent;
 
-import team.lodestar.fufo.common.worldevents.starfall.FallingStarfallEvent;
-import team.lodestar.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
+import team.lodestar.fufo.common.starfall.FallingStarfallEvent;
+import team.lodestar.fufo.common.starfall.ScheduledStarfallEvent;
 import team.lodestar.lodestone.systems.worldevent.WorldEventType;
 
 import static team.lodestar.lodestone.setup.worldevent.LodestoneWorldEventTypeRegistry.registerEventType;

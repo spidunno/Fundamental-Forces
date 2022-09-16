@@ -1,10 +1,8 @@
-package team.lodestar.fufo.common.worldevents.starfall.actors;
+package team.lodestar.fufo.common.starfall.actors;
 
 import net.minecraft.util.RandomSource;
 import team.lodestar.fufo.config.CommonConfig;
 import net.minecraft.util.Mth;
-
-import java.util.Random;
 
 public class InitialStarDebrisStarfallActor extends SpaceDebrisStarfallActor {
     public InitialStarDebrisStarfallActor() {

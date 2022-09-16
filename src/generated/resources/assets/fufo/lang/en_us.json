@@ -1,6 +1,11 @@
 {
   "block.fufo.anchor": "Anchor",
   "block.fufo.block_of_crack": "Block Of Crack",
+  "block.fufo.charred_dirt": "Charred Dirt",
+  "block.fufo.charred_gravel": "Charred Gravel",
+  "block.fufo.charred_log": "Charred Log",
+  "block.fufo.charred_sand": "Charred Sand",
+  "block.fufo.charred_stone": "Charred Stone",
   "block.fufo.crude_array": "Crude Array",
   "block.fufo.crude_needle": "Crude Needle",
   "block.fufo.crude_primer": "Crude Primer",

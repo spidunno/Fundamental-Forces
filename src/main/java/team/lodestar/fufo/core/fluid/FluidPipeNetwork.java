@@ -9,11 +9,9 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.fluid.PipeNodeBlockEntity;
-import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import team.lodestar.fufo.common.fluid.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.unsorted.ForcesThatAreActuallyFundamental;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

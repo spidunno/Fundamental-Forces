@@ -1,13 +1,10 @@
-package team.lodestar.fufo.common.worldevents.starfall.actors;
+package team.lodestar.fufo.common.starfall.actors;
 
 import net.minecraft.util.RandomSource;
-import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 
-import java.util.Random;
-
-public class BlankStarfallActor extends StarfallActor {
+public class BlankStarfallActor extends AbstractStarfallActor {
     public BlankStarfallActor() {
         super("blank", 0);
     }

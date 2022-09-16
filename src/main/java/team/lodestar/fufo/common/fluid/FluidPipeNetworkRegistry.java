@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.world.registry;
+package team.lodestar.fufo.common.fluid;
 
 import java.util.HashMap;
 import java.util.Map;

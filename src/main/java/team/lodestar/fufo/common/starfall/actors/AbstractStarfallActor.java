@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.worldevents.starfall;
+package team.lodestar.fufo.common.starfall.actors;
 
 import net.minecraft.util.RandomSource;
 import team.lodestar.fufo.FufoMod;
@@ -24,11 +24,11 @@ import java.util.Random;
 
 import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
-public class StarfallActor {
+public abstract class AbstractStarfallActor {
     public final String id;
     public final int startingCountdown;
 
-    public StarfallActor(String id, int startingCountdown) {
+    public AbstractStarfallActor(String id, int startingCountdown) {
         this.id = id;
         this.startingCountdown = startingCountdown;
     }

@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.recipe;
+package team.lodestar.fufo.common.starfall.impact;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,12 +16,12 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImpactConversionRecipe extends ILodestoneRecipe
-{
+public class ImpactConversionRecipe extends ILodestoneRecipe {
     public static final String NAME = "impact_conversion";
+
     public static class Type implements RecipeType<ImpactConversionRecipe> {
         @Override
-        public String toString () {
+        public String toString() {
             return FufoMod.FUFO + ":" + NAME;
         }
 
@@ -33,68 +33,42 @@ public class ImpactConversionRecipe extends ILodestoneRecipe
     public final Ingredient input;
     public final Ingredient output;
 
-    public ImpactConversionRecipe(ResourceLocation id, Ingredient input, Ingredient output)
-    {
+    public ImpactConversionRecipe(ResourceLocation id, Ingredient input, Ingredient output) {
         this.id = id;
         this.input = input;
         this.output = output;
     }
+
     @Override
-    public RecipeSerializer<?> getSerializer()
-    {
+    public RecipeSerializer<?> getSerializer() {
         return FufoRecipeTypes.IMPACT_CONVERSION.get();
     }
 
     @Override
-    public RecipeType<?> getType()
-    {
+    public RecipeType<?> getType() {
         return Type.INSTANCE;
     }
 
     @Override
-    public ResourceLocation getId()
-    {
+    public ResourceLocation getId() {
         return id;
-    }
-
-    public boolean doesInputMatch(ItemStack input)
-    {
-        return this.input.test(input);
-    }
-    public boolean doesOutputMatch(ItemStack output)
-    {
-        return this.output.test(output);
-    }
-
-    public static ArrayList<ImpactConversionRecipe> getRecipes(Level level, ItemStack input)
-    {
-        List<ImpactConversionRecipe> recipes = getRecipes(level);
-        recipes.removeIf(r -> !r.doesInputMatch(input));
-        return new ArrayList<>(recipes);
-    }
-    public static List<ImpactConversionRecipe> getRecipes(Level level)
-    {
-        return level.getRecipeManager().getAllRecipesFor(ImpactConversionRecipe.Type.INSTANCE);
     }
 
     public static class Serializer implements RecipeSerializer<ImpactConversionRecipe> {
 
         @Override
-        public ImpactConversionRecipe fromJson(ResourceLocation recipeId, JsonObject json)
-        {
+        public ImpactConversionRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
             return new ImpactConversionRecipe(recipeId, Ingredient.fromJson(json.getAsJsonObject("input")), Ingredient.fromJson(json.getAsJsonObject("output")));
         }
 
         @Nullable
         @Override
-        public ImpactConversionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer)
-        {
+        public ImpactConversionRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
             return new ImpactConversionRecipe(recipeId, Ingredient.fromNetwork(buffer), Ingredient.fromNetwork(buffer));
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf buffer, ImpactConversionRecipe recipe)
-        {
+        public void toNetwork(FriendlyByteBuf buffer, ImpactConversionRecipe recipe) {
             recipe.input.toNetwork(buffer);
             recipe.output.toNetwork(buffer);
         }

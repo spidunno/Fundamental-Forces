@@ -1,9 +1,10 @@
-package team.lodestar.fufo.common.worldevents.starfall;
+package team.lodestar.fufo.common.starfall;
 
 import com.mojang.math.Vector3f;
 import team.lodestar.fufo.client.rendering.postprocess.EnergyScanFx;
 import team.lodestar.fufo.client.rendering.postprocess.EnergySphereFx;
 import team.lodestar.fufo.client.rendering.postprocess.WorldHighlightFx;
+import team.lodestar.fufo.common.starfall.actors.AbstractStarfallActor;
 import team.lodestar.fufo.config.CommonConfig;
 import team.lodestar.fufo.registry.client.FufoPostProcessingEffects;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 
 public class FallingStarfallEvent extends WorldEventInstance {
 
-    public StarfallActor actor;
+    public AbstractStarfallActor actor;
     public final ArrayList<EntityHelper.PastPosition> pastPositions = new ArrayList<>();
     public BlockPos targetedPos = BlockPos.ZERO;
     public Vec3 position = Vec3.ZERO;
@@ -44,7 +45,7 @@ public class FallingStarfallEvent extends WorldEventInstance {
         super(FufoWorldEventTypes.FALLING_STARFALL);
     }
 
-    public FallingStarfallEvent(StarfallActor actor, Vec3 position, Vec3 motion, BlockPos targetedPos) {
+    public FallingStarfallEvent(AbstractStarfallActor actor, Vec3 position, Vec3 motion, BlockPos targetedPos) {
         this();
         this.actor = actor;
         this.startingHeight = (int) position.y;

@@ -1,4 +1,4 @@
-package team.lodestar.fufo.common.world.gen;
+package team.lodestar.fufo.common.starfall.features;
 
 import com.google.common.math.StatsAccumulator;
 import net.minecraft.core.BlockPos;

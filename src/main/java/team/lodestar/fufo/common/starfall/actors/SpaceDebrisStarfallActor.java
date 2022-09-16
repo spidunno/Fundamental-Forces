@@ -1,16 +1,13 @@
-package team.lodestar.fufo.common.worldevents.starfall.actors;
+package team.lodestar.fufo.common.starfall.actors;
 
 import net.minecraft.util.RandomSource;
-import team.lodestar.fufo.common.worldevents.starfall.StarfallActor;
 import team.lodestar.fufo.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.Random;
-
-public class SpaceDebrisStarfallActor extends StarfallActor {
+public class SpaceDebrisStarfallActor extends AbstractStarfallActor {
     protected SpaceDebrisStarfallActor(String id, int startingCountdown) {
         super(id, startingCountdown);
     }
