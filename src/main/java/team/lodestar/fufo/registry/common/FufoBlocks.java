@@ -148,11 +148,11 @@ public class FufoBlocks {
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = setupItemBlock("block_of_crack", Block::new, FufoBlockProperties.CRACK_PROPERTIES()).register();
 
-    public static final BlockEntry<Block> CHARRED_DIRT = setupItemBlock("charred_dirt", Block::new, FufoBlockProperties.CHARRED_DIRT_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
+    public static final BlockEntry<Block> SCORCHED_EARTH = setupItemBlock("scorched_earth", Block::new, FufoBlockProperties.CHARRED_DIRT_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
     public static final BlockEntry<Block> CHARRED_STONE = setupItemBlock("charred_stone", Block::new, FufoBlockProperties.CHARRED_STONE_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_PICKAXE).register();
     public static final BlockEntry<Block> CHARRED_GRAVEL = setupItemBlock("charred_gravel", Block::new, FufoBlockProperties.CHARRED_DIRT_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
-    public static final BlockEntry<Block> CHARRED_SAND = setupItemBlock("charred_sand", Block::new, FufoBlockProperties.CHARRED_SAND_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
-    public static final BlockEntry<RotatedPillarBlock> CHARRED_LOG = setupItemBlock("charred_log", RotatedPillarBlock::new, FufoBlockProperties.CHARRED_WOOD_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_AXE).blockstate(logState()).register();
+    public static final BlockEntry<Block> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", Block::new, FufoBlockProperties.CHARRED_SAND_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
+    public static final BlockEntry<RotatedPillarBlock> PETRIFIED_LOG = setupItemBlock("petrified_log", RotatedPillarBlock::new, FufoBlockProperties.CHARRED_WOOD_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_AXE).blockstate(logState()).register();
 
     public static <T extends StairBlock> BlockBuilder<T, Registrate> setupStairsBlock(String name, NonNullFunction<BlockBehaviour.Properties, T> factory, LodestoneBlockProperties properties, RegistryEntry<? extends Block> parent) {
         return setupItemBlock(name, factory, properties).blockstate(stairState(parent));

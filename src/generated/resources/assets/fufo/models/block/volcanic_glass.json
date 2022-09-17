@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "fufo:block/charred_sand"
+    "all": "fufo:block/volcanic_glass"
   }
 }
