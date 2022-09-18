@@ -2,9 +2,7 @@ package team.lodestar.fufo.common.fluid;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.BlockItem;
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.core.fluid.FluidStats;
 import team.lodestar.fufo.core.fluid.FlowDir;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
@@ -15,7 +13,6 @@ import team.lodestar.fufo.unsorted.util.DevToolResponse;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

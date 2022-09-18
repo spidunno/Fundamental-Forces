@@ -10,7 +10,7 @@ public class FufoBlockProperties {
 
 
     public static LodestoneBlockProperties CRACK_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.METAL, MaterialColor.FIRE).needsPickaxe().sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).isRedstoneConductor(Blocks::never);
+        return new LodestoneBlockProperties(Material.METAL, MaterialColor.FIRE).sound(SoundType.METAL).requiresCorrectToolForDrops().strength(5.0F, 6.0F).isRedstoneConductor(Blocks::never);
     }
 
     public static LodestoneBlockProperties ASTEROID_PROPERTIES() {
@@ -19,18 +19,6 @@ public class FufoBlockProperties {
 
     public static LodestoneBlockProperties METEOR_FIRE_PROPERTIES() {
         return new LodestoneBlockProperties(Material.FIRE, MaterialColor.FIRE).isCutoutLayer().sound(SoundType.WOOL).noCollission().instabreak().lightLevel(b -> 15);
-    }
-
-    public static LodestoneBlockProperties CHARRED_ROCK_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.STONE, MaterialColor.STONE).needsPickaxe().sound(SoundType.BASALT).requiresCorrectToolForDrops().strength(1.5F, 9.0F);
-    }
-
-    public static LodestoneBlockProperties VOLCANIC_GLASS_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.GLASS).sound(SoundType.GLASS).noOcclusion().strength(0.4f);
-    }
-
-    public static LodestoneBlockProperties SCORCHED_EARTH_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.GRASS).sound(SoundType.GRASS).noOcclusion().strength(0.7f);
     }
 
     public static LodestoneBlockProperties ORB_PROPERTIES() {
@@ -49,7 +37,19 @@ public class FufoBlockProperties {
         return new LodestoneBlockProperties(Material.METAL).sound(SoundType.LODESTONE).dynamicShape().isCutoutLayer();
     }
 
-    public static LodestoneBlockProperties UI_TEST_BLOCK_PROPERTIES() {
-        return new LodestoneBlockProperties(Material.STONE, MaterialColor.COLOR_GRAY).sound(SoundType.STONE);
+    public static LodestoneBlockProperties CHARRED_WOOD_PROPERTIES() {
+        return new LodestoneBlockProperties(Material.WOOD).sound(FufoSounds.CHARRED_WOOD).strength(1.5f);
+    }
+
+    public static LodestoneBlockProperties CHARRED_DIRT_PROPERTIES() {
+        return new LodestoneBlockProperties(Material.DIRT).sound(FufoSounds.CHARRED_DIRT).strength(0.35f);
+    }
+
+    public static LodestoneBlockProperties CHARRED_STONE_PROPERTIES() {
+        return new LodestoneBlockProperties(Material.STONE).requiresCorrectToolForDrops().sound(FufoSounds.CHARRED_STONE).strength(1.25f, 6.0f);
+    }
+
+    public static LodestoneBlockProperties CHARRED_SAND_PROPERTIES() {
+        return new LodestoneBlockProperties(Material.SAND).sound(FufoSounds.CHARRED_SAND).strength(0.35f);
     }
 }

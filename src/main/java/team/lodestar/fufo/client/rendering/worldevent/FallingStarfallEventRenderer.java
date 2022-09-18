@@ -3,7 +3,7 @@ package team.lodestar.fufo.client.rendering.worldevent;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
-import team.lodestar.fufo.common.worldevents.starfall.FallingStarfallEvent;
+import team.lodestar.fufo.common.starfall.FallingStarfallEvent;
 import team.lodestar.lodestone.helpers.ColorHelper;
 import team.lodestar.lodestone.helpers.EntityHelper;
 import team.lodestar.lodestone.setup.LodestoneRenderTypeRegistry;

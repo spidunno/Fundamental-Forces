@@ -18,6 +18,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -48,6 +49,7 @@ import team.lodestar.fufo.common.fluid.sealed_barrel.SealedBarrelBlockEntity;
 import team.lodestar.fufo.common.fluid.valve.ValveBlock;
 import team.lodestar.fufo.common.fluid.valve.ValveBlockEntity;
 import team.lodestar.lodestone.systems.block.LodestoneBlockProperties;
+import team.lodestar.lodestone.systems.block.LodestoneLogBlock;
 
 import java.util.function.Function;
 
@@ -57,9 +59,6 @@ import static team.lodestar.fufo.FufoMod.fufoPath;
 @SuppressWarnings("ConstantConditions")
 public class FufoBlocks {
     private static final Registrate REGISTRATE = FufoMod.registrate().creativeModeTab(FufoCreativeTabs.FufoContentTab::get);
-
-    //TODO: figure out why generic arguments aren't inferred in the second generic in block registration, called prior to .setBlockEntity
-
 
     //fluid management
     public static final BlockEntry<PipeNodeBlock<PipeNodeBlockEntity>> PIPE_ANCHOR = setupBlock("anchor",
@@ -122,11 +121,6 @@ public class FufoBlocks {
             .build()
             .register();
 
-    //machines
-//    public static final BlockEntry<BurnerExtractorBlock<BurnerExtractorBlockEntity>> BURNER_EXTRACTOR = setupItemBlock("burner_extractor", (p) -> new BurnerExtractorBlock<>(p).<BurnerExtractorBlock<BurnerExtractorBlockEntity>>setBlockEntity(BlockEntityRegistrate.BURNER_EXTRACTOR), CRUDE_PROPERTIES())
-//        .blockstate(invisibleState())
-//        .register();
-
     public static final BlockEntry<ArrayBlock<ArrayBlockEntity>> CRUDE_ARRAY = setupItemBlock("crude_array", (p) -> new ArrayBlock<>(p).<ArrayBlock<ArrayBlockEntity>>setBlockEntity(FufoBlockEntities.CRUDE_ARRAY), FufoBlockProperties.CRUDE_PROPERTIES())
             .blockstate((ctx, p) -> p.horizontalBlock(ctx.get(), p.models().getExistingFile(fufoPath("block/crude_array"))))
             .register();
@@ -154,6 +148,12 @@ public class FufoBlocks {
 
     public static final BlockEntry<Block> BLOCK_OF_CRACK = setupItemBlock("block_of_crack", Block::new, FufoBlockProperties.CRACK_PROPERTIES()).register();
 
+    public static final BlockEntry<Block> SCORCHED_EARTH = setupItemBlock("scorched_earth", Block::new, FufoBlockProperties.CHARRED_DIRT_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
+    public static final BlockEntry<Block> CHARRED_STONE = setupItemBlock("charred_stone", Block::new, FufoBlockProperties.CHARRED_STONE_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_PICKAXE).register();
+    public static final BlockEntry<Block> CHARRED_GRAVEL = setupItemBlock("charred_gravel", Block::new, FufoBlockProperties.CHARRED_DIRT_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
+    public static final BlockEntry<Block> VOLCANIC_GLASS = setupItemBlock("volcanic_glass", Block::new, FufoBlockProperties.CHARRED_SAND_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_SHOVEL).register();
+    public static final BlockEntry<RotatedPillarBlock> PETRIFIED_LOG = setupItemBlock("petrified_log", RotatedPillarBlock::new, FufoBlockProperties.CHARRED_WOOD_PROPERTIES()).tag(BlockTags.MINEABLE_WITH_AXE).blockstate(logState()).register();
+
     public static <T extends StairBlock> BlockBuilder<T, Registrate> setupStairsBlock(String name, NonNullFunction<BlockBehaviour.Properties, T> factory, LodestoneBlockProperties properties, RegistryEntry<? extends Block> parent) {
         return setupItemBlock(name, factory, properties).blockstate(stairState(parent));
     }
@@ -170,14 +170,16 @@ public class FufoBlocks {
         return REGISTRATE.block(name, factory).properties((x) -> properties);
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends SlabBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> slabState(RegistryEntry<? extends Block> parent) {
         return (ctx, p) -> p.slabBlock(ctx.getEntry(), p.blockTexture(parent.get()), p.blockTexture(parent.get()));
     }
 
-    @SuppressWarnings("unchecked")
     public static <T extends StairBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> stairState(RegistryEntry<? extends Block> parent) {
         return (ctx, p) -> p.stairsBlock(ctx.getEntry(), p.blockTexture(parent.get()));
+    }
+
+    public static <T extends RotatedPillarBlock> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> logState() {
+        return (ctx, p) -> p.logBlock(ctx.getEntry());
     }
 
     public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> invisibleState() {
@@ -189,7 +191,7 @@ public class FufoBlocks {
         };
     }
 
-    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() { //TODO: do something with this, it's kind of an eyesore.
+    public static <T extends FlammableMeteoriteBlock> NonNullBiConsumer<RegistrateBlockLootTables, T> depletedShardLootTable() { //TODO: do something about this, it's kind of an eyesore.
         return (l, b) -> {
             LootTable.Builder builder = LootTable.lootTable();
             LootPool.Builder normalShards = LootPool.lootPool().when(ExplosionCondition.survivesExplosion());

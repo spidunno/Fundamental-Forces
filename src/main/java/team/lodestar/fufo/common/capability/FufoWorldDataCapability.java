@@ -1,7 +1,7 @@
 package team.lodestar.fufo.common.capability;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import team.lodestar.fufo.common.fluid.FluidPipeNetworkRegistry;
 import team.lodestar.lodestone.systems.capability.LodestoneCapability;
 import team.lodestar.lodestone.systems.capability.LodestoneCapabilityProvider;
 import net.minecraft.nbt.CompoundTag;

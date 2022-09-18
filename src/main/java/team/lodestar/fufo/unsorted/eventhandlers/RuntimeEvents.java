@@ -14,7 +14,7 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import team.lodestar.fufo.common.capability.*;
-import team.lodestar.fufo.common.world.registry.FluidPipeNetworkRegistry;
+import team.lodestar.fufo.common.fluid.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
 import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
 import team.lodestar.fufo.unsorted.handlers.StarfallEventHandler;

@@ -8,7 +8,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import team.lodestar.fufo.common.capability.FufoChunkDataCapability;
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
-import team.lodestar.fufo.common.worldevents.starfall.ScheduledStarfallEvent;
+import team.lodestar.fufo.common.starfall.ScheduledStarfallEvent;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
 
