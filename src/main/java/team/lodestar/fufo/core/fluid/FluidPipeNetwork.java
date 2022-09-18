@@ -25,7 +25,7 @@ import net.minecraftforge.common.world.ForgeChunkManager;
 
 /**
  * FluidPipeNetwork handles the pressure system, fluid transfer, etc.
- * @see team.lodestar.fufo.common.blockentity.PipeNodeBlockEntity
+ * @see team.lodestar.fufo.common.fluid.PipeNodeBlockEntity
  * @author ProfessorLucario
  *
  */
