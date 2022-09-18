@@ -16,6 +16,6 @@ public class FufoParticles {
     public static RegistryObject<LodestoneParticleType> COLORED_SMOKE = PARTICLES.register("smoke", LodestoneParticleType::new);
 
     public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
-        Minecraft.getInstance().particleEngine.register(COLORED_SMOKE.get(), LodestoneParticleType.Factory::new);
+        event.register(COLORED_SMOKE.get(), LodestoneParticleType.Factory::new);
     }
 }
