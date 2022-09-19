@@ -1,6 +1,6 @@
 package team.lodestar.fufo.core.programming;
 
-import team.lodestar.lodestone.systems.ui.flex.Vector2i;
+import team.lodestar.fufo.client.ui.Vector2i;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.LinkedHashMap;

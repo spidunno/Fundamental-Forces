@@ -6,12 +6,12 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import team.lodestar.lodestone.systems.ui.flex.Vector2;
-import team.lodestar.lodestone.systems.ui.flex.component.FlexBox;
-import team.lodestar.lodestone.systems.ui.flex.component.ScrollBox;
-import team.lodestar.lodestone.systems.ui.flex.component.TextComponent;
-import team.lodestar.lodestone.systems.ui.flex.constraint.PercentageConstraint;
-import team.lodestar.lodestone.systems.ui.flex.constraint.PixelConstraint;
+import team.lodestar.fufo.client.ui.Vector2;
+import team.lodestar.fufo.client.ui.component.FlexBox;
+import team.lodestar.fufo.client.ui.component.ScrollBox;
+import team.lodestar.fufo.client.ui.component.TextComponent;
+import team.lodestar.fufo.client.ui.constraint.PercentageConstraint;
+import team.lodestar.fufo.client.ui.constraint.PixelConstraint;
 import team.lodestar.lodestone.systems.blockentity.LodestoneBlockEntity;
 
 import javax.annotation.Nonnull;
