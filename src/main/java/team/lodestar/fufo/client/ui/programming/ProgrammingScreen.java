@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import team.lodestar.fufo.client.ui.Vector2;
-import team.lodestar.fufo.client.ui.component.FlexBox;
-import team.lodestar.fufo.client.ui.constraint.DimensionConstraint;
-import team.lodestar.fufo.client.ui.constraint.PercentageConstraint;
-import team.lodestar.fufo.client.ui.constraint.PixelConstraint;
-import team.lodestar.fufo.client.ui.transition.PositionEasingTransition;
-import team.lodestar.fufo.client.ui.transition.SizeEasingTransition;
-import team.lodestar.fufo.client.ui.transition.Transition;
+import team.lodestar.lodestone.systems.ui.flex.Vector2;
+import team.lodestar.lodestone.systems.ui.flex.component.FlexBox;
+import team.lodestar.lodestone.systems.ui.flex.constraint.DimensionConstraint;
+import team.lodestar.lodestone.systems.ui.flex.constraint.PercentageConstraint;
+import team.lodestar.lodestone.systems.ui.flex.constraint.PixelConstraint;
+import team.lodestar.lodestone.systems.ui.flex.transition.PositionEasingTransition;
+import team.lodestar.lodestone.systems.ui.flex.transition.SizeEasingTransition;
+import team.lodestar.lodestone.systems.ui.flex.transition.Transition;
 
 import java.awt.*;
 
