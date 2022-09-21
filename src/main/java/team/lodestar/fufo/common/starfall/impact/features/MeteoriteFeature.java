@@ -61,7 +61,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
                 }
                 int floor = (int) Math.floor(pointDistancePlane(xp, zp, x, z));
                 if (floor <= (effectiveRadius +Math.floor(naturalNoiseValue) - 2) && floor >= (effectiveRadius+Math.floor(naturalNoiseValue) - 6)) {
-                    set.add(new BlockPos(xp, pos.getY()+42, zp));
+                    set.add(new BlockPos(xp, pos.getY()+10, zp));
                 }
             }
         }
