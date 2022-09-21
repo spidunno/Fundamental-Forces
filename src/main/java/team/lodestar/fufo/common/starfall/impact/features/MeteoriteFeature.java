@@ -50,25 +50,33 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
         int effectiveRadius = 16;
         float noiseExponent = 5f;
         Set<BlockPos> set = new HashSet<>();
+        Map<Integer, Double> noiseValues = new HashMap<>();
+        for (int i = 0; i <= 360; i++) {
+            noiseValues.put(i, NOISE.getValue(pos.getX() + pos.getZ() + i * 0.025f, pos.getY() / 0.05f, true) * noiseExponent);
+        }
+        double highest = 0;
         for (int i = 0; i < radius * 2 + 1; i++) {
             for (int j = 0; j < radius * 2 + 1; j++) {
+                level.setBlock(pos.offset(i-radius, 10, j-radius), Blocks.GREEN_WOOL.defaultBlockState(), 3);
                 int xp = x + i - radius;
                 int zp = z + j - radius;
-                double theta = 180.0 / Math.PI * Math.atan2(x - xp, z - zp);
-                double naturalNoiseValue = NOISE.getValue(pos.getX()+pos.getZ()+theta * 0.025f, pos.getY() / 0.05f, true) * noiseExponent;
+                double theta = 180 + 180 / Math.PI * Math.atan2(x - xp, z - zp);
+                double naturalNoiseValue = noiseValues.get(Mth.floor(theta));
                 if (naturalNoiseValue > 1f) {
                     naturalNoiseValue *= naturalNoiseValue;
                 }
+                if (highest < naturalNoiseValue) {
+                    highest = naturalNoiseValue;
+                }
                 int floor = (int) Math.floor(pointDistancePlane(xp, zp, x, z));
-                if (floor <= (effectiveRadius +Math.floor(naturalNoiseValue) - 2) && floor >= (effectiveRadius+Math.floor(naturalNoiseValue) - 6)) {
-                    set.add(new BlockPos(xp, pos.getY()+10, zp));
+                if (floor <= (effectiveRadius + Math.floor(naturalNoiseValue) - 1) && floor >= (effectiveRadius + Math.floor(naturalNoiseValue) - 3)) {
+                    set.add(new BlockPos(xp, pos.getY() + 10, zp));
                 }
             }
         }
         set.forEach(p -> {
-            level.setBlock(p, Blocks.COBBLESTONE.defaultBlockState(), 3);
+            level.setBlock(p, Blocks.RED_WOOL.defaultBlockState(), 3);
         });
-
         return true;
     }
 

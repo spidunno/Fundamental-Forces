@@ -28,7 +28,7 @@ public class CharredSoundType extends ExtendedSoundType {
 
     @Override
     public void onPlayStepSound(Level level, BlockPos pos, BlockState state, SoundSource category) {
-        level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), FufoSounds.CHARRED_BLOCK_MOTIF.get(), category, getVolume() * 0.25F, getPitch() * 1.6F);
+        level.playSound(null, pos.getX(), pos.getY(), pos.getZ(), FufoSounds.CHARRED_BLOCK_MOTIF.get(), category, getVolume() * 0.2F, getPitch() * 2F);
     }
 
     @Override
