@@ -1,6 +1,6 @@
 package team.lodestar.fufo.registry.common;
 
-import team.lodestar.fufo.common.starfall.features.MeteoriteFeature;
+import team.lodestar.fufo.common.starfall.impact.features.MeteoriteFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraftforge.fml.common.Mod;
