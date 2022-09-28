@@ -139,14 +139,15 @@ public class PumpBlockEntity extends PipeNodeBlockEntity implements PressureSour
 	}
 
 
-	@Override
-	public PipeNode getConnection(FlowDir dir) {
-		// TODO Auto-generated method stub
-		return (dir == FlowDir.IN ? back : front);
-	}
+//	@Override
+//	public PipeNode getConnection(FlowDir dir) {
+//		// TODO Auto-generated method stub
+//		return (dir == FlowDir.IN ? back : front);
+//	}
 
 	@Override
 	public int getForce(FlowDir dir) {
+		if (back == null || front == null) return 0;
 		// TODO Auto-generated method stub
 		return (int)(dir == FlowDir.OUT ? force : -force);
 	}

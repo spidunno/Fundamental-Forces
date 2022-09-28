@@ -85,6 +85,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
     // this method is held together by duct tape and bubble gum
     private static final double DISTANCE_COEFF = 200;
+    
     public double getPressure() {
     	
 //    	if (getFluidAmount() / getCapacity() < 0.95) return 0; // If node is not full, it can't be pressurized (but allow a bit of wiggle room)
@@ -380,13 +381,16 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
 	@Override
 	public double getPotentialPressure() {
-		// TODO Auto-generated method stub
 		return getPressure();
 	}
 
 	@Override
 	public double getRealPressure() {
-		// TODO Auto-generated method stub
 		return getPressure();
+	}
+
+	@Override
+	public boolean shouldPropagate() {
+		return true;
 	}
 }

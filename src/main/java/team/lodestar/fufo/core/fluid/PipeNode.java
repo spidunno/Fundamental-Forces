@@ -28,10 +28,13 @@ public interface PipeNode {
 	 * is determined by factors such as the amount of fluid stored.
 	 * If the two numbers match, the node is in equilibrium.
 	 * @return
+	 * @deprecated Not used for the current implementation. Meant for rewrite
 	 */
+	@Deprecated
 	public double getPotentialPressure();
+	@Deprecated
 	public double getRealPressure();
-	
+
 	/**
 	 * Returns the integer part of the stored fluid. Meant for interfacing with other mods' fluid systems.
 	 * @return
@@ -66,6 +69,15 @@ public interface PipeNode {
 	public int getCapacity();
 	
 	// ------ END DESTINATION NODE SECTION ------ 
+	
+	/**
+	 * The pressure calculation runs network-side by means of each source notifying each node of its presence via
+	 * a depth-first recursive search. This method is checked for each node to see whether or not the search should
+	 * continue past it. If it returns false, nodes behind this one will not be notified of the given source.
+	 * For example, partially filled tanks and closed valves do not propagate.
+	 * @return
+	 */
+	public boolean shouldPropagate();
 	
 	/**
 	 * Some nodes such as pumps have extra things they do with their action that wouldn't be appropriate to put

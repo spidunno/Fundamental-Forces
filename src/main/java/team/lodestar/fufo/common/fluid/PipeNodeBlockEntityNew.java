@@ -116,4 +116,10 @@ public class PipeNodeBlockEntityNew extends LodestoneBlockEntity implements Pipe
 		return 0;
 	}
 
+	@Override
+	public boolean shouldPropagate() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

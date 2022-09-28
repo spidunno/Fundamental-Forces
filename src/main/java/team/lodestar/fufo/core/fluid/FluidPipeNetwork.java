@@ -123,7 +123,7 @@ public class FluidPipeNetwork {
 			double nextDist = distance + Math.sqrt(node.getPos().distSqr(next.getPos()));
 			if (!visited.contains(next) || nextDist < next.getDistFromSource(source, dir)) {
 				visited.add(next);
-				recalcPressureHelper(source, dir, next, visited, nextDist);
+				if (next.shouldPropagate()) recalcPressureHelper(source, dir, next, visited, nextDist);
 			}
 		}
 	}
@@ -151,10 +151,13 @@ public class FluidPipeNetwork {
 		
 		for (PressureSource p : pressureSources) {
 			
-			PipeNode in = p.getConnection(FlowDir.IN);
-			PipeNode out = p.getConnection(FlowDir.OUT);
-			if (in != null && out != null) { // Ignore contributions from pumps/etc that aren't fully connected
+			List<PipeNode> inlets = p.getConnectedNodes(FlowDir.IN);
+			List<PipeNode> outlets = p.getConnectedNodes(FlowDir.OUT);
+			
+			for (PipeNode in : inlets) {
 				recalcPressureHelper(p, FlowDir.IN, in, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(in.getPos())));
+			}
+			for (PipeNode out : outlets) {
 				recalcPressureHelper(p, FlowDir.OUT, out, new HashSet<PipeNode>(), Math.sqrt(p.getPos().distSqr(out.getPos())));
 			}
 		}
