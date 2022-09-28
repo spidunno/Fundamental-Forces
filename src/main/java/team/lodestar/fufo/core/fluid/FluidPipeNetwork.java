@@ -29,10 +29,11 @@ import net.minecraftforge.common.world.ForgeChunkManager;
  */
 public class FluidPipeNetwork {
 	public static boolean MANUAL_TICKING = false; // Debug only, remove before release
-	public static final double PRESSURE_TRANSFER_COEFF = 0.0005; // Must be between 0 and 1
+	public static final double PRESSURE_TRANSFER_COEFF = 0.0025; // Must be between 0 and 1
 	public static final double DRAIN_COEFF = 0.1;
 	public Set<PipeNode> nodes = new HashSet<>(); // may have to be changed to a List
 	public Set<BlockPos> nodePositions = new HashSet<>();
+	public Set<DestinationPipeNode> destinations = new HashSet<>();
 	private List<PressureSource> pressureSources = new ArrayList<>();
 	
 	private int numNodes; // This number is NOT changed during runtime. Only during save/load so that the network knows when all nodes have been loaded
@@ -127,8 +128,27 @@ public class FluidPipeNetwork {
 		}
 	}
 	
+	// This'll probably use Dijkstra's Algorithm or something
+	// Might need something else to account for multiple paths?
+	private List<PipeNode> getPath(PressureSource p, DestinationPipeNode d) {
+		return List.of(); // Placeholder, obviously
+	}
+	
+	// This algorithm is quite intensive and should avoid being run whenever possible.
 	private void recalcPressure() {
 
+//		for (DestinationPipeNode dest : destinations) {
+//			double destPressure = dest.getRealPressure();
+//			for (PressureSource p : pressureSources) {
+//				List<PipeNode> path = getPath(p, dest);
+//				double distance = 0.0;
+//				for (int i=1; i<path.size(); i++) {
+//					distance += path.get(i).getDistance(path.get(i-1));
+//				}
+//			}
+//		}
+//		
+		
 		for (PressureSource p : pressureSources) {
 			
 			PipeNode in = p.getConnection(FlowDir.IN);
@@ -177,6 +197,13 @@ public class FluidPipeNetwork {
 		return nodes;
 	}
 	
+	/**
+	 * Calculates the transfers from a single node out to its connections.
+	 * 
+	 * @param node
+	 * @param connections
+	 * @return
+	 */
 	private List<Pair<PipeNode, Double>> calcTransfers(PipeNode node, List<PipeNode> connections) {
 		List<Pair<PipeNode, Double>> intermediateTransfers = new ArrayList<>();
 		for (PipeNode other : connections) {
@@ -187,6 +214,7 @@ public class FluidPipeNetwork {
 				double rho = FluidStats.getInfo(node.getStoredFluid().getFluid()).rho;
 				double g = ForcesThatAreActuallyFundamental.g;
 				double targetPressure;
+				// If this node is connected to the output of a pump/etc, don't send fluid to the input
 				if (other instanceof SidedNode sided && sided.getConnectedNodes(FlowDir.OUT).contains(node)) targetPressure = other.getPressure(FlowDir.OUT);
 				else targetPressure = other.getPressure(FlowDir.IN);
 				double adjustedPressureDifference = node.getPressure(FlowDir.OUT) - targetPressure - (node.getFluidAmount()*rho*g*dy)/1000;  
@@ -195,7 +223,7 @@ public class FluidPipeNetwork {
 					logIfManual(String.format("Gravitational pressure difference = %s", node.getFluidAmount()*dy*rho*g/1000));
 					logIfManual(String.format("Amount to transfer = %s", adjustedPressureDifference));
 				
-				intermediateTransfers.add(Pair.of(other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF));
+				intermediateTransfers.add(Pair.of(other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF / node.getDistance(other)));
 				
 //					Triple<PipeNode, PipeNode, Double> t = Triple.of(node, other, Math.max(0, adjustedPressureDifference) * PRESSURE_TRANSFER_COEFF);
 //					transfers.add(t);

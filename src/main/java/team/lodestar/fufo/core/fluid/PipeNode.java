@@ -20,6 +20,18 @@ import net.minecraftforge.fluids.FluidStack;
  * @see team.lodestar.fufo.common.fluid.PipeNodeBlockEntity
  */
 public interface PipeNode {
+	
+	// ------ START DESTINATION NODE SECTION ------
+	/**
+	 * Destination nodes have two pressures, potential and actual. The potential pressure of a node is
+	 * the pressure determined in accordance with the rest of the network, while the real pressure
+	 * is determined by factors such as the amount of fluid stored.
+	 * If the two numbers match, the node is in equilibrium.
+	 * @return
+	 */
+	public double getPotentialPressure();
+	public double getRealPressure();
+	
 	/**
 	 * Returns the integer part of the stored fluid. Meant for interfacing with other mods' fluid systems.
 	 * @return
@@ -40,6 +52,20 @@ public interface PipeNode {
 	 * @param dest The node to send to. It is expected (though not technically necessary) that the destination node be in the same network.
 	 */
 	public void transferFluid(double amount, PipeNode dest);
+	
+	/**
+	 * Returns the amount of fluid stored in this node.
+	 * @return
+	 */
+	public double getFluidAmount();
+	
+	/**
+	 * Returns the amount of fluid that this node can store. This method should be overriden.
+	 * @return
+	 */
+	public int getCapacity();
+	
+	// ------ END DESTINATION NODE SECTION ------ 
 	
 	/**
 	 * Some nodes such as pumps have extra things they do with their action that wouldn't be appropriate to put
@@ -109,12 +135,7 @@ public interface PipeNode {
 	 */
 	public double getPressure();
 	
-	/**
-	 * Returns the amount of fluid stored in this node.
-	 * @return
-	 */
-	public double getFluidAmount();
-	
+
 	/**
 	 * Some node types such as pumps may want to override this to calculate pressure differently
 	 * depending on whether they are pushing or pulling fluid
@@ -139,9 +160,5 @@ public interface PipeNode {
 	 */
 	public FluidPipeNetwork getNetwork();
 	
-	/**
-	 * Returns the amount of fluid that this node can store. This method should be overriden.
-	 * @return
-	 */
-	public int getCapacity();
+
 }
