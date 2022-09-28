@@ -85,7 +85,11 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
 
     // this method is held together by duct tape and bubble gum
     private static final double DISTANCE_COEFF = 200;
+    
     public double getPressure() {
+    	
+//    	if (getFluidAmount() / getCapacity() < 0.95) return 0; // If node is not full, it can't be pressurized (but allow a bit of wiggle room)
+    	
     	double pressure = 0;
     	
     	// Pumps, etc
@@ -103,7 +107,7 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
     	}
     	
     	// Height difference from neighbours
-    	if (fluidAmount / getCapacity() > 0.98) { // This might not be needed, idk
+    	if(getFluidAmount() / getCapacity() < 0.95) {
 	    	for (PipeNode p : nearbyAnchors) {
 	    		int dy = p.getPos().getY() - getPos().getY();
 	    		pressure += Math.max((p.getFluidAmount()*dy*FluidStats.getInfo(fluidType).rho*g)/1000, 0); // Divide by 1000 because 1 mB = 1/1000 m^3
@@ -373,5 +377,20 @@ public class PipeNodeBlockEntity extends LodestoneBlockEntity implements PipeNod
         	FufoMod.LOGGER.info("Adding water");
         	addFluid(Fluids.WATER, 1000.0);
     	}
+	}
+
+	@Override
+	public double getPotentialPressure() {
+		return getPressure();
+	}
+
+	@Override
+	public double getRealPressure() {
+		return getPressure();
+	}
+
+	@Override
+	public boolean shouldPropagate() {
+		return true;
 	}
 }
