@@ -9,6 +9,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import team.lodestar.fufo.common.capability.FufoChunkDataCapability;
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
 import team.lodestar.fufo.common.starfall.ScheduledStarfallEvent;
+import team.lodestar.fufo.common.starfall.StarfallData;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
 
@@ -45,7 +46,7 @@ public class StarfallEventHandler {
                 FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(capability -> {
                     if (ScheduledStarfallEvent.areStarfallsAllowed(level)) {
                         if (!LodestonePlayerDataCapability.getCapability(player).hasJoinedBefore) {
-                            addWorldEvent(level, new ScheduledStarfallEvent(FufoStarfallActors.INITIAL_SPACE_DEBRIS).targetEntity(player).randomizedStartingCountdown(level).looping().determined());
+                            addWorldEvent(level, new ScheduledStarfallEvent(new StarfallData.StarfallDataBuilder(FufoStarfallActors.INITIAL_SPACE_DEBRIS, player.getUUID(), a -> a.randomizeStartingCountdown(level.random)).setLooping().setDetermined().build()));
                         } else {
                             ScheduledStarfallEvent.addMissingStarfall(level, player);
                         }

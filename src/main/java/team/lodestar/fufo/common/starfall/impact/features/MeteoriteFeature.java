@@ -15,11 +15,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.synth.PerlinSimplexNoise;
 import net.minecraft.world.phys.Vec3;
-import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.registry.common.FufoBlocks;
 import team.lodestar.lodestone.helpers.BlockHelper;
 import team.lodestar.lodestone.helpers.DataHelper;
-import team.lodestar.lodestone.helpers.VecHelper;
 import team.lodestar.lodestone.systems.worldgen.LodestoneBlockFiller;
 
 import java.util.*;
@@ -33,13 +31,12 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-        return perlinNoiseTest(context.level(), context.chunkGenerator(), context.origin(), context.random());
+        return generateCrater(context.level(), context.chunkGenerator(), context.origin(), context.random());
     }
-
 
     private static final PerlinSimplexNoise NOISE = new PerlinSimplexNoise(new WorldgenRandom(new LegacyRandomSource(1234L)), ImmutableList.of(0));
 
-    public static boolean perlinNoiseTest(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, RandomSource random) {
+    public static boolean generateCrater(WorldGenLevel level, ChunkGenerator generator, BlockPos pos, RandomSource random) {
         LodestoneBlockFiller filler = new LodestoneBlockFiller(false);
         Map<Integer, Double> noiseValues = new HashMap<>();
         for (int i = 0; i <= 360; i++) {
@@ -49,7 +46,7 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
         int effectiveRadius = 16;
         int depth = 6;
         float step = 1f / depth;
-        for (int i = -3; i < depth; i++) {
+        for (int i = -4; i < depth; i++) {
             BlockPos layerCenter = pos.below(i);
             float radiusMultiplier = (depth - i) * step;
             generateCraterLayer(level, filler, layerCenter, (int)(radius*radiusMultiplier), (int) (effectiveRadius*radiusMultiplier), radiusMultiplier, noiseValues);

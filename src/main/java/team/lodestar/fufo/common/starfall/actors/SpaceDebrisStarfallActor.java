@@ -17,7 +17,7 @@ public class SpaceDebrisStarfallActor extends AbstractStarfallActor {
     }
 
     @Override
-    public int randomizedCountdown(RandomSource random, int parentCountdown) {
+    public int randomizeStartingCountdown(RandomSource random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.getConfigValue();
         double max = CommonConfig.MAXIMUM_DEBRIS_COUNTDOWN_MULTIPLIER.getConfigValue();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);

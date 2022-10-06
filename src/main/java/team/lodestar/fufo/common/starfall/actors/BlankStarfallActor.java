@@ -10,7 +10,7 @@ public class BlankStarfallActor extends AbstractStarfallActor {
     }
 
     @Override
-    public int randomizedCountdown(RandomSource random, int parentCountdown) {
+    public int randomizeStartingCountdown(RandomSource random, int parentCountdown) {
         return 0;
     }
 

@@ -21,7 +21,7 @@ public class StarfallAreaCheckCommand {
                     if (source.getEntity() instanceof ServerPlayer player) {
                         ServerLevel level = context.getSource().getLevel();
                         boolean heightmap = AbstractStarfallActor.chunkChangesCheck(level, player.blockPosition(), 1);
-                        boolean blocks = AbstractStarfallActor.blockCheck(level, AbstractStarfallActor.nearbyBlockList(level, player.blockPosition()));
+                        boolean blocks = AbstractStarfallActor.stateTagCheck(level, AbstractStarfallActor.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
                             source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.report.success")), true);

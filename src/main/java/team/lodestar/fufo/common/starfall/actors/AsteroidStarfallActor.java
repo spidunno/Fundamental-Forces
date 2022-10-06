@@ -13,7 +13,7 @@ public class AsteroidStarfallActor extends AbstractStarfallActor {
     }
 
     @Override
-    public int randomizedCountdown(RandomSource random, int parentCountdown) {
+    public int randomizeStartingCountdown(RandomSource random, int parentCountdown) {
         double min = CommonConfig.MINIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
         double max = CommonConfig.MAXIMUM_ASTEROID_TIME_MULTIPLIER.getConfigValue();
         return (int) (Mth.nextDouble(random, min, max) * parentCountdown);

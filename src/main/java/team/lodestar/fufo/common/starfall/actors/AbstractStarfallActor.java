@@ -20,7 +20,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.world.ForgeChunkManager;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import static net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES;
 
@@ -46,6 +45,30 @@ public abstract class AbstractStarfallActor {
         return true;
     }
 
+    public static boolean stateTagCheck(ServerLevel level, ArrayList<BlockPos> arrayList) {
+        int failed = 0;
+        int failToAbort = (int) (arrayList.size() * 0.2f);
+        for (BlockPos pos : arrayList) {
+            BlockState state = level.getBlockState(pos);
+            if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
+                failed += 8;
+            }
+            if (state.is(net.minecraft.tags.BlockTags.FEATURES_CANNOT_REPLACE)) {
+                return false;
+            }
+            if (!blockEntityCheck(level, pos)) {
+                return false;
+            }
+            if (!stateTagCheck(level, state)) {
+                failed += 1;
+            }
+            if (failed >= failToAbort) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static ArrayList<BlockPos> nearbyBlockList(ServerLevel level, BlockPos centerPos) {
         int size = CommonConfig.STARFALL_SAFETY_RANGE.getConfigValue();
         ArrayList<BlockPos> result = new ArrayList<>();
@@ -66,36 +89,12 @@ public abstract class AbstractStarfallActor {
         return result;
     }
 
-    public static boolean blockCheck(ServerLevel level, ArrayList<BlockPos> arrayList) {
-        int failed = 0;
-        int failToAbort = (int) (arrayList.size() * 0.2f);
-        for (BlockPos pos : arrayList) {
-            BlockState state = level.getBlockState(pos);
-            if (level.isFluidAtPosition(pos, p -> !p.isEmpty())) {
-                failed += 8;
-            }
-            if (state.is(net.minecraft.tags.BlockTags.FEATURES_CANNOT_REPLACE)) {
-                return false;
-            }
-            if (!blockEntityCheck(level, pos)) {
-                return false;
-            }
-            if (!blockCheck(level, state)) {
-                failed += 1;
-            }
-            if (failed >= failToAbort) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static boolean blockEntityCheck(ServerLevel level, BlockPos pos) {
         return level.getBlockEntity(pos) == null;
     }
 
     @SuppressWarnings("all")
-    public static boolean blockCheck(ServerLevel level, BlockState state) {
+    public static boolean stateTagCheck(ServerLevel level, BlockState state) {
         TagKey<Block>[] tags = new TagKey[]{FufoTags.STARFALL_ALLOWED, LodestoneBlockTags.TERRACOTTA, net.minecraft.tags.BlockTags.LUSH_GROUND_REPLACEABLE, net.minecraft.tags.BlockTags.MUSHROOM_GROW_BLOCK, net.minecraft.tags.BlockTags.LOGS, net.minecraft.tags.BlockTags.LEAVES, net.minecraft.tags.BlockTags.SNOW, net.minecraft.tags.BlockTags.SAND, net.minecraftforge.common.Tags.Blocks.SANDSTONE};
         for (TagKey<Block> tag : tags) {
             if (state.is(tag)) {
@@ -113,12 +112,12 @@ public abstract class AbstractStarfallActor {
         return state.getMaterial().isSolid() && !state.isAir() && !state.getMaterial().isReplaceable() && state.getMaterial().blocksMotion();
     }
 
-    public int randomizedCountdown(RandomSource random, int parentCountdown) {
+    public int randomizeStartingCountdown(RandomSource random, int parentCountdown) {
         return parentCountdown;
     }
 
-    public int randomizedCountdown(RandomSource random) {
-        return randomizedCountdown(random, startingCountdown);
+    public int randomizeStartingCountdown(RandomSource random) {
+        return randomizeStartingCountdown(random, startingCountdown);
     }
 
     public void act(ServerLevel level, BlockPos targetPos) {
@@ -134,7 +133,7 @@ public abstract class AbstractStarfallActor {
             return false;
         }
         boolean heightmap = chunkChangesCheck(level, pos, 2);
-        boolean blocks = blockCheck(level, nearbyBlockList(level, pos));
+        boolean blocks = stateTagCheck(level, nearbyBlockList(level, pos));
         return heightmap && blocks;
     }
 
