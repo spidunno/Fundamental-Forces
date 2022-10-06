@@ -46,9 +46,9 @@ public class StarfallEventHandler {
                 FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(capability -> {
                     if (ScheduledStarfallEvent.areStarfallsAllowed(level)) {
                         if (!LodestonePlayerDataCapability.getCapability(player).hasJoinedBefore) {
-                            addWorldEvent(level, new ScheduledStarfallEvent(new StarfallData.StarfallDataBuilder(FufoStarfallActors.INITIAL_SPACE_DEBRIS, player.getUUID(), a -> a.randomizeStartingCountdown(level.random)).setLooping().setDetermined().build()));
+                            addWorldEvent(level, new ScheduledStarfallEvent(new StarfallData.StarfallDataBuilder(FufoStarfallActors.PANOPTICON_SUPPLY_DROP, player.getUUID(), a -> a.getStarfallCountdown(level.random)).setDetermined().build()));
                         } else {
-                            ScheduledStarfallEvent.addMissingStarfall(level, player);
+                            ScheduledStarfallEvent.renewAsteroidStarfallLoop(level, player);
                         }
                     }
                 });

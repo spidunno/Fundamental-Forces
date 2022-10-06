@@ -1,15 +1,15 @@
 package team.lodestar.fufo.common.starfall.actors;
 
-import net.minecraft.util.RandomSource;
-import team.lodestar.fufo.config.CommonConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Blocks;
+import team.lodestar.fufo.config.CommonConfig;
 
-public class AsteroidStarfallActor extends AbstractStarfallActor {
-    public AsteroidStarfallActor() {
-        super("asteroid", CommonConfig.BASE_ASTEROID_COUNTDOWN.getConfigValue());
+public class PanopticonContainerStarfallActor extends AbstractStarfallActor {
+    public PanopticonContainerStarfallActor() {
+        super("panopticon_supply_drop", CommonConfig.PANOPTICON_SUPPLY_DROP_COUNTDOWN.getConfigValue());
     }
 
     @Override

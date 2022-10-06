@@ -7,6 +7,8 @@ import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 import team.lodestar.fufo.registry.common.worldevent.FufoWorldEventTypes;
 import team.lodestar.lodestone.capability.LodestoneWorldDataCapability;
 import team.lodestar.lodestone.handlers.WorldEventHandler;
+import team.lodestar.lodestone.helpers.BlockHelper;
+import team.lodestar.lodestone.helpers.DataHelper;
 import team.lodestar.lodestone.systems.worldevent.WorldEventInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +25,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     public LivingEntity targetedEntity;
     public BlockPos targetedPos;
     public int countdown;
-    public int failures;
 
     public ScheduledStarfallEvent(StarfallData starfallData) {
         super(FufoWorldEventTypes.SCHEDULED_STARFALL);
@@ -40,7 +41,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         starfallData.serializeNBT(tag);
         tag.putIntArray("targetedPos", new int[]{targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()});
         tag.putInt("countdown", countdown);
-        tag.putInt("failures", failures);
         return super.serializeNBT(tag);
     }
 
@@ -49,7 +49,6 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         int[] positions = tag.getIntArray("targetedPos");
         scheduledStarfallEvent.targetedPos = new BlockPos(positions[0], positions[1], positions[2]);
         scheduledStarfallEvent.countdown = tag.getInt("countdown");
-        scheduledStarfallEvent.failures = tag.getInt("failures");
         return scheduledStarfallEvent;
     }
 
@@ -72,47 +71,34 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
     public void end(Level level) {
         if (level instanceof ServerLevel serverLevel) {
             if (!CommonConfig.IMPATIENT_STARFALLS.getConfigValue() && isEntityValid(serverLevel) && !targetedEntity.level.canSeeSky(targetedEntity.blockPosition())) {
-                countdown = starfallData.actor.randomizeStartingCountdown(level.random, starfallData.startingCountdown / 10);
-                failures++;
+                countdown = starfallData.startingCountdown / 20;
                 return;
             }
             boolean disregardOSHARegulations = CommonConfig.UNSAFE_STARFALLS.getConfigValue();
-            if (starfallData.determined) {
-                int failures = 0;
-                int maximumFailures = CommonConfig.STARFALL_MAXIMUM_TRIES.getConfigValue();
-                while (true) {
-                    if (failures >= maximumFailures) {
-                        break;
-                    }
-                    BlockPos target = starfallData.precise ? targetedPos : starfallData.actor.randomizedStarfallTargetPosition(serverLevel, targetedPos);
-                    if (target == null) {
-                        failures++;
-                        continue;
-                    }
-                    boolean success = disregardOSHARegulations || starfallData.precise || starfallData.actor.canFall(serverLevel, target);
-                    if (success) {
-                        Vec3 spawnPos = starfallData.actor.randomizedStarfallStartPosition(serverLevel, target, targetedPos);
-                        Vec3 motion = spawnPos.vectorTo(new Vec3(target.getX(), target.getY(), target.getZ())).normalize();
-                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(starfallData.actor, spawnPos, motion, target));
-                        break;
-                    } else {
-                        failures++;
-                    }
+
+            int failures = 0;
+            int maximumFailures = starfallData.determined ? CommonConfig.STARFALL_MAXIMUM_TRIES.getConfigValue() : 1;
+            while (true) {
+                if (failures >= maximumFailures) {
+                    break;
                 }
-            } else {
-                BlockPos target = starfallData.precise ? targetedPos : starfallData.actor.randomizedStarfallTargetPosition(serverLevel, targetedPos);
-                if (target != null) {
-                    boolean success = disregardOSHARegulations || starfallData.precise || starfallData.actor.canFall(serverLevel, target);
-                    if (success) {
-                        Vec3 targetVec = new Vec3(target.getX(), target.getY(), target.getZ());
-                        Vec3 spawnPos = new Vec3(targetedPos.getX(), targetedPos.getY(), targetedPos.getZ()).add(Mth.nextDouble(level.random, -150, 150), CommonConfig.STARFALL_SPAWN_HEIGHT.getConfigValue(), Mth.nextDouble(level.random, -150, 150));
-                        Vec3 motion = spawnPos.vectorTo(targetVec).normalize();
-                        WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(starfallData.actor, spawnPos, motion, target));
-                    }
+                BlockPos actualTargetedPos = starfallData.precise ? targetedPos : starfallData.actor.getStarfallImpactPosition(serverLevel, targetedPos);
+                if (actualTargetedPos == null) {
+                    failures++;
+                    continue;
+                }
+                boolean success = disregardOSHARegulations || starfallData.precise || starfallData.actor.canAct(serverLevel, actualTargetedPos);
+                if (success) {
+                    Vec3 spawnPos = starfallData.actor.getStarfallStartPosition(serverLevel, actualTargetedPos, targetedPos);
+                    Vec3 motion = spawnPos.vectorTo(new Vec3(actualTargetedPos.getX(), actualTargetedPos.getY(), actualTargetedPos.getZ())).normalize();
+                    WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(starfallData.actor, spawnPos, motion, actualTargetedPos));
+                    break;
+                } else {
+                    failures++;
                 }
             }
             if (starfallData.looping && isEntityValid(serverLevel)) {
-                addNaturalStarfall(serverLevel, targetedEntity);
+                callDownAsteroid(serverLevel, targetedEntity);
             }
             super.end(level);
         }
@@ -125,7 +111,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
         return targetedEntity != null && targetedEntity.isAlive() && targetedEntity.level.equals(level);
     }
 
-    public static void addMissingStarfall(ServerLevel level, Player player) {
+    public static void renewAsteroidStarfallLoop(ServerLevel level, Player player) {
         LodestoneWorldDataCapability.getCapabilityOptional(level).ifPresent(capability -> {
             boolean isMissingStarfall = true;
             for (WorldEventInstance instance : capability.activeWorldEvents) {
@@ -138,26 +124,14 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
             }
 
             if (isMissingStarfall) {
-                addNaturalStarfall(level, player);
+                callDownAsteroid(level, player);
             }
         });
     }
 
-    public static void addNaturalStarfall(ServerLevel level, @NonNull LivingEntity entity) {
+    public static void callDownAsteroid(ServerLevel level, @NonNull LivingEntity entity) {
         if (areStarfallsAllowed(level)) {
-            ScheduledStarfallEvent debrisInstance = WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(new StarfallDataBuilder(FufoStarfallActors.SPACE_DEBRIS, entity.getUUID(), a -> a.randomizeStartingCountdown(level.random)).setLooping().setDetermined().build()));
-            Double chance = CommonConfig.ASTEROID_CHANCE.getConfigValue();
-            int maxAsteroids = CommonConfig.MAXIMUM_ASTEROID_AMOUNT.getConfigValue();
-            if (maxAsteroids > 0) {
-                for (int i = 0; i < maxAsteroids; i++) {
-                    if (level.random.nextFloat() < chance) {
-                        WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(new StarfallDataBuilder(FufoStarfallActors.ASTEROID, entity.getUUID(), a -> a.randomizeStartingCountdown(level.random, debrisInstance.starfallData.startingCountdown)).setLooping().setDetermined().build()));
-                        chance *= 0.8f;
-                    } else {
-                        break;
-                    }
-                }
-            }
+            WorldEventHandler.addWorldEvent(level, new ScheduledStarfallEvent(new StarfallDataBuilder(FufoStarfallActors.ASTEROID, entity.getUUID(), a -> a.getStarfallCountdown(level.random)).setLooping().setDetermined().build()));
         }
     }
 

@@ -6,7 +6,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import team.lodestar.fufo.common.starfall.actors.AbstractStarfallActor;
+import team.lodestar.fufo.common.starfall.StarfallSafetyHandler;
 import team.lodestar.fufo.unsorted.LangHelpers;
 
 public class StarfallAreaCheckCommand {
@@ -20,8 +20,8 @@ public class StarfallAreaCheckCommand {
                     CommandSourceStack source = context.getSource();
                     if (source.getEntity() instanceof ServerPlayer player) {
                         ServerLevel level = context.getSource().getLevel();
-                        boolean heightmap = AbstractStarfallActor.chunkChangesCheck(level, player.blockPosition(), 1);
-                        boolean blocks = AbstractStarfallActor.stateTagCheck(level, AbstractStarfallActor.nearbyBlockList(level, player.blockPosition()));
+                        boolean heightmap = StarfallSafetyHandler.chunkChangesCheck(level, player.blockPosition(), 1);
+                        boolean blocks = StarfallSafetyHandler.stateTagCheck(level, StarfallSafetyHandler.nearbyBlockList(level, player.blockPosition()));
 
                         if (heightmap && blocks) {
                             source.sendSuccess(Component.translatable(LangHelpers.getCommand("checkarea.report.success")), true);

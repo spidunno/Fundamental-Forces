@@ -3,6 +3,8 @@ package team.lodestar.fufo.common.starfall;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 import team.lodestar.fufo.common.starfall.actors.AbstractStarfallActor;
 import team.lodestar.fufo.registry.common.worldevent.FufoStarfallActors;
 
@@ -12,6 +14,7 @@ import java.util.function.Function;
 
 public class StarfallData {
 
+    @NonNull
     protected final AbstractStarfallActor actor;
     @Nullable
     protected final UUID targetedUUID;
@@ -20,7 +23,7 @@ public class StarfallData {
     protected final boolean determined;
     protected final boolean precise;
 
-    public StarfallData(AbstractStarfallActor actor, @Nullable UUID targetedUUID, int startingCountdown, boolean looping, boolean determined, boolean precise) {
+    public StarfallData(@NotNull AbstractStarfallActor actor, @Nullable UUID targetedUUID, int startingCountdown, boolean looping, boolean determined, boolean precise) {
         this.actor = actor;
         this.targetedUUID = targetedUUID;
         this.startingCountdown = startingCountdown;
