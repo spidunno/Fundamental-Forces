@@ -20,14 +20,9 @@ public class ValveBlockEntity extends PipeNodeBlockEntity implements PressureSou
 	}
 
 	@Override
-	public PipeNode getConnection(FlowDir dir) {
-		return null;
-	}
-
-	@Override
 	public int getForce(FlowDir dir) {
 		if (isOpen) return 0;
-		else return (int)(dir == FlowDir.IN ? this.getPressure() : -this.getPressure());
+		else return (int)(dir == FlowDir.IN ? this.getPressure() : -this.getPressure()); // Newton's 3rd law
 	}
 
 	@Override
@@ -36,4 +31,8 @@ public class ValveBlockEntity extends PipeNodeBlockEntity implements PressureSou
 		return null;
 	}
 
+	@Override
+	public boolean shouldPropagate() {
+		return isOpen;
+	}
 }
