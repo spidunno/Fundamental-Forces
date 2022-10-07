@@ -19,21 +19,18 @@ public class SpellInstance {
 
     //https://tenor.com/view/fire-explosion-meme-fishing-gif-23044892
     public static final SpellInstance EMPTY = new SpellInstance(FufoSpellTypes.EMPTY);
-    public SpellType spellType;
+    public final SpellType spellType;
     public SpellCooldown cooldown;
     public boolean selected;
     public int selectedTime;
     public float selectedFadeAnimation;
     public SpellCastMode castMode;
     public SpellEffect effect;
-    public MagicElement element;
 
-    public SpellInstance(SpellType spellType, SpellCastMode castMode, MagicElement element) {
+    public SpellInstance(SpellType spellType, SpellCastMode castMode) {
         this.spellType = spellType;
         this.castMode = castMode;
         this.effect = spellType.effect;
-        this.effect.element = element;
-        this.element = element;
     }
 
     public SpellInstance(SpellType spellType) {
@@ -45,8 +42,8 @@ public class SpellInstance {
         return this;
     }
 
-    public SpellInstance setCooldown(ServerPlayer player) {
-        setCooldown(spellType.cooldownFunction.apply(this));
+    public SpellInstance setAndSyncCooldown(ServerPlayer player) {
+        setCooldown(spellType.defaultCooldownSupplier.apply(this));
         FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> FufoPackets.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new SyncSpellCooldownPacket(player.getUUID(), c.hotbarHandler.spellHotbar.getSelectedSpellIndex(player), cooldown)));
         return this;
     }
@@ -101,9 +98,6 @@ public class SpellInstance {
     public CompoundTag serializeNBT() {
         CompoundTag spellTag = new CompoundTag();
         spellTag.putString("type", spellType.id.toString());
-        if (element != null) {
-            spellTag.putString("elementType", element.id.toString());
-        }
         if (castMode != null) {
             spellTag.put("castMode", castMode.serializeNBT());
         }
@@ -115,8 +109,7 @@ public class SpellInstance {
 
     public static SpellInstance deserializeNBT(CompoundTag tag) {
         SpellInstance spellInstance = new SpellInstance(FufoSpellTypes.SPELL_TYPES.get(new ResourceLocation(tag.getString("type"))),
-                SpellCastMode.deserializeNBT(tag.getCompound("castMode")),
-                FufoMagicElements.ELEMENTS.get(new ResourceLocation(tag.getString("elementType"))));
+                SpellCastMode.deserializeNBT(tag.getCompound("castMode")));
         if (tag.contains("spellCooldown")) {
             spellInstance.setCooldown(SpellCooldown.deserializeNBT(tag.getCompound("spellCooldown")));
         }

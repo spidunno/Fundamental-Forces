@@ -1,6 +1,7 @@
 package team.lodestar.fufo.common.magic.spell.effects;
 
 import team.lodestar.fufo.common.entity.magic.spell.AbstractSpellProjectile;
+import team.lodestar.fufo.core.element.MagicElement;
 import team.lodestar.fufo.core.spell.SpellEffect;
 import team.lodestar.fufo.core.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,8 +17,8 @@ public class ProjectileEffect extends SpellEffect {
     public Color firstColor = new Color(16777215);
     public Color secondColor = new Color(16777215);
 
-    public ProjectileEffect(Function<Level, AbstractSpellProjectile> projectileSupplier){
-        super(CastLogicHandler.ALWAYS_DEFAULT_CAST);
+    public ProjectileEffect(Function<Level, AbstractSpellProjectile> projectileSupplier, MagicElement element){
+        super(CastLogicHandler.ALWAYS_DEFAULT_CAST, element);
         this.projectileSupplier = projectileSupplier;
     }
     @Override
