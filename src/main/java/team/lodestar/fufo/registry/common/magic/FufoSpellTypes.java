@@ -3,13 +3,13 @@ package team.lodestar.fufo.registry.common.magic;
 import net.minecraft.resources.ResourceLocation;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.entity.magic.spell.tier1.SpellBolt;
+import team.lodestar.fufo.common.magic.spell.effects.PlaceSpellEffect;
+import team.lodestar.fufo.common.magic.spell.effects.ProjectileEffect;
 import team.lodestar.fufo.core.element.MagicElement;
 import team.lodestar.fufo.core.spell.SpellCooldown;
 import team.lodestar.fufo.core.spell.SpellInstance;
 import team.lodestar.fufo.core.spell.SpellType;
-import team.lodestar.fufo.core.spell.attributes.cast.SpellCastMode;
-import team.lodestar.fufo.core.spell.attributes.effect.PlaceSpellEffect;
-import team.lodestar.fufo.core.spell.attributes.effect.ProjectileEffect;
+import team.lodestar.fufo.core.spell.SpellCastMode;
 import team.lodestar.fufo.registry.common.FufoBlocks;
 
 import java.util.HashMap;

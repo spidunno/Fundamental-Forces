@@ -1,7 +1,6 @@
-package team.lodestar.fufo.core.spell.attributes.effect;
+package team.lodestar.fufo.core.spell;
 
 import team.lodestar.fufo.core.element.MagicElement;
-import team.lodestar.fufo.core.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 

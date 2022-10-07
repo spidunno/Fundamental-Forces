@@ -3,8 +3,6 @@ package team.lodestar.fufo.core.spell;
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
 import team.lodestar.fufo.common.packets.spell.SyncSpellCooldownPacket;
 import team.lodestar.fufo.core.element.MagicElement;
-import team.lodestar.fufo.core.spell.attributes.cast.SpellCastMode;
-import team.lodestar.fufo.core.spell.attributes.effect.SpellEffect;
 import team.lodestar.fufo.registry.common.magic.FufoMagicElements;
 import team.lodestar.fufo.registry.common.magic.FufoSpellTypes;
 import team.lodestar.lodestone.systems.easing.Easing;
@@ -68,7 +66,7 @@ public class SpellInstance {
     public void tick(Level level) {
     }
 
-    public void baseTick(Level level) {
+    public final void baseTick(Level level) {
         if (isOnCooldown()) {
             cooldown.tick();
         }

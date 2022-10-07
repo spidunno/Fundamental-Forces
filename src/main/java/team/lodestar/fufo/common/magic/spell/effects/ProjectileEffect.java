@@ -1,6 +1,7 @@
-package team.lodestar.fufo.core.spell.attributes.effect;
+package team.lodestar.fufo.common.magic.spell.effects;
 
 import team.lodestar.fufo.common.entity.magic.spell.AbstractSpellProjectile;
+import team.lodestar.fufo.core.spell.SpellEffect;
 import team.lodestar.fufo.core.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;

@@ -1,7 +1,6 @@
 package team.lodestar.fufo.core.spell;
 
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.spell.attributes.effect.SpellEffect;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.Function;
