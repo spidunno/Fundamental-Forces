@@ -23,7 +23,7 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
 
     public final StarfallData starfallData;
     public LivingEntity targetedEntity;
-    public BlockPos targetedPos;
+    public BlockPos targetedPos = BlockPos.ZERO;
     public int countdown;
 
     public ScheduledStarfallEvent(StarfallData starfallData) {
@@ -92,13 +92,13 @@ public class ScheduledStarfallEvent extends WorldEventInstance {
                     Vec3 spawnPos = starfallData.actor.getStarfallStartPosition(serverLevel, actualTargetedPos, targetedPos);
                     Vec3 motion = spawnPos.vectorTo(new Vec3(actualTargetedPos.getX(), actualTargetedPos.getY(), actualTargetedPos.getZ())).normalize();
                     WorldEventHandler.addWorldEvent(level, new FallingStarfallEvent(starfallData.actor, spawnPos, motion, actualTargetedPos));
+                    if (starfallData.looping && isEntityValid(serverLevel)) {
+                        callDownAsteroid(serverLevel, targetedEntity);
+                    }
                     break;
                 } else {
                     failures++;
                 }
-            }
-            if (starfallData.looping && isEntityValid(serverLevel)) {
-                callDownAsteroid(serverLevel, targetedEntity);
             }
             super.end(level);
         }
