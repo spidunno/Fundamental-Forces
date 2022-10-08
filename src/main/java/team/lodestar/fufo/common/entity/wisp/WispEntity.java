@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.entity.EntityTypeTest;
+import team.lodestar.lodestone.helpers.DataHelper;
 
 import java.util.List;
 
@@ -44,44 +45,9 @@ public class WispEntity extends AbstractWispEntity {
     @Override
     public void tick() {
         super.tick();
-        if (fadingOut) {
-            fadeOut++;
-            if (fadeOut > 400) {
-                discard();
-            }
-        }
-        if (fullyCharged) {
-            fullyChargedTicks++;
-            if (fullyChargedTicks > 60) {
-                //complete here
-                startFading();
-            }
-        }
         setDeltaMovement(getDeltaMovement().multiply(0.98f, 0.98f, 0.98f));
-    }
-
-    @Override
-    public boolean canBeTargeted(SparkEntity entity) {
-        return !fullyCharged && super.canBeTargeted(entity);
-    }
-
-    @Override
-    protected void sparkLockedOn(SparkEntity entity) {
-        sparksOrbiting++;
-        age = 0;
-        entity.targetEntity = this;
-        entity.isOrbiting = true;
-        if (sparksOrbiting == 16) {
-            fullyCharged = true;
-            List<SparkEntity> entities = level.getEntities(EntityTypeTest.forClass(SparkEntity.class), this.getBoundingBox().inflate(4, 4, 4), e -> this.equals(e.targetEntity));
-            for (SparkEntity spark : entities) {
-                spark.startFading();
-            }
+        if (level.getGameTime() % 25L == 0) {
+            setDeltaMovement(0.1f-level.random.nextFloat()*0.2f, 0.1f-level.random.nextFloat()*0.2f, 0.1f-level.random.nextFloat()*0.2f);
         }
-    }
-
-    @Override
-    public boolean hasPriority() {
-        return !fullyCharged;
     }
 }

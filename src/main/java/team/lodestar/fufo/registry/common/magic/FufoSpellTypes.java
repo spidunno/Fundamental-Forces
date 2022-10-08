@@ -17,13 +17,11 @@ public class FufoSpellTypes {
     public static final SpellType EMPTY = registerSpellHolder(new EmptySpellType());
 
     public static final SpellType FORCE_BOLT = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_bolt"),
-            basicInstance(FufoSpellCastModes.INSTANT),
-            basicCooldown(20),
+            basicInstance(FufoSpellCastModes.INSTANT), basicCooldown(20),
             new ProjectileEffect(SpellBolt::new, FufoMagicElements.FORCE).duration(100)));
 
     public static final SpellType FORCE_ORB = registerSpellHolder(new SpellType(FufoMod.fufoPath("force_orb"),
-            basicInstance(FufoSpellCastModes.INSTANT),
-            basicCooldown(20),
+            basicInstance(FufoSpellCastModes.INSTANT), basicCooldown(20),
             new PlaceSpellEffect(FufoBlocks.FORCE_ORB, FufoMagicElements.FORCE)));
 
     public static SpellType registerSpellHolder(SpellType spellType) {
