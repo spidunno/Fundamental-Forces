@@ -28,8 +28,8 @@ import static team.lodestar.lodestone.handlers.RenderHandler.DELAYED_RENDER;
 
 public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStarfallEvent> {
 
-    private static final ResourceLocation LIGHT_TRAIL = fufoPath("textures/vfx/heavy_light_trail.png");
-    public static final RenderType LIGHT_TYPE = LodestoneRenderTypeRegistry.ADDITIVE_TEXTURE_TRIANGLE.apply(LIGHT_TRAIL);
+    private static final ResourceLocation STAR_TRAIL = fufoPath("textures/vfx/heavy_light_trail.png");
+    public static final RenderType STAR_TRAIL_TYPE = LodestoneRenderTypeRegistry.ADDITIVE_TEXTURE_TRIANGLE.apply(STAR_TRAIL);
 
     private static final ResourceLocation STAR = fufoPath("textures/vfx/star.png");
     public static final RenderType STAR_TYPE = LodestoneRenderTypeRegistry.ADDITIVE_TEXTURE.apply(STAR);
@@ -78,7 +78,7 @@ public class FallingStarfallEventRenderer extends WorldEventRenderer<FallingStar
             Color color = ColorHelper.multicolorLerp(Easing.SINE_IN, lerp, Color.WHITE, Color.MAGENTA, Color.MAGENTA, Color.RED);
             float size = 1f + i * 2f;
             float alpha = (1f - i * 0.1f);
-            builder.setColor(color).renderTrail(DELAYED_RENDER.getBuffer(LIGHT_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setColor(ColorHelper.colorLerp(Easing.SINE_OUT, 1-f, color, Color.RED)).setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, alpha, 1))));
+            builder.setColor(color).renderTrail(DELAYED_RENDER.getBuffer(STAR_TRAIL_TYPE), poseStack, mappedPastPositions, f -> size, f -> builder.setColor(ColorHelper.colorLerp(Easing.SINE_OUT, 1-f, color, Color.RED)).setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, alpha, 1))));
         }
         poseStack.translate(lerpedPosition.x, lerpedPosition.y, lerpedPosition.z);
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());

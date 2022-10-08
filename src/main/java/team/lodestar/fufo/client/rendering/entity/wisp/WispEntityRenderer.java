@@ -2,13 +2,11 @@ package team.lodestar.fufo.client.rendering.entity.wisp;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
 import com.mojang.math.Vector4f;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import team.lodestar.fufo.common.entity.wisp.WispEntity;
-import team.lodestar.lodestone.helpers.ColorHelper;
 import team.lodestar.lodestone.helpers.EntityHelper;
 import team.lodestar.lodestone.setup.LodestoneRenderTypeRegistry;
 import team.lodestar.lodestone.systems.easing.Easing;
@@ -26,17 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static team.lodestar.fufo.client.rendering.worldevent.FallingStarfallEventRenderer.*;
 import static team.lodestar.lodestone.handlers.RenderHandler.DELAYED_RENDER;
-import static team.lodestar.lodestone.setup.LodestoneRenderTypeRegistry.queueUniformChanges;
 
 public class WispEntityRenderer extends EntityRenderer<WispEntity> {
 
-    private static final ResourceLocation WISP_TEXTURE = FufoMod.fufoPath("textures/entity/wisp/wisp_glimmer.png");
-    private static final RenderType WISP_SILHOUETTE_TYPE = LodestoneRenderTypeRegistry.TRANSPARENT_SILHOUETTE_TEXTURE.apply(WISP_TEXTURE);
-    private static final RenderType WISP_TYPE = LodestoneRenderTypeRegistry.TRANSPARENT_SILHOUETTE_TEXTURE.apply(WISP_TEXTURE);
+    private static final ResourceLocation WISP = FufoMod.fufoPath("textures/entity/wisp/wisp_glimmer.png");
+    private static final RenderType WISP_TYPE = LodestoneRenderTypeRegistry.TRANSPARENT_TEXTURE.apply(WISP);
 
-    private static final ResourceLocation WISP_TRAIL_TEXTURE = FufoMod.fufoPath("textures/entity/wisp/wisp_trail.png");
-    private static final RenderType WISP_TRAIL_TYPE = LodestoneRenderTypeRegistry.TRANSPARENT_SILHOUETTE_TEXTURE.apply(WISP_TRAIL_TEXTURE);
+    private static final ResourceLocation WISP_TRAIL = FufoMod.fufoPath("textures/entity/wisp/wisp_trail.png");
+    private static final RenderType WISP_TRAIL_TYPE = LodestoneRenderTypeRegistry.TRANSPARENT_TEXTURE_TRIANGLE.apply(WISP_TRAIL);
 
     public WispEntityRenderer(EntityRendererProvider.Context p_174008_) {
         super(p_174008_);
@@ -63,19 +60,19 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
         }
         List<Vector4f> mappedPastPositions = positions.stream().map(p -> p.position).map(p -> new Vector4f((float) p.x, (float) p.y, (float) p.z, 1)).collect(Collectors.toList());
 
-        Color color = new Color(227, 124, 243);
-        Color silhouetteColor = new Color(52, 12, 68);
+        Color color = new Color(219, 88, 239);
         VFXBuilders.WorldVFXBuilder trailBuilder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(color).setOffset(-x, -y, -z);
         VFXBuilders.WorldVFXBuilder builder = VFXBuilders.createWorld().setPosColorTexLightmapDefaultFormat().setColor(color);
-
         poseStack.pushPose();
         RenderSystem.enableBlend();
-        trailBuilder.setUV(0, 0, 1, 1f).renderTrail(DELAYED_RENDER.getBuffer(WISP_TRAIL_TYPE), poseStack, mappedPastPositions, f -> 0.3f * f);
+        trailBuilder.renderTrail(DELAYED_RENDER.getBuffer(STAR_TRAIL_TYPE), poseStack, mappedPastPositions, f -> 0.25f, f -> trailBuilder.setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, 0.5f, 1))));
+        trailBuilder.renderTrail(DELAYED_RENDER.getBuffer(STAR_TRAIL_TYPE), poseStack, mappedPastPositions, f -> 0.1f, f -> trailBuilder.setAlpha(Math.max(0, Easing.SINE_IN.ease(f, 0, 0.75f, 1))));
 
         poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180f));
 
-        builder.setColor(color).renderQuad(DELAYED_RENDER.getBuffer(WISP_TYPE), poseStack, 0.4f);
+        builder.setAlpha(0.5f).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 0.8f);
+        builder.setAlpha(0.75f).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 0.4f);
 
         RenderSystem.disableBlend();
         poseStack.popPose();
@@ -83,6 +80,6 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(WispEntity p_114482_) {
-        return WISP_TEXTURE;
+        return WISP;
     }
 }
