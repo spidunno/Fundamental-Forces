@@ -1,6 +1,5 @@
-package team.lodestar.fufo.core.spell.attributes.cast;
+package team.lodestar.fufo.core.spell;
 
-import team.lodestar.fufo.core.spell.SpellInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

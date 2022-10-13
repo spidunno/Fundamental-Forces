@@ -2,8 +2,8 @@ package team.lodestar.fufo.registry.common.magic;
 
 import net.minecraft.resources.ResourceLocation;
 import team.lodestar.fufo.FufoMod;
-import team.lodestar.fufo.core.spell.attributes.cast.InstantCastMode;
-import team.lodestar.fufo.core.spell.attributes.cast.SpellCastMode;
+import team.lodestar.fufo.common.magic.spell.castmodes.InstantCastMode;
+import team.lodestar.fufo.core.spell.SpellCastMode;
 
 import java.util.HashMap;
 import java.util.function.Function;

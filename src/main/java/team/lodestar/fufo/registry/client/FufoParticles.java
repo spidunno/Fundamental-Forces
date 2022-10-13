@@ -15,7 +15,14 @@ public class FufoParticles {
 
     public static RegistryObject<LodestoneParticleType> COLORED_SMOKE = PARTICLES.register("smoke", LodestoneParticleType::new);
 
+    public static RegistryObject<LodestoneParticleType> CIRCLE = PARTICLES.register("circle", LodestoneParticleType::new);
+    public static RegistryObject<LodestoneParticleType> DIAMOND = PARTICLES.register("diamond", LodestoneParticleType::new);
+    public static RegistryObject<LodestoneParticleType> SQUARE = PARTICLES.register("square", LodestoneParticleType::new);
+
     public static void registerParticleFactory(RegisterParticleProvidersEvent event) {
         event.register(COLORED_SMOKE.get(), LodestoneParticleType.Factory::new);
+        event.register(CIRCLE.get(), LodestoneParticleType.Factory::new);
+        event.register(DIAMOND.get(), LodestoneParticleType.Factory::new);
+        event.register(SQUARE.get(), LodestoneParticleType.Factory::new);
     }
 }

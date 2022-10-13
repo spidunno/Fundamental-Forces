@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import team.lodestar.fufo.common.block.FlammableMeteoriteBlock;
-import team.lodestar.fufo.common.entity.wisp.SparkEntity;
+import team.lodestar.fufo.common.entity.wisp.WispEntity;
 import team.lodestar.fufo.registry.common.FufoDamageSources;
 import team.lodestar.fufo.registry.common.FufoTags;
 import team.lodestar.fufo.registry.common.magic.FufoFireEffects;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 
 	public final ArrayList<ItemEntity> items = new ArrayList<>();
-	public int queuedSparks;
+	public int cooldown;
 
 
 	public MeteorFlameBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -37,45 +37,40 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 
 	@Override
 	protected void saveAdditional(CompoundTag pTag) {
-		pTag.putInt("queuedSparks", queuedSparks);
+		pTag.putInt("cooldown", cooldown);
 	}
 
 	@Override
 	public void load(@Nonnull CompoundTag pTag) {
 		super.load(pTag);
-		queuedSparks = pTag.getInt("queuedSparks");
+		cooldown = pTag.getInt("cooldown");
 	}
 
 	@Override
 	public void init() {
-		if (queuedSparks == 0) {
+		if (cooldown == 0) {
 			attemptIgnition();
 		}
 	}
 
 	@Override
-	public void clientTick() {
+	public void tick() {
 		if (level == null) {
 			return;
 		}
 
-		if (queuedSparks == 0) {
-			if (level.random.nextFloat() < 0.02f) {
-				attemptIgnition();
+		if (cooldown == 0) {
+			if (level.random.nextFloat() < 0.05f) {
+				boolean success = attemptIgnition();
+				if (success) {
+					Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
+					float velocity = 0.1f + level.random.nextFloat() * 0.1f;
+					WispEntity sparkEntity = new WispEntity(level, randPos.x, randPos.y, randPos.z, 0.05f - level.random.nextFloat() * 0.1f, velocity, 0.05f - level.random.nextFloat() * 0.1f);
+					level.addFreshEntity(sparkEntity);
+				}
 			}
 		} else {
-			float extraChance = Math.max(0, queuedSparks - 12) * 0.02f;
-			if (level.random.nextFloat() < (0.03f + extraChance)) {
-				float lerp = (0.7f + level.random.nextFloat() * 0.3f) / 255f;
-				Color color = new Color(255 * lerp, 0, 186 * lerp);
-
-				Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
-				float velocity = 0.35f + level.random.nextFloat() * 0.1f;
-				SparkEntity sparkEntity = new SparkEntity(level, randPos.x, randPos.y, randPos.z, 0.05f - level.random.nextFloat() * 0.1f, velocity, 0.05f - level.random.nextFloat() * 0.1f);
-				sparkEntity.setColor(color);
-				level.addFreshEntity(sparkEntity);
-				queuedSparks--;
-			}
+			cooldown--;
 		}
 		items.removeIf(e -> !e.isAlive());
 	}
@@ -92,11 +87,11 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 				return;
 			}
 		}
-		if (!(entity instanceof SparkEntity) && !entity.fireImmune() && !items.contains(entity)) {
+		if (!(entity instanceof WispEntity) && !entity.fireImmune() && !items.contains(entity)) {
 			FireEffectInstance instance = FireEffectHandler.getFireEffectInstance(entity);
 			if (instance == null) {
 				FireEffectHandler.setCustomFireInstance(entity, new FireEffectInstance(FufoFireEffects.METEOR_FIRE).setDuration(20));
-			} else {
+			} else if (instance.duration <= 10) {
 				instance.setDuration(160);
 				if (!level.isClientSide) {
 					instance.sync(entity);
@@ -106,23 +101,25 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 		}
 	}
 
-	public void attemptIgnition() {
+	public boolean attemptIgnition() {
 		if (level == null) {
-			return;
+			return false;
 		}
-		
+
 		BlockPos below = getBlockPos().below();
 		BlockState blockState = level.getBlockState(below);
 		Block block = blockState.getBlock();
 		if (block instanceof FlammableMeteoriteBlock) {
 			boolean success = FlammableMeteoriteBlock.progressDepletion(level, below);
 			if (success) {
-				queuedSparks = 16;
+				cooldown = 1200 + level.getRandom().nextInt(300);
 			} else {
 				BlockPos blockPos = getBlockPos();
 				level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 3);
 				level.levelEvent(null, 1009, blockPos, 0);
 			}
+			return success;
 		}
+		return false;
 	}
 }

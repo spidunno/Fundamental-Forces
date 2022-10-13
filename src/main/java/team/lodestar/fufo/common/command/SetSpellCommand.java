@@ -30,7 +30,7 @@ public class SetSpellCommand {
                                             FufoPlayerDataCapability.getCapabilityOptional(target).ifPresent(p -> {
                                                 SpellType result = FufoSpellTypes.SPELL_TYPES.get(context.getArgument("type", ResourceLocation.class));
                                                 int slot = context.getArgument("slot", Integer.class)-1;
-                                                p.hotbarHandler.spellHotbar.spells.set(slot, result.instanceFunction.apply(result));
+                                                p.hotbarHandler.spellHotbar.spells.set(slot, result.defaultInstanceSupplier.apply(result));
                                                 FufoPlayerDataCapability.syncTrackingAndSelf(target);
                                                 source.sendSuccess(Component.translatable(LangHelpers.getCommand("set_spell_success")), true);
                                             });

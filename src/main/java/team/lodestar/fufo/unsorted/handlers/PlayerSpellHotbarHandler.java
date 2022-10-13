@@ -20,7 +20,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import team.lodestar.fufo.FufoMod;
 import team.lodestar.fufo.common.capability.FufoPlayerDataCapability;
 import team.lodestar.fufo.core.spell.SpellInstance;
-import team.lodestar.fufo.core.spell.attributes.effect.SpellEffect;
+import team.lodestar.fufo.core.spell.SpellEffect;
 import team.lodestar.fufo.core.spell.hotbar.SpellHotbar;
 import team.lodestar.fufo.registry.client.FufoKeybinds;
 import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;

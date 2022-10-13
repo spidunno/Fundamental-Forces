@@ -10,22 +10,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import team.lodestar.lodestone.helpers.EntityHelper;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractWispEntity extends Entity {
 
     public static final int MAX_AGE = 1200;
-    protected static final EntityDataAccessor<Integer> DATA_START_COLOR = SynchedEntityData.defineId(AbstractWispEntity.class, EntityDataSerializers.INT);
-    protected static final EntityDataAccessor<Boolean> DATA_FADING_OUT = SynchedEntityData.defineId(AbstractWispEntity.class, EntityDataSerializers.BOOLEAN);
-
-    public Color color = Color.WHITE;
-
-    public AbstractWispEntity targetEntity;
-    public int findNearestCooldown;
     public int age;
-    public boolean fadingOut;
-    public float fadeOut;
+    public final ArrayList<EntityHelper.PastPosition> pastPositions = new ArrayList<>();
 
     public AbstractWispEntity(EntityType<?> type, Level level) {
         super(type, level);
@@ -38,47 +33,18 @@ public abstract class AbstractWispEntity extends Entity {
         setDeltaMovement(velX, velY, velZ);
     }
 
-    public void setColor(Color color) {
-        this.color = color;
-        getEntityData().set(DATA_START_COLOR, color.getRGB());
-    }
-
-    public void startFading() {
-        this.fadingOut = true;
-        getEntityData().set(DATA_FADING_OUT, true);
-    }
-
     @Override
     protected void defineSynchedData() {
-        this.getEntityData().define(DATA_START_COLOR, Color.WHITE.getRGB());
-        this.getEntityData().define(DATA_FADING_OUT, false);
-    }
-
-    @Override
-    public void onSyncedDataUpdated(EntityDataAccessor<?> pKey) {
-        if (DATA_START_COLOR.equals(pKey)) {
-            color = new Color(entityData.get(DATA_START_COLOR));
-        }
-        if (DATA_FADING_OUT.equals(pKey)) {
-            fadingOut = entityData.get(DATA_FADING_OUT);
-        }
-        super.onSyncedDataUpdated(pKey);
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag pCompound) {
         pCompound.putInt("age", age);
-        pCompound.putInt("color", color.getRGB());
-        pCompound.putBoolean("fadingOut", fadingOut);
-        pCompound.putFloat("fadeOut", fadeOut);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag pCompound) {
         age = pCompound.getInt("age");
-        setColor(new Color(pCompound.getInt("color")));
-        fadingOut = pCompound.getBoolean("fadingOut");
-        fadeOut = pCompound.getFloat("fadeOut");
     }
 
     @Override
@@ -88,6 +54,7 @@ public abstract class AbstractWispEntity extends Entity {
         setPos(getX() + movement.x, getY() + movement.y, getZ() + movement.z);
         age++;
         if (level.isClientSide) {
+            trackPastPositions();
             return;
         }
         if (age >= MAX_AGE) {
@@ -95,15 +62,23 @@ public abstract class AbstractWispEntity extends Entity {
         }
     }
 
-    public boolean hasPriority() {
-        return false;
+    public void trackPastPositions() {
+        EntityHelper.trackPastPositions(pastPositions, position(), 0.01f);
+        removeOldPositions(pastPositions);
     }
 
-    public boolean canBeTargeted(SparkEntity entity) {
-        return !fadingOut && !entity.fadingOut;
+    public void removeOldPositions(List<EntityHelper.PastPosition> pastPositions) {
+        int amount = pastPositions.size() - 1;
+        List<EntityHelper.PastPosition> toRemove = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            EntityHelper.PastPosition excess = pastPositions.get(i);
+            if (excess.time > Math.min(age/2f, 15)) {
+                toRemove.add(excess);
+            }
+        }
+        pastPositions.removeAll(toRemove);
     }
 
-    protected abstract void sparkLockedOn(SparkEntity entity);
 
     @Override
     public Packet<?> getAddEntityPacket() {

@@ -1,7 +1,6 @@
-package team.lodestar.fufo.core.spell.attributes.effect;
+package team.lodestar.fufo.core.spell;
 
 import team.lodestar.fufo.core.element.MagicElement;
-import team.lodestar.fufo.core.spell.SpellInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -13,14 +12,15 @@ public abstract class SpellEffect {
         ALWAYS_DEFAULT_CAST
     }
 
-    public MagicElement element;
     public final CastLogicHandler handler;
+    public final MagicElement element;
     public int range;
     public int duration;
     public int power;
 
-    public SpellEffect(CastLogicHandler handler) {
+    public SpellEffect(CastLogicHandler handler, MagicElement element) {
         this.handler = handler;
+        this.element = element;
     }
 
     public void cast(SpellInstance spell, ServerPlayer player) {
@@ -42,18 +42,13 @@ public abstract class SpellEffect {
     public boolean canCast(SpellInstance spell, ServerPlayer player) {
         boolean isOnCooldown = spell.isOnCooldown();
         if (!isOnCooldown) {
-            spell.setCooldown(player);
+            spell.setAndSyncCooldown(player);
         }
         return !isOnCooldown;
     }
 
     public SpellEffect range(int range) {
         this.range = range;
-        return this;
-    }
-
-    public SpellEffect element(MagicElement element) {
-        this.element = element;
         return this;
     }
 
