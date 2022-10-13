@@ -27,6 +27,7 @@ import team.lodestar.lodestone.capability.LodestonePlayerDataCapability;
 import team.lodestar.lodestone.systems.rendering.VFXBuilders;
 
 //Whoever programmed this class must really like cock and balls like a lot
+// Luckily whoever rewrote it must be a genius
 public class PlayerSpellHotbarHandler {
     public final SpellHotbar spellHotbar;
     public boolean open;
@@ -35,6 +36,8 @@ public class PlayerSpellHotbarHandler {
     public int cachedSlot;
     public boolean updateCachedSlot;
 
+    private SpellInstance[] spells = new SpellInstance[27];
+    
     public PlayerSpellHotbarHandler(SpellHotbar spellHotbar) {
         this.spellHotbar = spellHotbar;
     }
