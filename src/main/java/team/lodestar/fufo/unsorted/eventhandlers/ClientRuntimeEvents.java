@@ -7,7 +7,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import team.lodestar.fufo.client.rendering.entity.falling.FallingStarRenderer;
-import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellInventoryHandler;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT)
 public class ClientRuntimeEvents {
@@ -20,7 +20,7 @@ public class ClientRuntimeEvents {
                 if (minecraft.isPaused()) {
                     return;
                 }
-                PlayerSpellHotbarHandler.ClientOnly.clientTick(event);
+                PlayerSpellInventoryHandler.ClientOnly.clientTick(event);
             }
         }
     }
@@ -32,11 +32,11 @@ public class ClientRuntimeEvents {
 
     @SubscribeEvent
     public static void renderOverlay(RenderGuiOverlayEvent.Pre event) {
-        PlayerSpellHotbarHandler.ClientOnly.moveOverlays(event);
+        PlayerSpellInventoryHandler.ClientOnly.moveOverlays(event);
     }
 
     @SubscribeEvent
     public static void renderOverlay(RenderGuiOverlayEvent.Post event) {
-        PlayerSpellHotbarHandler.ClientOnly.renderSpellHotbar(event);
+        PlayerSpellInventoryHandler.ClientOnly.renderSpellHotbar(event);
     }
 }

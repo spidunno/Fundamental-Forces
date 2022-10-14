@@ -57,6 +57,15 @@ public class MeteoriteFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     public static void generateCraterLayer(WorldGenLevel level, LodestoneBlockFiller filler, BlockPos center, int radius, int effectiveRadius, float noiseIntensity, Map<Integer, Double> noiseValues) {
+    	double xMax = 0;
+    	double zMax = 0;
+    	for (int i=0; i<360; i++) {
+    		double d = noiseValues.get(i);
+    		double xCur = Math.abs(effectiveRadius * d * Mth.cos(i * Mth.DEG_TO_RAD));
+    		double zCur = Math.abs(effectiveRadius * d * Mth.sin(i * Mth.DEG_TO_RAD));
+    		if (xCur > xMax) xMax = xCur;
+    		if (zCur > zMax) zMax = zCur;
+    	}
         int x = center.getX();
         int z = center.getZ();
         BlockPos.MutableBlockPos blockPos = new BlockPos.MutableBlockPos();

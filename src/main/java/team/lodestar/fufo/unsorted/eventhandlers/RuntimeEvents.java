@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod;
 import team.lodestar.fufo.common.capability.*;
 import team.lodestar.fufo.common.fluid.FluidPipeNetworkRegistry;
 import team.lodestar.fufo.core.fluid.FluidPipeNetwork;
-import team.lodestar.fufo.unsorted.handlers.PlayerSpellHotbarHandler;
+import team.lodestar.fufo.unsorted.handlers.PlayerSpellInventoryHandler;
 import team.lodestar.fufo.unsorted.handlers.StarfallEventHandler;
 import team.lodestar.lodestone.events.types.RightClickEmptyServer;
 
@@ -47,12 +47,12 @@ public class RuntimeEvents {
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
-        PlayerSpellHotbarHandler.playerTick(event);
+        PlayerSpellInventoryHandler.playerTick(event);
     }
 
     @SubscribeEvent
     public static void playerInteract(PlayerInteractEvent.RightClickBlock event) {
-        PlayerSpellHotbarHandler.playerInteract(event);
+        PlayerSpellInventoryHandler.playerInteract(event);
     }
 
     @SubscribeEvent
