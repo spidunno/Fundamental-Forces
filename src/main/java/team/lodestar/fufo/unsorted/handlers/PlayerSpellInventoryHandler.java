@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.client.event.ContainerScreenEvent;
+import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -138,12 +141,14 @@ public class PlayerSpellInventoryHandler {
                     }
                 }
                 if (FufoKeybinds.swapHotbar.consumeClick()) {
+                	// When Z is pressed, do stuff
                     PlayerSpellInventoryHandler.ClientOnly.swapHotbar();
                 }
             });
         }
 
         public static void swapHotbar() {
+//        	Thread.dumpStack();
             Player player = Minecraft.getInstance().player;
             FufoPlayerDataCapability.getCapabilityOptional(player).ifPresent(c -> {
                 PlayerSpellInventoryHandler handler = c.hotbarHandler;
@@ -171,6 +176,15 @@ public class PlayerSpellInventoryHandler {
             return visible;
         }
 
+        public static void renderSpellInventory(ContainerScreenEvent event) {
+        	Minecraft minecraft = Minecraft.getInstance();
+        	LocalPlayer player = minecraft.player;
+        	if (event.getContainerScreen().getClass() == InventoryScreen.class) {
+//        		FufoMod.LOGGER.info("Canceled!");
+        		event.setCanceled(true);
+        	}
+        }
+        
         public static Tesselator spellTesselator = new Tesselator();
 
         public static void renderSpellHotbar(RenderGuiOverlayEvent.Post event) {
