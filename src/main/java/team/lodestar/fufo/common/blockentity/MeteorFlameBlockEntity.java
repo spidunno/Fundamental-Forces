@@ -53,18 +53,15 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 		}
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
-	public void tick() {
-		if (level == null) {
-			return;
-		}
-
+	public void serverTick() {
 		if (cooldown == 0) {
 			if (level.random.nextFloat() < 0.05f) {
 				boolean success = attemptIgnition();
 				if (success) {
 					Vec3 randPos = BlockHelper.withinBlock(level.getRandom(), worldPosition);
-					float velocity = 0.1f + level.random.nextFloat() * 0.1f;
+					float velocity = 0.15f + level.random.nextFloat() * 0.15f;
 					WispEntity sparkEntity = new WispEntity(level, randPos.x, randPos.y, randPos.z, 0.05f - level.random.nextFloat() * 0.1f, velocity, 0.05f - level.random.nextFloat() * 0.1f);
 					level.addFreshEntity(sparkEntity);
 				}
@@ -101,11 +98,8 @@ public class MeteorFlameBlockEntity extends LodestoneBlockEntity {
 		}
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	public boolean attemptIgnition() {
-		if (level == null) {
-			return false;
-		}
-
 		BlockPos below = getBlockPos().below();
 		BlockState blockState = level.getBlockState(below);
 		Block block = blockState.getBlock();

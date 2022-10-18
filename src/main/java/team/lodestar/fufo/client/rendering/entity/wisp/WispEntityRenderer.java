@@ -73,6 +73,7 @@ public class WispEntityRenderer extends EntityRenderer<WispEntity> {
 
         builder.setAlpha(0.5f).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 0.8f);
         builder.setAlpha(0.75f).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 0.4f);
+        builder.setColor(color.brighter()).setAlpha(1).renderQuad(DELAYED_RENDER.getBuffer(STAR_TYPE), poseStack, 0.25f);
 
         RenderSystem.disableBlend();
         poseStack.popPose();

@@ -72,7 +72,7 @@ public abstract class AbstractWispEntity extends Entity {
         List<EntityHelper.PastPosition> toRemove = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             EntityHelper.PastPosition excess = pastPositions.get(i);
-            if (excess.time > Math.min(age/2f, 15)) {
+            if (excess.time > Math.min(age/2f, 25)) {
                 toRemove.add(excess);
             }
         }
