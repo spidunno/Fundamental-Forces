@@ -32,14 +32,16 @@ public class BaseFireBlockMixin {
             }
         }
     }
+
     @Inject(method = "getState", at = @At("RETURN"), cancellable = true)
-    private static void fundamentalForcesCreateMeteorFlame(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir)
-    {
+    private static void fundamentalForcesCreateMeteorFlame(BlockGetter pReader, BlockPos pPos, CallbackInfoReturnable<BlockState> cir) {
         BlockState state = pReader.getBlockState(pPos.below());
-        if (state.getBlock() instanceof FlammableMeteoriteBlock block)
-        {
-            cir.setReturnValue(block.getFlameState(state, pPos));
-            return;
+        if (state.getBlock() instanceof FlammableMeteoriteBlock block) {
+            BlockState flameState = block.getFlameState(state, pPos);
+            if (!flameState.isAir()) {
+                cir.setReturnValue(flameState);
+                return;
+            }
         }
         cir.setReturnValue(cir.getReturnValue());
     }

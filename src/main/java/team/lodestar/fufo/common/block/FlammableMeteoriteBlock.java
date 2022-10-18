@@ -3,6 +3,7 @@ package team.lodestar.fufo.common.block;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
@@ -24,6 +25,9 @@ public class FlammableMeteoriteBlock extends Block {
     }
 
     public BlockState getFlameState(BlockState state, BlockPos pos) {
+        if (state.getValue(DEPLETION_STATE) == 4) {
+            return Blocks.AIR.defaultBlockState();
+        }
         return stateProvider.getFlameState(state, pos);
     }
 
