@@ -19,6 +19,14 @@ import team.lodestar.lodestone.setup.LodestoneBlockTags;
 import java.util.ArrayList;
 
 public class StarfallSafetyHandler {
+    //TODO: rewrite all of this
+    // a 5x5 area of chunks is scanned for invalid chunks, which have had more than 50 surface changes done by a player. If any invalid chunks are found we look somewhere else
+    // we scan a pretty big area around the impact site, think like a 21x21x21 zone, cache all the non-empty blocks and do some checks on them. We also cache the amount of fluid states
+    // if the amount of fluid states makes up more than 10% of both blocks and fluids combined, we look somewhere else
+    // if the amount of 'starfall invalid' blocks (blocks not tagged with starfall_permitted) makes up more than 20% of all blocks, we look somewhere else
+    // if we find more than let's say, ten 'illegal' blocks (think bedrock, obsidian, crafting table, chest, etc) we look somewhere else
+    // We also do some heightmap stuff, the mean of heightmap values in the region has to be under some arbitrary threshold
+
     public static boolean chunkChangesCheck(ServerLevel level, BlockPos pos, int range) {
         for (int x = -range; x <= range; x++) {
             for (int z = -range; z <= range; z++) {
